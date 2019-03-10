@@ -1,23 +1,8 @@
-# Disable sudo to speed up the build
-sudo: false
-
-# Set the build language to Python
 language: python
-
-python: 
+python:
   - "3.5"
-  - "3.6"
-  - "3.7"
-
-cache:pip
-# Install the codecov pip dependency
+cache: pip
 install:
-  - pip install codecov
-
-# Run the unit test
+  - pip install -r requirements.txt
 script:
-  - coverage run test_RunSorn.py
-
-# Push the results back to codecov
-after_success:
-  - codecov
+  - python test_RunSorn.py
