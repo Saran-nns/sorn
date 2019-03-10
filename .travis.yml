@@ -4,5 +4,9 @@ python:
 cache: pip
 install:
   - pip install -r requirements.txt
+  - pip install codecov
 script:
-  - python test_RunSorn.py
+  - coverage test_RunSorn.py
+after_success:
+
+  -codecov
