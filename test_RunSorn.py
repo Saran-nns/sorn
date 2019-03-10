@@ -1,5 +1,5 @@
 import unittest
-from sorn import RunSorn
+from sorn.sorn import RunSorn
 
 
 class TestRunSorn(unittest.TestRunSorn):
