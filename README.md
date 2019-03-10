@@ -18,15 +18,27 @@ pip install git+https://github.com/Saran-nns/sorn
 SORN supports Python 3.5+ ONLY. For older Python versions please use the official Python client
 
 
-#### Check and Update Network configurations
+#### Usage:
 
-Navigate to c:/Users/USERNAME/AppData/Local/conda/conda/envs/ENVNAME/Lib/site-packages/sorn
+##### Update Network configurations
 
-Then, update/edit the configuration of your interest
+Navigate to home/conda/envs/ENVNAME/Lib/site-packages/sorn
 
-#### Usage: 
+or if you are unsure about the directory of sorn
 
-##### Plasticity Phase
+Run
+
+```python
+import sorn
+
+sorn.__file__
+```
+to find the location of the sorn package
+
+Then, update/edit the configuration.ini
+
+
+###### Plasticity Phase
 
 ```Python
 # Import 
