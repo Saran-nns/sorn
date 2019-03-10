@@ -52,7 +52,7 @@ matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections 
 ```
 
 #### Network Output Descriptions:
-    matrices_dict  - Dictionary of connection weights ('Wee','Wei','Wie') , Excitatory network activity ('X'), Inhibitory network                 activities('Y'), Threshold values ('Te','Ti')
+    matrices_dict  - Dictionary of connection weights ('Wee','Wei','Wie') , Excitatory network activity ('X'), Inhibitory network activities('Y'), Threshold values ('Te','Ti')
 
     Exc_activity - Collection of Excitatory network activity of entire simulation period
 

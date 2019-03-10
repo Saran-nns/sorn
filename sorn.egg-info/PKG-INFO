@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: sorn
-Version: 0.1.1
+Version: 0.1.3
 Summary: Self-Organizing Recurrent Neural Networks
 Home-page: https://github.com/Saran-nns/sorn
 Author: Saranraj Nambusubramaniyan
@@ -60,7 +60,7 @@ Description: ## Self-Organizing Recurrent Neural Networks
         ```
         
         #### Network Output Descriptions:
-            matrices_dict  - Dictionary of connection weights ('Wee','Wei','Wie') , Excitatory network activity ('X'), Inhibitory network                 activities('Y'), Threshold values ('Te','Ti')
+            matrices_dict  - Dictionary of connection weights ('Wee','Wei','Wie') , Excitatory network activity ('X'), Inhibitory network activities('Y'), Threshold values ('Te','Ti')
         
             Exc_activity - Collection of Excitatory network activity of entire simulation period
         
