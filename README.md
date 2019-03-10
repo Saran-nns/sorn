@@ -1,5 +1,7 @@
 ## Self-Organizing Recurrent Neural Networks 
 
+[![Known Vulnerabilities](https://snyk.io/package/npm/sorn/badge.svg)](https://snyk.io/package/npm/sorn)
+
 SORN is a class of neuro-inspired computing model build based on plasticity mechanisms in biological brain and mimic neocortical circuits ability of learning and adaptation through neuroplasticity mechanisms.
 
 #### To install the latest release:
