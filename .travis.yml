@@ -1,7 +1,11 @@
-language: python
+language:
+  python
+
 python:
   - "3.5"
-cache: pip
+
+cache: 
+  pip
 
 install:
   - pip install -r requirements.txt
@@ -11,5 +15,7 @@ before_script:
 - pip install coveralls
 
 script:
-  - python test_RunSorn.py
+  - python test_RunSorn.py nosetests --with-coverage --cover-package sorn 
 
+after_success:
+- coveralls
