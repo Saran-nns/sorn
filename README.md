@@ -1,7 +1,5 @@
 ## Self-Organizing Recurrent Neural Networks 
 
-[![Build Status](https://travis-ci.org/Saran-nns/sorn.svg?branch=master)](https://travis-ci.org/Saran-nns/sorn)
-
 SORN is a class of neuro-inspired computing model build based on plasticity mechanisms in biological brain and mimic neocortical circuits ability of learning and adaptation through neuroplasticity mechanisms.
 
 #### To install the latest release:
