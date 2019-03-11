@@ -9,6 +9,7 @@ For ease of maintanance, example use cases and the API(under developement) are m
 [![DOI](https://zenodo.org/badge/174756058.svg)](https://zenodo.org/badge/latestdoi/174756058)
 <img src= "https://pyup.io/repos/github/Saran-nns/sorn/shield.svg?t=1552263420605">
 <img src="https://pyup.io/repos/github/Saran-nns/sorn/python-3-shield.svg?t=1552263605167">
+![PyPI - Downloads](https://img.shields.io/pypi/dd/sorn.svg)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 #### To install the latest release:
