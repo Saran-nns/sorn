@@ -16,7 +16,7 @@ For ease of maintanance, example use cases and the API(under developement) are m
 pip install sorn
 ```
 
-The library is still in alpha, so you may also want to install the latest version from the development branch:
+The library is still in alpha stage, so you may also want to install the latest version from the development branch:
 
 ```python
 pip install git+https://github.com/Saran-nns/sorn
