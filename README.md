@@ -2,7 +2,7 @@
 
 SORN is a class of neuro-inspired computing model build based on plasticity mechanisms in biological brain and mimic neocortical circuits ability of learning and adaptation through neuroplasticity mechanisms.
 
-To for ease of maintanance, the use cases and the API(under developement) are moved to https://github.com/Saran-nns/PySORN_0.1 
+For ease of maintanance, example use cases and the API(under developement) are moved to https://github.com/Saran-nns/PySORN_0.1 
 
 [![Build Status](https://travis-ci.org/Saran-nns/sorn.svg?branch=master)](https://travis-ci.org/Saran-nns/sorn)
 <img src= "https://pyup.io/repos/github/Saran-nns/sorn/shield.svg?t=1552263420605">
