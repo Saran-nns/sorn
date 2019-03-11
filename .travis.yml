@@ -16,7 +16,7 @@ before_script:
 
 script:
   - python test_RunSorn.py
-  - coverage run test_RunSorn.py test
+  - coverage run test_RunSorn.py 
 
 after_success:
 - coveralls
