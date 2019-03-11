@@ -1,8 +1,8 @@
 ## Self-Organizing Recurrent Neural Networks 
 
 [![Build Status](https://travis-ci.org/Saran-nns/sorn.svg?branch=master)](https://travis-ci.org/Saran-nns/sorn)
-<img src= "https://pyup.io/repos/github/Saran-nns/sorn/shield.svg?t=1552263420605">
-<img src="https://pyup.io/repos/github/Saran-nns/sorn/python-3-shield.svg?t=1552263605167">
+[<img src= "https://pyup.io/repos/github/Saran-nns/sorn/shield.svg?t=1552263420605">(https://pyup.io/account/repos/github/Saran-nns/sorn/)
+[<img src="https://pyup.io/repos/github/Saran-nns/sorn/python-3-shield.svg?t=1552263605167">(https://pyup.io/account/repos/github/Saran-nns/sorn/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 SORN is a class of neuro-inspired computing model build based on plasticity mechanisms in biological brain and mimic neocortical circuits ability of learning and adaptation through neuroplasticity mechanisms.
