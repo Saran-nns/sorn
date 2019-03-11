@@ -5,6 +5,7 @@ SORN is a class of neuro-inspired computing model build based on plasticity mech
 For ease of maintanance, example use cases and the API(under developement) are moved to https://github.com/Saran-nns/PySORN_0.1 
 
 [![Build Status](https://travis-ci.org/Saran-nns/sorn.svg?branch=master)](https://travis-ci.org/Saran-nns/sorn)
+[![Coverage Status](https://coveralls.io/repos/github/Saran-nns/sorn/badge.svg?branch=master)](https://coveralls.io/github/Saran-nns/sorn?branch=master)
 [![PyPI version](https://badge.fury.io/py/sorn.svg)](https://badge.fury.io/py/sorn)
 [![DOI](https://zenodo.org/badge/174756058.svg)](https://zenodo.org/badge/latestdoi/174756058)
 <img src= "https://pyup.io/repos/github/Saran-nns/sorn/shield.svg?t=1552263420605">
