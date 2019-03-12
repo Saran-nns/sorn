@@ -13,6 +13,24 @@ For ease of maintanance, example use cases and the API(under developement) are m
 ![PyPI - Downloads](https://img.shields.io/pypi/dd/sorn.svg)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
+<h4 align="center">SORN Reservoir</h4>
+
+<p align="center">
+<a href="url"><img src="https://github.com/Saran-nns/PySORN_0.1/blob/master/v0.1.0/doc/images/SORN1.png" height="350" width="500" ></a>
+</p>
+
+<h4 align="center">The evolution of connection strenghts</h4>
+ 
+<p align="center">
+<a href="url"><img src="https://github.com/Saran-nns/PySORN_0.1/blob/master/v0.1.0/doc/images/weights.png" height="500" width="450" ></a>
+</p>
+
+<h4 align="center">Neural Connectome</h4> 
+
+<p align="center">
+<a href="url"><img src="https://github.com/Saran-nns/PySORN_0.1/blob/master/v0.1.0/doc/images/neuralcorrelationall.png" height="450" width="450" ></a>
+</p>
+
 #### To install the latest release:
 
 ```python
@@ -86,7 +104,7 @@ matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections 
     num_active_connections - List of number of active connections in the Excitatory pool at each time step 
 
 
-#### Sample Ploting functions 
+#### Sample Plotting functions 
 
 from sorn.utils import Plotter
 
@@ -95,7 +113,9 @@ from sorn.utils import Plotter
 Plotter.weight_distribution(weights= matrices_dict['Wee'], bin_size = 5, savefig = False)
 
 # Plot Spike train of all neurons in the network
-Plotter.scatter_plot(spike_train = np.asarray(Exc_activity), savefig=False) 
+Plotter.scatter_plot(spike_train = np.asarray(Exc_activity), savefig=False)
+
+
 Plotter.raster_plot(spike_train = np.asarray(Exc_activity), savefig=False)
 ```
 
