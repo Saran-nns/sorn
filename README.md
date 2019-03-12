@@ -133,4 +133,4 @@ Zheng, P., Dimitrakakis, C., & Triesch, J. (2013). Network Self-Organization Exp
 
 #### Citation:
 
-Please site 
+Saranraj Nambusubramaniyan. (2019, March 11). Saran-nns/sorn: sorn alpha 0.1.5 (Version v0.1.5). Zenodo. http://doi.org/10.5281/zenodo.2590450
