@@ -13,7 +13,7 @@ For ease of maintanance, example use cases and the API(under developement) are m
 ![PyPI - Downloads](https://img.shields.io/pypi/dd/sorn.svg)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-<h4 align="Left">SORN Reservoir</h4>  <h4 align="Right">Evolution of Synaptic Efficacies</h4>
+<h4 align="Left">SORN Reservoir                                           Evolution of Synaptic Efficacies</h4> 
 <a href="url"><img src="https://github.com/Saran-nns/PySORN_0.1/blob/master/v0.1.0/doc/images/SORN1.png" height="325" width="440" ></a> <a href="url"><img src="https://github.com/Saran-nns/PySORN_0.1/blob/master/v0.1.0/doc/images/weights.png" height="375" width="425" ></a>	
 
 <h4 align="center">Neural Connectome</h4> 
