@@ -15,8 +15,8 @@ before_script:
 - pip install coveralls
 
 script:
-  - python test_RunSorn.py
-  - coverage run test_RunSorn.py 
+  - python test_sorn.py
+  - coverage run test_sorn.py 
 
 after_success:
 - coveralls
