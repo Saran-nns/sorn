@@ -13,20 +13,9 @@ For ease of maintanance, example use cases and the API(under developement) are m
 ![PyPI - Downloads](https://img.shields.io/pypi/dd/sorn.svg)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-<h4 align="center">SORN Reservoir</h4>
-
-<p align="center">
-<a href="url"><img src="https://github.com/Saran-nns/PySORN_0.1/blob/master/v0.1.0/doc/images/SORN1.png" height="350" width="500" ></a>
-</p>
-
-<h4 align="center">The evolution of connection strenghts</h4>
- 
-<p align="center">
-<a href="url"><img src="https://github.com/Saran-nns/PySORN_0.1/blob/master/v0.1.0/doc/images/weights.png" height="500" width="450" ></a>
-</p>
+<a href="url"><img src="https://github.com/Saran-nns/PySORN_0.1/blob/master/v0.1.0/doc/images/SORN1.png" height="300" width="425" ></a> <a href="url"><img src="https://github.com/Saran-nns/PySORN_0.1/blob/master/v0.1.0/doc/images/weights.png" height="300" width="425" ></a>
 
 <h4 align="center">Neural Connectome</h4> 
-
 <p align="center">
 <a href="url"><img src="https://github.com/Saran-nns/PySORN_0.1/blob/master/v0.1.0/doc/images/neuralcorrelationall.png" height="450" width="450" ></a>
 </p>
@@ -127,5 +116,18 @@ Statistics.autocorr(firing_rates = [1,1,5,6,3,7],t= 2)
 
 # Fano factor: To verify poissonian process in spike generation of neuron 10
 Statistics.fanofactor(spike_train= np.asarray(Exc_activity),neuron = 10,window_size = 10)
+```
 
+#### Articles:
 
+Lazar, A. (2009). SORN: a Self-organizing Recurrent Neural Network. Frontiers in Computational Neuroscience, 3. https://doi.org/10.3389/neuro.10.023.2009
+
+Hartmann, C., Lazar, A., Nessler, B., & Triesch, J. (2015). Where’s the Noise? Key Features of Spontaneous Activity and Neural Variability Arise through Learning in a Deterministic Network. PLoS Computational Biology, 11(12). https://doi.org/10.1371/journal.pcbi.1004640 
+
+Del Papa, B., Priesemann, V., & Triesch, J. (2017). Criticality meets learning: Criticality signatures in a self-organizing recurrent neural network. PLoS ONE, 12(5). https://doi.org/10.1371/journal.pone.0178683 
+
+Zheng, P., Dimitrakakis, C., & Triesch, J. (2013). Network Self-Organization Explains the Statistics and Dynamics of Synaptic Connection Strengths in Cortex. PLoS Computational Biology, 9(1). https://doi.org/10.1371/journal.pcbi.1002848  
+
+#### Citation:
+
+Please site 
