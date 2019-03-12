@@ -5,7 +5,7 @@ from sorn.sorn import RunSorn
 from sorn.utils import Plotter,Statistics,Initializer
 
 
-# Getting back the pickled matrices:
+# Get the pickled matrices:
 with open('sample_matrices.pkl','rb') as f:
     matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = pickle.load(f)
 
