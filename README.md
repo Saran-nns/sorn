@@ -84,3 +84,28 @@ matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections 
     Rec_activity - Collection of Recurrent network activity of entire simulation period
 
     num_active_connections - List of number of active connections in the Excitatory pool at each time step 
+
+
+#### Sample Ploting functions 
+
+from sorn.utils import Plotter
+
+```Python
+# Plot weight distribution in the network
+Plotter.weight_distribution(weights= matrices_dict['Wee'], bin_size = 5, savefig = False)
+
+# Plot Spike train of all neurons in the network
+Plotter.scatter_plot(spike_train = np.asarray(Exc_activity), savefig=False) 
+Plotter.raster_plot(spike_train = np.asarray(Exc_activity), savefig=False)
+```
+
+#### Sample Statistical analysis functions
+
+```Python
+#t-lagged auto correlation between neural activity
+Statistics.autocorr(firing_rates = [1,1,5,6,3,7],t= 2)
+
+# Fano factor: To verify poissonian process in spike generation of neuron 10
+Statistics.fanofactor(spike_train= np.asarray(Exc_activity),neuron = 10,window_size = 10)
+
+
