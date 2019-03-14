@@ -1,6 +1,6 @@
 ## Self-Organizing Recurrent Neural Networks 
 
-SORN is a class of neuro-inspired computing model build based on plasticity mechanisms in biological brain and mimic neocortical circuits ability of learning and adaptation through neuroplasticity mechanisms.
+SORN is a class of neuro-inspired network computing model build based on plasticity mechanisms in biological brain and mimic neocortical circuits ability of learning and adaptation through neuroplasticity mechanisms.
 
 For ease of maintanance, example use cases and the API(under developement) are moved to https://github.com/Saran-nns/PySORN_0.1 
 
