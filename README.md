@@ -131,6 +131,6 @@ Del Papa, B., Priesemann, V., & Triesch, J. (2017). Criticality meets learning: 
 
 Zheng, P., Dimitrakakis, C., & Triesch, J. (2013). Network Self-Organization Explains the Statistics and Dynamics of Synaptic Connection Strengths in Cortex. PLoS Computational Biology, 9(1). https://doi.org/10.1371/journal.pcbi.1002848  
 
-#### Citation:
+#### Cite as:
 
-Saranraj Nambusubramaniyan. (2019, March 11). Saran-nns/sorn: sorn alpha 0.1.5 (Version v0.1.5). Zenodo. http://doi.org/10.5281/zenodo.2590450
+Saranraj Nambusubramaniyan. (2019, March 14). Saran-nns/sorn: sorn-alpha (Version v0.2.1). Zenodo. http://doi.org/10.5281/zenodo.2593681
