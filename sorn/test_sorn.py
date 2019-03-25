@@ -1,8 +1,8 @@
 import unittest
 import pickle
 import numpy as np
-from sorn.sorn import RunSorn
-from sorn.utils import Plotter,Statistics,Initializer
+from sorn import RunSorn
+from utils import Plotter,Statistics,Initializer
 
 
 # Get the pickled matrices:
