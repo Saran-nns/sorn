@@ -16,7 +16,7 @@ before_script:
 
 script:
   - python test_sorn.py
-  - coverage run --source=sorn test_sorn.py  
+  - coverage run test_sorn.py  
 
 after_success:
 - coveralls
