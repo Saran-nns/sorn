@@ -6,6 +6,7 @@ For ease of maintanance, example use cases and the API(under developement) are m
 
 [![Build Status](https://travis-ci.org/Saran-nns/sorn.svg?branch=master)](https://travis-ci.org/Saran-nns/sorn)
 [![Coverage Status](https://coveralls.io/repos/github/Saran-nns/sorn/badge.svg?branch=master)](https://coveralls.io/github/Saran-nns/sorn?branch=master)
+[![Join the chat at https://gitter.im/Self-Organizing-Recurrent-Neural-Networks](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Self-Organizing-Recurrent-Neural-Networks?utm_source=badge&utm_medium=badge&utm_content=badge)
 [![DOI](https://zenodo.org/badge/174756058.svg)](https://zenodo.org/badge/latestdoi/174756058)
 [![PyPI version](https://badge.fury.io/py/sorn.svg)](https://badge.fury.io/py/sorn)
 ![PyPI - Downloads](https://img.shields.io/pypi/dd/sorn.svg)
