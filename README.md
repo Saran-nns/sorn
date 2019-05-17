@@ -5,7 +5,7 @@ SORN is a class of neuro-inspired artificial network build based on plasticity m
 For ease of maintanance, example use cases and the API(under developement) are moved to https://github.com/Saran-nns/PySORN_0.1 
 
 [![Build Status](https://travis-ci.org/Saran-nns/sorn.svg?branch=master)](https://travis-ci.org/Saran-nns/sorn)
-[![Coverage Status](https://coveralls.io/repos/github/Saran-nns/sorn/badge.svg?branch=master)](https://coveralls.io/github/Saran-nns/sorn?branch=master)
+[![codecov](https://codecov.io/gh/Saran-nns/sorn/branch/master/graph/badge.svg)](https://codecov.io/gh/Saran-nns/sorn)
 [![Join the chat at https://gitter.im/Self-Organizing-Recurrent-Neural-Networks](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Self-Organizing-Recurrent-Neural-Networks?utm_source=badge&utm_medium=badge&utm_content=badge)
 [![PyPI version](https://badge.fury.io/py/sorn.svg)](https://badge.fury.io/py/sorn)
 ![PyPI - Downloads](https://img.shields.io/pypi/dw/sorn.svg)
