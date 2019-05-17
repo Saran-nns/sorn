@@ -13,6 +13,7 @@ install:
 before_script:
 - pip install coverage
 - pip install coveralls
+- pip install codecov
 
 script:
   - python test_sorn.py
