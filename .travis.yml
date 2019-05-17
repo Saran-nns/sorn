@@ -19,4 +19,4 @@ script:
   - coverage run test_sorn.py  
 
 after_success:
-- coveralls
+- codecov
