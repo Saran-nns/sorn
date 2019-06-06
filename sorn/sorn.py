@@ -525,6 +525,7 @@ class RunSorn(Sorn):
         self.matrices = matrices
 
     def run_sorn(self, inp):
+
         # Initialize/Get the weight, threshold matrices and activity vectors
         matrix_collection = MatrixCollection(phase=self.phase, matrices=self.matrices)
 
@@ -617,13 +618,36 @@ class RunSorn(Sorn):
             Y_all[i] = y_buffer[:, 1]
             R_all[i] = r
 
-        plastic_matrices = {'Wee': matrix_collection.Wee[-1],
+        plastic_matrices = {'Wee': matrix_collection.Wee,
                             'Wei': matrix_collection.Wei[-1],
                             'Wie': matrix_collection.Wie[-1],
                             'Te': matrix_collection.Te[-1], 'Ti': matrix_collection.Ti[-1],
                             'X': X[-1], 'Y': Y[-1]}
 
         return plastic_matrices, X_all, Y_all, R_all, frac_pos_active_conn
+
+class Generator(Sorn):
+
+    def __init__(self, phase, time_steps):
+        super().__init__()
+        self.time_steps = time_steps
+        Sorn.time_steps = time_steps
+        self.phase = phase
+        self.matrices = None
+
+    def get_initial_matrices(self):
+
+        # Initialize/Get the weight, threshold matrices and activity vectors
+        matrix_collection = MatrixCollection(phase=self.phase, matrices=self.matrices)
+
+        plastic_matrices = {'Wee': matrix_collection.Wee,
+                            'Wei': matrix_collection.Wei,
+                            'Wie': matrix_collection.Wie,
+                            'Te': matrix_collection.Te, 'Ti': matrix_collection.Ti,
+                            'X': matrix_collection.X, 'Y': matrix_collection.Y}
+
+        return plastic_matrices
+
 
 
 # SAMPLE USAGE
