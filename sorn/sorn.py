@@ -626,25 +626,20 @@ class RunSorn(Sorn):
 
         return plastic_matrices, X_all, Y_all, R_all, frac_pos_active_conn
 
-class Generator(Sorn):
+class Generator(object):
 
-    def __init__(self, phase, time_steps):
-        super().__init__()
-        self.time_steps = time_steps
-        Sorn.time_steps = time_steps
-        self.phase = phase
-        self.matrices = None
+    def __init__(self):
+        pass
 
     def get_initial_matrices(self):
+        
+        wee, wei, wie, te, ti, x, y = Plasticity.initialize_plasticity()
 
-        # Initialize/Get the weight, threshold matrices and activity vectors
-        matrix_collection = MatrixCollection(phase=self.phase, matrices=self.matrices)
-
-        plastic_matrices = {'Wee': matrix_collection.Wee,
-                            'Wei': matrix_collection.Wei,
-                            'Wie': matrix_collection.Wie,
-                            'Te': matrix_collection.Te, 'Ti': matrix_collection.Ti,
-                            'X': matrix_collection.X, 'Y': matrix_collection.Y}
+        plastic_matrices = {'Wee': wee,
+                            'Wei': wei,
+                            'Wie': wie,
+                            'Te': te, 'Ti': ti,
+                            'X': x, 'Y': y}
 
         return plastic_matrices
 
