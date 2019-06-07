@@ -14,11 +14,11 @@ class TestSorn(unittest.TestCase):
 	
 	def __init__(self):
 		pass
-		
+
 	def test_runsorn(self):
 		
 		self.assertRaises(Exception, Generator.get_initial_matrices()) 
-        self.assertRaises(Exception, RunSorn(phase='Plasticity', matrices=None,time_steps=5).run_sorn([0.])) 
+        self.assertRaises(Exception, RunSorn(phase='Plasticity', matrices=None,time_steps=5).run_sorn([0.]) 
         	
 	def test_plotter(self):
 
