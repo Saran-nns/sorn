@@ -1,7 +1,7 @@
 import unittest
 import pickle
 import numpy as np
-from sorn.sorn import RunSorn
+from sorn.sorn import RunSorn,Generator
 from sorn.utils import Plotter,Statistics,Initializer
 
 
@@ -12,9 +12,13 @@ with open('sample_matrices.pkl','rb') as f:
 
 class TestSorn(unittest.TestCase):
 	
+	def __init__(self):
+		pass
+		
 	def test_runsorn(self):
 		
-        	self.assertRaises(Exception, RunSorn(phase='Plasticity', matrices=None,time_steps=5).run_sorn([0.])) 
+		self.assertRaises(Exception, Generator.get_initial_matrices()) 
+        self.assertRaises(Exception, RunSorn(phase='Plasticity', matrices=None,time_steps=5).run_sorn([0.])) 
         	
 	def test_plotter(self):
 
