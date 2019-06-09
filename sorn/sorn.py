@@ -635,11 +635,11 @@ class Generator(object):
         
         wee, wei, wie, te, ti, x, y = Plasticity.initialize_plasticity()
 
-        plastic_matrices = {'Wee': wee,
-                            'Wei': wei,
-                            'Wie': wie,
-                            'Te': te, 'Ti': ti,
-                            'X': x, 'Y': y}
+        plastic_matrices = {'Wee': wee[-1],
+                            'Wei': wei[-1],
+                            'Wie': wie[-1],
+                            'Te': te[-1], 'Ti': ti[-1],
+                            'X': x[-1], 'Y': y[-1]}
 
         return plastic_matrices
 
