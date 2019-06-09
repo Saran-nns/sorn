@@ -10,7 +10,7 @@ def read(fname):
 
 setup(
     name = "sorn",
-    version = "0.2.2",
+    version = "0.2.5",
     author = "Saranraj Nambusubramaniyan",
     author_email = "saran_nns@hotmail.com",
     description ="Self-Organizing Recurrent Neural Networks",
@@ -23,7 +23,7 @@ setup(
     long_description=read('README.md'),
     long_description_content_type = "text/markdown",
     classifiers=[
-        "Development Status :: 3 - Beta",
+        "Development Status :: 3 - Alpha",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",

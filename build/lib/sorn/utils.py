@@ -375,13 +375,12 @@ class Plotter(object):
         pass
 
     @staticmethod
-    def hist_incoming_conn(weights, bin_size, histtype, gaussian_fit, savefig):
+    def hist_incoming_conn(weights, bin_size, histtype, savefig):
 
         """Args:
         :param weights(array) - Connection weights
         :param bin_size(int) - Histogram bin size
         :param histtype(str) - Same as histtype matplotlib
-        :param gaussian_fit(bool) - If true; returns the plot with gaussian fit for corresponding histogram
         :param savefig(bool) - If True plot will be saved as png file in the cwd
 
         Returns:
@@ -398,18 +397,16 @@ class Plotter(object):
         plt.ylabel('Count')
         plt.hist(num_incoming_weights, bins=bin_size, histtype=histtype)
 
-        if gaussian_fit:
+        # Empirical average and variance are computed
+        avg = np.mean(num_incoming_weights)
+        var = np.var(num_incoming_weights)
+        # From hist plot above, it is clear that connection count follow gaussian distribution
+        pdf_x = np.linspace(np.min(num_incoming_weights), np.max(num_incoming_weights), 100)
+        pdf_y = 1.0 / np.sqrt(2 * np.pi * var) * np.exp(-0.5 * (pdf_x - avg) ** 2 / var)
 
-            # Empirical average and variance are computed
-            avg = np.mean(num_incoming_weights)
-            var = np.var(num_incoming_weights)
-            # From hist plot above, it is clear that connection count follow gaussian distribution
-            pdf_x = np.linspace(np.min(num_incoming_weights), np.max(num_incoming_weights), 100)
-            pdf_y = 1.0 / np.sqrt(2 * np.pi * var) * np.exp(-0.5 * (pdf_x - avg) ** 2 / var)
-
-            plt.plot(pdf_x, pdf_y, 'k--', label='Gaussian fit')
-            plt.axvline(x=avg, color='r', linestyle='--', label='Mean')
-            plt.legend()
+        plt.plot(pdf_x, pdf_y, 'k--', label='Gaussian fit')
+        plt.axvline(x=avg, color='r', linestyle='--', label='Mean')
+        plt.legend()
 
         if savefig:
             plt.savefig('hist_incoming_conn')
@@ -417,13 +414,12 @@ class Plotter(object):
         return plt.show()
 
     @staticmethod
-    def hist_outgoing_conn(weights, bin_size, histtype, gaussian_fit, savefig):
+    def hist_outgoing_conn(weights, bin_size, histtype, savefig):
 
         """Args:
                 :param weights(array) - Connection weights
                 :param bin_size(int) - Histogram bin size
                 :param histtype(str) - Same as histtype matplotlib
-                :param gaussian_fit(bool) - If True; returns the plot with gaussian fit for corresponding histogram
                 :param savefig(bool) - If True plot will be saved as png file in the cwd
 
                 Returns:
@@ -439,19 +435,16 @@ class Plotter(object):
         plt.title('Number of Outgoing connections')
         plt.xlabel('Number of connections')
         plt.ylabel('Count')
+        # Empirical average and variance are computed
+        avg = np.mean(num_outgoing_weights)
+        var = np.var(num_outgoing_weights)
+        # From hist plot above, it is clear that connection count follow gaussian distribution
+        pdf_x = np.linspace(np.min(num_outgoing_weights), np.max(num_outgoing_weights), 100)
+        pdf_y = 1.0 / np.sqrt(2 * np.pi * var) * np.exp(-0.5 * (pdf_x - avg) ** 2 / var)
 
-        if gaussian_fit:
-
-            # Empirical average and variance are computed
-            avg = np.mean(num_outgoing_weights)
-            var = np.var(num_outgoing_weights)
-            # From hist plot above, it is clear that connection count follow gaussian distribution
-            pdf_x = np.linspace(np.min(num_outgoing_weights), np.max(num_outgoing_weights), 100)
-            pdf_y = 1.0 / np.sqrt(2 * np.pi * var) * np.exp(-0.5 * (pdf_x - avg) ** 2 / var)
-
-            plt.plot(pdf_x, pdf_y, 'k--', label='Gaussian fit')
-            plt.axvline(x=avg, color='r', linestyle='--', label='Mean')
-            plt.legend()
+        plt.plot(pdf_x, pdf_y, 'k--', label='Gaussian fit')
+        plt.axvline(x=avg, color='r', linestyle='--', label='Mean')
+        plt.legend()
 
         if savefig:
             plt.savefig('hist_outgoing_conn')
@@ -459,10 +452,12 @@ class Plotter(object):
         return plt.show()
 
     @staticmethod
-    def network_connection_dynamics(connection_counts, savefig):
+    def network_connection_dynamics(connection_counts, initial_steps, final_steps,savefig):
 
         """Args:
         :param connection_counts(array) - 1D Array of number of connections in the network per time step
+        :param initial_steps(int) - Plot for initial steps
+        :param final_steps(int) - Plot for final steps
         :param savefig(bool) - If True plot will be saved as png file in the cwd
         Returns:
         plot object"""
@@ -486,9 +481,9 @@ class Plotter(object):
         # Set the position and relative size of the inset axes within ax1
         ip = InsetPosition(ax1, [0.25, 0.4, 0.3, 0.3])
         ax2.set_axes_locator(ip)
-        ax2.plot(connection_counts[0:10000])
+        ax2.plot(connection_counts[0:initial_steps])
         plt.margins(x=0)
-        ax2.set_title('Initial 10000 time steps of Decay Phase')
+        ax2.set_title('Initial %s time steps of Decay Phase'%initial_steps)
         ax2.set_xticks(ax2.get_xticks()[::2])
 
         # End Inset plot
@@ -498,9 +493,9 @@ class Plotter(object):
         ip1 = InsetPosition(ax1, [0.6, 0.4, 0.3, 0.3])
         ax3.set_axes_locator(ip1)
         # Plot the last 10000 time steps
-        ax3.plot(connection_counts[-10000:])
+        ax3.plot(connection_counts[-final_steps:])
         plt.margins(x=0)
-        ax3.set_title('Final 10000 time steps of Stable Phase')
+        ax3.set_title('Final %s time steps of Stable Phase'%final_steps)
         ax3.set_xticks(ax3.get_xticks()[::1])
 
         # Uncomment to show decay and stable phase in colors
@@ -539,26 +534,26 @@ class Plotter(object):
         return plt.show()
 
     @staticmethod
-    def scatter_plot(spike_train, with_firing_rates, savefig):
+    def scatter_plot(spike_train, savefig):
 
         """Args:
-            :param spike_train (array) - Array of spike trains
+            :param spike_train (list) - Array of spike trains
             :param with_firing_rates(bool) - If True, firing rate of the network will be plotted
             :param savefig(bool) - If True, plot will be saved in the cwd
 
            Returns:
             plot object"""
 
+        # Conver the list of spike train into array
+        spike_train = np.asarray(spike_train)
         # Get the indices where spike_train is 1
         x, y = np.argwhere(spike_train.T == 1).T
 
         plt.figure(figsize=(8, 5))
 
-        if with_firing_rates:
-
-            firing_rates = Statistics.firing_rate_network(spike_train).tolist()
-            plt.plot(firing_rates, label='Firing rate')
-            plt.legend(loc='upper left')
+        firing_rates = Statistics.firing_rate_network(spike_train).tolist()
+        plt.plot(firing_rates, label='Firing rate')
+        plt.legend(loc='upper left')
 
         plt.scatter(y, x, s=0.1, color='black')
         # plt.plot(y,x,'|b')
@@ -573,7 +568,7 @@ class Plotter(object):
         return plt.show()
 
     @staticmethod
-    def raster_plot(spike_train, with_firing_rates, savefig):
+    def raster_plot(spike_train, savefig):
 
         """Args:
                 :param spike_train (array) - Array of spike trains
@@ -583,13 +578,15 @@ class Plotter(object):
             Returns:
                 plot object"""
 
+        # Conver the list of spike train into array
+        spike_train = np.asarray(spike_train)
+
         plt.figure(figsize=(11, 6))
 
-        if with_firing_rates:
 
-            firing_rates = Statistics.firing_rate_network(spike_train).tolist()
-            plt.plot(firing_rates, label='Firing rate')
-            plt.legend(loc='upper left')
+        firing_rates = Statistics.firing_rate_network(spike_train).tolist()
+        plt.plot(firing_rates, label='Firing rate')
+        plt.legend(loc='upper left')
 
         # Get the indices where spike_train is 1
         x, y = np.argwhere(spike_train.T == 1).T
@@ -638,7 +635,7 @@ class Plotter(object):
             Returns:
             plot object"""
 
-        spike_time = Statistics.    spike_times(spike_train.T[neuron])  # Locate the spike time of the target neuron
+        spike_time = Statistics.	spike_times(spike_train.T[neuron])  # Locate the spike time of the target neuron
 
         isi = Statistics.spike_time_intervals(spike_time)  # ISI intervals of neuron
 
@@ -687,10 +684,11 @@ class Plotter(object):
         return plt.show()
 
     @staticmethod
-    def linear_lognormal_fit(weights, savefig):
+    def linear_lognormal_fit(weights,num_points, savefig):
 
         """Args:
             :param weights (array) - Connection weights
+            :param num_points(int) - Number of points to be plotted in the x axis
             :param savefig(bool) - If True, plot will be saved in the cwd
 
             Returns:
@@ -711,7 +709,7 @@ class Plotter(object):
 
         mode = np.exp(mu - sigma ** 2)  # Note that mode depends on both M and s
         mean = np.exp(mu + (sigma ** 2 / 2))  # Note that mean depends on both M and s
-        x = np.linspace(min(weights), max(weights), num=100)  # values for x-axis
+        x = np.linspace(np.min(weights), np.max(weights), num=num_points)  # values for x-axis
 
         pdf = stats.lognorm.pdf(x, shape, loc=0, scale=scale)  # probability distribution
 
@@ -750,13 +748,13 @@ class Plotter(object):
 
 
     @staticmethod
-    def hamming(hamming_distance, savefig):
+    def hamming_distance(hamming_dist, savefig):
 
         plt.figure(figsize=(15, 6))
         plt.title("Hamming distance between actual and perturbed states")
         plt.xlabel("Time steps")
         plt.ylabel("Hamming distance")
-        plt.plot(hamming_distance)
+        plt.plot(hamming_dist)
 
         if savefig:
             plt.savefig('HammingDistance')
@@ -945,3 +943,8 @@ class Statistics(object):
         sse = np.sum([pi * np.log(pi) for pi in p]) / np.log(1 / neurons_in_reservoir)  # Spike source entropy
 
         return sse
+
+    @staticmethod
+    def mca(spike_train):
+        pass
+    	

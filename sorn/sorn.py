@@ -618,7 +618,7 @@ class RunSorn(Sorn):
             Y_all[i] = y_buffer[:, 1]
             R_all[i] = r
 
-        plastic_matrices = {'Wee': matrix_collection.Wee,
+        plastic_matrices = {'Wee': matrix_collection.Wee[-1],
                             'Wei': matrix_collection.Wei[-1],
                             'Wie': matrix_collection.Wie[-1],
                             'Te': matrix_collection.Te[-1], 'Ti': matrix_collection.Ti[-1],

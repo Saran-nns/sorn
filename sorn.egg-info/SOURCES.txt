@@ -1,10 +1,10 @@
 LICENSE
-MANIFEST.in
 README.md
 setup.py
 sorn/__init__.py
 sorn/configuration.ini
 sorn/sorn.py
+sorn/test_sorn.py
 sorn/utils.py
 sorn.egg-info/PKG-INFO
 sorn.egg-info/SOURCES.txt
