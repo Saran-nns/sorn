@@ -364,13 +364,13 @@ class MatrixCollection(Sorn):
                                                                                  0] * self.time_steps, \
                                                                              [0] * self.time_steps
             # Assign matrices from plasticity phase to the new master matrices for training phase
-            self.Wee[0] = matrices['Wee']
-            self.Wei[0] = matrices['Wei']
-            self.Wie[0] = matrices['Wie']
-            self.Te[0] = matrices['Te']
-            self.Ti[0] = matrices['Ti']
-            self.X[0] = matrices['X']
-            self.Y[0] = matrices['Y']
+            self.Wee[0] = self.matrices['Wee']
+            self.Wei[0] = self.matrices['Wei']
+            self.Wie[0] = self.matrices['Wie']
+            self.Te[0] = self.matrices['Te']
+            self.Ti[0] = self.matrices['Ti']
+            self.X[0] = self.matrices['X']
+            self.Y[0] = self.matrices['Y']
 
         elif self.phase == 'Training':
 
@@ -385,13 +385,13 @@ class MatrixCollection(Sorn):
                                                                                  0] * self.time_steps, \
                                                                              [0] * self.time_steps
             # Assign matrices from plasticity phase to new respective matrices for training phase
-            self.Wee[0] = matrices['Wee']
-            self.Wei[0] = matrices['Wei']
-            self.Wie[0] = matrices['Wie']
-            self.Te[0] = matrices['Te']
-            self.Ti[0] = matrices['Ti']
-            self.X[0] = matrices['X']
-            self.Y[0] = matrices['Y']
+            self.Wee[0] = self.matrices['Wee']
+            self.Wei[0] = self.matrices['Wei']
+            self.Wie[0] = self.matrices['Wie']
+            self.Te[0] = self.matrices['Te']
+            self.Ti[0] = self.matrices['Ti']
+            self.X[0] = self.matrices['X']
+            self.Y[0] = self.matrices['Y']
 
     # @staticmethod
     def weight_matrix(self, wee, wei, wie, i):
@@ -561,7 +561,7 @@ class RunSorn(Sorn):
             X, Y = matrix_collection.X, matrix_collection.Y
 
             """ Fraction of active connections between E-E network"""
-            frac_pos_active_conn.append((np.asarray(Wee[i]) > 0.0).sum())
+            frac_pos_active_conn.append((Wee[i] > 0.0).sum())
 
             """ Recurrent drive"""
 
