@@ -19,7 +19,7 @@ class TestSorn(unittest.TestCase):
         
 		self.assertRaises(Exception, RunSorn(phase='Plasticity', matrices=None).run_sorn([0.]))
 
-		self.assertRaises(Exception, RunSorn(phase='Training', matrices=None).run_sorn([0.]))
+		self.assertRaises(Exception, RunSorn(phase='Training', matrices=matrices_dict).run_sorn([0.]))
 
 	def test_plotter(self):
 
