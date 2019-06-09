@@ -537,8 +537,6 @@ class RunSorn(Sorn):
 
         frac_pos_active_conn = []
 
-        # To get the last activation status of Exc and Inh neurons
-
         for i in tqdm.tqdm(range(self.time_steps)):
             """ Generate white noise"""
             white_noise_e = Initializer.white_gaussian_noise(mu=0., sigma=0.04, t=Sorn.ne)
@@ -563,7 +561,7 @@ class RunSorn(Sorn):
             X, Y = matrix_collection.X, matrix_collection.Y
 
             """ Fraction of active connections between E-E network"""
-            frac_pos_active_conn.append((Wee[i] > 0.0).sum())
+            frac_pos_active_conn.append((np.asarray(Wee[i]) > 0.0).sum())
 
             """ Recurrent drive"""
 
@@ -634,7 +632,6 @@ class Generator(object):
     def get_initial_matrices(self):
         
         wee, wei, wie, te, ti, x, y = Plasticity.initialize_plasticity()
-
 
         plastic_matrices = {'Wee': wee,
                             'Wei': wei,
