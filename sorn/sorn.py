@@ -517,10 +517,13 @@ class NetworkState(Plasticity):
 
 class RunSorn(Sorn):
 
+    # def __init__(self, phase, matrices, time_steps):
     def __init__(self, phase, matrices, time_steps):
         super().__init__()
-        self.time_steps = time_steps
-        Sorn.time_steps = time_steps
+        # self.time_steps = time_steps
+        # Sorn.time_steps = time_steps
+        self.time_steps = 1
+        Sorn.time_steps = 1
         self.phase = phase
         self.matrices = matrices
 
@@ -537,7 +540,7 @@ class RunSorn(Sorn):
 
         frac_pos_active_conn = []
 
-        for i in tqdm.tqdm(range(self.time_steps)):
+        for i in range(self.time_steps):
             """ Generate white noise"""
             white_noise_e = Initializer.white_gaussian_noise(mu=0., sigma=0.04, t=Sorn.ne)
             white_noise_i = Initializer.white_gaussian_noise(mu=0., sigma=0.04, t=Sorn.ni)
