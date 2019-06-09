@@ -518,7 +518,7 @@ class NetworkState(Plasticity):
 class RunSorn(Sorn):
 
     # def __init__(self, phase, matrices, time_steps):
-    def __init__(self, phase, matrices, time_steps):
+    def __init__(self, phase, matrices):
         super().__init__()
         # self.time_steps = time_steps
         # Sorn.time_steps = time_steps
