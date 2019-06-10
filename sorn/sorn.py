@@ -126,7 +126,7 @@ class Plasticity(Sorn):
 
     def __init__(self):
 
-        super().__init__(Sorn)
+        super().__init__()
         # self.nu = self.nu  # Number of input units
         # self.ne = self.ne  # Number of excitatory units
         # self.eta_stdp = Sorn.eta_stdp  # STDP plasticity Learning rate constant; SORN1 and SORN2
@@ -322,7 +322,7 @@ class Plasticity(Sorn):
 
 class MatrixCollection(Sorn):
     def __init__(self, phase, matrices=None):
-        super().__init__(Plasticity)
+        super().__init__()
 
         self.phase = phase
         self.matrices = matrices
