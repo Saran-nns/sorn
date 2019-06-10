@@ -20,31 +20,30 @@ class Sorn(object):
     # SORN network Initialization
 
     def __init__(self):
-        pass
-
-    """Get network variables from configuration file as class variables of SORN"""
     
-    nu = int(parser.get('Network_Config', 'Nu'))  # Number of input units
-    ne = int(parser.get('Network_Config', 'Ne'))  # Number of excitatory units
-    ni = int(0.2 * ne)  # Number of inhibitory units in the network
-    
-    eta_stdp = float(parser.get('Network_Config', 'eta_stdp'))
-    eta_inhib = float(parser.get('Network_Config', 'eta_inhib'))
-    eta_ip = float(parser.get('Network_Config', 'eta_ip'))
-    te_max = float(parser.get('Network_Config', 'te_max'))
-    ti_max = float(parser.get('Network_Config', 'ti_max'))
-    ti_min = float(parser.get('Network_Config', 'ti_min'))
-    te_min = float(parser.get('Network_Config', 'te_min'))
-    mu_ip = float(parser.get('Network_Config', 'mu_ip'))
-    sigma_ip = float(parser.get('Network_Config', 'sigma_ip'))  # Standard deviation, variance == 0
+        """Get network variables from configuration file as class variables of SORN"""
+        
+        self.nu = int(parser.get('Network_Config', 'Nu'))  # Number of input units
+        self.ne = int(parser.get('Network_Config', 'Ne'))  # Number of excitatory units
+        self.ni = int(0.2 * ne)  # Number of inhibitory units in the network
+        
+        self.eta_stdp = float(parser.get('Network_Config', 'eta_stdp'))
+        self.eta_inhib = float(parser.get('Network_Config', 'eta_inhib'))
+        self.eta_ip = float(parser.get('Network_Config', 'eta_ip'))
+        self.te_max = float(parser.get('Network_Config', 'te_max'))
+        self.ti_max = float(parser.get('Network_Config', 'ti_max'))
+        self.ti_min = float(parser.get('Network_Config', 'ti_min'))
+        self.te_min = float(parser.get('Network_Config', 'te_min'))
+        self.mu_ip = float(parser.get('Network_Config', 'mu_ip'))
+        self.sigma_ip = float(parser.get('Network_Config', 'sigma_ip'))  # Standard deviation, variance == 0
 
-    network_type_ee = str(parser.get('Network_Config','network_type_ee'))
-    network_type_ei = str(parser.get('Network_Config','network_type_ei'))
-    network_type_ie = str(parser.get('Network_Config','network_type_ie'))
+        self.network_type_ee = str(parser.get('Network_Config','network_type_ee'))
+        self.network_type_ei = str(parser.get('Network_Config','network_type_ei'))
+        self.network_type_ie = str(parser.get('Network_Config','network_type_ie'))
 
-    lambda_ee = int(parser.get('Network_Config','lambda_ee'))
-    lambda_ei = int(parser.get('Network_Config','lambda_ei'))
-    lambda_ie = int(parser.get('Network_Config','lambda_ie'))
+        self.lambda_ee = int(parser.get('Network_Config','lambda_ee'))
+        self.lambda_ei = int(parser.get('Network_Config','lambda_ei'))
+        self.lambda_ie = int(parser.get('Network_Config','lambda_ie'))
 
     # Initialize weight matrices
 
