@@ -10,11 +10,6 @@ import tqdm
 import pickle
 
 
-parser = ConfigParser()
-cwd = os.path.dirname(os.path.abspath(__file__))
-config_file = os.path.join(cwd, 'configuration.ini')
-parser.read(config_file)
-
 class Sorn(object):
 
     # SORN network Initialization
@@ -642,6 +637,15 @@ class Generator(object):
                             'X': x, 'Y': y}
 
         return plastic_matrices
+
+
+if __name__ == '__main__':
+
+    parser = ConfigParser()
+    cwd = os.path.dirname(os.path.abspath(__file__))
+    config_file = os.path.join(cwd, 'configuration.ini')
+    parser.read(config_file)
+
 
 # m = Generator().get_initial_matrices()
 # print(type(m['Wee']))
