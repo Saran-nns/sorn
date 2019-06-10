@@ -137,7 +137,7 @@ class Plasticity(Sorn):
 
     # Initialize the global variables for the class //Class attributes
 
-    def __init__(self):
+    def __init__(self,Sorn):
 
         super().__init__()
         # self.nu = self.nu  # Number of input units
@@ -145,9 +145,9 @@ class Plasticity(Sorn):
         # self.eta_stdp = Sorn.eta_stdp  # STDP plasticity Learning rate constant; SORN1 and SORN2
         # self.eta_ip = Sorn.eta_ip  # Intrinsic plasticity learning rate constant; SORN1 and SORN2
         # self.eta_inhib = Sorn.eta_inhib  # Intrinsic plasticity learning rate constant; SORN2 only
-        self.h_ip = 2 * self.nu / self.ne  # Target firing rate
+        self.h_ip = 2 * Sorn.nu / self.ne  # Target firing rate
         # self.mu_ip = Sorn.mu_ip  # Mean target firing rate
-        self.ni = int(0.2 * self.ne)  # Number of inhibitory units in the network
+        self.ni = int(0.2 * Sorn.ne)  # Number of inhibitory units in the network
         # self.time_steps = Sorn.time_steps  # Total time steps of simulation
         # self.te_min = Sorn.te_min  # Excitatory minimum Threshold
         # self.te_max = Sorn.te_max  # Excitatory maximum Threshold
@@ -349,7 +349,7 @@ class MatrixCollection(Sorn):
                                                                              [0] * self.time_steps, [
                                                                                  0] * self.time_steps, \
                                                                              [0] * self.time_steps
-            wee, wei, wie, te, ti, x, y = Plasticity().initialize_plasticity()
+            wee, wei, wie, te, ti, x, y = Plasticity(Sorn).initialize_plasticity()
 
             # Assign initial matrix to the master matrices
             self.Wee[0] = wee
@@ -594,7 +594,7 @@ class RunSorn(Sorn):
 
             """Plasticity phase"""
 
-            plasticity = Plasticity()
+            plasticity = Plasticity(Sorn)
 
             # TODO
             # Can be initialised outside loop--> Plasticity will receive dynamic args in future version
@@ -612,10 +612,10 @@ class RunSorn(Sorn):
             Wei_t = plasticity.istdp(Wei[i], x_buffer, y_buffer, cutoff_weights=(0.0, 1.0))
 
             # Synaptic scaling Wee
-            Wee_t = Plasticity().ss(Wee_t)
+            Wee_t = Plasticity(Sorn).ss(Wee_t)
 
             # Synaptic scaling Wei
-            Wei_t = Plasticity().ss(Wei_t)
+            Wei_t = Plasticity(Sorn).ss(Wei_t)
 
             """Assign the matrices to the matrix collections"""
             matrix_collection.weight_matrix(Wee_t, Wei_t, Wie[i], i)
@@ -643,7 +643,7 @@ class Generator(Sorn):
 
         self.read_config(config_file_path)
         
-        wee, wei, wie, te, ti, x, y = Plasticity().initialize_plasticity()
+        wee, wei, wie, te, ti, x, y = Plasticity(Sorn).initialize_plasticity()
 
         plastic_matrices = {'Wee': wee,
                             'Wei': wei,
