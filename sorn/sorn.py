@@ -634,14 +634,15 @@ class RunSorn(Sorn):
 
         return plastic_matrices, X_all, Y_all, R_all, frac_pos_active_conn
 
-class Generator(Sorn):
+class Generator(object):
 
-    def __init__(self):
+    def __init__(self,Sorn):
         pass
 
-    def get_initial_matrices(self,config_file_path):
+    @staticmethod
+    def get_initial_matrices(config_file_path):
 
-        self.read_config(config_file_path)
+        Sorn().read_config(file_path = config_file_path)
         
         wee, wei, wie, te, ti, x, y = Plasticity(Sorn).initialize_plasticity()
 
