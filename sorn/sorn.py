@@ -641,7 +641,7 @@ class Generator(Sorn):
 
     def get_initial_matrices(self,config_file_path):
 
-        Sorn.read_config(config_file_path)
+        self.read_config(config_file_path)
         
         wee, wei, wie, te, ti, x, y = Plasticity().initialize_plasticity()
 
