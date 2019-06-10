@@ -13,6 +13,7 @@ with open('sample_matrices.pkl','rb') as f:
 class TestSorn(unittest.TestCase):
 	
 	def test_runsorn(self):
+		
 		self.assertRaises(Exception, Generator().get_initial_matrices()) 
 
 		matrices_dict = Generator().get_initial_matrices()
