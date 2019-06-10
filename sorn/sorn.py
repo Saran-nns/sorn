@@ -22,7 +22,7 @@ class Sorn(object):
     def read_config(self,file_path):
 
         parser = ConfigParser()
-        cwd = os.path.dirname(os.path.abspath(__file__))
+        # cwd = os.path.dirname(os.path.abspath(__file__))
         config_file = os.path.join(file_path, 'configuration.ini')
         parser.read(config_file)
 
@@ -50,6 +50,8 @@ class Sorn(object):
         self.lambda_ei = int(parser.get('Network_Config','lambda_ei'))
         self.lambda_ie = int(parser.get('Network_Config','lambda_ie'))
 
+    # config = {'nu':self.nu,'ne':self.ne,}
+    # return 
 
     # Initialize weight matrices
 
@@ -632,12 +634,14 @@ class RunSorn(Sorn):
 
         return plastic_matrices, X_all, Y_all, R_all, frac_pos_active_conn
 
-class Generator(object):
+class Generator(Sorn):
 
     def __init__(self):
         pass
 
-    def get_initial_matrices(self):
+    def get_initial_matrices(self,config_file_path):
+
+        Sorn.read_config(self,config_file_path)
         
         wee, wei, wie, te, ti, x, y = Plasticity().initialize_plasticity()
 
