@@ -564,7 +564,7 @@ class RunSorn(Sorn):
             X, Y = matrix_collection.X, matrix_collection.Y
 
             """ Fraction of active connections between E-E network"""
-            frac_pos_active_conn.append((Wee[i] > 0.0).sum())
+            frac_pos_active_conn.append((np.asarray(Wee[i]) > 0.0).sum())
 
             """ Recurrent drive"""
 
