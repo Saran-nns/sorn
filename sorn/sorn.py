@@ -16,6 +16,16 @@ class Sorn(object):
 
     def __init__(self):
     
+        pass
+
+    # Configuration file reader
+    def read_config(self,file_path):
+
+        parser = ConfigParser()
+        cwd = os.path.dirname(os.path.abspath(__file__))
+        config_file = os.path.join(file_path, 'configuration.ini')
+        parser.read(config_file)
+
         """Get network variables from configuration file as class variables of SORN"""
         
         self.nu = int(parser.get('Network_Config', 'Nu'))  # Number of input units
@@ -39,6 +49,7 @@ class Sorn(object):
         self.lambda_ee = int(parser.get('Network_Config','lambda_ee'))
         self.lambda_ei = int(parser.get('Network_Config','lambda_ei'))
         self.lambda_ie = int(parser.get('Network_Config','lambda_ie'))
+
 
     # Initialize weight matrices
 
@@ -637,14 +648,6 @@ class Generator(object):
                             'X': x, 'Y': y}
 
         return plastic_matrices
-
-
-if __name__ == '__main__':
-
-    parser = ConfigParser()
-    cwd = os.path.dirname(os.path.abspath(__file__))
-    config_file = os.path.join(cwd, 'configuration.ini')
-    parser.read(config_file)
 
 
 # m = Generator().get_initial_matrices()
