@@ -66,19 +66,16 @@ from sorn.sorn import RunSorn
 inputs = [0.]
 
 # To simulate the network; 
-matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = RunSorn(phase='Plasticity', matrices=None,
-                                                                          time_steps=100).run_sorn(inputs)
+matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = RunSorn(phase='Plasticity',           matrices=None).run_sorn(inputs)
 
 # To resume the simulation, load the matrices_dict from previous simulation;
-matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = RunSorn(phase='Plasticity', matrices=matrices_dict,
-                                                                          time_steps=100).run_sorn(inputs)
+matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = RunSorn(phase='Plasticity', matrices=matrices_dict).run_sorn(inputs)
 ```
 
 ##### Training phase:
 
 ```Python
-matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = RunSorn(phase='Training', matrices=matrices_dict,
-                                                                          time_steps=100).run_sorn(inputs)
+matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = RunSorn(phase='Training', matrices=matrices_dict).run_sorn(inputs)
 ```
 
 #### Network Output Descriptions:
