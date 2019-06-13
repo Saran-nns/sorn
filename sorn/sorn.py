@@ -694,7 +694,7 @@ class Generator(object):
 
 
 # Precheck Generator
-# Generator.get_initial_matrices('C:/sorn/')
+# Generator.get_initial_matrices('Z:/sorn/')
 
 """
 # Start the Simulation step 
