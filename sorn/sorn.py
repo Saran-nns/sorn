@@ -60,32 +60,32 @@ class Sorn(object):
     # SORN network Initialization
 
     def __init__(self):
-        super().__init__()
+        pass
 
     def load_config(self,sorn_config):
 
         self.sorn_config = sorn_config 
-        self.nu = self.sorn_config['nu']  # Number of input units
-        self.ne = self.sorn_config['ne']  # Number of excitatory units
-        self.ni = int(0.2 * self.sorn_config['ne'])  # Number of inhibitory units in the network
+        Sorn.nu = self.sorn_config['nu']  # Number of input units
+        Sorn.ne = self.sorn_config['ne']  # Number of excitatory units
+        Sorn.ni = int(0.2 * self.sorn_config['ne'])  # Number of inhibitory units in the network
 
-        self.eta_stdp = self.sorn_config['eta_stdp']
-        self.eta_inhib = self.sorn_config['eta_inhib']
-        self.eta_ip = self.sorn_config['eta_ip']
-        self.te_max = self.sorn_config['te_max']
-        self.ti_max = self.sorn_config['ti_max']
-        self.ti_min = self.sorn_config['ti_min']
-        self.te_min = self.sorn_config['te_min']
-        self.mu_ip = self.sorn_config['mu_ip']
-        self.sigma_ip = self.sorn_config['sigma_ip']  # Standard deviation, variance == 0
+        Sorn.eta_stdp = self.sorn_config['eta_stdp']
+        Sorn.eta_inhib = self.sorn_config['eta_inhib']
+        Sorn.eta_ip = self.sorn_config['eta_ip']
+        Sorn.te_max = self.sorn_config['te_max']
+        Sorn.ti_max = self.sorn_config['ti_max']
+        Sorn.ti_min = self.sorn_config['ti_min']
+        Sorn.te_min = self.sorn_config['te_min']
+        Sorn.mu_ip = self.sorn_config['mu_ip']
+        Sorn.sigma_ip = self.sorn_config['sigma_ip']  # Standard deviation, variance == 0
 
-        self.network_type_ee = self.sorn_config['network_type_ee']
-        self.network_type_ei = self.sorn_config['network_type_ei']
-        self.network_type_ie = self.sorn_config['network_type_ie']
+        Sorn.network_type_ee = self.sorn_config['network_type_ee']
+        Sorn.network_type_ei = self.sorn_config['network_type_ei']
+        Sorn.network_type_ie = self.sorn_config['network_type_ie']
 
-        self.lambda_ee = self.sorn_config['lambda_ee']
-        self.lambda_ei = self.sorn_config['lambda_ei']
-        self.lambda_ie = self.sorn_config['lambda_ie']
+        Sorn.lambda_ee = self.sorn_config['lambda_ee']
+        Sorn.lambda_ei = self.sorn_config['lambda_ei']
+        Sorn.lambda_ie = self.sorn_config['lambda_ie']
  
         return None
     # Initialize weight matrices
@@ -171,20 +171,19 @@ class Plasticity(Sorn):
     Encapsulates all plasticity mechanisms mentioned in the article """
 
     def __init__(self):
-
-        super().__init__()
-
-        # self.nu = self.nu  # Number of input units
-        # self.ne = self.ne  # Number of excitatory units
-        # self.eta_stdp = Sorn.eta_stdp  # STDP plasticity Learning rate constant; SORN1 and SORN2
-        # self.eta_ip = Sorn.eta_ip  # Intrinsic plasticity learning rate constant; SORN1 and SORN2
-        # self.eta_inhib = Sorn.eta_inhib  # Intrinsic plasticity learning rate constant; SORN2 only
-        self.h_ip = 2 * self.nu/self.ne  # Target firing rate
-        # self.mu_ip = Sorn.mu_ip  # Mean target firing rate
-        self.ni = int(0.2 * self.ne)  # Number of inhibitory units in the network
-        self.time_steps = Sorn.time_steps  # Total time steps of simulation
-        # self.te_min = Sorn.te_min  # Excitatory minimum Threshold
-        # self.te_max = Sorn.te_max  # Excitatory maximum Threshold
+        Sorn.__init__(self)
+        self.nu = self.nu  # Number of input units
+        self.ne = self.ne  # Number of excitatory units
+        self.eta_stdp = Sorn.eta_stdp  # STDP plasticity Learning rate constant; SORN1 and SORN2
+        self.eta_ip = Sorn.eta_ip  # Intrinsic plasticity learning rate constant; SORN1 and SORN2
+        self.eta_inhib = Sorn.eta_inhib  # Intrinsic plasticity learning rate constant; SORN2 only
+        Sorn.h_ip = 2 * Sorn.nu/Sorn.ne  # Target firing rate
+        self.mu_ip = Sorn.mu_ip  # Mean target firing rate
+        Sorn.ni = int(0.2 * Sorn.ne)  # Number of inhibitory units in the network
+        # self.time_steps = Sorn.time_steps  # Total time steps of simulation
+        self.time_steps = 1
+        self.te_min = Sorn.te_min  # Excitatory minimum Threshold
+        self.te_max = Sorn.te_max  # Excitatory maximum Threshold
 
     def stdp(self, wee, x, cutoff_weights):
 
@@ -681,7 +680,7 @@ class Generator(object):
         sorn_config = ConfigReader.reader(file_path = config_file_path)
         
         # Initialize SORN
-        Sorn.load_config(sorn_config)
+        Sorn().load_config(sorn_config)
 
         wee, wei, wie, te, ti, x, y = Plasticity().initialize_plasticity()
 
