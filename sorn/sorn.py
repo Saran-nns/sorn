@@ -692,7 +692,9 @@ class Generator(object):
 
         return plastic_matrices
 
-Generator.get_initial_matrices('./')
+
+# Precheck Generator
+# Generator.get_initial_matrices('C:/sorn/')
 
 """
 # Start the Simulation step 
