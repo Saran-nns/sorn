@@ -3,7 +3,7 @@
 from __future__ import division
 import numpy as np
 import os
-from utils import Initializer
+from sorn.utils import Initializer
 from configparser import ConfigParser
 import random
 import tqdm
