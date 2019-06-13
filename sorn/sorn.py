@@ -12,6 +12,8 @@ import pickle
 
 class ConfigReader(object):
 
+    """Configuration file loader"""
+    
     def __init__(self):
         super().__init__()
 
@@ -691,6 +693,7 @@ class Generator(object):
                             'X': x, 'Y': y}
 
         return plastic_matrices
+
 
 
 # Precheck Generator
