@@ -13,11 +13,11 @@ For ease of maintanance, example use cases and the API(under developement) are m
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 <h4 align="Left">SORN Reservoir and the evolution of synaptic efficacies</h4> 
-<a href="url"><img src="https://github.com/Saran-nns/sorn/doc/images/SORN1.png" height="320" width="430" ></a> <a href="url"><img src="https://github.com/Saran-nns/sorn/doc/images/weights.png" height="375" width="425" ></a>	
+<a href="url"><img src="https://github.com/Saran-nns/sorn/blob/master/doc/images/SORN1.png" height="320" width="430" ></a> <a href="url"><img src="https://github.com/Saran-nns/sorn/blob/master/doc/images/weights.png" height="375" width="425" ></a>	
 
 <h4 align="center">Neural Connectome</h4> 
 <p align="center">
-<a href="url"><img src="https://github.com/Saran-nns/sorn/doc/images/neuralcorrelationall.png" height="450" width="450" ></a>
+<a href="url"><img src="https://github.com/Saran-nns/sorn/blob/master/doc/images/neuralcorrelationall.png" height="450" width="450" ></a>
 </p>
 
 #### To install the latest release:
