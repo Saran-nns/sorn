@@ -10,10 +10,52 @@ import tqdm
 import pickle
 
 
-parser = ConfigParser()
-cwd = os.path.dirname(os.path.abspath(__file__))
-config_file = os.path.join(cwd, 'configuration.ini')
-parser.read(config_file)
+class ConfigReader(object):
+
+    """Configuration file loader"""
+    
+    def __init__(self):
+        super().__init__()
+
+    @staticmethod    
+    def reader(file_path):
+
+        config_file = os.path.join(file_path, 'configuration.ini')
+
+        parser = ConfigParser()
+        parser.read(config_file)
+
+        nu = int(parser.get('Network_Config', 'Nu'))  # Number of input units
+        ne = int(parser.get('Network_Config', 'Ne'))  # Number of excitatory units
+        ni = int(0.2 * ne)  # Number of inhibitory units in the network
+
+        eta_stdp = float(parser.get('Network_Config', 'eta_stdp'))
+        eta_inhib = float(parser.get('Network_Config', 'eta_inhib'))
+        eta_ip = float(parser.get('Network_Config', 'eta_ip'))
+        te_max = float(parser.get('Network_Config', 'te_max'))
+        ti_max = float(parser.get('Network_Config', 'ti_max'))
+        ti_min = float(parser.get('Network_Config', 'ti_min'))
+        te_min = float(parser.get('Network_Config', 'te_min'))
+        mu_ip = float(parser.get('Network_Config', 'mu_ip'))
+        sigma_ip = float(parser.get('Network_Config', 'sigma_ip'))  # Standard deviation, variance == 0
+
+        network_type_ee = str(parser.get('Network_Config','network_type_ee'))
+        network_type_ei = str(parser.get('Network_Config','network_type_ei'))
+        network_type_ie = str(parser.get('Network_Config','network_type_ie'))
+
+        lambda_ee = int(parser.get('Network_Config','lambda_ee'))
+        lambda_ei = int(parser.get('Network_Config','lambda_ei'))
+        lambda_ie = int(parser.get('Network_Config','lambda_ie'))
+
+        sorn_config = {'nu':nu,'ne':ne,'ni':ni,'eta_stdp':eta_stdp,
+                        'eta_inhib':eta_inhib,'eta_ip':eta_ip,
+                        'te_max':te_max,'ti_max':ti_max,'ti_min':ti_min,
+                        'te_min':te_min,'mu_ip':mu_ip,'sigma_ip':sigma_ip,
+                        'network_type_ee':network_type_ee,
+                        'network_type_ei':network_type_ei,
+                        'network_type_ie':network_type_ie,
+                        'lambda_ee':lambda_ee,'lambda_ie':lambda_ie,'lambda_ei':lambda_ei}
+        return sorn_config
 
 class Sorn(object):
 
@@ -22,34 +64,36 @@ class Sorn(object):
     def __init__(self):
         pass
 
-    """Get network variables from configuration file as class variables of SORN"""
-    
-    nu = int(parser.get('Network_Config', 'Nu'))  # Number of input units
-    ne = int(parser.get('Network_Config', 'Ne'))  # Number of excitatory units
-    ni = int(0.2 * ne)  # Number of inhibitory units in the network
-    
-    eta_stdp = float(parser.get('Network_Config', 'eta_stdp'))
-    eta_inhib = float(parser.get('Network_Config', 'eta_inhib'))
-    eta_ip = float(parser.get('Network_Config', 'eta_ip'))
-    te_max = float(parser.get('Network_Config', 'te_max'))
-    ti_max = float(parser.get('Network_Config', 'ti_max'))
-    ti_min = float(parser.get('Network_Config', 'ti_min'))
-    te_min = float(parser.get('Network_Config', 'te_min'))
-    mu_ip = float(parser.get('Network_Config', 'mu_ip'))
-    sigma_ip = float(parser.get('Network_Config', 'sigma_ip'))  # Standard deviation, variance == 0
+    def load_config(self,sorn_config):
 
-    network_type_ee = str(parser.get('Network_Config','network_type_ee'))
-    network_type_ei = str(parser.get('Network_Config','network_type_ei'))
-    network_type_ie = str(parser.get('Network_Config','network_type_ie'))
+        self.sorn_config = sorn_config 
+        Sorn.nu = self.sorn_config['nu']  # Number of input units
+        Sorn.ne = self.sorn_config['ne']  # Number of excitatory units
+        Sorn.ni = int(0.2 * self.sorn_config['ne'])  # Number of inhibitory units in the network
 
-    lambda_ee = int(parser.get('Network_Config','lambda_ee'))
-    lambda_ei = int(parser.get('Network_Config','lambda_ei'))
-    lambda_ie = int(parser.get('Network_Config','lambda_ie'))
+        Sorn.eta_stdp = self.sorn_config['eta_stdp']
+        Sorn.eta_inhib = self.sorn_config['eta_inhib']
+        Sorn.eta_ip = self.sorn_config['eta_ip']
+        Sorn.te_max = self.sorn_config['te_max']
+        Sorn.ti_max = self.sorn_config['ti_max']
+        Sorn.ti_min = self.sorn_config['ti_min']
+        Sorn.te_min = self.sorn_config['te_min']
+        Sorn.mu_ip = self.sorn_config['mu_ip']
+        Sorn.sigma_ip = self.sorn_config['sigma_ip']  # Standard deviation, variance == 0
 
+        Sorn.network_type_ee = self.sorn_config['network_type_ee']
+        Sorn.network_type_ei = self.sorn_config['network_type_ei']
+        Sorn.network_type_ie = self.sorn_config['network_type_ie']
+
+        Sorn.lambda_ee = self.sorn_config['lambda_ee']
+        Sorn.lambda_ei = self.sorn_config['lambda_ei']
+        Sorn.lambda_ie = self.sorn_config['lambda_ie']
+ 
+        return None
     # Initialize weight matrices
 
-    @staticmethod
-    def initialize_weight_matrix(network_type, synaptic_connection, self_connection, lambd_w):
+    # @staticmethod
+    def initialize_weight_matrix(self,network_type, synaptic_connection, self_connection, lambd_w):
 
         """
         Args:
@@ -68,7 +112,7 @@ class Sorn(object):
             """ Generate weight matrix for E-E/ E-I connections with mean lamda incoming and 
                out-going connections per neuron """
 
-            weight_matrix = Initializer.generate_lambd_connections(synaptic_connection, Sorn.ne, Sorn.ni, lambd_w, lambd_std=1)
+            weight_matrix = Initializer.generate_lambd_connections(synaptic_connection, self.ne, self.ni, lambd_w, lambd_std=1)
 
         # Dense matrix for W_ie
 
@@ -81,13 +125,13 @@ class Sorn(object):
             # weight_matrix *= 0.01 # Setting spectral radius
 
             # Uniform distribution of weights
-            weight_matrix = np.random.uniform(0.0, 0.1, (Sorn.ne, Sorn.ni))
-            weight_matrix.reshape((Sorn.ne, Sorn.ni))
+            weight_matrix = np.random.uniform(0.0, 0.1, (self.ne, self.ni))
+            weight_matrix.reshape((self.ne, self.ni))
 
         return weight_matrix
 
-    @staticmethod
-    def initialize_threshold_matrix(te_min, te_max, ti_min, ti_max):
+    # @staticmethod
+    def initialize_threshold_matrix(self,te_min, te_max, ti_min, ti_max):
 
         # Initialize the threshold for excitatory and inhibitory neurons
 
@@ -100,13 +144,13 @@ class Sorn(object):
             te(vector) -- Threshold values for excitatory units
             ti(vector) -- Threshold values for inhibitory units"""
 
-        te = np.random.uniform(te_min, te_max, (Sorn.ne, 1))
-        ti = np.random.uniform(ti_min, ti_max, (Sorn.ni, 1))
+        te = np.random.uniform(te_min, te_max, (self.ne, 1))
+        ti = np.random.uniform(ti_min, ti_max, (self.ni, 1))
 
         return te, ti
 
-    @staticmethod
-    def initialize_activity_vector(ne, ni):
+    # @staticmethod
+    def initialize_activity_vector(self,ne, ni):
 
         # Initialize the activity vectors X and Y for excitatory and inhibitory neurons
 
@@ -117,8 +161,8 @@ class Sorn(object):
              x(array) -- Array of activity vectors of excitatory population
              y(array) -- Array of activity vectors of inhibitory population"""
 
-        x = np.zeros((ne, 2))
-        y = np.zeros((ni, 2))
+        x = np.zeros((self.ne, 2))
+        y = np.zeros((self.ni, 2))
 
         return x, y
 
@@ -128,20 +172,18 @@ class Plasticity(Sorn):
     Instance of class Sorn. Inherits the variables and functions defined in class Sorn
     Encapsulates all plasticity mechanisms mentioned in the article """
 
-    # Initialize the global variables for the class //Class attributes
-
     def __init__(self):
-
-        super().__init__()
-        self.nu = Sorn.nu  # Number of input units
-        self.ne = Sorn.ne  # Number of excitatory units
+        Sorn.__init__(self)
+        self.nu = self.nu  # Number of input units
+        self.ne = self.ne  # Number of excitatory units
         self.eta_stdp = Sorn.eta_stdp  # STDP plasticity Learning rate constant; SORN1 and SORN2
         self.eta_ip = Sorn.eta_ip  # Intrinsic plasticity learning rate constant; SORN1 and SORN2
         self.eta_inhib = Sorn.eta_inhib  # Intrinsic plasticity learning rate constant; SORN2 only
-        self.h_ip = 2 * Sorn.nu / Sorn.ne  # Target firing rate
+        Sorn.h_ip = 2 * Sorn.nu/Sorn.ne  # Target firing rate
         self.mu_ip = Sorn.mu_ip  # Mean target firing rate
-        self.ni = int(0.2 * Sorn.ne)  # Number of inhibitory units in the network
-        self.time_steps = Sorn.time_steps  # Total time steps of simulation
+        Sorn.ni = int(0.2 * Sorn.ne)  # Number of inhibitory units in the network
+        # self.time_steps = Sorn.time_steps  # Total time steps of simulation
+        self.time_steps = 1
         self.te_min = Sorn.te_min  # Excitatory minimum Threshold
         self.te_max = Sorn.te_max  # Excitatory maximum Threshold
 
@@ -268,23 +310,23 @@ class Plasticity(Sorn):
         return wee
 
 
-    @staticmethod
-    def initialize_plasticity():
+    # @staticmethod
+    def initialize_plasticity(self):
 
         """## NOTE: DO NOT TRANSPOSE THE WEIGHT MATRIX WEI FOR SORN 2 MODEL"""
 
         # Create and initialize sorn object and variables
 
-        sorn_init = Sorn()
-        WEE_init = sorn_init.initialize_weight_matrix(network_type=Sorn.network_type_ee, synaptic_connection='EE',
+        # sorn_init = Sorn()
+        WEE_init = self.initialize_weight_matrix(network_type=self.network_type_ee, synaptic_connection='EE',
                                                       self_connection='False',
-                                                      lambd_w=Sorn.lambda_ee)
-        WEI_init = sorn_init.initialize_weight_matrix(network_type=Sorn.network_type_ei, synaptic_connection='EI',
+                                                      lambd_w=self.lambda_ee)
+        WEI_init = self.initialize_weight_matrix(network_type=self.network_type_ei, synaptic_connection='EI',
                                                       self_connection='False',
-                                                      lambd_w=Sorn.lambda_ei)
-        WIE_init = sorn_init.initialize_weight_matrix(network_type=Sorn.network_type_ie, synaptic_connection='IE',
+                                                      lambd_w=self.lambda_ei)
+        WIE_init = self.initialize_weight_matrix(network_type=self.network_type_ie, synaptic_connection='IE',
                                                       self_connection='False',
-                                                      lambd_w=Sorn.lambda_ie)
+                                                      lambd_w=self.lambda_ie)
 
         Wee_init = Initializer.zero_sum_incoming_check(WEE_init)
         # Wei_init = initializer.zero_sum_incoming_check(WEI_init.T)  # For SORN 1
@@ -305,8 +347,8 @@ class Plasticity(Sorn):
         normalized_wei = Initializer.normalize_weight_matrix(Wei_init)
         normalized_wie = Initializer.normalize_weight_matrix(Wie_init)
 
-        te_init, ti_init = sorn_init.initialize_threshold_matrix(Sorn.te_min, Sorn.te_max, Sorn.ti_min, Sorn.ti_max)
-        x_init, y_init = sorn_init.initialize_activity_vector(Sorn.ne, Sorn.ni)
+        te_init, ti_init = self.initialize_threshold_matrix(self.te_min, self.te_max, self.ti_min, self.ti_max)
+        x_init, y_init = self.initialize_activity_vector(self.ne, self.ni)
 
         # Initializing variables from sorn_initialize.py
 
@@ -342,7 +384,7 @@ class MatrixCollection(Sorn):
                                                                              [0] * self.time_steps, [
                                                                                  0] * self.time_steps, \
                                                                              [0] * self.time_steps
-            wee, wei, wie, te, ti, x, y = Plasticity.initialize_plasticity()
+            wee, wei, wie, te, ti, x, y = Plasticity().initialize_plasticity()
 
             # Assign initial matrix to the master matrices
             self.Wee[0] = wee
@@ -364,13 +406,13 @@ class MatrixCollection(Sorn):
                                                                                  0] * self.time_steps, \
                                                                              [0] * self.time_steps
             # Assign matrices from plasticity phase to the new master matrices for training phase
-            self.Wee[0] = matrices['Wee']
-            self.Wei[0] = matrices['Wei']
-            self.Wie[0] = matrices['Wie']
-            self.Te[0] = matrices['Te']
-            self.Ti[0] = matrices['Ti']
-            self.X[0] = matrices['X']
-            self.Y[0] = matrices['Y']
+            self.Wee[0] = self.matrices['Wee']
+            self.Wei[0] = self.matrices['Wei']
+            self.Wie[0] = self.matrices['Wie']
+            self.Te[0] = self.matrices['Te']
+            self.Ti[0] = self.matrices['Ti']
+            self.X[0] = self.matrices['X']
+            self.Y[0] = self.matrices['Y']
 
         elif self.phase == 'Training':
 
@@ -385,13 +427,13 @@ class MatrixCollection(Sorn):
                                                                                  0] * self.time_steps, \
                                                                              [0] * self.time_steps
             # Assign matrices from plasticity phase to new respective matrices for training phase
-            self.Wee[0] = matrices['Wee']
-            self.Wei[0] = matrices['Wei']
-            self.Wie[0] = matrices['Wie']
-            self.Te[0] = matrices['Te']
-            self.Ti[0] = matrices['Ti']
-            self.X[0] = matrices['X']
-            self.Y[0] = matrices['Y']
+            self.Wee[0] = self.matrices['Wee']
+            self.Wei[0] = self.matrices['Wei']
+            self.Wie[0] = self.matrices['Wie']
+            self.Te[0] = self.matrices['Te']
+            self.Ti[0] = self.matrices['Ti']
+            self.X[0] = self.matrices['X']
+            self.Y[0] = self.matrices['Y']
 
     # @staticmethod
     def weight_matrix(self, wee, wei, wie, i):
@@ -471,7 +513,7 @@ class NetworkState(Plasticity):
 
         wie = np.asarray(wie)
         xt = x[:, 1]
-        xt = xt.reshape(Sorn.ne, 1)
+        xt = xt.reshape(self.ne, 1)
 
         incoming_drive_e = np.expand_dims(self.incoming_drive(weights=wie, activity_vector=xt), 1)
 
@@ -517,10 +559,13 @@ class NetworkState(Plasticity):
 
 class RunSorn(Sorn):
 
-    def __init__(self, phase, matrices, time_steps):
+    # def __init__(self, phase, matrices, time_steps):
+    def __init__(self, phase, matrices):
         super().__init__()
-        self.time_steps = time_steps
-        Sorn.time_steps = time_steps
+        # self.time_steps = time_steps
+        # Sorn.time_steps = time_steps
+        self.time_steps = 1
+        Sorn.time_steps = 1
         self.phase = phase
         self.matrices = matrices
 
@@ -537,12 +582,10 @@ class RunSorn(Sorn):
 
         frac_pos_active_conn = []
 
-        # To get the last activation status of Exc and Inh neurons
-
-        for i in tqdm.tqdm(range(self.time_steps)):
+        for i in range(self.time_steps):
             """ Generate white noise"""
-            white_noise_e = Initializer.white_gaussian_noise(mu=0., sigma=0.04, t=Sorn.ne)
-            white_noise_i = Initializer.white_gaussian_noise(mu=0., sigma=0.04, t=Sorn.ni)
+            white_noise_e = Initializer.white_gaussian_noise(mu=0., sigma=0.04, t=self.ne)
+            white_noise_i = Initializer.white_gaussian_noise(mu=0., sigma=0.04, t=self.ni)
 
             # Generate inputs
             # inp_ = np.expand_dims(Initializer.generate_normal_inp(10), 1)
@@ -551,10 +594,10 @@ class RunSorn(Sorn):
 
             # Buffers to get the resulting x and y vectors at the current time step and update the master matrix
 
-            x_buffer, y_buffer = np.zeros((Sorn.ne, 2)), np.zeros((Sorn.ni, 2))
+            x_buffer, y_buffer = np.zeros((self.ne, 2)), np.zeros((self.ni, 2))
 
             # TODO: Return te,ti values in next version
-            te_buffer, ti_buffer = np.zeros((Sorn.ne, 1)), np.zeros((Sorn.ni, 1))
+            te_buffer, ti_buffer = np.zeros((self.ne, 1)), np.zeros((self.ni, 1))
 
             # Get the matrices and rename them for ease of reading
 
@@ -563,7 +606,7 @@ class RunSorn(Sorn):
             X, Y = matrix_collection.X, matrix_collection.Y
 
             """ Fraction of active connections between E-E network"""
-            frac_pos_active_conn.append((Wee[i] > 0.0).sum())
+            frac_pos_active_conn.append((np.asarray(Wee[i]) > 0.0).sum())
 
             """ Recurrent drive"""
 
@@ -618,7 +661,7 @@ class RunSorn(Sorn):
             Y_all[i] = y_buffer[:, 1]
             R_all[i] = r
 
-        plastic_matrices = {'Wee': matrix_collection.Wee,
+        plastic_matrices = {'Wee': matrix_collection.Wee[-1],
                             'Wei': matrix_collection.Wei[-1],
                             'Wie': matrix_collection.Wie[-1],
                             'Te': matrix_collection.Te[-1], 'Ti': matrix_collection.Ti[-1],
@@ -631,9 +674,17 @@ class Generator(object):
     def __init__(self):
         pass
 
-    def get_initial_matrices(self):
+    @staticmethod
+    def get_initial_matrices(config_file_path):
+
+        # Read the config file
+   
+        sorn_config = ConfigReader.reader(file_path = config_file_path)
         
-        wee, wei, wie, te, ti, x, y = Plasticity.initialize_plasticity()
+        # Initialize SORN
+        Sorn().load_config(sorn_config)
+
+        wee, wei, wie, te, ti, x, y = Plasticity().initialize_plasticity()
 
         plastic_matrices = {'Wee': wee,
                             'Wei': wei,
@@ -645,7 +696,8 @@ class Generator(object):
 
 
 
-# SAMPLE USAGE
+# Precheck Generator
+# Generator.get_initial_matrices('Z:/sorn/')
 
 """
 # Start the Simulation step 
