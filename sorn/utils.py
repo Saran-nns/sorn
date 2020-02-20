@@ -943,8 +943,3 @@ class Statistics(object):
         sse = np.sum([pi * np.log(pi) for pi in p]) / np.log(1 / neurons_in_reservoir)  # Spike source entropy
 
         return sse
-
-    @staticmethod
-    def mca(spike_train):
-        pass
-    	

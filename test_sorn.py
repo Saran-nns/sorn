@@ -1,11 +1,11 @@
 import unittest
 import pickle
 import numpy as np
-from sorn.sorn import RunSorn,Generator
+from sorn.sorn import RunSorn
 from sorn.utils import Plotter,Statistics,Initializer
 
 
-# Get the pickled matrices:
+# Getting back the pickled matrices:
 with open('sample_matrices.pkl','rb') as f:
     matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = pickle.load(f)
 
@@ -14,13 +14,7 @@ class TestSorn(unittest.TestCase):
 	
 	def test_runsorn(self):
 		
-		self.assertRaises(Exception, Generator().get_initial_matrices('./sorn/')) 
-
-		matrices_dict = Generator().get_initial_matrices('./sorn')
-        
-		self.assertRaises(Exception, RunSorn(phase='Plasticity', matrices=None).run_sorn([0.]))
-
-		self.assertRaises(Exception, RunSorn(phase='Training', matrices=matrices_dict).run_sorn([0.]))
+        	self.assertRaises(Exception, RunSorn(phase='Plasticity', matrices=None,time_steps=5).run_sorn([0.])) 
         	
 	def test_plotter(self):
 
