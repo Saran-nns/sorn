@@ -1,5 +1,5 @@
 ## Self-Organizing Recurrent Neural Networks 
-#### Status: Active (under active development, breaking changes may occur)
+
 SORN is a class of neuro-inspired artificial network build based on plasticity mechanisms in biological brain and mimic neocortical circuits ability of learning and adaptation through neuroplasticity mechanisms.
 
 For ease of maintanance, example use cases and the API(under developement) are moved to https://github.com/Saran-nns/PySORN_0.1 
@@ -13,11 +13,11 @@ For ease of maintanance, example use cases and the API(under developement) are m
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 <h4 align="Left">SORN Reservoir and the evolution of synaptic efficacies</h4> 
-<a href="url"><img src="https://github.com/Saran-nns/sorn/blob/master/doc/images/SORN1.png" height="320" width="430" ></a> <a href="url"><img src="https://github.com/Saran-nns/sorn/blob/master/doc/images/weights.png" height="375" width="425" ></a>	
+<a href="url"><img src="https://github.com/Saran-nns/PySORN_0.1/blob/master/v0.1.0/doc/images/SORN1.png" height="320" width="430" ></a> <a href="url"><img src="https://github.com/Saran-nns/PySORN_0.1/blob/master/v0.1.0/doc/images/weights.png" height="375" width="425" ></a>	
 
 <h4 align="center">Neural Connectome</h4> 
 <p align="center">
-<a href="url"><img src="https://github.com/Saran-nns/sorn/blob/master/doc/images/neuralcorrelationall.png" height="450" width="450" ></a>
+<a href="url"><img src="https://github.com/Saran-nns/PySORN_0.1/blob/master/v0.1.0/doc/images/neuralcorrelationall.png" height="450" width="450" ></a>
 </p>
 
 #### To install the latest release:
@@ -66,16 +66,19 @@ from sorn.sorn import RunSorn
 inputs = [0.]
 
 # To simulate the network; 
-matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = RunSorn(phase='Plasticity', matrices=None).run_sorn(inputs)
+matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = RunSorn(phase='Plasticity', matrices=None,
+                                                                          time_steps=100).run_sorn(inputs)
 
 # To resume the simulation, load the matrices_dict from previous simulation;
-matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = RunSorn(phase='Plasticity', matrices=matrices_dict).run_sorn(inputs)
+matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = RunSorn(phase='Plasticity', matrices=matrices_dict,
+                                                                          time_steps=100).run_sorn(inputs)
 ```
 
 ##### Training phase:
 
 ```Python
-matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = RunSorn(phase='Training', matrices=matrices_dict).run_sorn(inputs)
+matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = RunSorn(phase='Training', matrices=matrices_dict,
+                                                                          time_steps=100).run_sorn(inputs)
 ```
 
 #### Network Output Descriptions:
@@ -90,9 +93,64 @@ matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections 
     num_active_connections - List of number of active connections in the Excitatory pool at each time step 
 
 
+#### Sample use with OpenAI gym :
+##### Cartpole balance problem
+```python
+# Imports
+
+import utils.InitHelper as initializer
+from sorn.sorn import Sorn, Plasticity, TrainSorn, TrainSornPlasticity
+import gym
+
+# Load the simulated network matrices
+# Note these matrices are obtained after the network achieved convergence under random inputs and noise
+
+with open('simulation_matrices.pkl','rb') as f:  
+    sim_matrices,excit_states,inhib_states,recur_states,num_reservoir_conn = pickle.load(f)
+
+
+# Training parameters
+
+NUM_EPISODES = 2e6
+NUM_PLASTICITY_EPISODES = 20000
+
+env = gym.make('CartPole-v0')
+
+for EPISODE in range(NUM_EPISODES):
+    
+    # Environment observation
+    state = env.reset()[None,:]
+    
+    # Play the episode
+    
+    while True:
+      
+      if EPISODE < NUM_PLASTICITY_EPISODE:
+      
+        # Plasticity phase
+        sim_matrices,excit_states,inhib_states,recur_states,num_reservoir_conn = TrainSornPlasticity.train_sorn(phase = 'Plasticity',
+                                                                                                            matrices = sim_matrices,
+                                                                                                            inputs = state)
+
+      else:
+        # Training phase with frozen reservoir connectivity
+        sim_matrices,excit_states,inhib_states,recur_states,num_reservoir_conn = TrainSorn.train_sorn(phase = 'Training',
+                                                                                                            matrices = sim_matrices,
+                                                                                                            inputs = state)
+      
+      # Feed excit_states as input states to your RL algorithm, below goes for simple policy gradient algorithm
+      # Sample policy w.r.t excitatory states and take action in the environment
+       
+      probs = policy(np.asarray(excit_states),output_layer_weights))
+      action = np.random.choice(action_space,probs)
+      state,reward,done,_ = env.step(action) 
+      
+      if done:
+        break
+```
+
+
 #### Sample Plotting functions 
-
-
 
 ```Python
 from sorn.utils import Plotter
@@ -117,7 +175,7 @@ Statistics.autocorr(firing_rates = [1,1,5,6,3,7],t= 2)
 Statistics.fanofactor(spike_train= np.asarray(Exc_activity),neuron = 10,window_size = 10)
 ```
 
-#### Articles:
+#### The network is inspired by folowing articles:
 
 Lazar, A. (2009). SORN: a Self-organizing Recurrent Neural Network. Frontiers in Computational Neuroscience, 3. https://doi.org/10.3389/neuro.10.023.2009
 
@@ -127,6 +185,3 @@ Del Papa, B., Priesemann, V., & Triesch, J. (2017). Criticality meets learning: 
 
 Zheng, P., Dimitrakakis, C., & Triesch, J. (2013). Network Self-Organization Explains the Statistics and Dynamics of Synaptic Connection Strengths in Cortex. PLoS Computational Biology, 9(1). https://doi.org/10.1371/journal.pcbi.1002848  
 
-#### Cite as:
-
-Saranraj Nambusubramaniyan. (2019, March 14). Saran-nns/sorn: sorn-alpha (Version v0.2.1). Zenodo. http://doi.org/10.5281/zenodo.2593681

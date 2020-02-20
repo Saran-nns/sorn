@@ -13,11 +13,10 @@ install:
 before_script:
 - pip install coverage
 - pip install coveralls
-- pip install codecov
 
 script:
   - python test_sorn.py
-  - coverage run test_sorn.py  
+  - coverage run --source = sorn test_sorn.py test sorn 
 
 after_success:
-- codecov
+- coverage
