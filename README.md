@@ -13,7 +13,7 @@ For ease of maintanance, example use cases and the API(under developement) are m
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 <h4 align="Left">SORN Reservoir and the evolution of synaptic efficacies</h4> 
-<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/SORNCartcropped.png" height="320" width="430" ></a> <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/blob/master/v0.1.0/doc/images/weights.png" height="375" width="425" ></a>	
+<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/SORN1.png" height="320" width="430" ></a> <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/weights.png" height="375" width="425" ></a>	
 
 <h4 align="center">Neural Connectome</h4> 
 <p align="center">
@@ -97,6 +97,7 @@ matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections 
 ##### Cartpole balance problem
 ```python
 # Imports
+
 import utils.InitHelper as initializer
 from sorn.sorn import Sorn, Plasticity, TrainSorn, TrainSornPlasticity
 import gym
@@ -107,7 +108,9 @@ import gym
 with open('simulation_matrices.pkl','rb') as f:  
     sim_matrices,excit_states,inhib_states,recur_states,num_reservoir_conn = pickle.load(f)
 
+
 # Training parameters
+
 NUM_EPISODES = 2e6
 NUM_PLASTICITY_EPISODES = 20000
 
@@ -145,6 +148,7 @@ for EPISODE in range(NUM_EPISODES):
       if done:
         break
 ```
+
 
 #### Sample Plotting functions 
 
