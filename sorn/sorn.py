@@ -456,12 +456,10 @@ class NetworkState(Plasticity):
         tot_incoming_drive = incoming_drive_e - incoming_drive_i + white_noise_e + np.asarray(self.v_t) - te
 
         """Heaviside step function"""
-
-        heaviside_step = [0] * len(tot_incoming_drive)
-        for t in range(len(tot_incoming_drive)):
-            heaviside_step[t] = 0.0 if tot_incoming_drive[t] < te[t] else 1.0
-
-        xt_next = np.asarray(heaviside_step.copy())
+        heaviside_step = np.expand_dims([0.] * len(tot_incoming_drive),1)
+        heaviside_step[tot_incoming_drive > 0] = 1.
+        
+        xt_next = np.asarray(heaviside_step.copy())  # Additional Memory cost just for the sake of variable name
 
         return xt_next
 
@@ -477,14 +475,10 @@ class NetworkState(Plasticity):
 
         tot_incoming_drive = incoming_drive_e + white_noise_i - ti
 
-        """Implement Heaviside step function"""
+        heaviside_step = np.expand_dims([0.] * len(tot_incoming_drive),1)
+        heaviside_step[tot_incoming_drive > 0] = 1.
 
-        heaviside_step = [0] * len(tot_incoming_drive)
-
-        for t in range(len(tot_incoming_drive)):
-            heaviside_step[t] = 0.0 if tot_incoming_drive[t] < ti[t] else 1.0
-
-        yt_next = np.asarray(heaviside_step.copy())
+        yt_next = np.asarray(heaviside_step.copy())  # Additional Memory cost just for the sake of variable name
 
         return yt_next
 
@@ -502,19 +496,15 @@ class NetworkState(Plasticity):
 
         tot_incoming_drive = incoming_drive_e - incoming_drive_i + white_noise_e - te
 
-        """Heaviside step function"""
+        heaviside_step = np.expand_dims([0.] * len(tot_incoming_drive),1)
+        heaviside_step[tot_incoming_drive > 0] = 1.
 
-        heaviside_step = [0] * len(tot_incoming_drive)
-        for t in range(len(tot_incoming_drive)):
-            heaviside_step[t] = 0.0 if tot_incoming_drive[t] < te[t] else 1.0
-
-        xt_next = np.asarray(heaviside_step.copy())
+        xt_next = np.asarray(heaviside_step.copy())  # Additional Memory cost just for the sake of variable name
 
         return xt_next
 
 
 # Simulate / Train SORN
-
 class RunSorn(Sorn):
 
     def __init__(self, phase, matrices, time_steps):
@@ -552,7 +542,7 @@ class RunSorn(Sorn):
 
             x_buffer, y_buffer = np.zeros((Sorn.ne, 2)), np.zeros((Sorn.ni, 2))
 
-            # TODO: Return te,ti values in next version
+            # TODO: Return te,ti values in next version # UNUSED 
             te_buffer, ti_buffer = np.zeros((Sorn.ne, 1)), np.zeros((Sorn.ni, 1))
 
             # Get the matrices and rename them for ease of reading
