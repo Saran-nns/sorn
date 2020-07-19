@@ -17,7 +17,7 @@ For ease of maintanance, example use cases and the API(under developement) are m
 
 <h4 align="center">Neural Connectome</h4> 
 <p align="center">
-<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/blob/master/v0.1.0/doc/images/neuralcorrelationall.png" height="450" width="450" ></a>
+<a href="url"><img src="https://github.com/Saran-nns/PySORN_0.1/blob/master/v0.1.0/doc/images/neuralcorrelationall.png" height="450" width="450" ></a>
 </p>
 
 #### To install the latest release:
