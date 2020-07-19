@@ -12,7 +12,8 @@ import seaborn as sns
 from scipy.optimize import curve_fit
 from scipy.stats import norm
 from scipy import stats
-
+import networkx as nx
+import pandas as pd
 from matplotlib import pylab
 from mpl_toolkits.axes_grid1.inset_locator import InsetPosition
 
@@ -746,7 +747,28 @@ class Plotter(object):
 
         return plt.show()
 
+    
 
+    def plot_network(corr,corr_thres,fig_name = None):
+        
+        df = pd.DataFrame(corr)
+
+        links = df.stack().reset_index()
+        links.columns = ['var1', 'var2','value']
+        ### threshold = 0.01, smaller the threshold, higher the density of connections
+
+        links_filtered=links.loc[(links['value'] > corr_thres) & (links['var1'] != links['var2'])]
+
+        # Build your graph
+        G=nx.from_pandas_edgelist(links_filtered, 'var1', 'var2')
+        # Plot the network:
+
+        # Plot the network:
+        plt.figure(figsize=(50,50))
+        nx.draw(G, with_labels=True,node_color = 'orange',node_size=50, linewidths=5, font_size=10)
+        plt.text(0.1, 0.9,'%s'%corr_thres)
+        plt.savefig('%s'%fig_name)
+        plt.show()
     @staticmethod
     def hamming_distance(hamming_dist, savefig):
 
