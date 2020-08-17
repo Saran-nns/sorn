@@ -9,11 +9,11 @@ For ease of maintanance, example use cases and the API(under developement) are m
 [![Join the chat at https://gitter.im/Self-Organizing-Recurrent-Neural-Networks](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Self-Organizing-Recurrent-Neural-Networks?utm_source=badge&utm_medium=badge&utm_content=badge)
 [![PyPI version](https://badge.fury.io/py/sorn.svg)](https://badge.fury.io/py/sorn)
 ![PyPI - Downloads](https://img.shields.io/pypi/dw/sorn.svg)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2593671.svg)](https://doi.org/10.5281/zenodo.2593671)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2590449.svg)](https://doi.org/10.5281/zenodo.2590449)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-<h4 align="Left">SORN Reservoir and the evolution of synaptic efficacies</h4> 
-<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/SORN1.png" height="320" width="430" ></a> <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/weights.png" height="375" width="425" ></a>	
+<h4 align="Left">SORN Reservoir and the evolution of synaptic efficacies</h4>
+<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/SORN1.png" height="320" width="430"></a> <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/weights.png" height="375" width="425" ></a>	
 
 <h4 align="center">Neural Connectome</h4> 
 <p align="center">
