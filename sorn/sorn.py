@@ -257,11 +257,11 @@ class Plasticity(Sorn):
 
             indexes = Initializer.get_unconnected_indexes(wee)
 
-            # Choose any idx randomly
-            idx_rand = random.choice(indexes)
-
-            if idx_rand[0] == idx_rand[1]:
+            # Choose any idx randomly such that i!=j
+            while True: 
                 idx_rand = random.choice(indexes)
+                if idx_rand[0] != idx_rand[1]:
+                    break  
 
             wee[idx_rand[0]][idx_rand[1]] = 0.001
 
