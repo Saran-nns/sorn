@@ -325,7 +325,6 @@ class Plasticity(Sorn):
 
         return NotImplementedError
 
-
 class MatrixCollection(Sorn):
     def __init__(self, phase, matrices=None):
         super().__init__()
@@ -458,15 +457,12 @@ class NetworkState(Plasticity):
         """Heaviside step function"""
         heaviside_step = np.expand_dims([0.] * len(tot_incoming_drive),1)
         heaviside_step[tot_incoming_drive > 0] = 1.
-        
         xt_next = np.asarray(heaviside_step.copy())  # Additional Memory cost just for the sake of variable name
-
         return xt_next
 
     def inhibitory_network_state(self, wie, ti, x, white_noise_i):
 
         # Activity of inhibitory neurons
-
         wie = np.asarray(wie)
         xt = x[:, 1]
         xt = xt.reshape(Sorn.ne, 1)
@@ -502,7 +498,6 @@ class NetworkState(Plasticity):
         xt_next = np.asarray(heaviside_step.copy())  # Additional Memory cost just for the sake of variable name
 
         return xt_next
-
 
 # Simulate / Train SORN
 class RunSorn(Sorn):
