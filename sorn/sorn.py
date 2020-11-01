@@ -4,6 +4,7 @@ from __future__ import division
 import numpy as np
 import os
 from sorn.utils import Initializer
+
 from configparser import ConfigParser
 import random
 import tqdm
@@ -325,14 +326,13 @@ class Plasticity(Sorn):
 
         return NotImplementedError
 
-
 class MatrixCollection(Sorn):
     def __init__(self, phase, matrices=None):
         super().__init__()
 
         self.phase = phase
         self.matrices = matrices
-        if self.phase == 'Plasticity' and self.matrices == None:
+        if self.phase == 'plasticity' and self.matrices == None:
 
             self.time_steps = Sorn.time_steps + 1  # Total training steps
             self.Wee, self.Wei, self.Wie, self.Te, self.Ti, self.X, self.Y = [0] * self.time_steps, [
@@ -353,7 +353,7 @@ class MatrixCollection(Sorn):
             self.X[0] = x
             self.Y[0] = y
 
-        elif self.phase == 'Plasticity' and self.matrices != None:
+        elif self.phase == 'plasticity' and self.matrices != None:
 
             self.time_steps = Sorn.time_steps + 1  # Total training steps
             self.Wee, self.Wei, self.Wie, self.Te, self.Ti, self.X, self.Y = [0] * self.time_steps, [
@@ -372,7 +372,7 @@ class MatrixCollection(Sorn):
             self.X[0] = matrices['X']
             self.Y[0] = matrices['Y']
 
-        elif self.phase == 'Training':
+        elif self.phase == 'training':
 
             """NOTE:
             time_steps here is diferent for plasticity and training phase"""
@@ -425,18 +425,22 @@ class MatrixCollection(Sorn):
 
         return x_1, y_1
 
-
 class NetworkState(Plasticity):
+    
     """The evolution of network states"""
-
+    
     def __init__(self, v_t):
         super().__init__()
         self.v_t = v_t
-
+        # Check the input feature size
+        
+        assert Sorn.nu==len(self.v_t),"Input units and input size mismatch: {} != {}".format(Sorn.nu,len(self.v_t))
+        if Sorn.nu!=Sorn.ne:
+            self.v_t = list(self.v_t) + [0.]*(Sorn.ne- Sorn.nu)        
+        self.v_t = np.expand_dims(self.v_t, 1)
+    
     def incoming_drive(self, weights, activity_vector):
-
         # Broadcasting weight*acivity vectors
-
         incoming = weights * activity_vector
         incoming = np.array(incoming.sum(axis=0))
         return incoming
@@ -452,21 +456,17 @@ class NetworkState(Plasticity):
 
         incoming_drive_e = np.expand_dims(self.incoming_drive(weights=wee, activity_vector=xt), 1)
         incoming_drive_i = np.expand_dims(self.incoming_drive(weights=wei, activity_vector=yt), 1)
-
         tot_incoming_drive = incoming_drive_e - incoming_drive_i + white_noise_e + np.asarray(self.v_t) - te
 
         """Heaviside step function"""
         heaviside_step = np.expand_dims([0.] * len(tot_incoming_drive),1)
         heaviside_step[tot_incoming_drive > 0] = 1.
-        
         xt_next = np.asarray(heaviside_step.copy())  # Additional Memory cost just for the sake of variable name
-
         return xt_next
 
     def inhibitory_network_state(self, wie, ti, x, white_noise_i):
 
         # Activity of inhibitory neurons
-
         wie = np.asarray(wie)
         xt = x[:, 1]
         xt = xt.reshape(Sorn.ne, 1)
@@ -474,7 +474,6 @@ class NetworkState(Plasticity):
         incoming_drive_e = np.expand_dims(self.incoming_drive(weights=wie, activity_vector=xt), 1)
 
         tot_incoming_drive = incoming_drive_e + white_noise_i - ti
-
         heaviside_step = np.expand_dims([0.] * len(tot_incoming_drive),1)
         heaviside_step[tot_incoming_drive > 0] = 1.
 
@@ -505,16 +504,31 @@ class NetworkState(Plasticity):
 
 
 # Simulate / Train SORN
-class RunSorn(Sorn):
+class Simulator_(Sorn):
 
-    def __init__(self, phase, matrices, time_steps):
+    def __init__(self):
         super().__init__()
+        pass
+
+    def simulate_sorn(self, inputs: np.array=None,  phase:str='plasticity', matrices: dict=None, time_steps:int=1,noise:bool=True, **kwargs):
+        
+        assert phase == 'plasticity' or 'training',"Phase can be either 'plasticity' or 'training'"
+        
         self.time_steps = time_steps
         Sorn.time_steps = time_steps
         self.phase = phase
         self.matrices = matrices
-
-    def run_sorn(self, inp):
+        
+        kwargs_ = ['ne', 'nu', 'network_type_ee', 'network_type_ei', 'network_type_ie', 
+                     'lambda_ee','lambda_ei', 'lambda_ie', 
+                     'eta_stdp','eta_inhib', 'eta_ip', 
+                     'te_max', 'ti_max', 'ti_min', 'te_min', 'mu_ip','sigma_ip']
+        for key, value in kwargs.items():
+            if key in kwargs_:
+                setattr(Sorn, key, value)
+        # assert Sorn.nu == len(inputs[:,0]),"Size mismatch: Input != Nu "
+        Sorn.ni=int(0.2 * Sorn.ne)
+        
         # Initialize/Get the weight, threshold matrices and activity vectors
         matrix_collection = MatrixCollection(phase=self.phase, matrices=self.matrices)
 
@@ -527,26 +541,22 @@ class RunSorn(Sorn):
         frac_pos_active_conn = []
 
         # To get the last activation status of Exc and Inh neurons
-
         for i in tqdm.tqdm(range(self.time_steps)):
             """ Generate white noise"""
-            white_noise_e = Initializer.white_gaussian_noise(mu=0., sigma=0.04, t=Sorn.ne)
-            white_noise_i = Initializer.white_gaussian_noise(mu=0., sigma=0.04, t=Sorn.ni)
-
-            # Generate inputs
-            # inp_ = np.expand_dims(Initializer.generate_normal_inp(10), 1)
-
-            network_state = NetworkState(inp)  # Feed input and initialize network state
+            if noise:   
+                white_noise_e = Initializer.white_gaussian_noise(mu=0., sigma=0.04, t=Sorn.ne)
+                white_noise_i = Initializer.white_gaussian_noise(mu=0., sigma=0.04, t=Sorn.ni)
+            else:
+                white_noise_e, white_noise_i = 0.,0.
+               
+            network_state = NetworkState(inputs[:,i])  # Feed input and initialize network state
 
             # Buffers to get the resulting x and y vectors at the current time step and update the master matrix
-
             x_buffer, y_buffer = np.zeros((Sorn.ne, 2)), np.zeros((Sorn.ni, 2))
-
             # TODO: Return te,ti values in next version # UNUSED 
             te_buffer, ti_buffer = np.zeros((Sorn.ne, 1)), np.zeros((Sorn.ni, 1))
 
             # Get the matrices and rename them for ease of reading
-
             Wee, Wei, Wie = matrix_collection.Wee, matrix_collection.Wei, matrix_collection.Wie
             Te, Ti = matrix_collection.Te, matrix_collection.Ti
             X, Y = matrix_collection.X, matrix_collection.Y
@@ -555,15 +565,12 @@ class RunSorn(Sorn):
             frac_pos_active_conn.append((Wee[i] > 0.0).sum())
 
             """ Recurrent drive"""
-
             r = network_state.recurrent_drive(Wee[i], Wei[i], Te[i], X[i], Y[i], white_noise_e)
 
             """Get excitatory states and inhibitory states given the weights and thresholds"""
-
             # x(t+1), y(t+1)
             excitatory_state_xt_buffer = network_state.excitatory_network_state(Wee[i], Wei[i], Te[i], X[i], Y[i],
                                                                                 white_noise_e)
-
             inhibitory_state_yt_buffer = network_state.inhibitory_network_state(Wie[i], Ti[i], X[i], white_noise_i)
 
             """ Update X and Y """
@@ -574,7 +581,6 @@ class RunSorn(Sorn):
             y_buffer[:, 1] = inhibitory_state_yt_buffer.T
 
             """Plasticity phase"""
-
             plasticity = Plasticity()
 
             # TODO
@@ -615,43 +621,144 @@ class RunSorn(Sorn):
 
         return plastic_matrices, X_all, Y_all, R_all, frac_pos_active_conn
 
-class Generator(object):
-
+class Trainer_(Sorn):
+    
+    """Args:
+        inputs - one hot vector of inputs
+    
+        Returns:
+        matrix_collection - collection of all weight matrices in dictionaries
+        """
+            
     def __init__(self):
+        super().__init__()
         pass
+    
+    def train_sorn(self, inputs: np.array=None, phase: str='plasticity', matrices: np.array=None, noise: bool=True,**kwargs):
+        """[summary]
 
-    def get_initial_matrices(self):
+        Args:
+            phase (str, optional): [description]. Defaults to 'plasticity'.
+            matrices (np.array, optional): [description]. Defaults to None.
+            inputs (np.array, optional): [description]. Defaults to None.
+            noise (bool, optional): [description]. Defaults to True.
+
+        Returns:
+            [type]: [description]
+        """       
+        assert phase == 'plasticity' or 'training',"Phase can be either 'plasticity' or 'training'"
         
-        return Plasticity.initialize_plasticity()
+        kwargs_ = ['ne', 'ni', 'network_type_ee', 'network_type_ei', 'network_type_ie', 
+                     'lambda_ee','lambda_ei', 'lambda_ie', 
+                     'eta_stdp','eta_inhib', 'eta_ip', 
+                     'te_max', 'ti_max', 'ti_min', 'te_min', 'mu_ip','sigma_ip']
+        for key, value in kwargs.items():
+            if key in kwargs_:
+                setattr(Sorn, key, value)
+        Sorn.ni=int(0.2 * Sorn.ne)
+        # assert Sorn.nu == len(inputs[:,0]),"Size mismatch: Input != Nu "
+        
+        self.phase = phase
+        self.matrices = matrices
+        self.time_steps = 1
+        Sorn.time_steps = 1
+        self.inputs = np.asarray(inputs)
+        
+        # Collect the network activity at all time steps
+        X_all = [0]*self.time_steps
+        Y_all = [0]*self.time_steps
+        R_all = [0]*self.time_steps
+        
+        frac_pos_active_conn = []
+         
+        matrix_collection = MatrixCollection(phase = self.phase, matrices = self.matrices)  
+        
+        for i in range(1):
+            
+            if noise:
+                white_noise_e = Initializer.white_gaussian_noise(mu= 0., sigma = 0.04,t = Sorn.ne)
+                white_noise_i = Initializer.white_gaussian_noise(mu= 0., sigma = 0.04,t = Sorn.ni)
+            else:
+                white_noise_e = 0.
+                white_noise_i = 0.
+            
+            network_state = NetworkState(self.inputs)  # Feed Input as an argument to the class
+            
+            # Buffers to get the resulting x and y vectors at the current time step and update the master matrix
+            x_buffer, y_buffer = np.zeros(( Sorn.ne, 2)), np.zeros((Sorn.ni, 2))
+            te_buffer, ti_buffer = np.zeros((Sorn.ne, 1)), np.zeros((Sorn.ni, 1))
 
-# SAMPLE USAGE
+            # Get the matrices and rename them for ease of reading
+            Wee, Wei, Wie = matrix_collection.Wee, matrix_collection.Wei, matrix_collection.Wie
+            Te, Ti = matrix_collection.Te, matrix_collection.Ti
+            X, Y = matrix_collection.X, matrix_collection.Y
+            
+            """ Fraction of active connections between E-E network"""
+            frac_pos_active_conn.append((Wee[i] > 0.0).sum())
+            
+            # Recurrent drive at t+1 used to predict the next external stimuli
+            r = network_state.recurrent_drive(Wee[i], Wei[i], Te[i], X[i], Y[i],white_noise_e = white_noise_e)
 
-"""
-# Start the Simulation step 
+            """Get excitatory states and inhibitory states given the weights and thresholds"""
+            # x(t+1), y(t+1)
+            excitatory_state_xt_buffer = network_state.excitatory_network_state(Wee[i], Wei[i], Te[i], X[i], Y[i],white_noise_e = white_noise_e)
+            inhibitory_state_yt_buffer = network_state.inhibitory_network_state(Wie[i], Ti[i], X[i],white_noise_i = white_noise_i)
+            
+            """ Update X and Y """
+            x_buffer[:, 0] = X[i][:, 1]  # xt -->xt_1
+            x_buffer[:, 1] = excitatory_state_xt_buffer.T  # x_buffer --> xt
+            y_buffer[:, 0] = Y[i][:, 1]
+            y_buffer[:, 1] = inhibitory_state_yt_buffer.T
+            
+            if self.phase=='plasticity':
+                plasticity = Plasticity()
 
-# Used only during linear output layer optimization: During simulation, use input generator from utils
+                # STDP 
+                Wee_t = plasticity.stdp(Wee[i],x_buffer,cutoff_weights = (0.0,1.0))
+                
+                # Intrinsic plasticity
+                Te_t = plasticity.ip(Te[i],x_buffer)
+                
+                # Structural plasticity
+                Wee_t = plasticity.structural_plasticity(Wee_t)      
+                
+                # iSTDP 
+                Wei_t = plasticity.istdp(Wei[i],x_buffer,y_buffer,cutoff_weights = (0.0,1.0))
+                
+                # Synaptic scaling Wee
+                Wee_t = Plasticity().ss(Wee_t)
+                
+                # Synaptic scaling Wei
+                Wei_t = Plasticity().ss(Wei_t)
+            else:
+                Wee_t, Wei_t, Te_t = Wee[i],Wei[i], Te[i]
+                
+            """Assign the matrices to the matrix collections"""
+            matrix_collection.weight_matrix(Wee_t, Wei_t, Wie[i], i)
+            matrix_collection.threshold_matrix(Te_t, Ti[i], i)
+            matrix_collection.network_activity_t(x_buffer, y_buffer, i)
+            
+            X_all[i] = x_buffer[:,1]
+            Y_all[i] = y_buffer[:,1]
+            R_all[i] = r
+   
+        plastic_matrices = {'Wee':matrix_collection.Wee[-1], 
+                            'Wei': matrix_collection.Wei[-1], 
+                            'Wie':matrix_collection.Wie[-1],
+                            'Te': matrix_collection.Te[-1], 'Ti': matrix_collection.Ti[-1],
+                            'X': X[-1], 'Y': Y[-1]}
+        
+        return plastic_matrices,X_all,Y_all,R_all,frac_pos_active_conn
 
-_inputs = None  # Can also simulate the network without inputs else pass the input values here
 
-#  During first batch of training; Pass matrices as None:
-# SORN will initialize the matrices based on the configuration settings
+# global Trainer
+# global Simulator
+Trainer = Trainer_()
+Simulator = Simulator_()  
+if __name__ == "__main__":
+    pass
+    # Instantiate Trainer and Simulator objects while import
+#    Trainer = Trainer_()
+#    Simulator = Simulator_()  
 
-plastic_matrices, X_all, Y_all, R_all, frac_pos_active_conn = RunSorn(phase='Plasticity', matrices=None,
-                                                                          time_steps=10000).run_sorn(_inputs)
-
-# Pickle the simulaion matrices for reuse
-
-with open('stdp2013_10k.pkl', 'wb') as f:
-    pickle.dump([plastic_matrices, X_all, Y_all, R_all, frac_pos_active_conn], f)
-
-# While re simulate the network using any already simulated/ acquired matrices
-
-with open('stdp2013_10k.pkl', 'rb') as f:
-    plastic_matrices, X_all, Y_all, R_all, frac_pos_active_conn = pickle.load(f)
-
-
-plastic_matrices1, X_all1, Y_all1, R_all1, frac_pos_active_conn1 = RunSorn(phase='Plasticity',
-                                                                               matrices=plastic_matrices,
-                                                                               time_steps=20000).run_sorn(inp=None)
-"""
 
