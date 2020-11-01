@@ -10,7 +10,7 @@ def read(fname):
 
 setup(
     name = "sorn",
-    version = "0.2.10",
+    version = "0.3.1",
     author = "Saranraj Nambusubramaniyan",
     author_email = "saran_nns@hotmail.com",
     description ="Self-Organizing Recurrent Neural Networks",
