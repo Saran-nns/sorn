@@ -55,7 +55,7 @@ Then, update/edit arguments in ```configuration.ini```
 kwargs_ = ['ne', 'nu', 'network_type_ee', 'network_type_ei', 'network_type_ie', 'lambda_ee','lambda_ei', 'lambda_ie', 'eta_stdp','eta_inhib', 'eta_ip', 'te_max', 'ti_max', 'ti_min', 'te_min', 'mu_ip','sigma_ip']
 ```
 #### Simulation: Plasticity Phase
-The default ```ne, nu``` values are overriden by passing them while calling the ```simulate_sorn``` method.
+The default ```ne, nu``` values are overriden by passing them as kwargs inside```simulate_sorn``` method.
 
 ```Python
 # Import 
