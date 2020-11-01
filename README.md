@@ -36,7 +36,7 @@ SORN supports Python 3.5+ ONLY. For older Python versions please use the officia
 #### Update Network configurations
 There are two ways to update/configure the network parameters,
 1. Navigate to home/conda/envs/ENVNAME/Lib/site-packages/sorn
- ```or``` if you are unsure about the directory of sorn
+ ```or``` if you are unsure about the directory of ```sorn```
 
 Run
 
@@ -55,7 +55,8 @@ Then, update/edit arguments in ```configuration.ini```
 kwargs_ = ['ne', 'nu', 'network_type_ee', 'network_type_ei', 'network_type_ie', 'lambda_ee','lambda_ei', 'lambda_ie', 'eta_stdp','eta_inhib', 'eta_ip', 'te_max', 'ti_max', 'ti_min', 'te_min', 'mu_ip','sigma_ip']
 ```
 #### Simulation: Plasticity Phase
-The default ```ne``` value is overriden by passing it while calling the ```simulate_sorn``` method.
+The default ```ne, nu``` values are overriden by passing them while calling the ```simulate_sorn``` method.
+
 ```Python
 # Import 
 from sorn import Simulator
@@ -73,8 +74,10 @@ matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections 
 ```
 
 #### Training phase:
-inputs = np.random.rand(num_features,1) 
+
 ```Python
+inputs = np.random.rand(num_features,1) 
+
 # SORN network is frozen during training phase
 matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Trainer.train_sorn(inputs = inputs, phase='Training', matrices=matrices_dict,nu=num_features, time_steps=1)
 ```
@@ -98,8 +101,7 @@ Without changing the default network parameters.
 ```python
 # Imports
 
-import utils.InitHelper as initializer
-from sorn.sorn import TrainSorn, TrainSornPlasticity
+from sorn.sorn import Simulator, Trainer
 import gym
 
 # Load the simulated network matrices
@@ -125,11 +127,11 @@ for EPISODE in range(NUM_EPISODES):
       if EPISODE < NUM_PLASTICITY_EPISODE:
       
         # Plasticity phase
-        sim_matrices,excit_states,inhib_states,recur_states,num_reservoir_conn = Simulator.simulate_sorn(inputs = state, phase ='Plasticity', matrices = sim_matrices)
+        sim_matrices,excit_states,inhib_states,recur_states,num_reservoir_conn = Simulator.simulate_sorn(inputs = state, phase ='Plasticity', matrices = sim_matrices, noise=False)
 
       else:
         # Training phase with frozen reservoir connectivity
-        sim_matrices,excit_states,inhib_states,recur_states,num_reservoir_conn = Trainer.train_sorn(inputs = state, phase = 'Training', matrices = sim_matrices)
+        sim_matrices,excit_states,inhib_states,recur_states,num_reservoir_conn = Trainer.train_sorn(inputs = state, phase = 'Training', matrices = sim_matrices, noise= False)
       
       # Feed excit_states as input states to your RL algorithm, below goes for simple policy gradient algorithm
       # Sample policy w.r.t excitatory states and take action in the environment
