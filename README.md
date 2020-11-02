@@ -76,6 +76,7 @@ matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections 
 #### Training phase:
 
 ```Python
+from sorn import Trainer
 inputs = np.random.rand(num_features,1) 
 
 # SORN network is frozen during training phase
@@ -101,7 +102,7 @@ Without changing the default network parameters.
 ```python
 # Imports
 
-from sorn.sorn import Simulator, Trainer
+from sorn import Simulator, Trainer
 import gym
 
 # Load the simulated network matrices
@@ -147,7 +148,7 @@ for EPISODE in range(NUM_EPISODES):
 ### Sample Plotting functions 
 
 ```Python
-from sorn.utils import Plotter
+from sorn import Plotter
 # Plot weight distribution in the network
 Plotter.weight_distribution(weights= matrices_dict['Wee'], bin_size = 5, savefig = False)
 
@@ -161,7 +162,7 @@ Plotter.raster_plot(spike_train = np.asarray(Exc_activity), savefig=False)
 ### Sample Statistical analysis functions
 
 ```Python
-from sorn.utils import Statistics
+from sorn import Statistics
 #t-lagged auto correlation between neural activity
 Statistics.autocorr(firing_rates = [1,1,5,6,3,7],t= 2)
 
