@@ -9,7 +9,7 @@ The network is developed as part of my Master thesis at Universität Osnabrück,
 [![Join the chat at https://gitter.im/Self-Organizing-Recurrent-Neural-Networks](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Self-Organizing-Recurrent-Neural-Networks?utm_source=badge&utm_medium=badge&utm_content=badge)
 [![PyPI version](https://badge.fury.io/py/sorn.svg)](https://badge.fury.io/py/sorn)
 ![PyPI - Downloads](https://img.shields.io/pypi/dw/sorn.svg)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4174137.svg)](https://doi.org/10.5281/zenodo.2590449)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2590449.svg)](https://doi.org/10.5281/zenodo.2590449)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 <h4 align="Left">SORN Reservoir and the evolution of synaptic efficacies</h4>
