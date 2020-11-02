@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: sorn
-Version: 0.3.1
+Version: 0.3.2
 Summary: Self-Organizing Recurrent Neural Networks
 Home-page: https://github.com/Saran-nns/sorn
 Author: Saranraj Nambusubramaniyan
@@ -17,7 +17,7 @@ Description: ## Self-Organizing Recurrent Neural Networks
         [![Join the chat at https://gitter.im/Self-Organizing-Recurrent-Neural-Networks](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Self-Organizing-Recurrent-Neural-Networks?utm_source=badge&utm_medium=badge&utm_content=badge)
         [![PyPI version](https://badge.fury.io/py/sorn.svg)](https://badge.fury.io/py/sorn)
         ![PyPI - Downloads](https://img.shields.io/pypi/dw/sorn.svg)
-        [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2590449.svg)](https://doi.org/10.5281/zenodo.2590449)
+        [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4174137.svg)](https://doi.org/10.5281/zenodo.2590449)
         [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
         
         <h4 align="Left">SORN Reservoir and the evolution of synaptic efficacies</h4>
@@ -63,7 +63,7 @@ Description: ## Self-Organizing Recurrent Neural Networks
         kwargs_ = ['ne', 'nu', 'network_type_ee', 'network_type_ei', 'network_type_ie', 'lambda_ee','lambda_ei', 'lambda_ie', 'eta_stdp','eta_inhib', 'eta_ip', 'te_max', 'ti_max', 'ti_min', 'te_min', 'mu_ip','sigma_ip']
         ```
         #### Simulation: Plasticity Phase
-        The default ```ne, nu``` values are overriden by passing them while calling the ```simulate_sorn``` method.
+        The default ```ne, nu``` values are overriden by passing them as kwargs inside```simulate_sorn``` method.
         
         ```Python
         # Import 
@@ -84,6 +84,7 @@ Description: ## Self-Organizing Recurrent Neural Networks
         #### Training phase:
         
         ```Python
+        from sorn import Trainer
         inputs = np.random.rand(num_features,1) 
         
         # SORN network is frozen during training phase
@@ -109,7 +110,7 @@ Description: ## Self-Organizing Recurrent Neural Networks
         ```python
         # Imports
         
-        from sorn.sorn import Simulator, Trainer
+        from sorn import Simulator, Trainer
         import gym
         
         # Load the simulated network matrices
@@ -155,7 +156,7 @@ Description: ## Self-Organizing Recurrent Neural Networks
         ### Sample Plotting functions 
         
         ```Python
-        from sorn.utils import Plotter
+        from sorn import Plotter
         # Plot weight distribution in the network
         Plotter.weight_distribution(weights= matrices_dict['Wee'], bin_size = 5, savefig = False)
         
@@ -169,7 +170,7 @@ Description: ## Self-Organizing Recurrent Neural Networks
         ### Sample Statistical analysis functions
         
         ```Python
-        from sorn.utils import Statistics
+        from sorn import Statistics
         #t-lagged auto correlation between neural activity
         Statistics.autocorr(firing_rates = [1,1,5,6,3,7],t= 2)
         
