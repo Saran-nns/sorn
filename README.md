@@ -7,7 +7,7 @@ The network is developed as part of my Master thesis at Universität Osnabrück,
 [![Build Status](https://travis-ci.org/Saran-nns/sorn.svg?branch=master)](https://travis-ci.org/Saran-nns/sorn)
 [![codecov](https://codecov.io/gh/Saran-nns/sorn/branch/master/graph/badge.svg)](https://codecov.io/gh/Saran-nns/sorn)
 [![Join the chat at https://gitter.im/Self-Organizing-Recurrent-Neural-Networks](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Self-Organizing-Recurrent-Neural-Networks?utm_source=badge&utm_medium=badge&utm_content=badge)
-[![PyPI version](https://badge.fury.io/py/sorn.svg)](https://badge.fury.io/py/sorn)
+[![PyPI version](https://badge.fury.io/py/sorn.svg)](https://badge.fury.io/py /sorn)
 ![PyPI - Downloads](https://img.shields.io/pypi/dw/sorn.svg)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2590449.svg)](https://doi.org/10.5281/zenodo.2590449)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
@@ -169,7 +169,20 @@ Statistics.autocorr(firing_rates = [1,1,5,6,3,7],t= 2)
 # Fano factor: To verify poissonian process in spike generation of neuron 10
 Statistics.fanofactor(spike_train= np.asarray(Exc_activity),neuron = 10,window_size = 10)
 ```
+Please ```cite``` the repo as,
 
+```Python
+@software{saranraj_nambusubramaniyan_2020_4184103,
+  author       = {Saranraj Nambusubramaniyan},
+  title        = {Saran-nns/sorn: Stable alpha release},
+  month        = nov,
+  year         = 2020,
+  publisher    = {Zenodo},
+  version      = {v0.3.1},
+  doi          = {10.5281/zenodo.4184103},
+  url          = {https://doi.org/10.5281/zenodo.4184103}
+}
+```
 ### The network is inspired by following articles:
 
 Lazar, A. (2009). SORN: a Self-organizing Recurrent Neural Network. Frontiers in Computational Neuroscience, 3. https://doi.org/10.3389/neuro.10.023.2009
