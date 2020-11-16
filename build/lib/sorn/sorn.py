@@ -10,10 +10,11 @@ import random
 import tqdm
 import pickle
 
-
 parser = ConfigParser()
 cwd = os.path.dirname(os.path.abspath(__file__))
-config_file = os.path.join(cwd, 'configuration.ini')
+
+config_file = r'./configuration.ini'
+
 parser.read(config_file)
 
 class Sorn(object):
