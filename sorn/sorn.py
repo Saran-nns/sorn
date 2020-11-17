@@ -11,10 +11,7 @@ import tqdm
 import pickle
 
 parser = ConfigParser()
-cwd = os.path.dirname(os.path.abspath(__file__))
-
-config_file = r'./configuration.ini'
-
+config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'configuration.ini')
 parser.read(config_file)
 
 class Sorn(object):

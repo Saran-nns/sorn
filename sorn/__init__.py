@@ -1,8 +1,8 @@
-from sorn.sorn import Simulator, Trainer
+from .sorn import Simulator, Trainer
 import logging
-from sorn.utils import *
+from .utils import *
 
 __author__ = "Saranraj Nambusubramaniyan"
-__version__ = "0.3.6"
+__version__ = "0.3.19"
 
 logging.basicConfig(level=logging.INFO)
