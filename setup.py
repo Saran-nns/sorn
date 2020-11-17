@@ -10,7 +10,7 @@ def read(fname):
 
 setup(
     name = "sorn",
-    version = "0.3.6",
+    version = "0.3.19",
     author = "Saranraj Nambusubramaniyan",
     author_email = "saran_nns@hotmail.com",
     description ="Self-Organizing Recurrent Neural Networks",
@@ -19,7 +19,7 @@ setup(
                   Spiking Cortical Networks, Neural Connectomics,Neuroscience, Artificial General Intelligence, Neural Information Processing""" ,
     url = "https://github.com/Saran-nns/sorn",
     packages=['sorn'],
-    data_files = ["LICENSE"],
+    data_files = ["LICENSE","sorn/configuration.ini"],
     long_description=read('README.md'),
     long_description_content_type = "text/markdown",
     classifiers=[
@@ -31,7 +31,7 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
     ],
-    include_package_data = True,
+    include_package_data = True,    
     install_requires = ['numpy','configparser','tqdm','scipy','seaborn'],
     zip_safe = False )
 
