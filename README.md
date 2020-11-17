@@ -155,7 +155,6 @@ Plotter.weight_distribution(weights= matrices_dict['Wee'], bin_size = 5, savefig
 # Plot Spike train of all neurons in the network
 Plotter.scatter_plot(spike_train = np.asarray(Exc_activity), savefig=False)
 
-
 Plotter.raster_plot(spike_train = np.asarray(Exc_activity), savefig=False)
 ```
 
@@ -169,7 +168,7 @@ Statistics.autocorr(firing_rates = [1,1,5,6,3,7],t= 2)
 # Fano factor: To verify poissonian process in spike generation of neuron 10
 Statistics.fanofactor(spike_train= np.asarray(Exc_activity),neuron = 10,window_size = 10)
 ```
-Please ```cite``` the repo as,
+#### Please cite the repo as,
 
 ```Python
 @software{saranraj_nambusubramaniyan_2020_4184103,
@@ -183,6 +182,12 @@ Please ```cite``` the repo as,
   url          = {https://doi.org/10.5281/zenodo.4184103}
 }
 ```
+
+#### Cite thesis as,
+Prospects of Biologically Plausible Artificial Brain Circuits Solving General Intelligence Tasks at the Imminence of Chaos
+February 2019
+DOI: 10.13140/RG.2.2.25393.81762
+
 ### The network is inspired by following articles:
 
 Lazar, A. (2009). SORN: a Self-organizing Recurrent Neural Network. Frontiers in Computational Neuroscience, 3. https://doi.org/10.3389/neuro.10.023.2009
