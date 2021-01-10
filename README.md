@@ -64,13 +64,13 @@ from sorn import Simulator
 # Sample input 
 num_features = 10
 time_steps = 200
-inputs = np.random.rand(num_features,timesteps)
+inputs = np.random.rand(num_features,time_steps)
 
 # To simulate the network; 
-matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Simulator.simulate_sorn(inputs = inputs, phase='Plasticity', matrices=None, noise = True, time_steps=time_steps, ne = 200, nu=num_features)
+matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Simulator.simulate_sorn(inputs = inputs, phase='plasticity', matrices=None, noise = True, time_steps=time_steps, ne = 200, nu=num_features)
 
 # To resume the simulation, load the matrices_dict from previous simulation;
-matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Simulator.simulate_sorn(inputs = inputs, phase='Plasticity', matrices=matrices_dict, noise= True, time_steps=time_steps,ne = 200, nu=num_features)
+matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Simulator.simulate_sorn(inputs = inputs, phase='plasticity', matrices=matrices_dict, noise= True, time_steps=time_steps,ne = 200, nu=num_features)
 ```
 
 #### Training phase:
@@ -128,11 +128,11 @@ for EPISODE in range(NUM_EPISODES):
       if EPISODE < NUM_PLASTICITY_EPISODE:
       
         # Plasticity phase
-        sim_matrices,excit_states,inhib_states,recur_states,num_reservoir_conn = Simulator.simulate_sorn(inputs = state, phase ='Plasticity', matrices = sim_matrices, noise=False)
+        sim_matrices,excit_states,inhib_states,recur_states,num_reservoir_conn = Simulator.simulate_sorn(inputs = state, phase ='plasticity', matrices = sim_matrices, noise=False)
 
       else:
         # Training phase with frozen reservoir connectivity
-        sim_matrices,excit_states,inhib_states,recur_states,num_reservoir_conn = Trainer.train_sorn(inputs = state, phase = 'Training', matrices = sim_matrices, noise= False)
+        sim_matrices,excit_states,inhib_states,recur_states,num_reservoir_conn = Trainer.train_sorn(inputs = state, phase = 'training', matrices = sim_matrices, noise= False)
       
       # Feed excit_states as input states to your RL algorithm, below goes for simple policy gradient algorithm
       # Sample policy w.r.t excitatory states and take action in the environment
@@ -184,8 +184,7 @@ Statistics.fanofactor(spike_train= np.asarray(Exc_activity),neuron = 10,window_s
 ```
 
 #### Cite thesis as,
-Prospects of Biologically Plausible Artificial Brain Circuits Solving General Intelligence Tasks at the Imminence of Chaos
-February 2019
+Saranraj Nambusubramaniyan(2019): Prospects of Biologically Plausible Artificial Brain Circuits Solving General Intelligence Tasks at the Imminence of Chaos
 DOI: 10.13140/RG.2.2.25393.81762
 
 ### The network is inspired by following articles:
