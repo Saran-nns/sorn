@@ -26,7 +26,6 @@ from mpl_toolkits.axes_grid1.inset_locator import InsetPosition
 
 
 class Initializer(object):
-
     def __init__(self):
         pass
 
@@ -53,7 +52,7 @@ class Initializer(object):
         for i in idx:
             x[i] = 1.0e4
 
-        inp[:len(x)] = x
+        inp[: len(x)] = x
 
         return inp, idx
 
@@ -122,7 +121,7 @@ class Initializer(object):
         for i in idx:
             x[i] = inp[i]
 
-        out[:len(x)] = x
+        out[: len(x)] = x
 
         return out, idx
 
@@ -163,13 +162,15 @@ class Initializer(object):
 
         """
 
-        if synaptic_connection == 'EE':
+        if synaptic_connection == "EE":
 
             """Choose random lamda connections per neuron"""
 
             # Draw normally distributed ne integers with mean lambd_w
 
-            lambdas_incoming = norm.ppf(np.random.random(ne), loc=lambd_w, scale=lambd_std).astype(int)
+            lambdas_incoming = norm.ppf(
+                np.random.random(ne), loc=lambd_w, scale=lambd_std
+            ).astype(int)
 
             # lambdas_outgoing = norm.ppf(np.random.random(ne), loc=lambd_w, scale=lambd_std).astype(int)
 
@@ -202,32 +203,41 @@ class Initializer(object):
                 # Choose ramdom unique (lambdas[neuron]) neurons from  list_neurons
                 possible_connections = list_neurons.copy()
 
-                possible_connections.remove(neuron)  # Remove the selected neuron from possible connections i!=j
+                possible_connections.remove(
+                    neuron
+                )  # Remove the selected neuron from possible connections i!=j
 
                 # Choose random presynaptic neurons
-                possible_incoming_connections = random.sample(possible_connections, lambdas_incoming[neuron])
+                possible_incoming_connections = random.sample(
+                    possible_connections, lambdas_incoming[neuron]
+                )
 
                 incoming_weights_neuron = global_incoming_weights[
-                                          global_incoming_weights_idx:global_incoming_weights_idx + lambdas_incoming[
-                                              neuron]]
+                    global_incoming_weights_idx : global_incoming_weights_idx
+                    + lambdas_incoming[neuron]
+                ]
 
                 # ---------- Update the connection weight matrix ------------
 
                 # Update incoming connection weights for selected 'neuron'
 
                 for incoming_idx, incoming_weight in enumerate(incoming_weights_neuron):
-                    connection_weights[possible_incoming_connections[incoming_idx]][neuron] = incoming_weight
+                    connection_weights[possible_incoming_connections[incoming_idx]][
+                        neuron
+                    ] = incoming_weight
 
                 global_incoming_weights_idx += lambdas_incoming[neuron]
 
             return connection_weights
 
-        if synaptic_connection == 'EI':
+        if synaptic_connection == "EI":
 
             """Choose random lamda connections per neuron"""
 
             # Draw normally distributed ni integers with mean lambd_w
-            lambdas = norm.ppf(np.random.random(ni), loc=lambd_w, scale=lambd_std).astype(int)
+            lambdas = norm.ppf(
+                np.random.random(ni), loc=lambd_w, scale=lambd_std
+            ).astype(int)
 
             # List of neurons
 
@@ -250,20 +260,26 @@ class Initializer(object):
                 # Choose random unique (lambdas[neuron]) neurons from  list_neurons
                 possible_connections = list(range(ne))
 
-                possible_outgoing_connections = random.sample(possible_connections, lambdas[
-                    neuron])  # possible_outgoing connections to the neuron
+                possible_outgoing_connections = random.sample(
+                    possible_connections, lambdas[neuron]
+                )  # possible_outgoing connections to the neuron
 
                 # Update weights
                 outgoing_weights = global_outgoing_weights[
-                                   global_outgoing_weights_idx:global_outgoing_weights_idx + lambdas[neuron]]
+                    global_outgoing_weights_idx : global_outgoing_weights_idx
+                    + lambdas[neuron]
+                ]
 
                 # ---------- Update the connection weight matrix ------------
 
                 # Update outgoing connections for the neuron
 
                 for outgoing_idx, outgoing_weight in enumerate(
-                        outgoing_weights):  # Update the columns in the connection matrix
-                    connection_weights[neuron][possible_outgoing_connections[outgoing_idx]] = outgoing_weight
+                    outgoing_weights
+                ):  # Update the columns in the connection matrix
+                    connection_weights[neuron][
+                        possible_outgoing_connections[outgoing_idx]
+                    ] = outgoing_weight
 
                 # Update the global weight values index
                 global_outgoing_weights_idx += lambdas[neuron]
@@ -326,7 +342,7 @@ class Initializer(object):
         Returns:
         list (indices) // indices = (row_idx,col_idx)"""
 
-        i, j = np.where(wee <= 0.)
+        i, j = np.where(wee <= 0.0)
         indices = list(zip(i, j))
 
         self_conn_removed = []
@@ -351,14 +367,16 @@ class Initializer(object):
 
     @staticmethod
     def zero_sum_incoming_check(weights):
-        zero_sum_incomings = np.where(np.sum(weights, axis=0) == 0.)
+        zero_sum_incomings = np.where(np.sum(weights, axis=0) == 0.0)
 
         if len(zero_sum_incomings[-1]) == 0:
             return weights
         else:
             for zero_sum_incoming in zero_sum_incomings[-1]:
 
-                rand_indices = np.random.randint(40, size=2)  # 40 in sense that size of E = 200
+                rand_indices = np.random.randint(
+                    40, size=2
+                )  # 40 in sense that size of E = 200
                 # given the probability of connections 0.2
                 rand_values = np.random.uniform(0.0, 0.1, 2)
 
@@ -370,8 +388,8 @@ class Initializer(object):
 
 # ANALYSIS PLOT HELPER CLASS
 
-class Plotter(object):
 
+class Plotter(object):
     def __init__(self):
         pass
 
@@ -393,24 +411,26 @@ class Plotter(object):
 
         plt.figure(figsize=(12, 5))
 
-        plt.title('Number of incoming connections')
-        plt.xlabel('Number of connections')
-        plt.ylabel('Count')
+        plt.title("Number of incoming connections")
+        plt.xlabel("Number of connections")
+        plt.ylabel("Count")
         plt.hist(num_incoming_weights, bins=bin_size, histtype=histtype)
 
         # Empirical average and variance are computed
         avg = np.mean(num_incoming_weights)
         var = np.var(num_incoming_weights)
         # From hist plot above, it is clear that connection count follow gaussian distribution
-        pdf_x = np.linspace(np.min(num_incoming_weights), np.max(num_incoming_weights), 100)
+        pdf_x = np.linspace(
+            np.min(num_incoming_weights), np.max(num_incoming_weights), 100
+        )
         pdf_y = 1.0 / np.sqrt(2 * np.pi * var) * np.exp(-0.5 * (pdf_x - avg) ** 2 / var)
 
-        plt.plot(pdf_x, pdf_y, 'k--', label='Gaussian fit')
-        plt.axvline(x=avg, color='r', linestyle='--', label='Mean')
+        plt.plot(pdf_x, pdf_y, "k--", label="Gaussian fit")
+        plt.axvline(x=avg, color="r", linestyle="--", label="Mean")
         plt.legend()
 
         if savefig:
-            plt.savefig('hist_incoming_conn')
+            plt.savefig("hist_incoming_conn")
 
         return plt.show()
 
@@ -433,27 +453,31 @@ class Plotter(object):
         plt.figure(figsize=(12, 5))
 
         plt.hist(num_outgoing_weights, bins=bin_size, histtype=histtype)
-        plt.title('Number of Outgoing connections')
-        plt.xlabel('Number of connections')
-        plt.ylabel('Count')
+        plt.title("Number of Outgoing connections")
+        plt.xlabel("Number of connections")
+        plt.ylabel("Count")
         # Empirical average and variance are computed
         avg = np.mean(num_outgoing_weights)
         var = np.var(num_outgoing_weights)
         # From hist plot above, it is clear that connection count follow gaussian distribution
-        pdf_x = np.linspace(np.min(num_outgoing_weights), np.max(num_outgoing_weights), 100)
+        pdf_x = np.linspace(
+            np.min(num_outgoing_weights), np.max(num_outgoing_weights), 100
+        )
         pdf_y = 1.0 / np.sqrt(2 * np.pi * var) * np.exp(-0.5 * (pdf_x - avg) ** 2 / var)
 
-        plt.plot(pdf_x, pdf_y, 'k--', label='Gaussian fit')
-        plt.axvline(x=avg, color='r', linestyle='--', label='Mean')
+        plt.plot(pdf_x, pdf_y, "k--", label="Gaussian fit")
+        plt.axvline(x=avg, color="r", linestyle="--", label="Mean")
         plt.legend()
 
         if savefig:
-            plt.savefig('hist_outgoing_conn')
+            plt.savefig("hist_outgoing_conn")
 
         return plt.show()
 
     @staticmethod
-    def network_connection_dynamics(connection_counts, initial_steps, final_steps,savefig):
+    def network_connection_dynamics(
+        connection_counts, initial_steps, final_steps, savefig
+    ):
 
         """Args:
         :param connection_counts(array) - 1D Array of number of connections in the network per time step
@@ -465,14 +489,14 @@ class Plotter(object):
 
         # Plot graph for entire simulation time period
         fig1, ax1 = plt.subplots(figsize=(12, 5))
-        ax1.plot(connection_counts, label='Connection dynamics')
+        ax1.plot(connection_counts, label="Connection dynamics")
         plt.margins(x=0)
         ax1.set_xticks(ax1.get_xticks()[::2])
 
         ax1.set_title("Network connection dynamics")
-        plt.ylabel('Number of active connections')
-        plt.xlabel('Time step')
-        plt.legend(loc='upper right')
+        plt.ylabel("Number of active connections")
+        plt.xlabel("Time step")
+        plt.legend(loc="upper right")
         plt.tight_layout()
 
         # Inset plot for initial simulation steps
@@ -484,7 +508,7 @@ class Plotter(object):
         ax2.set_axes_locator(ip)
         ax2.plot(connection_counts[0:initial_steps])
         plt.margins(x=0)
-        ax2.set_title('Initial %s time steps of Decay Phase'%initial_steps)
+        ax2.set_title("Initial %s time steps of Decay Phase" % initial_steps)
         ax2.set_xticks(ax2.get_xticks()[::2])
 
         # End Inset plot
@@ -496,7 +520,7 @@ class Plotter(object):
         # Plot the last 10000 time steps
         ax3.plot(connection_counts[-final_steps:])
         plt.margins(x=0)
-        ax3.set_title('Final %s time steps of Stable Phase'%final_steps)
+        ax3.set_title("Final %s time steps of Stable Phase" % final_steps)
         ax3.set_xticks(ax3.get_xticks()[::1])
 
         # Uncomment to show decay and stable phase in colors
@@ -505,7 +529,7 @@ class Plotter(object):
         # ax1.axvspan(200000, 1000000, alpha=0.1, color='green')
 
         if savefig:
-            plt.savefig('connection_dynamics')
+            plt.savefig("connection_dynamics")
 
         return plt.show()
 
@@ -523,14 +547,14 @@ class Plotter(object):
 
         # Filter zero entries in firing rate list above
         fr = list(filter(lambda a: a != 0, fr))
-        plt.title('Distribution of population activity without inactive time steps')
-        plt.xlabel('Spikes/time step')
-        plt.ylabel('Count')
+        plt.title("Distribution of population activity without inactive time steps")
+        plt.xlabel("Spikes/time step")
+        plt.ylabel("Count")
 
         plt.hist(fr, bin_size)
 
         if savefig:
-            plt.savefig('hist_firing_rate_network.png')
+            plt.savefig("hist_firing_rate_network.png")
 
         return plt.show()
 
@@ -553,19 +577,19 @@ class Plotter(object):
         plt.figure(figsize=(8, 5))
 
         firing_rates = Statistics.firing_rate_network(spike_train).tolist()
-        plt.plot(firing_rates, label='Firing rate')
-        plt.legend(loc='upper left')
+        plt.plot(firing_rates, label="Firing rate")
+        plt.legend(loc="upper left")
 
-        plt.scatter(y, x, s=0.1, color='black')
+        plt.scatter(y, x, s=0.1, color="black")
         # plt.plot(y,x,'|b')
         # plt.gca().invert_yaxis()
 
-        plt.xlabel('Time(ms)')
-        plt.ylabel('Neuron #')
-        plt.legend(loc='upper left')
+        plt.xlabel("Time(ms)")
+        plt.ylabel("Neuron #")
+        plt.legend(loc="upper left")
 
         if savefig:
-            plt.savefig('ScatterSpikeTrain.png')
+            plt.savefig("ScatterSpikeTrain.png")
         return plt.show()
 
     @staticmethod
@@ -584,22 +608,21 @@ class Plotter(object):
 
         plt.figure(figsize=(11, 6))
 
-
         firing_rates = Statistics.firing_rate_network(spike_train).tolist()
-        plt.plot(firing_rates, label='Firing rate')
-        plt.legend(loc='upper left')
+        plt.plot(firing_rates, label="Firing rate")
+        plt.legend(loc="upper left")
 
         # Get the indices where spike_train is 1
         x, y = np.argwhere(spike_train.T == 1).T
 
-        plt.plot(y, x, '|r')
+        plt.plot(y, x, "|r")
 
         # plt.gca().invert_yaxis()
-        plt.xlabel('Time(ms)')
-        plt.ylabel('Neuron #')
+        plt.xlabel("Time(ms)")
+        plt.ylabel("Neuron #")
 
         if savefig:
-            plt.savefig('RasterSpikeTrain.png')
+            plt.savefig("RasterSpikeTrain.png")
         return plt.show()
 
     @staticmethod
@@ -618,10 +641,20 @@ class Plotter(object):
 
         # Draw the heatmap with the mask and correct aspect ratio
 
-        sns.heatmap(corr, mask=mask, cmap=cmap, xticklabels=5, yticklabels=5, vmax=.1, center=0,
-                    square=False, linewidths=0.0, cbar_kws={"shrink": .9})
+        sns.heatmap(
+            corr,
+            mask=mask,
+            cmap=cmap,
+            xticklabels=5,
+            yticklabels=5,
+            vmax=0.1,
+            center=0,
+            square=False,
+            linewidths=0.0,
+            cbar_kws={"shrink": 0.9},
+        )
         if savefig:
-            plt.savefig('Correlation between neurons')
+            plt.savefig("Correlation between neurons")
         return None
 
     @staticmethod
@@ -636,7 +669,9 @@ class Plotter(object):
             Returns:
             plot object"""
 
-        spike_time = Statistics.	spike_times(spike_train.T[neuron])  # Locate the spike time of the target neuron
+        spike_time = Statistics.spike_times(
+            spike_train.T[neuron]
+        )  # Locate the spike time of the target neuron
 
         isi = Statistics.spike_time_intervals(spike_time)  # ISI intervals of neuron
 
@@ -652,14 +687,18 @@ class Plotter(object):
         popt, pcov = curve_fit(exponential_func, x[1:bin_size], y[1:bin_size])
 
         # Plot
-        plt.plot(x[1:bin_size], exponential_func(x[1:bin_size], *popt), label='Exponential fit')
-        plt.scatter(x[1:bin_size], y[1:bin_size], s=2.0, color='black', label='ISI')
-        plt.xlabel('ISI(time step)')
-        plt.ylabel('Frequency')
+        plt.plot(
+            x[1:bin_size],
+            exponential_func(x[1:bin_size], *popt),
+            label="Exponential fit",
+        )
+        plt.scatter(x[1:bin_size], y[1:bin_size], s=2.0, color="black", label="ISI")
+        plt.xlabel("ISI(time step)")
+        plt.ylabel("Frequency")
         plt.legend()
 
         if savefig:
-            plt.savefig('isi_exponential_fit')
+            plt.savefig("isi_exponential_fit")
         return plt.show()
 
     @staticmethod
@@ -672,20 +711,22 @@ class Plotter(object):
             Returns:
             plot object"""
 
-        weights = weights[weights >= 0.01]  # Remove the weight values less than 0.01 # As reported in article SORN 2013
+        weights = weights[
+            weights >= 0.01
+        ]  # Remove the weight values less than 0.01 # As reported in article SORN 2013
         y, x = np.histogram(weights, bins=bin_size)  # Create histogram with bin_size
 
-        plt.scatter(x[:-1], y, s=2.0, c='black')
-        plt.xlabel('Weight')
-        plt.ylabel('Frequency')
+        plt.scatter(x[:-1], y, s=2.0, c="black")
+        plt.xlabel("Weight")
+        plt.ylabel("Frequency")
 
         if savefig:
-            plt.savefig('weight distribution')
+            plt.savefig("weight distribution")
 
         return plt.show()
 
     @staticmethod
-    def linear_lognormal_fit(weights,num_points, savefig):
+    def linear_lognormal_fit(weights, num_points, savefig):
 
         """Args:
             :param weights (array) - Connection weights
@@ -710,9 +751,13 @@ class Plotter(object):
 
         mode = np.exp(mu - sigma ** 2)  # Note that mode depends on both M and s
         mean = np.exp(mu + (sigma ** 2 / 2))  # Note that mean depends on both M and s
-        x = np.linspace(np.min(weights), np.max(weights), num=num_points)  # values for x-axis
+        x = np.linspace(
+            np.min(weights), np.max(weights), num=num_points
+        )  # values for x-axis
 
-        pdf = stats.lognorm.pdf(x, shape, loc=0, scale=scale)  # probability distribution
+        pdf = stats.lognorm.pdf(
+            x, shape, loc=0, scale=scale
+        )  # probability distribution
 
         plt.figure(figsize=(12, 4.5))
 
@@ -720,55 +765,87 @@ class Plotter(object):
         plt.subplot(121)
         plt.plot(x, pdf)
 
-        plt.vlines(mode, 0, pdf.max(), linestyle=':', label='Mode')
-        plt.vlines(mean, 0, stats.lognorm.pdf(mean, shape, loc=0, scale=scale), linestyle='--', color='green',
-                   label='Mean')
-        plt.vlines(median, 0, stats.lognorm.pdf(median, shape, loc=0, scale=scale), color='blue', label='Median')
+        plt.vlines(mode, 0, pdf.max(), linestyle=":", label="Mode")
+        plt.vlines(
+            mean,
+            0,
+            stats.lognorm.pdf(mean, shape, loc=0, scale=scale),
+            linestyle="--",
+            color="green",
+            label="Mean",
+        )
+        plt.vlines(
+            median,
+            0,
+            stats.lognorm.pdf(median, shape, loc=0, scale=scale),
+            color="blue",
+            label="Median",
+        )
         plt.ylim(ymin=0)
-        plt.xlabel('Weight')
-        plt.title('Linear scale')
+        plt.xlabel("Weight")
+        plt.title("Linear scale")
         plt.legend()
 
         # Figure on logarithmic scale
         plt.subplot(122)
         plt.semilogx(x, pdf)
 
-        plt.vlines(mode, 0, pdf.max(), linestyle=':', label='Mode')
-        plt.vlines(mean, 0, stats.lognorm.pdf(mean, shape, loc=0, scale=scale), linestyle='--', color='green',
-                   label='Mean')
-        plt.vlines(median, 0, stats.lognorm.pdf(median, shape, loc=0, scale=scale), color='blue', label='Median')
+        plt.vlines(mode, 0, pdf.max(), linestyle=":", label="Mode")
+        plt.vlines(
+            mean,
+            0,
+            stats.lognorm.pdf(mean, shape, loc=0, scale=scale),
+            linestyle="--",
+            color="green",
+            label="Mean",
+        )
+        plt.vlines(
+            median,
+            0,
+            stats.lognorm.pdf(median, shape, loc=0, scale=scale),
+            color="blue",
+            label="Median",
+        )
         plt.ylim(ymin=0)
-        plt.xlabel('Weight')
-        plt.title('Logarithmic scale')
+        plt.xlabel("Weight")
+        plt.title("Logarithmic scale")
         plt.legend()
 
         if savefig:
-            plt.savefig('LinearLognormalFit')
+            plt.savefig("LinearLognormalFit")
 
         return plt.show()
 
-    
+    def plot_network(corr, corr_thres, fig_name=None):
 
-    def plot_network(corr,corr_thres,fig_name = None):
-        
         df = pd.DataFrame(corr)
 
         links = df.stack().reset_index()
-        links.columns = ['var1', 'var2','value']
+        links.columns = ["var1", "var2", "value"]
         ### threshold = 0.01, smaller the threshold, higher the density of connections
 
-        links_filtered=links.loc[(links['value'] > corr_thres) & (links['var1'] != links['var2'])]
+        links_filtered = links.loc[
+            (links["value"] > corr_thres) & (links["var1"] != links["var2"])
+        ]
 
         # Build your graph
-        G=nx.from_pandas_edgelist(links_filtered, 'var1', 'var2')
+        G = nx.from_pandas_edgelist(links_filtered, "var1", "var2")
         # Plot the network:
 
         # Plot the network:
-        plt.figure(figsize=(50,50))
-        nx.draw(G, with_labels=True,node_color = 'orange',node_size=50, linewidths=5, font_size=10)
-        plt.text(0.1, 0.9,'%s'%corr_thres)
-        plt.savefig('%s'%fig_name)
+        plt.figure(figsize=(50, 50))
+        nx.draw(
+            G,
+            with_labels=True,
+            node_color="orange",
+            node_size=50,
+            linewidths=5,
+            font_size=10,
+        )
+        plt.text(0.1, 0.9, "%s" % corr_thres)
+        plt.savefig("%s" % fig_name)
         plt.show()
+
     @staticmethod
     def hamming_distance(hamming_dist, savefig):
 
@@ -779,13 +856,12 @@ class Plotter(object):
         plt.plot(hamming_dist)
 
         if savefig:
-            plt.savefig('HammingDistance')
+            plt.savefig("HammingDistance")
 
         return plt.show()
 
 
 class Statistics(object):
-
     def __init__(self):
         pass
 
@@ -806,13 +882,15 @@ class Statistics(object):
         neuron_spike_train = spike_train[:, neuron]
 
         # Split the list(neuron_spike_train) into sub lists of length time_step
-        samples_spike_train = [neuron_spike_train[i:i + bin_size] for i in
-                               range(0, len(neuron_spike_train), bin_size)]
+        samples_spike_train = [
+            neuron_spike_train[i : i + bin_size]
+            for i in range(0, len(neuron_spike_train), bin_size)
+        ]
 
-        spike_rate = 0.
+        spike_rate = 0.0
 
         for idx, spike_train in enumerate(samples_spike_train):
-            spike_rate += list(spike_train).count(1.)
+            spike_rate += list(spike_train).count(1.0)
 
         spike_rate = spike_rate * bin_size / time_period
 
@@ -884,7 +962,14 @@ class Statistics(object):
         scores near -1  suggest that the series is jagged in a particular way: if one point is above the mean, the next
                         is likely to be below the mean by about the same amount, and vice versa."""
 
-        return np.corrcoef(np.array([firing_rates[0:len(firing_rates) - t], firing_rates[t:len(firing_rates)]]))
+        return np.corrcoef(
+            np.array(
+                [
+                    firing_rates[0 : len(firing_rates) - t],
+                    firing_rates[t : len(firing_rates)],
+                ]
+            )
+        )
 
     @staticmethod
     def avg_corr_coeff(spike_train):
@@ -893,7 +978,9 @@ class Statistics(object):
 
         corr_mat = np.corrcoef(np.asarray(spike_train).T)
         avg_corr = np.sum(corr_mat, axis=1) / 200
-        corr_coeff = avg_corr.sum() / 200  # 2D to 1D and either upper  or lower half of correlation matrix.
+        corr_coeff = (
+            avg_corr.sum() / 200
+        )  # 2D to 1D and either upper  or lower half of correlation matrix.
 
         return corr_mat, corr_coeff
 
@@ -902,7 +989,7 @@ class Statistics(object):
 
         """ Get the time instants at which neuron spikes"""
 
-        times = np.where(spike_train == 1.)
+        times = np.where(spike_train == 1.0)
         return times
 
     @staticmethod
@@ -919,13 +1006,16 @@ class Statistics(object):
     def hamming_distance(actual_spike_train, perturbed_spike_train):
 
         """ Hamming distance between  """
-        hd = [np.count_nonzero(actual_spike_train[i] != perturbed_spike_train[i]) for i in range(len(actual_spike_train))]
+        hd = [
+            np.count_nonzero(actual_spike_train[i] != perturbed_spike_train[i])
+            for i in range(len(actual_spike_train))
+        ]
         return hd
 
     # Fano Factor
 
     @staticmethod
-    def fanofactor(spike_train,neuron,window_size):
+    def fanofactor(spike_train, neuron, window_size):
 
         """Investigate whether neuronal spike generation is a poisson process"""
 
@@ -960,8 +1050,12 @@ class Statistics(object):
         # Number of spikes from each neuron during the interval
 
         n_spikes = np.count_nonzero(spike_train, axis=0)
-        p = n_spikes / np.count_nonzero(spike_train)  # Probability of each neuron that can generate spike in next step
+        p = n_spikes / np.count_nonzero(
+            spike_train
+        )  # Probability of each neuron that can generate spike in next step
         # print(p)  # Note: pi shouldn't be zero
-        sse = np.sum([pi * np.log(pi) for pi in p]) / np.log(1 / neurons_in_reservoir)  # Spike source entropy
+        sse = np.sum([pi * np.log(pi) for pi in p]) / np.log(
+            1 / neurons_in_reservoir
+        )  # Spike source entropy
 
         return sse

@@ -8,20 +8,21 @@ from setuptools import setup
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+
 setup(
-    name = "sorn",
-    version = "0.3.19",
-    author = "Saranraj Nambusubramaniyan",
-    author_email = "saran_nns@hotmail.com",
-    description ="Self-Organizing Recurrent Neural Networks",
-    license = "OSI Approved :: MIT License",
-    keywords = """Brain-Inspired Computing,Artificial Neural Networks,Neuro Informatics, 
-                  Spiking Cortical Networks, Neural Connectomics,Neuroscience, Artificial General Intelligence, Neural Information Processing""" ,
-    url = "https://github.com/Saran-nns/sorn",
-    packages=['sorn'],
-    data_files = ["LICENSE","sorn/configuration.ini"],
-    long_description=read('README.md'),
-    long_description_content_type = "text/markdown",
+    name="sorn",
+    version="0.3.20",
+    author="Saranraj Nambusubramaniyan",
+    author_email="saran_nns@hotmail.com",
+    description="Self-Organizing Recurrent Neural Networks",
+    license="OSI Approved :: MIT License",
+    keywords="""Brain-Inspired Computing,Artificial Neural Networks,Neuro Informatics, 
+                  Spiking Cortical Networks, Neural Connectomics,Neuroscience, Artificial General Intelligence, Neural Information Processing""",
+    url="https://github.com/Saran-nns/sorn",
+    packages=["sorn"],
+    data_files=["LICENSE", "sorn/configuration.ini"],
+    long_description=read("README.md"),
+    long_description_content_type="text/markdown",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
@@ -31,7 +32,8 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
     ],
-    include_package_data = True,    
-    install_requires = ['numpy','configparser','tqdm','scipy','seaborn'],
-    zip_safe = False )
+    include_package_data=True,
+    install_requires=["numpy", "configparser", "tqdm", "scipy", "seaborn"],
+    zip_safe=False,
+)
 
