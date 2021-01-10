@@ -60,6 +60,7 @@ The default ```ne, nu``` values are overriden by passing them as kwargs inside``
 ```Python
 # Import 
 from sorn import Simulator
+import numpy as np
 
 # Sample input 
 num_features = 10
