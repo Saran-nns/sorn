@@ -1,0 +1,1447 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>utils &mdash; Self-Organizing Recurrent Neural Network (SORN) 0.3.20 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Self-Organizing Recurrent Neural Network (SORN)
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Attributes and Methods</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Contribution</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contribution.html">Steps</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Citation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../paper.html">Paper</a></li>
+</ul>
+<p class="caption"><span class="caption-text">License</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Contact</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Reach me</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Self-Organizing Recurrent Neural Network (SORN)</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">norm</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">curve_fit</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+
+<div class="viewcode-block" id="Initializer"><a class="viewcode-back" href="../index.html#utils.Initializer">[docs]</a><span class="k">class</span> <span class="nc">Initializer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Helper class to initialize the matrices for the SORN</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="Initializer.generate_strong_inp"><a class="viewcode-back" href="../index.html#utils.Initializer.generate_strong_inp">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">generate_strong_inp</span><span class="p">(</span><span class="n">length</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">reservoir_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate strong one-hot vector of input. Random neurons in the reservoir acts as inputs</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            length (int) - Number of input neurons</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            inp (array) - Input vector of length equals the number of neurons in the reservoir</span>
+<span class="sd">                  with randomly chosen neuron set active</span>
+<span class="sd">        </span>
+<span class="sd">            idx (list) - List of chosen input neurons &quot;&quot;&quot;</span>
+
+        <span class="n">inp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">reservoir_size</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">length</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">reservoir_size</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idx</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0e4</span>
+
+        <span class="n">inp</span><span class="p">[:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)]</span> <span class="o">=</span> <span class="n">x</span>
+
+        <span class="k">return</span> <span class="n">inp</span><span class="p">,</span> <span class="n">idx</span></div>
+
+    <span class="c1"># Generate multi-node one-hot strong inputs</span>
+
+<div class="viewcode-block" id="Initializer.multi_one_hot_inp"><a class="viewcode-back" href="../index.html#utils.Initializer.multi_one_hot_inp">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">multi_one_hot_inp</span><span class="p">(</span><span class="n">ne</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">n_nodes_per_inp</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate multi(n_nodes_per_inp) one hot vector for each input. </span>
+<span class="sd">        For each input, set n_nodes_per_inp equals one and the rest of </span>
+<span class="sd">        neurons in the pool recieves no external stimuli</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">          ne(int) - Number of excitatory units in sorn</span>
+<span class="sd">          </span>
+<span class="sd">          inputs(list) - input labels</span>
+<span class="sd">          </span>
+<span class="sd">          n_nodes_per_inp(int) - Number of target units in pool that receives single input</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">          one_hot_vector for each label with length equals ne </span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">one_hot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ne</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">)))</span>
+
+        <span class="n">idxs</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_nodes_per_inp</span><span class="p">):</span>
+            <span class="n">idxs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ne</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">)))</span>
+
+        <span class="n">idxs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">idxs</span><span class="p">))</span>
+
+        <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Max(j) = len(inputs)</span>
+        <span class="k">for</span> <span class="n">idx_list</span> <span class="ow">in</span> <span class="n">idxs</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idx_list</span><span class="p">:</span>
+                <span class="n">one_hot</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">one_hot</span><span class="p">,</span> <span class="n">idxs</span></div>
+
+<div class="viewcode-block" id="Initializer.generate_gaussian_inputs"><a class="viewcode-back" href="../index.html#utils.Initializer.generate_gaussian_inputs">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">generate_gaussian_inputs</span><span class="p">(</span><span class="n">length</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">reservoir_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Generate external stimuli sampled from Gaussian distribution.</span>
+<span class="sd">        Randomly neurons in the reservoir receives this input at each timestep</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            length(int) - Number of input neurons</span>
+<span class="sd">        </span>
+<span class="sd">        Returns: </span>
+<span class="sd">            out (array) - Input vector of length equals the number of neurons in the reservoir</span>
+<span class="sd">                  with randomly chosen neuron set active</span>
+<span class="sd">            </span>
+<span class="sd">            idx (int) - List of chosen input neurons </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">out</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">reservoir_size</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">length</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">reservoir_size</span><span class="p">))</span>
+        <span class="n">inp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idx</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">inp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="n">out</span><span class="p">[:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)]</span> <span class="o">=</span> <span class="n">x</span>
+
+        <span class="k">return</span> <span class="n">out</span><span class="p">,</span> <span class="n">idx</span></div>
+
+<div class="viewcode-block" id="Initializer.normalize_weight_matrix"><a class="viewcode-back" href="../index.html#utils.Initializer.normalize_weight_matrix">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">normalize_weight_matrix</span><span class="p">(</span><span class="n">weight_matrix</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+
+        <span class="c1"># Applied only while initializing the weight. During simulation, Synaptic scaling applied on weight matrices</span>
+
+        <span class="sd">&quot;&quot;&quot; Normalize the weights in the matrix such that incoming connections to a neuron sum up to 1</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            weight_matrix(array) -- Incoming Weights from W_ee or W_ei or W_ie</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            weight_matrix(array) -- Normalized weight matrix&quot;&quot;&quot;</span>
+
+        <span class="n">normalized_weight_matrix</span> <span class="o">=</span> <span class="n">weight_matrix</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weight_matrix</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">normalized_weight_matrix</span></div>
+
+<div class="viewcode-block" id="Initializer.generate_lambd_connections"><a class="viewcode-back" href="../index.html#utils.Initializer.generate_lambd_connections">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">generate_lambd_connections</span><span class="p">(</span>
+        <span class="n">synaptic_connection</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ne</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">ni</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">lambd_w</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">lambd_std</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Generate lambda incoming connections for Excitatory neurons and outgoing connections per Inhibitory neuron</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            synaptic_connection (str) -  Type of sysnpatic connection (EE,EI or IE)</span>
+<span class="sd">            </span>
+<span class="sd">            ne (int) - Number of excitatory units</span>
+<span class="sd">            </span>
+<span class="sd">            ni(int) - Number of inhibitory units</span>
+<span class="sd">            </span>
+<span class="sd">            lambd_w(int) - Average number of incoming connections</span>
+<span class="sd">            </span>
+<span class="sd">            lambd_std(int) - Standard deviation of average number of connections per neuron</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            connection_weights(array) - Weight matrix</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">synaptic_connection</span> <span class="o">==</span> <span class="s2">&quot;EE&quot;</span><span class="p">:</span>
+
+            <span class="sd">&quot;&quot;&quot;Choose random lamda connections per neuron&quot;&quot;&quot;</span>
+
+            <span class="c1"># Draw normally distributed ne integers with mean lambd_w</span>
+
+            <span class="n">lambdas_incoming</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">ne</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="n">lambd_w</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">lambd_std</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+            <span class="c1"># lambdas_outgoing = norm.ppf(np.random.random(ne), loc=lambd_w, scale=lambd_std).astype(int)</span>
+
+            <span class="c1"># List of neurons</span>
+
+            <span class="n">list_neurons</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">ne</span><span class="p">))</span>
+
+            <span class="c1"># Connection weights</span>
+
+            <span class="n">connection_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ne</span><span class="p">,</span> <span class="n">ne</span><span class="p">))</span>
+
+            <span class="c1"># For each lambd value in the above list,</span>
+            <span class="c1"># generate weights for incoming and outgoing connections</span>
+
+            <span class="c1"># -------------Gaussian Distribution of weights --------------</span>
+
+            <span class="c1"># weight_matrix = np.random.randn(Sorn.ne, Sorn.ni) + 2 # Small random values from gaussian distribution</span>
+            <span class="c1"># Centered around 2 to make all values positive</span>
+
+            <span class="c1"># ------------Uniform Distribution --------------------------</span>
+            <span class="n">global_incoming_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">lambdas_incoming</span><span class="p">))</span>
+
+            <span class="c1"># Index Counter</span>
+            <span class="n">global_incoming_weights_idx</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="c1"># Choose the neurons in order [0 to 199]</span>
+
+            <span class="k">for</span> <span class="n">neuron</span> <span class="ow">in</span> <span class="n">list_neurons</span><span class="p">:</span>
+
+                <span class="c1"># Choose ramdom unique (lambdas[neuron]) neurons from  list_neurons</span>
+                <span class="n">possible_connections</span> <span class="o">=</span> <span class="n">list_neurons</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+                <span class="n">possible_connections</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span>
+                    <span class="n">neuron</span>
+                <span class="p">)</span>  <span class="c1"># Remove the selected neuron from possible connections i!=j</span>
+
+                <span class="c1"># Choose random presynaptic neurons</span>
+                <span class="n">possible_incoming_connections</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span>
+                    <span class="n">possible_connections</span><span class="p">,</span> <span class="n">lambdas_incoming</span><span class="p">[</span><span class="n">neuron</span><span class="p">]</span>
+                <span class="p">)</span>
+
+                <span class="n">incoming_weights_neuron</span> <span class="o">=</span> <span class="n">global_incoming_weights</span><span class="p">[</span>
+                    <span class="n">global_incoming_weights_idx</span> <span class="p">:</span> <span class="n">global_incoming_weights_idx</span>
+                    <span class="o">+</span> <span class="n">lambdas_incoming</span><span class="p">[</span><span class="n">neuron</span><span class="p">]</span>
+                <span class="p">]</span>
+
+                <span class="c1"># ---------- Update the connection weight matrix ------------</span>
+
+                <span class="c1"># Update incoming connection weights for selected &#39;neuron&#39;</span>
+
+                <span class="k">for</span> <span class="n">incoming_idx</span><span class="p">,</span> <span class="n">incoming_weight</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">incoming_weights_neuron</span><span class="p">):</span>
+                    <span class="n">connection_weights</span><span class="p">[</span><span class="n">possible_incoming_connections</span><span class="p">[</span><span class="n">incoming_idx</span><span class="p">]][</span>
+                        <span class="n">neuron</span>
+                    <span class="p">]</span> <span class="o">=</span> <span class="n">incoming_weight</span>
+
+                <span class="n">global_incoming_weights_idx</span> <span class="o">+=</span> <span class="n">lambdas_incoming</span><span class="p">[</span><span class="n">neuron</span><span class="p">]</span>
+
+            <span class="k">return</span> <span class="n">connection_weights</span>
+
+        <span class="k">if</span> <span class="n">synaptic_connection</span> <span class="o">==</span> <span class="s2">&quot;EI&quot;</span><span class="p">:</span>
+
+            <span class="sd">&quot;&quot;&quot;Choose random lamda connections per neuron&quot;&quot;&quot;</span>
+
+            <span class="c1"># Draw normally distributed ni integers with mean lambd_w</span>
+            <span class="n">lambdas</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">ni</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="n">lambd_w</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">lambd_std</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+            <span class="c1"># List of neurons</span>
+
+            <span class="n">list_neurons</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">ni</span><span class="p">))</span>  <span class="c1"># Each i can connect with random ne neurons</span>
+
+            <span class="c1"># Initializing connection weights variable</span>
+
+            <span class="n">connection_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ni</span><span class="p">,</span> <span class="n">ne</span><span class="p">))</span>
+
+            <span class="c1"># ------------Uniform Distribution -----------------------------</span>
+            <span class="n">global_outgoing_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">lambdas</span><span class="p">))</span>
+
+            <span class="c1"># Index Counter</span>
+            <span class="n">global_outgoing_weights_idx</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="c1"># Choose the neurons in order [0 to 40]</span>
+
+            <span class="k">for</span> <span class="n">neuron</span> <span class="ow">in</span> <span class="n">list_neurons</span><span class="p">:</span>
+
+                <span class="c1"># Choose random unique (lambdas[neuron]) neurons from  list_neurons</span>
+                <span class="n">possible_connections</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">ne</span><span class="p">))</span>
+
+                <span class="n">possible_outgoing_connections</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span>
+                    <span class="n">possible_connections</span><span class="p">,</span> <span class="n">lambdas</span><span class="p">[</span><span class="n">neuron</span><span class="p">]</span>
+                <span class="p">)</span>  <span class="c1"># possible_outgoing connections to the neuron</span>
+
+                <span class="c1"># Update weights</span>
+                <span class="n">outgoing_weights</span> <span class="o">=</span> <span class="n">global_outgoing_weights</span><span class="p">[</span>
+                    <span class="n">global_outgoing_weights_idx</span> <span class="p">:</span> <span class="n">global_outgoing_weights_idx</span>
+                    <span class="o">+</span> <span class="n">lambdas</span><span class="p">[</span><span class="n">neuron</span><span class="p">]</span>
+                <span class="p">]</span>
+
+                <span class="c1"># ---------- Update the connection weight matrix ------------</span>
+
+                <span class="c1"># Update outgoing connections for the neuron</span>
+
+                <span class="k">for</span> <span class="n">outgoing_idx</span><span class="p">,</span> <span class="n">outgoing_weight</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
+                    <span class="n">outgoing_weights</span>
+                <span class="p">):</span>  <span class="c1"># Update the columns in the connection matrix</span>
+                    <span class="n">connection_weights</span><span class="p">[</span><span class="n">neuron</span><span class="p">][</span>
+                        <span class="n">possible_outgoing_connections</span><span class="p">[</span><span class="n">outgoing_idx</span><span class="p">]</span>
+                    <span class="p">]</span> <span class="o">=</span> <span class="n">outgoing_weight</span>
+
+                <span class="c1"># Update the global weight values index</span>
+                <span class="n">global_outgoing_weights_idx</span> <span class="o">+=</span> <span class="n">lambdas</span><span class="p">[</span><span class="n">neuron</span><span class="p">]</span>
+
+            <span class="k">return</span> <span class="n">connection_weights</span></div>
+
+<div class="viewcode-block" id="Initializer.get_incoming_connection_dict"><a class="viewcode-back" href="../index.html#utils.Initializer.get_incoming_connection_dict">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_incoming_connection_dict</span><span class="p">(</span><span class="n">weights</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Get the non-zero entries in columns is the incoming connections for the neurons</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            weights (np.array): Connection/Synaptic weights</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict : Dictionary of incoming connections to each neuron</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Indices of nonzero entries in the columns</span>
+        <span class="n">connection_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>  <span class="c1"># For each neuron</span>
+            <span class="n">connection_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">weights</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">connection_dict</span></div>
+
+<div class="viewcode-block" id="Initializer.get_outgoing_connection_dict"><a class="viewcode-back" href="../index.html#utils.Initializer.get_outgoing_connection_dict">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_outgoing_connection_dict</span><span class="p">(</span><span class="n">weights</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the non-zero entries in rows is the outgoing connections for the neurons</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            weights (np.array): Connection/Synaptic weights</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict : Dictionary of outgoing connections from each neuron</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Indices of nonzero entries in the rows</span>
+        <span class="n">connection_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>  <span class="c1"># For each neuron</span>
+            <span class="n">connection_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:])[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">connection_dict</span></div>
+
+<div class="viewcode-block" id="Initializer.prune_small_weights"><a class="viewcode-back" href="../index.html#utils.Initializer.prune_small_weights">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">prune_small_weights</span><span class="p">(</span><span class="n">weights</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">cutoff_weight</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Prune the connections with negative connection strength. The weights less than cutoff_weight set to 0</span>
+
+<span class="sd">        Args:  </span>
+<span class="sd">            weights (np.array): Synaptic strengths</span>
+<span class="sd">            </span>
+<span class="sd">            cutoff_weight (float): Lower weight threshold</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            array: Connections weights with values less than cutoff_weight set to 0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">weights</span><span class="p">[</span><span class="n">weights</span> <span class="o">&lt;=</span> <span class="n">cutoff_weight</span><span class="p">]</span> <span class="o">=</span> <span class="n">cutoff_weight</span>
+
+        <span class="k">return</span> <span class="n">weights</span></div>
+
+<div class="viewcode-block" id="Initializer.set_max_cutoff_weight"><a class="viewcode-back" href="../index.html#utils.Initializer.set_max_cutoff_weight">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">set_max_cutoff_weight</span><span class="p">(</span><span class="n">weights</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">cutoff_weight</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Set cutoff limit for the values in given array</span>
+<span class="sd">        </span>
+<span class="sd">        Args:    </span>
+<span class="sd">            weights (np.array): Synaptic strengths</span>
+<span class="sd">            </span>
+<span class="sd">            cutoff_weight (float): Higher weight threshold</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            array: Connections weights with values greater than cutoff_weight set to 1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">weights</span><span class="p">[</span><span class="n">weights</span> <span class="o">&gt;</span> <span class="n">cutoff_weight</span><span class="p">]</span> <span class="o">=</span> <span class="n">cutoff_weight</span>
+
+        <span class="k">return</span> <span class="n">weights</span></div>
+
+<div class="viewcode-block" id="Initializer.get_unconnected_indexes"><a class="viewcode-back" href="../index.html#utils.Initializer.get_unconnected_indexes">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_unconnected_indexes</span><span class="p">(</span><span class="n">wee</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Helper function for Structural plasticity to randomly select the unconnected units</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            wee (array) -  Weight matrix</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list (indices) // indices = (row_idx,col_idx)&quot;&quot;&quot;</span>
+
+        <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">wee</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">))</span>
+
+        <span class="n">self_conn_removed</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">idxs</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">indices</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="n">idxs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">idxs</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">self_conn_removed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">self_conn_removed</span></div>
+
+<div class="viewcode-block" id="Initializer.white_gaussian_noise"><a class="viewcode-back" href="../index.html#utils.Initializer.white_gaussian_noise">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">white_gaussian_noise</span><span class="p">(</span><span class="n">mu</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">sigma</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Generates white gaussian noise with mean mu, standard deviation sigma and</span>
+<span class="sd">        the noise length equals t</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            mu (float): Mean value of Gaussian noise</span>
+<span class="sd">            </span>
+<span class="sd">            sigma (float): Standard deviation of Gaussian noise</span>
+<span class="sd">            </span>
+<span class="sd">            t (int): Length of noise vector</span>
+
+<span class="sd">        Returns: </span>
+<span class="sd">            array: White gaussian noise of length t</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">noise</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></div>
+
+    <span class="c1"># SANITY CHECK EACH WEIGHTS</span>
+    <span class="c1"># Note this function has no influence in weight matrix, will be deprecated in next version</span>
+
+<div class="viewcode-block" id="Initializer.zero_sum_incoming_check"><a class="viewcode-back" href="../index.html#utils.Initializer.zero_sum_incoming_check">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">zero_sum_incoming_check</span><span class="p">(</span><span class="n">weights</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Make sure, the each neuron in the pool has atleast 1 incoming connection</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            weights (array): Synaptic strengths</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            array: Synaptic weights with all neurons with atleast one positive (non-zero) incoming connection strength </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">zero_sum_incomings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">zero_sum_incomings</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">weights</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">zero_sum_incoming</span> <span class="ow">in</span> <span class="n">zero_sum_incomings</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+
+                <span class="n">rand_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span>
+                    <span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="mi">40</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">2</span>
+                <span class="p">)</span>  <span class="c1"># 40 in sense that size of E = 200</span>
+                <span class="c1"># given the probability of connections 0.2</span>
+                <span class="n">rand_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rand_indices</span><span class="p">):</span>
+                    <span class="n">weights</span><span class="p">[:,</span> <span class="n">zero_sum_incoming</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">rand_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">weights</span></div></div>
+
+
+<div class="viewcode-block" id="Plotter"><a class="viewcode-back" href="../reference.html#utils.Plotter">[docs]</a><span class="k">class</span> <span class="nc">Plotter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Wrapper class to call plotting methods</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="Plotter.hist_incoming_conn"><a class="viewcode-back" href="../reference.html#utils.Plotter.hist_incoming_conn">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">hist_incoming_conn</span><span class="p">(</span>
+        <span class="n">weights</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">bin_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">histtype</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">savefig</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plot the histogram of number of incoming connections per neuron</span>
+
+<span class="sd">        Args:    </span>
+<span class="sd">            weights (array): Connection weights</span>
+<span class="sd">            </span>
+<span class="sd">            bin_size (int): Histogram bin size</span>
+<span class="sd">            </span>
+<span class="sd">            histtype (str): Same as histtype matplotlib</span>
+<span class="sd">            </span>
+<span class="sd">            savefig (bool): If True plot will be saved as png file in the cwd</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            plot (matplotlib.pyplot): plot object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Plot the histogram of distribution of number of incoming connections in the network</span>
+
+        <span class="n">num_incoming_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Number of incoming connections&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Number of connections&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Count&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">num_incoming_weights</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bin_size</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="n">histtype</span><span class="p">)</span>
+
+        <span class="c1"># Empirical average and variance are computed</span>
+        <span class="n">avg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">num_incoming_weights</span><span class="p">)</span>
+        <span class="n">var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">num_incoming_weights</span><span class="p">)</span>
+        <span class="c1"># From hist plot above, it is clear that connection count follow gaussian distribution</span>
+        <span class="n">pdf_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">num_incoming_weights</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">num_incoming_weights</span><span class="p">),</span> <span class="mi">100</span>
+        <span class="p">)</span>
+        <span class="n">pdf_y</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">var</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">pdf_x</span> <span class="o">-</span> <span class="n">avg</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">var</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pdf_x</span><span class="p">,</span> <span class="n">pdf_y</span><span class="p">,</span> <span class="s2">&quot;k--&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Gaussian fit&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">avg</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Mean&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">savefig</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;hist_incoming_conn&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Plotter.hist_outgoing_conn"><a class="viewcode-back" href="../reference.html#utils.Plotter.hist_outgoing_conn">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">hist_outgoing_conn</span><span class="p">(</span>
+        <span class="n">weights</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">bin_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">histtype</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">savefig</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plot the histogram of number of incoming connections per neuron</span>
+<span class="sd">        </span>
+<span class="sd">        Args:   </span>
+<span class="sd">            weights(array) - Connection weights</span>
+<span class="sd">            </span>
+<span class="sd">            bin_size(int) - Histogram bin size</span>
+<span class="sd">            </span>
+<span class="sd">            histtype(str) - Same as histtype matplotlib</span>
+<span class="sd">            </span>
+<span class="sd">            savefig(bool) - If True plot will be saved as png file in the cwd</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            plot object &quot;&quot;&quot;</span>
+
+        <span class="c1"># Plot the histogram of distribution of number of incoming connections in the network</span>
+
+        <span class="n">num_outgoing_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">num_outgoing_weights</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bin_size</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="n">histtype</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Number of Outgoing connections&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Number of connections&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Count&quot;</span><span class="p">)</span>
+        <span class="c1"># Empirical average and variance are computed</span>
+        <span class="n">avg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">num_outgoing_weights</span><span class="p">)</span>
+        <span class="n">var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">num_outgoing_weights</span><span class="p">)</span>
+        <span class="c1"># From hist plot above, it is clear that connection count follow gaussian distribution</span>
+        <span class="n">pdf_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">num_outgoing_weights</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">num_outgoing_weights</span><span class="p">),</span> <span class="mi">100</span>
+        <span class="p">)</span>
+        <span class="n">pdf_y</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">var</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">pdf_x</span> <span class="o">-</span> <span class="n">avg</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">var</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pdf_x</span><span class="p">,</span> <span class="n">pdf_y</span><span class="p">,</span> <span class="s2">&quot;k--&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Gaussian fit&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">avg</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Mean&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">savefig</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;hist_outgoing_conn&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Plotter.network_connection_dynamics"><a class="viewcode-back" href="../reference.html#utils.Plotter.network_connection_dynamics">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">network_connection_dynamics</span><span class="p">(</span>
+        <span class="n">connection_counts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">initial_steps</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">final_steps</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">savefig</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plot number of positive connection in the excitatory pool</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            connection_counts(array) - 1D Array of number of connections in the network per time step</span>
+<span class="sd">            </span>
+<span class="sd">            initial_steps(int) - Plot for initial steps</span>
+<span class="sd">            </span>
+<span class="sd">            final_steps(int) - Plot for final steps</span>
+<span class="sd">            </span>
+<span class="sd">            savefig(bool) - If True plot will be saved as png file in the cwd</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            plot object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Plot graph for entire simulation time period</span>
+        <span class="n">fig1</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">connection_counts</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Connection dynamics&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">margins</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">ax1</span><span class="o">.</span><span class="n">get_xticks</span><span class="p">()[::</span><span class="mi">2</span><span class="p">])</span>
+
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Network connection dynamics&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Number of active connections&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time step&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+        <span class="c1"># Inset plot for initial simulation steps</span>
+
+        <span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+        <span class="c1"># Set the position and relative size of the inset axes within ax1</span>
+        <span class="n">ip</span> <span class="o">=</span> <span class="n">InsetPosition</span><span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">set_axes_locator</span><span class="p">(</span><span class="n">ip</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">connection_counts</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">initial_steps</span><span class="p">])</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">margins</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Initial </span><span class="si">%s</span><span class="s2"> time steps of Decay Phase&quot;</span> <span class="o">%</span> <span class="n">initial_steps</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">ax2</span><span class="o">.</span><span class="n">get_xticks</span><span class="p">()[::</span><span class="mi">2</span><span class="p">])</span>
+
+        <span class="c1"># End Inset plot</span>
+        <span class="n">ax3</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+        <span class="c1"># Set the position and relative size of the inset axes within ax1</span>
+        <span class="n">ip1</span> <span class="o">=</span> <span class="n">InsetPosition</span><span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
+        <span class="n">ax3</span><span class="o">.</span><span class="n">set_axes_locator</span><span class="p">(</span><span class="n">ip1</span><span class="p">)</span>
+        <span class="c1"># Plot the last 10000 time steps</span>
+        <span class="n">ax3</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">connection_counts</span><span class="p">[</span><span class="o">-</span><span class="n">final_steps</span><span class="p">:])</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">margins</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">ax3</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Final </span><span class="si">%s</span><span class="s2"> time steps of Stable Phase&quot;</span> <span class="o">%</span> <span class="n">final_steps</span><span class="p">)</span>
+        <span class="n">ax3</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">ax3</span><span class="o">.</span><span class="n">get_xticks</span><span class="p">()[::</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="c1"># Uncomment to show decay and stable phase in colors</span>
+        <span class="c1"># ax1.axvspan(0, 200000, alpha=0.1, color=&#39;red&#39;)</span>
+        <span class="c1"># ax2.axvspan(0, 10000, alpha=0.1, color=&#39;red&#39;)</span>
+        <span class="c1"># ax1.axvspan(200000, 1000000, alpha=0.1, color=&#39;green&#39;)</span>
+
+        <span class="k">if</span> <span class="n">savefig</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;connection_dynamics&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Plotter.hist_firing_rate_network"><a class="viewcode-back" href="../reference.html#utils.Plotter.hist_firing_rate_network">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">hist_firing_rate_network</span><span class="p">(</span><span class="n">spike_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">bin_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">savefig</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot; Plot the histogram of firing rate (total number of neurons spike at each time step)</span>
+<span class="sd">        </span>
+<span class="sd">        Args:    </span>
+<span class="sd">            spike_train(array) - Array of spike trains</span>
+<span class="sd">            </span>
+<span class="sd">            bin_size(int) - Histogram bin size</span>
+<span class="sd">            </span>
+<span class="sd">            savefig(bool) - If True, plot will be saved in the cwd</span>
+
+<span class="sd">        Returns: </span>
+<span class="sd">            plot object &quot;&quot;&quot;</span>
+
+        <span class="n">fr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">spike_train</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Filter zero entries in firing rate list above</span>
+        <span class="n">fr</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">:</span> <span class="n">a</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">fr</span><span class="p">))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Distribution of population activity without inactive time steps&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Spikes/time step&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Count&quot;</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">fr</span><span class="p">,</span> <span class="n">bin_size</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">savefig</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;hist_firing_rate_network.png&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Plotter.scatter_plot"><a class="viewcode-back" href="../reference.html#utils.Plotter.scatter_plot">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">scatter_plot</span><span class="p">(</span><span class="n">spike_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">savefig</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Scatter plot of spike trains</span>
+<span class="sd">            </span>
+<span class="sd">        Args:</span>
+<span class="sd">            spike_train (list) - Array of spike trains</span>
+<span class="sd">            </span>
+<span class="sd">            with_firing_rates(bool) - If True, firing rate of the network will be plotted</span>
+<span class="sd">            </span>
+<span class="sd">            savefig(bool) - If True, plot will be saved in the cwd</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            plot object&quot;&quot;&quot;</span>
+
+        <span class="c1"># Conver the list of spike train into array</span>
+        <span class="n">spike_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">spike_train</span><span class="p">)</span>
+        <span class="c1"># Get the indices where spike_train is 1</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">spike_train</span><span class="o">.</span><span class="n">T</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+        <span class="n">firing_rates</span> <span class="o">=</span> <span class="n">Statistics</span><span class="o">.</span><span class="n">firing_rate_network</span><span class="p">(</span><span class="n">spike_train</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">firing_rates</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Firing rate&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper left&quot;</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+        <span class="c1"># plt.plot(y,x,&#39;|b&#39;)</span>
+        <span class="c1"># plt.gca().invert_yaxis()</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time(ms)&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Neuron #&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper left&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">savefig</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;ScatterSpikeTrain.png&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Plotter.raster_plot"><a class="viewcode-back" href="../reference.html#utils.Plotter.raster_plot">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">raster_plot</span><span class="p">(</span><span class="n">spike_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">savefig</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Raster plot of spike trains</span>
+<span class="sd">            </span>
+<span class="sd">        Args: </span>
+<span class="sd">            spike_train (array) - Array of spike trains</span>
+<span class="sd">            </span>
+<span class="sd">            with_firing_rates(bool) - If True, firing rate of the network will be plotted</span>
+<span class="sd">            </span>
+<span class="sd">            savefig(bool) - If True, plot will be saved in the cwd</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            plot object&quot;&quot;&quot;</span>
+
+        <span class="c1"># Conver the list of spike train into array</span>
+        <span class="n">spike_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">spike_train</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+        <span class="n">firing_rates</span> <span class="o">=</span> <span class="n">Statistics</span><span class="o">.</span><span class="n">firing_rate_network</span><span class="p">(</span><span class="n">spike_train</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">firing_rates</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Firing rate&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper left&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Get the indices where spike_train is 1</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">spike_train</span><span class="o">.</span><span class="n">T</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;|r&quot;</span><span class="p">)</span>
+
+        <span class="c1"># plt.gca().invert_yaxis()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time(ms)&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Neuron #&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">savefig</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;RasterSpikeTrain.png&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Plotter.correlation"><a class="viewcode-back" href="../reference.html#utils.Plotter.correlation">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">correlation</span><span class="p">(</span><span class="n">corr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">savefig</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Plot correlation between neurons</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            corr (array): Correlation matrix</span>
+<span class="sd">            </span>
+<span class="sd">            savefig (bool): If true will save the plot at the current working directory</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            matplotlib.pyplot: Neuron Correlation plot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Generate a mask for the upper triangle</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">corr</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
+        <span class="n">mask</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">triu_indices_from</span><span class="p">(</span><span class="n">mask</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+
+        <span class="c1"># Custom diverging colormap</span>
+        <span class="n">cmap</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">diverging_palette</span><span class="p">(</span><span class="mi">220</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">as_cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Draw the heatmap with the mask and correct aspect ratio</span>
+
+        <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span>
+            <span class="n">corr</span><span class="p">,</span>
+            <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">,</span>
+            <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span>
+            <span class="n">xticklabels</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">yticklabels</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">vmax</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+            <span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">square</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">cbar_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;shrink&quot;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">},</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">savefig</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;Correlation between neurons&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Plotter.isi_exponential_fit"><a class="viewcode-back" href="../reference.html#utils.Plotter.isi_exponential_fit">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">isi_exponential_fit</span><span class="p">(</span>
+        <span class="n">spike_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">neuron</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">bin_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">savefig</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Plot Exponential fit on the inter-spike intervals during training or simulation phase</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            spike_train (array) - Array of spike trains</span>
+<span class="sd">        </span>
+<span class="sd">            neuron(int) - If True, firing rate of the network will be plotted</span>
+<span class="sd">        </span>
+<span class="sd">            bin_size(int) - Spike train will be splitted into bins of size bin_size</span>
+<span class="sd">        </span>
+<span class="sd">            savefig(bool) - If True, plot will be saved in the cwd</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            plot object&quot;&quot;&quot;</span>
+
+        <span class="n">spike_time</span> <span class="o">=</span> <span class="n">Statistics</span><span class="o">.</span><span class="n">spike_times</span><span class="p">(</span>
+            <span class="n">spike_train</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">neuron</span><span class="p">]</span>
+        <span class="p">)</span>  <span class="c1"># Locate the spike time of the target neuron</span>
+
+        <span class="n">isi</span> <span class="o">=</span> <span class="n">Statistics</span><span class="o">.</span><span class="n">spike_time_intervals</span><span class="p">(</span><span class="n">spike_time</span><span class="p">)</span>  <span class="c1"># ISI intervals of neuron</span>
+
+        <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">isi</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="n">bin_size</span><span class="p">)</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">y</span><span class="p">]</span>
+
+        <span class="k">def</span> <span class="nf">exponential_func</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">b</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">))</span> <span class="o">-</span> <span class="n">c</span>
+
+        <span class="c1"># Curve fit</span>
+        <span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">exponential_func</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">bin_size</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">bin_size</span><span class="p">])</span>
+
+        <span class="c1"># Plot</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">bin_size</span><span class="p">],</span>
+            <span class="n">exponential_func</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">bin_size</span><span class="p">],</span> <span class="o">*</span><span class="n">popt</span><span class="p">),</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Exponential fit&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">bin_size</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">bin_size</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;ISI&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;ISI(time step)&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Frequency&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">savefig</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;isi_exponential_fit&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Plotter.weight_distribution"><a class="viewcode-back" href="../reference.html#utils.Plotter.weight_distribution">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">weight_distribution</span><span class="p">(</span><span class="n">weights</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">bin_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">savefig</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Plot the distribution of synaptic weights</span>
+<span class="sd">        </span>
+<span class="sd">        Args:   </span>
+<span class="sd">            weights (array) - Connection weights</span>
+<span class="sd">            </span>
+<span class="sd">            bin_size(int) - Spike train will be splited into bins of size bin_size</span>
+<span class="sd">            </span>
+<span class="sd">            savefig(bool) - If True, plot will be saved in the cwd</span>
+
+<span class="sd">        Returns: </span>
+<span class="sd">            plot object&quot;&quot;&quot;</span>
+
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span>
+            <span class="n">weights</span> <span class="o">&gt;=</span> <span class="mf">0.01</span>
+        <span class="p">]</span>  <span class="c1"># Remove the weight values less than 0.01 # As reported in article SORN 2013</span>
+        <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bin_size</span><span class="p">)</span>  <span class="c1"># Create histogram with bin_size</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Weight&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Frequency&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">savefig</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;weight distribution&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Plotter.linear_lognormal_fit"><a class="viewcode-back" href="../reference.html#utils.Plotter.linear_lognormal_fit">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">linear_lognormal_fit</span><span class="p">(</span><span class="n">weights</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">num_points</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">savefig</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Lognormal curve fit on connection weight distribution</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            weights (array) - Connection weights</span>
+<span class="sd">        </span>
+<span class="sd">            num_points(int) - Number of points to be plotted in the x axis</span>
+<span class="sd">        </span>
+<span class="sd">            savefig(bool) - If True, plot will be saved in the cwd</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            plot object&quot;&quot;&quot;</span>
+
+        <span class="n">X</span> <span class="o">=</span> <span class="n">weights</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="n">M</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>  <span class="c1"># Geometric mean</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>  <span class="c1"># Geometric standard deviation</span>
+
+        <span class="c1"># Lognormal distribution parameters</span>
+
+        <span class="n">mu</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">X</span><span class="p">)))</span>  <span class="c1"># Mean of log(X)</span>
+        <span class="n">sigma</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">X</span><span class="p">)))</span>  <span class="c1"># Standard deviation of log(X)</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">sigma</span>  <span class="c1"># Scipy&#39;s shape parameter</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">mu</span><span class="p">)</span>  <span class="c1"># Scipy&#39;s scale parameter</span>
+        <span class="n">median</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">mu</span><span class="p">)</span>
+
+        <span class="n">mode</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">mu</span> <span class="o">-</span> <span class="n">sigma</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># Note that mode depends on both M and s</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">mu</span> <span class="o">+</span> <span class="p">(</span><span class="n">sigma</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1"># Note that mean depends on both M and s</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">weights</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">weights</span><span class="p">),</span> <span class="n">num</span><span class="o">=</span><span class="n">num_points</span>
+        <span class="p">)</span>  <span class="c1"># values for x-axis</span>
+
+        <span class="n">pdf</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">lognorm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span>
+        <span class="p">)</span>  <span class="c1"># probability distribution</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">))</span>
+
+        <span class="c1"># Figure on linear scale</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pdf</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pdf</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Mode&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span>
+            <span class="n">mean</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="n">stats</span><span class="o">.</span><span class="n">lognorm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">),</span>
+            <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Mean&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span>
+            <span class="n">median</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="n">stats</span><span class="o">.</span><span class="n">lognorm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">median</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">),</span>
+            <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Median&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">ymin</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Weight&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Linear scale&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+        <span class="c1"># Figure on logarithmic scale</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">semilogx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pdf</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pdf</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Mode&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span>
+            <span class="n">mean</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="n">stats</span><span class="o">.</span><span class="n">lognorm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">),</span>
+            <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Mean&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span>
+            <span class="n">median</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="n">stats</span><span class="o">.</span><span class="n">lognorm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">median</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">),</span>
+            <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Median&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">ymin</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Weight&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Logarithmic scale&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">savefig</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;LinearLognormalFit&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Plotter.plot_network"><a class="viewcode-back" href="../reference.html#utils.Plotter.plot_network">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">plot_network</span><span class="p">(</span><span class="n">corr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">corr_thres</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">fig_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Network x graphical visualization of the network using the correlation matrix</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            corr ([type]): Correlation between neurons</span>
+<span class="sd">            </span>
+<span class="sd">            corr_thres ([type]): Threshold to prune the connection</span>
+<span class="sd">            </span>
+<span class="sd">            fig_name ([type], optional): Name of the figure. Defaults to None.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            matplotlib.pyplot: Plot instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">corr</span><span class="p">)</span>
+
+        <span class="n">links</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">stack</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+        <span class="n">links</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;var1&quot;</span><span class="p">,</span> <span class="s2">&quot;var2&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">]</span>
+        <span class="c1">### threshold = 0.01, smaller the threshold, higher the density of connections</span>
+
+        <span class="n">links_filtered</span> <span class="o">=</span> <span class="n">links</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+            <span class="p">(</span><span class="n">links</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">corr_thres</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">links</span><span class="p">[</span><span class="s2">&quot;var1&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">links</span><span class="p">[</span><span class="s2">&quot;var2&quot;</span><span class="p">])</span>
+        <span class="p">]</span>
+
+        <span class="c1"># Build your graph</span>
+        <span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">from_pandas_edgelist</span><span class="p">(</span><span class="n">links_filtered</span><span class="p">,</span> <span class="s2">&quot;var1&quot;</span><span class="p">,</span> <span class="s2">&quot;var2&quot;</span><span class="p">)</span>
+        <span class="c1"># Plot the network:</span>
+
+        <span class="c1"># Plot the network:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>
+        <span class="n">nx</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span>
+            <span class="n">G</span><span class="p">,</span>
+            <span class="n">with_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">node_color</span><span class="o">=</span><span class="s2">&quot;orange&quot;</span><span class="p">,</span>
+            <span class="n">node_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+            <span class="n">linewidths</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">font_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">corr_thres</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">fig_name</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Plotter.hamming_distance"><a class="viewcode-back" href="../reference.html#utils.Plotter.hamming_distance">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">hamming_distance</span><span class="p">(</span><span class="n">hamming_dist</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">savefig</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hamming distance between true netorks states and perturbed network states</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            hamming_dist (list): Hamming distance values</span>
+<span class="sd">            </span>
+<span class="sd">            savefig (bool): If True, save the fig at current working directory</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            matplotlib.pyplot: Hamming distance between true and perturbed network states</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Hamming distance between actual and perturbed states&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time steps&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Hamming distance&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hamming_dist</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">savefig</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;HammingDistance&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="Statistics"><a class="viewcode-back" href="../reference.html#utils.Statistics">[docs]</a><span class="k">class</span> <span class="nc">Statistics</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Wrapper class for statistical analysis methods &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="Statistics.firing_rate_neuron"><a class="viewcode-back" href="../reference.html#utils.Statistics.firing_rate_neuron">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">firing_rate_neuron</span><span class="p">(</span><span class="n">spike_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">neuron</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">bin_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Measure spike rate of given neuron during given time window</span>
+<span class="sd">            </span>
+<span class="sd">        Args:</span>
+<span class="sd">            spike_train(array) - Array of spike trains</span>
+<span class="sd">            </span>
+<span class="sd">            neuron(int) - Target neuron in the reservoir</span>
+<span class="sd">            </span>
+<span class="sd">            bin_size(int) - Divide the spike trains into bins of size bin_size</span>
+
+<span class="sd">        Returns: </span>
+<span class="sd">            int: firing_rate &quot;&quot;&quot;</span>
+
+        <span class="n">time_period</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">spike_train</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">neuron_spike_train</span> <span class="o">=</span> <span class="n">spike_train</span><span class="p">[:,</span> <span class="n">neuron</span><span class="p">]</span>
+
+        <span class="c1"># Split the list(neuron_spike_train) into sub lists of length time_step</span>
+        <span class="n">samples_spike_train</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">neuron_spike_train</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">bin_size</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">neuron_spike_train</span><span class="p">),</span> <span class="n">bin_size</span><span class="p">)</span>
+        <span class="p">]</span>
+
+        <span class="n">spike_rate</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">spike_train</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">samples_spike_train</span><span class="p">):</span>
+            <span class="n">spike_rate</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">spike_train</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+
+        <span class="n">spike_rate</span> <span class="o">=</span> <span class="n">spike_rate</span> <span class="o">*</span> <span class="n">bin_size</span> <span class="o">/</span> <span class="n">time_period</span>
+
+        <span class="k">return</span> <span class="n">time_period</span><span class="p">,</span> <span class="n">bin_size</span><span class="p">,</span> <span class="n">spike_rate</span></div>
+
+<div class="viewcode-block" id="Statistics.firing_rate_network"><a class="viewcode-back" href="../reference.html#utils.Statistics.firing_rate_network">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">firing_rate_network</span><span class="p">(</span><span class="n">spike_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Calculate number of neurons spikes at each time step.Firing rate of the network</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            spike_train(array) - Array of spike trains</span>
+
+<span class="sd">        Returns: </span>
+<span class="sd">            int: firing_rate &quot;&quot;&quot;</span>
+
+        <span class="n">firing_rate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">spike_train</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">firing_rate</span></div>
+
+<div class="viewcode-block" id="Statistics.scale_dependent_smoothness_measure"><a class="viewcode-back" href="../reference.html#utils.Statistics.scale_dependent_smoothness_measure">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">scale_dependent_smoothness_measure</span><span class="p">(</span><span class="n">firing_rates</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Smoothem the firing rate depend on its scale. Smaller values corresponds to smoother series</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            firing_rates(list) - List of number of active neurons per time step</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            sd_diff(list) - Float value signifies the smoothness of the semantic changes in firing rates</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">firing_rates</span><span class="p">)</span>
+        <span class="n">sd_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">sd_diff</span></div>
+
+<div class="viewcode-block" id="Statistics.scale_independent_smoothness_measure"><a class="viewcode-back" href="../reference.html#utils.Statistics.scale_independent_smoothness_measure">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">scale_independent_smoothness_measure</span><span class="p">(</span><span class="n">firing_rates</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Smoothem the firing rate independent of its scale. Smaller values corresponds to smoother series</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            firing_rates(list) - List of number of active neurons per time step</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            coeff_var(list) - Float value signifies the smoothness of the semantic changes in firing rates &quot;&quot;&quot;</span>
+
+        <span class="n">diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">firing_rates</span><span class="p">)</span>
+        <span class="n">mean_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span>
+        <span class="n">sd_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span>
+
+        <span class="n">coeff_var</span> <span class="o">=</span> <span class="n">sd_diff</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">mean_diff</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">coeff_var</span></div>
+
+<div class="viewcode-block" id="Statistics.autocorr"><a class="viewcode-back" href="../reference.html#utils.Statistics.autocorr">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">autocorr</span><span class="p">(</span><span class="n">firing_rates</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Score interpretation,</span>
+<span class="sd">        scores near 1 imply a smoothly varying series</span>
+<span class="sd">        </span>
+<span class="sd">        scores near 0 imply that there&#39;s no overall linear relationship between a data point and the following one</span>
+<span class="sd">                        (that is, plot(x[-length(x)],x[-1]) won&#39;t give a scatter plot with any apparent linearity)</span>
+<span class="sd">                        </span>
+<span class="sd">        scores near -1 suggest that the series is jagged in a particular way: if one point is above the mean, the next</span>
+<span class="sd">                        is likely to be below the mean by about the same amount, and vice versa.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            firing_rates (list): Firing rates of the network</span>
+<span class="sd">            </span>
+<span class="sd">            t (int, optional): Window size. Defaults to 2.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            array: Autocorrelation between neurons given their firing rates</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="n">firing_rates</span><span class="p">[</span><span class="mi">0</span> <span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">firing_rates</span><span class="p">)</span> <span class="o">-</span> <span class="n">t</span><span class="p">],</span>
+                    <span class="n">firing_rates</span><span class="p">[</span><span class="n">t</span> <span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">firing_rates</span><span class="p">)],</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Statistics.avg_corr_coeff"><a class="viewcode-back" href="../reference.html#utils.Statistics.avg_corr_coeff">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">avg_corr_coeff</span><span class="p">(</span><span class="n">spike_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Measure Average Pearson correlation coeffecient between neurons</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            spike_train (array): Neural activity</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            array: Average correlation coeffecient&quot;&quot;&quot;</span>
+
+        <span class="n">corr_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">spike_train</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">avg_corr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">corr_mat</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">200</span>
+        <span class="n">corr_coeff</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">avg_corr</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="mi">200</span>
+        <span class="p">)</span>  <span class="c1"># 2D to 1D and either upper  or lower half of correlation matrix.</span>
+
+        <span class="k">return</span> <span class="n">corr_mat</span><span class="p">,</span> <span class="n">corr_coeff</span></div>
+
+<div class="viewcode-block" id="Statistics.spike_times"><a class="viewcode-back" href="../reference.html#utils.Statistics.spike_times">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">spike_times</span><span class="p">(</span><span class="n">spike_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Get the time instants at which neuron spikes</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            spike_train (array): Spike trains of neurons</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            (array): Spike time of each neurons in the pool&quot;&quot;&quot;</span>
+
+        <span class="n">times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">spike_train</span> <span class="o">==</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">times</span></div>
+
+<div class="viewcode-block" id="Statistics.spike_time_intervals"><a class="viewcode-back" href="../reference.html#utils.Statistics.spike_time_intervals">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">spike_time_intervals</span><span class="p">(</span><span class="n">spike_train</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Generate spike time intervals spike_trains</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            spike_train (array): Network activity</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            list: Inter spike intervals for each neuron in the reservoir        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">spike_times</span> <span class="o">=</span> <span class="n">Statistics</span><span class="o">.</span><span class="n">spike_times</span><span class="p">(</span><span class="n">spike_train</span><span class="p">)</span>
+        <span class="c1"># isi = sorted(np.diff(spike_times)[-1])</span>
+        <span class="n">isi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">spike_times</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">isi</span></div>
+
+<div class="viewcode-block" id="Statistics.hamming_distance"><a class="viewcode-back" href="../reference.html#utils.Statistics.hamming_distance">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">hamming_distance</span><span class="p">(</span><span class="n">actual_spike_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">perturbed_spike_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hamming distance between true netorks states and perturbed network states</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            actual_spike_train (np.array): True network&#39;s states</span>
+<span class="sd">            </span>
+<span class="sd">            perturbed_spike_train (np.array): Perturbated network&#39;s states</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Hamming distance between true and perturbed network states</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">hd</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">actual_spike_train</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">perturbed_spike_train</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">actual_spike_train</span><span class="p">))</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="n">hd</span></div>
+
+    <span class="c1"># Fano Factor</span>
+
+<div class="viewcode-block" id="Statistics.fanofactor"><a class="viewcode-back" href="../reference.html#utils.Statistics.fanofactor">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">fanofactor</span><span class="p">(</span><span class="n">spike_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">neuron</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">window_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Investigate whether neuronal spike generation is a poisson process</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            spike_train (np.array): Spike train of neurons in the reservoir</span>
+<span class="sd">            </span>
+<span class="sd">            neuron (int): Target neuron in the pool</span>
+<span class="sd">            </span>
+<span class="sd">            window_size (int): Sliding window size for time step ranges to be considered for measuring the fanofactor</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float : Fano factor of the neuron spike train</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Choose activity of random neuron</span>
+        <span class="n">neuron_act</span> <span class="o">=</span> <span class="n">spike_train</span><span class="p">[:,</span> <span class="n">neuron</span><span class="p">]</span>
+
+        <span class="c1"># Divide total observations into &#39;tws&#39; time windows of size &#39;ws&#39; for a neuron 60</span>
+
+        <span class="n">tws</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">neuron_act</span><span class="p">,</span> <span class="n">window_size</span><span class="p">)</span>
+        <span class="n">fr</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tws</span><span class="p">)):</span>
+            <span class="n">fr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">tws</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+
+        <span class="c1"># print(&#39;Firing rate of the neuron during each time window of size %s is %s&#39; %(ws,fr))</span>
+
+        <span class="n">mean_firing_rate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">fr</span><span class="p">)</span>
+        <span class="n">variance_firing_rate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">fr</span><span class="p">)</span>
+
+        <span class="n">fano_factor</span> <span class="o">=</span> <span class="n">variance_firing_rate</span> <span class="o">/</span> <span class="n">mean_firing_rate</span>
+
+        <span class="k">return</span> <span class="n">mean_firing_rate</span><span class="p">,</span> <span class="n">variance_firing_rate</span><span class="p">,</span> <span class="n">fano_factor</span></div>
+
+    <span class="c1"># Spike Source Entropy</span>
+
+<div class="viewcode-block" id="Statistics.spike_source_entropy"><a class="viewcode-back" href="../reference.html#utils.Statistics.spike_source_entropy">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">spike_source_entropy</span><span class="p">(</span><span class="n">spike_train</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">num_neurons</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Measure the uncertainty about the origin of spike from the network using entropy</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            spike_train (np.array): Spike train of neurons</span>
+<span class="sd">            </span>
+<span class="sd">            num_neurons (int): Number of neurons in the reservoir</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int : Spike source entropy of the network </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Number of spikes from each neuron during the interval</span>
+        <span class="n">n_spikes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">spike_train</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">n_spikes</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span>
+            <span class="n">spike_train</span>
+        <span class="p">)</span>  <span class="c1"># Probability of each neuron that can generate spike in next step</span>
+        <span class="c1"># print(p)  # Note: pi shouldn&#39;t be zero</span>
+        <span class="n">sse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">pi</span><span class="p">)</span> <span class="k">for</span> <span class="n">pi</span> <span class="ow">in</span> <span class="n">p</span><span class="p">])</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
+            <span class="mi">1</span> <span class="o">/</span> <span class="n">num_neurons</span>
+        <span class="p">)</span>  <span class="c1"># Spike source entropy</span>
+
+        <span class="k">return</span> <span class="n">sse</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Saranraj Nambusubramaniyan
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
