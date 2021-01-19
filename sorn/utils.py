@@ -8,7 +8,7 @@ from scipy.optimize import curve_fit
 from scipy import stats
 import networkx as nx
 import pandas as pd
-
+from mpl_toolkits.axes_grid1.inset_locator import InsetPosition
 
 class Initializer(object):
     """
