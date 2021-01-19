@@ -3,6 +3,10 @@
 # Created by https://www.toptal.com/developers/gitignore/api/windows,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,visualstudiocode
 
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/tasks.json
