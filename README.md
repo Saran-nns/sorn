@@ -1,4 +1,5 @@
-## Self-Organizing Recurrent Neural Networks 
+
+# Self-Organizing Recurrent Neural Networks 
 
 SORN is a class of neuro-inspired artificial network build based on plasticity mechanisms in biological brain and mimic neocortical circuits ability of learning and adaptation through neuroplasticity mechanisms.
 
@@ -15,7 +16,29 @@ The network is developed as part of my Master thesis at Universität Osnabrück,
 <h4 align="Left">SORN Reservoir and the evolution of synaptic efficacies</h4>
 <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/SORN1.png" height="320" width="430"></a> <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/weights.png" height="375" width="425" ></a> <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/networkxx.jpg" height="375" width="425" ></a>
 
-### To install the latest release:
+
+<!-- TOC -->
+
+- [Self-Organizing Recurrent Neural Networks](#self-organizing-recurrent-neural-networks)
+    - [Installation:](#installation)
+    - [Dependencies](#dependencies)
+    - [Usage:](#usage)
+        - [Update Network configurations](#update-network-configurations)
+        - [Plasticity Phase](#plasticity-phase)
+        - [Training phase](#training-phase)
+        - [Network Output Descriptions](#network-output-descriptions)
+    - [Usage with OpenAI gym](#usage-with-openai-gym)
+        - [Cartpole balance problem](#cartpole-balance-problem)
+    - [Plotting functions](#plotting-functions)
+    - [Statistics and Analysis functions](#statistics-and-analysis-functions)
+    - [Citation](#citation)
+        - [Package](#package)
+        - [Thesis](#thesis)
+    - [Contributions](#contributions)
+    - [References](#references)
+
+<!-- /TOC -->
+## Installation:
 
 ```python
 pip install sorn
@@ -27,13 +50,17 @@ The library is still in alpha stage, so you may also want to install the latest 
 pip install git+https://github.com/Saran-nns/sorn
 ```
 
-### Dependencies
+## Dependencies
 SORN supports Python 3.5+ ONLY. For older Python versions please use the official Python client
+To install all optional dependencies run::
 
+```python
+  pip install 'sorn[all]'
+```  
 
-### Usage:
+## Usage:
 
-#### Update Network configurations
+### Update Network configurations
 There are two ways to update/configure the network parameters,
 1. Navigate to home/conda/envs/ENVNAME/Lib/site-packages/sorn
  ```or``` if you are unsure about the directory of ```sorn```
@@ -54,7 +81,7 @@ Then, update/edit arguments in ```configuration.ini```
 ```Python
 kwargs_ = ['ne', 'nu', 'network_type_ee', 'network_type_ei', 'network_type_ie', 'lambda_ee','lambda_ei', 'lambda_ie', 'eta_stdp','eta_inhib', 'eta_ip', 'te_max', 'ti_max', 'ti_min', 'te_min', 'mu_ip','sigma_ip']
 ```
-#### Simulation: Plasticity Phase
+### Plasticity Phase
 The default ```ne, nu``` values are overriden by passing them as kwargs inside```simulate_sorn``` method.
 
 ```Python
@@ -74,7 +101,7 @@ matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections 
 matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Simulator.simulate_sorn(inputs = inputs, phase='plasticity', matrices=matrices_dict, noise= True, time_steps=time_steps,ne = 200, nu=num_features)
 ```
 
-#### Training phase:
+### Training phase
 
 ```Python
 from sorn import Trainer
@@ -84,7 +111,7 @@ inputs = np.random.rand(num_features,1)
 matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Trainer.train_sorn(inputs = inputs, phase='Training', matrices=matrices_dict,nu=num_features, time_steps=1)
 ```
 
-### Network Output Descriptions:
+### Network Output Descriptions
   ```matrices_dict```  - Dictionary of connection weights ('Wee','Wei','Wie') , Excitatory network activity ('X'), Inhibitory network activities('Y'), Threshold values ('Te','Ti')
 
   ```Exc_activity``` - Collection of Excitatory network activity of entire simulation period
@@ -96,8 +123,8 @@ matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections 
   ```num_active_connections``` - List of number of active connections in the Excitatory pool at each time step 
 
 
-### Sample use with OpenAI gym :
-#### Cartpole balance problem
+## Usage with OpenAI gym
+### Cartpole balance problem
 Without changing the default network parameters. 
 
 ```python
@@ -146,7 +173,7 @@ for EPISODE in range(NUM_EPISODES):
         break
 ```
 
-### Sample Plotting functions 
+## Plotting functions 
 
 ```Python
 from sorn import Plotter
@@ -159,7 +186,7 @@ Plotter.scatter_plot(spike_train = np.asarray(Exc_activity), savefig=False)
 Plotter.raster_plot(spike_train = np.asarray(Exc_activity), savefig=False)
 ```
 
-### Sample Statistical analysis functions
+## Statistics and Analysis functions
 
 ```Python
 from sorn import Statistics
@@ -169,8 +196,8 @@ Statistics.autocorr(firing_rates = [1,1,5,6,3,7],t= 2)
 # Fano factor: To verify poissonian process in spike generation of neuron 10
 Statistics.fanofactor(spike_train= np.asarray(Exc_activity),neuron = 10,window_size = 10)
 ```
-#### Please cite the repo as,
-
+## Citation
+### Package
 ```Python
 @software{saranraj_nambusubramaniyan_2020_4184103,
   author       = {Saranraj Nambusubramaniyan},
@@ -184,11 +211,15 @@ Statistics.fanofactor(spike_train= np.asarray(Exc_activity),neuron = 10,window_s
 }
 ```
 
-#### Cite thesis as,
+### Thesis
 Saranraj Nambusubramaniyan(2019): Prospects of Biologically Plausible Artificial Brain Circuits Solving General Intelligence Tasks at the Imminence of Chaos
 DOI: 10.13140/RG.2.2.25393.81762
 
-### The network is inspired by following articles:
+## Contributions
+I am welcoming contributions. If you wish to contribute, please create a branch with a pull request and the changes can be discussed there.
+If you find a bug in the or errors in the documentation, please open a new issue in the Github repository and report the bug or the error. Please provide sufficient information for the bug to be reproduced. 
+
+## References 
 
 Lazar, A. (2009). SORN: a Self-organizing Recurrent Neural Network. Frontiers in Computational Neuroscience, 3. https://doi.org/10.3389/neuro.10.023.2009
 
