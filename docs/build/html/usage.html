@@ -1,0 +1,373 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Usage &mdash; Self-Organizing Recurrent Neural Network (SORN) 0.3.20 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Reference" href="reference.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Self-Organizing Recurrent Neural Network (SORN)
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#update-network-configuration">Update network configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-file">Configuration file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#keyword-arguments">Keyword arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#simulation">Simulation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#plasticity-phase">Plasticity Phase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#training-phase">Training Phase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#network-output-descriptions">Network Output Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sample-use-with-openai-gym">Sample use with OpenAI gym</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Reference Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">Attributes and Methods</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Contribution</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contribution.html">Steps</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Citation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="paper.html">Paper</a></li>
+</ul>
+<p class="caption"><span class="caption-text">License</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Contact</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Reach me</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Self-Organizing Recurrent Neural Network (SORN)</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Usage</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="update-network-configuration">
+<h2>Update network configuration<a class="headerlink" href="#update-network-configuration" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="configuration-file">
+<h3>Configuration file<a class="headerlink" href="#configuration-file" title="Permalink to this headline">¶</a></h3>
+<p>Navigate to <cite>home/conda/envs/ENVNAME/Lib/site-packages/sorn</cite> or if you are unsure about the directory of <cite>sorn</cite>:</p>
+<p>Run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sorn</span>
+<span class="n">sorn</span><span class="o">.</span><span class="vm">__file__</span>
+</pre></div>
+</div>
+<p>to find the location of the sorn package:</p>
+<p>Then, update/edit arguments in <cite>configuration.ini</cite></p>
+</div>
+<div class="section" id="keyword-arguments">
+<h3>Keyword arguments<a class="headerlink" href="#keyword-arguments" title="Permalink to this headline">¶</a></h3>
+<p>Pass the arguments with valid names (listed below). This will override the default values at <cite>configuration.ini</cite>:</p>
+<p>The allowed <cite>kwargs</cite> are:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">kwargs_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ne&#39;</span><span class="p">,</span> <span class="s1">&#39;nu&#39;</span><span class="p">,</span> <span class="s1">&#39;network_type_ee&#39;</span><span class="p">,</span> <span class="s1">&#39;network_type_ei&#39;</span><span class="p">,</span> <span class="s1">&#39;network_type_ie&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;lambda_ee&#39;</span><span class="p">,</span><span class="s1">&#39;lambda_ei&#39;</span><span class="p">,</span> <span class="s1">&#39;lambda_ie&#39;</span><span class="p">,</span> <span class="s1">&#39;eta_stdp&#39;</span><span class="p">,</span><span class="s1">&#39;eta_inhib&#39;</span><span class="p">,</span> <span class="s1">&#39;eta_ip&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;te_max&#39;</span><span class="p">,</span> <span class="s1">&#39;ti_max&#39;</span><span class="p">,</span> <span class="s1">&#39;ti_min&#39;</span><span class="p">,</span> <span class="s1">&#39;te_min&#39;</span><span class="p">,</span> <span class="s1">&#39;mu_ip&#39;</span><span class="p">,</span><span class="s1">&#39;sigma_ip&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="simulation">
+<h2>Simulation<a class="headerlink" href="#simulation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="plasticity-phase">
+<h3>Plasticity Phase<a class="headerlink" href="#plasticity-phase" title="Permalink to this headline">¶</a></h3>
+<p>The default ne, nu values are overriden by passing them as kwargs insidesimulate_sorn method:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
+<span class="kn">from</span> <span class="nn">sorn</span> <span class="kn">import</span> <span class="n">Simulator</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Sample input</span>
+<span class="n">num_features</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">time_steps</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">inputs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">num_features</span><span class="p">,</span><span class="n">time_steps</span><span class="p">)</span>
+
+<span class="c1"># To simulate the network</span>
+<span class="n">matrices_dict</span><span class="p">,</span> <span class="n">Exc_activity</span><span class="p">,</span> <span class="n">Inh_activity</span><span class="p">,</span> <span class="n">Rec_activity</span><span class="p">,</span> <span class="n">num_active_connections</span> <span class="o">=</span> <span class="n">Simulator</span><span class="o">.</span><span class="n">simulate_sorn</span><span class="p">(</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="s1">&#39;plasticity&#39;</span><span class="p">,</span> <span class="n">matrices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">noise</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">time_steps</span><span class="o">=</span><span class="n">time_steps</span><span class="p">,</span> <span class="n">ne</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="n">num_features</span><span class="p">)</span>
+
+<span class="c1"># To resume the simulation, load the matrices_dict from previous simulation</span>
+<span class="n">matrices_dict</span><span class="p">,</span> <span class="n">Exc_activity</span><span class="p">,</span> <span class="n">Inh_activity</span><span class="p">,</span> <span class="n">Rec_activity</span><span class="p">,</span> <span class="n">num_active_connections</span> <span class="o">=</span> <span class="n">Simulator</span><span class="o">.</span><span class="n">simulate_sorn</span><span class="p">(</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="s1">&#39;plasticity&#39;</span><span class="p">,</span> <span class="n">matrices</span><span class="o">=</span><span class="n">matrices_dict</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">time_steps</span><span class="o">=</span><span class="n">time_steps</span><span class="p">,</span><span class="n">ne</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="n">num_features</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="training-phase">
+<h3>Training Phase<a class="headerlink" href="#training-phase" title="Permalink to this headline">¶</a></h3>
+<p>Train the network using the matrices obtained from plasticity phase:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
+<span class="kn">from</span> <span class="nn">sorn</span> <span class="kn">import</span> <span class="n">Trainer</span>
+<span class="c1"># Sample input</span>
+<span class="n">inputs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">num_features</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># SORN network is frozen during training phase</span>
+<span class="n">matrices_dict</span><span class="p">,</span> <span class="n">Exc_activity</span><span class="p">,</span> <span class="n">Inh_activity</span><span class="p">,</span> <span class="n">Rec_activity</span><span class="p">,</span> <span class="n">num_active_connections</span> <span class="o">=</span> <span class="n">Trainer</span><span class="o">.</span><span class="n">train_sorn</span><span class="p">(</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="s1">&#39;Training&#39;</span><span class="p">,</span> <span class="n">matrices</span><span class="o">=</span><span class="n">matrices_dict</span><span class="p">,</span><span class="n">nu</span><span class="o">=</span><span class="n">num_features</span><span class="p">,</span> <span class="n">time_steps</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="network-output-descriptions">
+<h3>Network Output Descriptions<a class="headerlink" href="#network-output-descriptions" title="Permalink to this headline">¶</a></h3>
+<p>During plasticity and training phase, SORN returns a dictionary of below matrices for analysis:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>`matrices_dict` - Dictionary of connection weights (&#39;Wee&#39;,&#39;Wei&#39;,&#39;Wie&#39;) , Excitatory network activity (&#39;X&#39;), Inhibitory network activities(&#39;Y&#39;), Threshold values (&#39;Te&#39;,&#39;Ti&#39;)
+
+`Exc_activity` - Collection of Excitatory network activity of entire simulation period
+
+`Inh_activity` - Collection of Inhibitory network activity of entire simulation period
+
+`Rec_activity` - Collection of Recurrent network activity of entire simulation period
+
+`num_active_connections` - List of number of active connections in the Excitatory pool at each time step
+</pre></div>
+</div>
+</div>
+<div class="section" id="sample-use-with-openai-gym">
+<h3>Sample use with OpenAI gym<a class="headerlink" href="#sample-use-with-openai-gym" title="Permalink to this headline">¶</a></h3>
+<p><cite>Cartpole balance problem without changing the default network parameters</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Imports</span>
+
+<span class="kn">from</span> <span class="nn">sorn</span> <span class="kn">import</span> <span class="n">Simulator</span><span class="p">,</span> <span class="n">Trainer</span>
+<span class="kn">import</span> <span class="nn">gym</span>
+
+<span class="c1"># Load the simulated network matrices</span>
+<span class="c1"># Note these matrices are obtained after the network achieved convergence under random inputs and noise</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;simulation_matrices.pkl&#39;</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">sim_matrices</span><span class="p">,</span><span class="n">excit_states</span><span class="p">,</span><span class="n">inhib_states</span><span class="p">,</span><span class="n">recur_states</span><span class="p">,</span><span class="n">num_reservoir_conn</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="c1"># Training parameters</span>
+
+<span class="n">NUM_EPISODES</span> <span class="o">=</span> <span class="mf">2e6</span>
+<span class="n">NUM_PLASTICITY_EPISODES</span> <span class="o">=</span> <span class="mi">20000</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;CartPole-v0&#39;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">EPISODE</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">NUM_EPISODES</span><span class="p">):</span>
+
+    <span class="c1"># Environment observation</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()[</span><span class="kc">None</span><span class="p">,:]</span>
+
+    <span class="c1"># Play the episode</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">EPISODE</span> <span class="o">&lt;</span> <span class="n">NUM_PLASTICITY_EPISODE</span><span class="p">:</span>
+
+        <span class="c1"># Plasticity phase</span>
+        <span class="n">sim_matrices</span><span class="p">,</span><span class="n">excit_states</span><span class="p">,</span><span class="n">inhib_states</span><span class="p">,</span><span class="n">recur_states</span><span class="p">,</span><span class="n">num_reservoir_conn</span> <span class="o">=</span> <span class="n">Simulator</span><span class="o">.</span><span class="n">simulate_sorn</span><span class="p">(</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">state</span><span class="p">,</span> <span class="n">phase</span> <span class="o">=</span><span class="s1">&#39;plasticity&#39;</span><span class="p">,</span> <span class="n">matrices</span> <span class="o">=</span> <span class="n">sim_matrices</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Training phase with frozen reservoir connectivity</span>
+        <span class="n">sim_matrices</span><span class="p">,</span><span class="n">excit_states</span><span class="p">,</span><span class="n">inhib_states</span><span class="p">,</span><span class="n">recur_states</span><span class="p">,</span><span class="n">num_reservoir_conn</span> <span class="o">=</span> <span class="n">Trainer</span><span class="o">.</span><span class="n">train_sorn</span><span class="p">(</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">state</span><span class="p">,</span> <span class="n">phase</span> <span class="o">=</span> <span class="s1">&#39;training&#39;</span><span class="p">,</span> <span class="n">matrices</span> <span class="o">=</span> <span class="n">sim_matrices</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Feed excit_states as input states to your RL algorithm, below goes for simple policy gradient algorithm</span>
+    <span class="c1"># Sample policy w.r.t excitatory states and take action in the environment</span>
+
+    <span class="n">probs</span> <span class="o">=</span> <span class="n">policy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">excit_states</span><span class="p">),</span><span class="n">output_layer_weights</span><span class="p">))</span>
+    <span class="n">action</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">action_space</span><span class="p">,</span><span class="n">probs</span><span class="p">)</span>
+    <span class="n">state</span><span class="p">,</span><span class="n">reward</span><span class="p">,</span><span class="n">done</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">done</span><span class="p">:</span>
+        <span class="k">break</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="reference.html" class="btn btn-neutral float-right" title="Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Saranraj Nambusubramaniyan
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

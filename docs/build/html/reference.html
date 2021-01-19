@@ -1,0 +1,1099 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Reference &mdash; Self-Organizing Recurrent Neural Network (SORN) 0.3.20 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contributions" href="contribution.html" />
+    <link rel="prev" title="Usage" href="usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Self-Organizing Recurrent Neural Network (SORN)
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference Guide</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Attributes and Methods</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#sorn-network">SORN Network</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#matrixcollection">MatrixCollection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#plasticity">Plasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#networkstate">NetworkState</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#simulator">Simulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#trainer">Trainer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#utility-functions">Utility Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#plotting">Plotting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#statistics-and-analysis">Statistics and Analysis</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Contribution</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contribution.html">Steps</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Citation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="paper.html">Paper</a></li>
+</ul>
+<p class="caption"><span class="caption-text">License</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Contact</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Reach me</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Self-Organizing Recurrent Neural Network (SORN)</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Reference</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/reference.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="reference">
+<h1>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="sorn-network">
+<h2>SORN Network<a class="headerlink" href="#sorn-network" title="Permalink to this headline">¶</a></h2>
+<p>The following methods are available via <code class="xref py py-class docutils literal notranslate"><span class="pre">sorn.SORN</span></code></p>
+<dl class="py class">
+<dt>
+<em class="property">class </em><code class="sig-prename descclassname">sorn.</code><code class="sig-name descname">Sorn</code><a class="reference internal" href="_modules/sorn.html#Sorn"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>This class wraps initialization of the network and its parameters.</p>
+<dl>
+<dt>Args:</dt><dd><p>nu (int) - Number of input units. Defaults to 10</p>
+<p>ne (int) = Sorn.ne  # Number of excitatory units. Defaults to 200</p>
+<p>eta_stdp (float) - STDP plasticity Learning rate constant; SORN1 and SORN2. Defaults to 0.004</p>
+<p>eta_ip (float) - Intrinsic plasticity learning rate constant; SORN1 and SORN2. Defaults to 0.001</p>
+<p>eta_inhib (float) - Intrinsic plasticity learning rate constant; SORN2 only. Defaults to 0.01</p>
+<p>h_ip (float) - Target firing rate. Defaults to 2 * Sorn.nu / Sorn.ne</p>
+<p>mu_ip (float) - Mean target firing rate. Defaults to 0.1</p>
+<p>sigma_ip (float) - Variance of target firing rate. Defaults to 0.0</p>
+<p>ni (int) - Number of inhibitory units in the network. Defaults to int(0.2 * Sorn.ne)</p>
+<p>time_steps (float)- Total time steps of simulation</p>
+<p>te_min (float) - Excitatory minimum Threshold. Defaults to 0.0</p>
+<p>te_max (float) - Excitatory maximum Threshold. Defaults to 1.0</p>
+<p>ti_min (float) - Inhibitory minimum Threshold. Defaults to 0.0</p>
+<p>ti_max (float) - Inhibitory maximum Threshold. Defaults to 0.5</p>
+<p>network_type_ee (str) - Dense or Sparse. Defaults to Sparse</p>
+<p>network_type_ei (str) - Dense or Sparse. Defaults to Sparse</p>
+<p>network_type_ie (str) - Dense or Sparse. Defaults to Dense</p>
+<p>lambda_ee (int) -  Number of connections to and from a single excitatory unit to another at initialization. Defaults to 20</p>
+<p>lambda_ei (int) - Number of connections to and from a single inhibitory unit to exitatory unit at initialization. Defaults to 40</p>
+<p>lambda_ie (int) -  Number of connections to and from a single excitatory unit to inhibitory unit at initialization. Defaults to 100</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eta_inhib</code><em class="property"> = 0.001</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eta_ip</code><em class="property"> = 0.01</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eta_stdp</code><em class="property"> = 0.004</em></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">initialize_activity_vector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ne</span></em>, <em class="sig-param"><span class="n">ni</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn.html#Sorn.initialize_activity_vector"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Initialize the activity vectors X and Y for excitatory and inhibitory neurons</p>
+<dl>
+<dt>Args:</dt><dd><p>ne(int) - Number of excitatory neurons</p>
+<p>ni(int) - Number of inhibitory neurons</p>
+</dd>
+<dt>Returns:</dt><dd><p>x(array) - Array of activity vectors of excitatory population</p>
+<p>y(array) - Array of activity vectors of inhibitory population</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">initialize_threshold_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">te_min</span></em>, <em class="sig-param"><span class="n">te_max</span></em>, <em class="sig-param"><span class="n">ti_min</span></em>, <em class="sig-param"><span class="n">ti_max</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn.html#Sorn.initialize_threshold_matrix"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Initialize the threshold for excitatory and inhibitory neurons</p>
+<dl>
+<dt>Args:</dt><dd><p>te_min(float) - Min threshold value for excitatory units</p>
+<p>ti_min(float)- Min threshold value for inhibitory units</p>
+<p>te_max(float) - Max threshold value for excitatory units</p>
+<p>ti_max(float) - Max threshold value for inhibitory units</p>
+</dd>
+<dt>Returns:</dt><dd><p>te(vector) - Threshold values for excitatory units</p>
+<p>ti(vector) - Threshold values for inhibitory units</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">initialize_weight_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">network_type</span></em>, <em class="sig-param"><span class="n">synaptic_connection</span></em>, <em class="sig-param"><span class="n">self_connection</span></em>, <em class="sig-param"><span class="n">lambd_w</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn.html#Sorn.initialize_weight_matrix"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Wrapper for initializing the weight matrices for SORN</p>
+<dl>
+<dt>Args:</dt><dd><p>network_type(str) - Spare or Dense</p>
+<p>synaptic_connection(str) - EE,EI,IE: Note that Spare connection is defined only for EE connections</p>
+<p>self_connection(str) - True or False: i–&gt;i ; Network is tested only using j–&gt;i</p>
+<p>lambd_w(int) - Average number of incoming and outgoing connections per neuron</p>
+</dd>
+<dt>Returns:</dt><dd><p>weight_matrix(array) -  Array of connection strengths</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">lambda_ee</code><em class="property"> = 20</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">lambda_ei</code><em class="property"> = 40</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">lambda_ie</code><em class="property"> = 100</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">mu_ip</code><em class="property"> = 0.1</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">ne</code><em class="property"> = 200</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">network_type_ee</code><em class="property"> = 'Sparse'</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">network_type_ei</code><em class="property"> = 'Sparse'</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">network_type_ie</code><em class="property"> = 'Dense'</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">ni</code><em class="property"> = 40</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">nu</code><em class="property"> = 10</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">sigma_ip</code><em class="property"> = 0.0</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">te_max</code><em class="property"> = 1.0</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">te_min</code><em class="property"> = 0.0</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">ti_max</code><em class="property"> = 0.5</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">ti_min</code><em class="property"> = 0.0</em></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<div class="section" id="matrixcollection">
+<h3>MatrixCollection<a class="headerlink" href="#matrixcollection" title="Permalink to this headline">¶</a></h3>
+<p>The following methods are available via <a class="reference internal" href="index.html#sorn.MatrixCollection" title="sorn.MatrixCollection"><code class="xref py py-class docutils literal notranslate"><span class="pre">sorn.MatrixCollection</span></code></a></p>
+<dl class="py class">
+<dt>
+<em class="property">class </em><code class="sig-prename descclassname">sorn.</code><code class="sig-name descname">MatrixCollection</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">phase</span></em>, <em class="sig-param"><span class="n">matrices</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn.html#MatrixCollection"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Collect all matrices initialized and updated during simulation (plasiticity and training phases)</p>
+<dl>
+<dt>Args:</dt><dd><p>phase (str) - Training or Plasticity phase</p>
+<p>matrices (dict) - Network activity, threshold and connection matrices</p>
+</dd>
+<dt>Returns:</dt><dd><p>MatrixCollection instance</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt>
+<code class="sig-name descname">network_activity_t</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">excitatory_net</span></em>, <em class="sig-param"><span class="n">inhibitory_net</span></em>, <em class="sig-param"><span class="n">i</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn.html#MatrixCollection.network_activity_t"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Network state at current time step</p>
+<dl>
+<dt>Args:</dt><dd><p>excitatory_net (list): Excitatory network activity</p>
+<p>inhibitory_net (list): Inhibitory network activity</p>
+<p>i (int): Time step</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">network_activity_t_1</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">i</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn.html#MatrixCollection.network_activity_t_1"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Network activity at previous time step</p>
+<dl>
+<dt>Args:</dt><dd><p>x (tuple): Excitatory network activity</p>
+<p>y (tuple): Inhibitory network activity</p>
+<p>i (int): Time step</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">threshold_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">te</span></em>, <em class="sig-param"><span class="n">ti</span></em>, <em class="sig-param"><span class="n">i</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn.html#MatrixCollection.threshold_matrix"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Update threshold matrices</p>
+<dl>
+<dt>Args:</dt><dd><p>te (list): Excitatory threshold</p>
+<p>ti (list): Inhibitory threshold</p>
+<p>i (int): Time step</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">weight_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wee</span></em>, <em class="sig-param"><span class="n">wei</span></em>, <em class="sig-param"><span class="n">wie</span></em>, <em class="sig-param"><span class="n">i</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn.html#MatrixCollection.weight_matrix"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Update weight matrices</p>
+<dl>
+<dt>Args:</dt><dd><p>wee (array): Excitatory-Excitatory weight matrix</p>
+<p>wei (array): Inhibitory-Excitatory weight matrix</p>
+<p>wie (array): Excitatory-Inhibitory weight matrix</p>
+<p>i (int): Time step</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="plasticity">
+<h3>Plasticity<a class="headerlink" href="#plasticity" title="Permalink to this headline">¶</a></h3>
+<p>The following methods are available via <a class="reference internal" href="index.html#sorn.Plasticity" title="sorn.Plasticity"><code class="xref py py-class docutils literal notranslate"><span class="pre">sorn.Plasticity</span></code></a></p>
+<dl class="py class">
+<dt>
+<em class="property">class </em><code class="sig-prename descclassname">sorn.</code><code class="sig-name descname">Plasticity</code><a class="reference internal" href="_modules/sorn.html#Plasticity"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Instance of class Sorn. Inherits the variables and functions defined in class Sorn
+Encapsulates all plasticity mechanisms mentioned in the article. Inherits all attributed from parent class Sorn</p>
+<dl>
+<dt>Args:</dt><dd><p>nu (int) - Number of input units. Defaults to 10</p>
+<p>ne (int) = Sorn.ne  # Number of excitatory units. Defaults to 200</p>
+<p>eta_stdp (float) - STDP plasticity Learning rate constant; SORN1 and SORN2. Defaults to 0.004</p>
+<p>eta_ip (float) - Intrinsic plasticity learning rate constant; SORN1 and SORN2. Defaults to 0.001</p>
+<p>eta_inhib (float) - Intrinsic plasticity learning rate constant; SORN2 only. Defaults to 0.01</p>
+<p>h_ip (float) - Target firing rate. Defaults to 2 * Sorn.nu / Sorn.ne</p>
+<p>mu_ip (float) - Mean target firing rate. Defaults to 0.1</p>
+<p>sigma_ip (float) - Variance of target firing rate. Defaults to 0.0</p>
+<p>ni (int) - Number of inhibitory units in the network. Defaults to int(0.2 * Sorn.ne)</p>
+<p>time_steps (float)- Total time steps of simulation</p>
+<p>te_min (float) - Excitatory minimum Threshold. Defaults to 0.0</p>
+<p>te_max (float) - Excitatory maximum Threshold. Defaults to 1.0</p>
+<p>ti_min (float) - Inhibitory minimum Threshold. Defaults to 0.0</p>
+<p>ti_max (float) - Inhibitory maximum Threshold. Defaults to 0.5</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">initialize_plasticity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn.html#Plasticity.initialize_plasticity"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Initialize weight matrices for plasticity phase based on network configuration</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>Inherited from Sorn attributes</p>
+</dd>
+<dt>Returns:</dt><dd><p>array - Weight matrices WEI, WEE, WIE</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">ip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">te</span></em>, <em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn.html#Plasticity.ip"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Intrinsic Plasiticity mechanism</p>
+<dl>
+<dt>Args:</dt><dd><p>te (list): Threshold vector of excitatory units</p>
+<p>x (tuple): Excitatory network activity</p>
+</dd>
+<dt>Returns:</dt><dd><p>te (list): Threshold vector of excitatory units</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">istdp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wei</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">cutoff_weights</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn.html#Plasticity.istdp"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Apply iSTDP rule : Regulates synaptic strength between the pre inhibitory(Xj) and post Excitatory(Xi) synaptic neurons</p>
+<dl>
+<dt>Args:</dt><dd><p>wei (array) -  Synaptic strengths from inhibitory to excitatory</p>
+<p>x (tuple): Excitatory network activity</p>
+<p>y (tuple): Inhibitory network activity</p>
+<p>cutoff_weights (float): Maximum and minimum weight ranges</p>
+</dd>
+<dt>Returns:</dt><dd><p>wei (array) -  Synaptic strengths from inhibitory to excitatory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">reorganize_network</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn.html#Plasticity.reorganize_network"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">ss</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wee</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn.html#Plasticity.ss"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Synaptic Scaling or Synaptic Normalization</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>wee (array) -  Weight matrix</p>
+</dd>
+<dt>Returns:</dt><dd><p>wee (array) -  Scaled Weight matrix</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">stdp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wee</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">cutoff_weights</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn.html#Plasticity.stdp"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Apply STDP rule : Regulates synaptic strength between the pre(Xj) and post(Xi) synaptic neurons</p>
+<dl>
+<dt>Args:</dt><dd><p>wee (array) -  Weight matrix</p>
+<p>x (tuple): Excitatory network activity</p>
+<p>cutoff_weights (float): Maximum and minimum weight ranges</p>
+</dd>
+<dt>Returns:</dt><dd><p>wee (array) -  Weight matrix</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">structural_plasticity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wee</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn.html#Plasticity.structural_plasticity"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Add new connection value to the smallest weight between excitatory units randomly</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>wee (array) -  Weight matrix</p>
+</dd>
+<dt>Returns:</dt><dd><p>wee (array) -  Weight matrix</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="networkstate">
+<h3>NetworkState<a class="headerlink" href="#networkstate" title="Permalink to this headline">¶</a></h3>
+<p>The following methods are available via <a class="reference internal" href="index.html#sorn.NetworkState" title="sorn.NetworkState"><code class="xref py py-class docutils literal notranslate"><span class="pre">sorn.NetworkState</span></code></a></p>
+<dl class="py class">
+<dt>
+<em class="property">class </em><code class="sig-prename descclassname">sorn.</code><code class="sig-name descname">NetworkState</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v_t</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn.html#NetworkState"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>The evolution of network states</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>v_t (list) - External input/stimuli</p>
+</dd>
+<dt>Returns: </dt><dd><p>NetworkState instance</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt>
+<code class="sig-name descname">excitatory_network_state</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wee</span></em>, <em class="sig-param"><span class="n">wei</span></em>, <em class="sig-param"><span class="n">te</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">white_noise_e</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn.html#NetworkState.excitatory_network_state"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Activity of Excitatory neurons in the network</p>
+<dl>
+<dt>Args:</dt><dd><p>wee (array): Excitatory-Excitatory weight matrix</p>
+<p>wei (array): Inhibitory-Excitatory weight matrix</p>
+<p>te (list): Excitatory threshold</p>
+<p>x (tuple): Excitatory network activity</p>
+<p>y (tuple): Inhibitory network activity</p>
+<p>white_noise_e (list): Gaussian noise</p>
+</dd>
+<dt>Returns:</dt><dd><p>x (tuple): Current Excitatory network activity</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">incoming_drive</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">weights</span></em>, <em class="sig-param"><span class="n">activity_vector</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn.html#NetworkState.incoming_drive"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Excitatory Post synaptic potential towards neurons in the reservoir in the absence of external input</p>
+<dl>
+<dt>Args:</dt><dd><p>weights (array): Synaptic strengths</p>
+<p>activity_vector (list): Acitivity of inhibitory or Excitatory neurons</p>
+</dd>
+<dt>Returns:</dt><dd><p>incoming (array): Excitatory Post synaptic potential towards neurons</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">inhibitory_network_state</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wie</span></em>, <em class="sig-param"><span class="n">ti</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">white_noise_i</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn.html#NetworkState.inhibitory_network_state"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Activity of Excitatory neurons in the network</p>
+<dl>
+<dt>Args:</dt><dd><p>wee (array): Excitatory-Excitatory weight matrix</p>
+<p>wie (array): Excitatory-Inhibitory weight matrix</p>
+<p>ti (list): Inhibitory threshold</p>
+<p>y (tuple): Inhibitory network activity</p>
+<p>white_noise_i (list): Gaussian noise</p>
+</dd>
+<dt>Returns:</dt><dd><p>y (tuple): Current Inhibitory network activity</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">recurrent_drive</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wee</span></em>, <em class="sig-param"><span class="n">wei</span></em>, <em class="sig-param"><span class="n">te</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">white_noise_e</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn.html#NetworkState.recurrent_drive"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Network state due to recurrent drive received by the each unit at time t+1. Activity of Excitatory neurons without external stimuli</p>
+<dl>
+<dt>Args:</dt><dd><p>wee (array): Excitatory-Excitatory weight matrix</p>
+<p>wei (array): Inhibitory-Excitatory weight matrix</p>
+<p>te (list): Excitatory threshold</p>
+<p>x (tuple): Excitatory network activity</p>
+<p>y (tuple): Inhibitory network activity</p>
+<p>white_noise_e (list): Gaussian noise</p>
+</dd>
+<dt>Returns:</dt><dd><p>xt (list): Recurrent network state</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="simulator">
+<h3>Simulator<a class="headerlink" href="#simulator" title="Permalink to this headline">¶</a></h3>
+<p>The following methods are available via <a class="reference internal" href="index.html#sorn.Simulator_" title="sorn.Simulator_"><code class="xref py py-class docutils literal notranslate"><span class="pre">sorn.Simulator_</span></code></a></p>
+<dl class="py class">
+<dt>
+<em class="property">class </em><code class="sig-prename descclassname">sorn.</code><code class="sig-name descname">Simulator_</code><a class="reference internal" href="_modules/sorn.html#Simulator_"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Simulate SORN using external input/noise using the fresh or pretrained matrices</p>
+<dl>
+<dt>Args:</dt><dd><p>inputs (np.array, optional): External stimuli. Defaults to None.</p>
+<p>phase (str, optional): Plasticity phase. Defaults to “plasticity”.</p>
+<p>matrices (dict, optional): Network states, connections and threshold matrices. Defaults to None.</p>
+<p>time_steps (int, optional): Total number of time steps to simulate the network. Defaults to 1.</p>
+<p>noise (bool, optional): If True, noise will be added. Defaults to True.</p>
+</dd>
+<dt>Returns:</dt><dd><p>plastic_matrices (dict): Network states, connections and threshold matrices</p>
+<p>X_all (array): Excitatory network activity collected during entire simulation steps</p>
+<p>Y_all (array): Inhibitory network activity collected during entire simulation steps</p>
+<p>R_all (array): Recurrent network activity collected during entire simulation steps</p>
+<p>frac_pos_active_conn (list): Number of positive connection strengths in the network at each time step during simulation</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt>
+<code class="sig-name descname">simulate_sorn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inputs</span><span class="p">:</span> <span class="n">numpy.array</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">phase</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'plasticity'</span></em>, <em class="sig-param"><span class="n">matrices</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">time_steps</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1</span></em>, <em class="sig-param"><span class="n">noise</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn.html#Simulator_.simulate_sorn"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Simulation/Plasticity phase</p>
+<dl>
+<dt>Args:</dt><dd><p>inputs (np.array, optional): External stimuli. Defaults to None.</p>
+<p>phase (str, optional): Plasticity phase. Defaults to “plasticity”.</p>
+<p>matrices (dict, optional): Network states, connections and threshold matrices. Defaults to None.</p>
+<p>time_steps (int, optional): Total number of time steps to simulate the network. Defaults to 1.</p>
+<p>noise (bool, optional): If True, noise will be added. Defaults to True.</p>
+</dd>
+<dt>Returns:</dt><dd><p>plastic_matrices (dict): Network states, connections and threshold matrices</p>
+<p>X_all (array): Excitatory network activity collected during entire simulation steps</p>
+<p>Y_all (array): Inhibitory network activity collected during entire simulation steps</p>
+<p>R_all (array): Recurrent network activity collected during entire simulation steps</p>
+<p>frac_pos_active_conn (list): Number of positive connection strengths in the network at each time step during simulation</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="trainer">
+<h3>Trainer<a class="headerlink" href="#trainer" title="Permalink to this headline">¶</a></h3>
+<p>The following methods are available via <a class="reference internal" href="index.html#sorn.Trainer_" title="sorn.Trainer_"><code class="xref py py-class docutils literal notranslate"><span class="pre">sorn.Trainer_</span></code></a></p>
+<dl class="py class">
+<dt>
+<em class="property">class </em><code class="sig-prename descclassname">sorn.</code><code class="sig-name descname">Trainer_</code><a class="reference internal" href="_modules/sorn.html#Trainer_"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Train the network with the fresh or pretrained network matrices and external stimuli</p>
+<dl>
+<dt>Args:</dt><dd><p>inputs (np.array, optional): External stimuli. Defaults to None.</p>
+<p>phase (str, optional): Training phase. Defaults to “training”.</p>
+<p>matrices (dict, optional): Network states, connections and threshold matrices. Defaults to None.</p>
+<p>time_steps (int, optional): Total number of time steps to simulate the network. Defaults to 1.</p>
+<p>noise (bool, optional): If True, noise will be added. Defaults to True.</p>
+</dd>
+<dt>Returns:</dt><dd><p>plastic_matrices (dict): Network states, connections and threshold matrices</p>
+<p>X_all (array): Excitatory network activity collected during entire simulation steps</p>
+<p>Y_all (array): Inhibitory network activity collected during entire simulation steps</p>
+<p>R_all (array): Recurrent network activity collected during entire simulation steps</p>
+<p>frac_pos_active_conn (list): Number of positive connection strengths in the network at each time step during simulation</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt>
+<code class="sig-name descname">train_sorn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inputs</span><span class="p">:</span> <span class="n">numpy.array</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">phase</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'training'</span></em>, <em class="sig-param"><span class="n">matrices</span><span class="p">:</span> <span class="n">numpy.array</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">noise</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn.html#Trainer_.train_sorn"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Train the network with the fresh or pretrained network matrices and external stimuli</p>
+<dl>
+<dt>Args:</dt><dd><p>inputs (np.array, optional): External stimuli. Defaults to None.</p>
+<p>phase (str, optional): Training phase. Defaults to “training”.</p>
+<p>matrices (dict, optional): Network states, connections and threshold matrices. Defaults to None.</p>
+<p>time_steps (int, optional): Total number of time steps to simulate the network. Defaults to 1.</p>
+<p>noise (bool, optional): If True, noise will be added. Defaults to True.</p>
+</dd>
+<dt>Returns:</dt><dd><p>plastic_matrices (dict): Network states, connections and threshold matrices</p>
+<p>X_all (array): Excitatory network activity collected during entire simulation steps</p>
+<p>Y_all (array): Inhibitory network activity collected during entire simulation steps</p>
+<p>R_all (array): Recurrent network activity collected during entire simulation steps</p>
+<p>frac_pos_active_conn (list): Number of positive connection strengths in the network at each time step during simulation</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="utility-functions">
+<h2>Utility Functions<a class="headerlink" href="#utility-functions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="plotting">
+<h3>Plotting<a class="headerlink" href="#plotting" title="Permalink to this headline">¶</a></h3>
+<p>The following methods are available via <a class="reference internal" href="index.html#utils.Plotter" title="utils.Plotter"><code class="xref py py-class docutils literal notranslate"><span class="pre">utils.Plotter</span></code></a></p>
+<dl class="py class">
+<dt>
+<em class="property">class </em><code class="sig-prename descclassname">utils.</code><code class="sig-name descname">Plotter</code><a class="reference internal" href="_modules/utils.html#Plotter"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Wrapper class to call plotting methods</p>
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">correlation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">corr</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">savefig</span><span class="p">:</span> <span class="n">bool</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#Plotter.correlation"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plot correlation between neurons</p>
+<dl>
+<dt>Args:</dt><dd><p>corr (array): Correlation matrix</p>
+<p>savefig (bool): If true will save the plot at the current working directory</p>
+</dd>
+<dt>Returns:</dt><dd><p>matplotlib.pyplot: Neuron Correlation plot</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">hamming_distance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">hamming_dist</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">savefig</span><span class="p">:</span> <span class="n">bool</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#Plotter.hamming_distance"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Hamming distance between true netorks states and perturbed network states</p>
+<dl>
+<dt>Args:</dt><dd><p>hamming_dist (list): Hamming distance values</p>
+<p>savefig (bool): If True, save the fig at current working directory</p>
+</dd>
+<dt>Returns:</dt><dd><p>matplotlib.pyplot: Hamming distance between true and perturbed network states</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">hist_firing_rate_network</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">spike_train</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">bin_size</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">savefig</span><span class="p">:</span> <span class="n">bool</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#Plotter.hist_firing_rate_network"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plot the histogram of firing rate (total number of neurons spike at each time step)</p>
+<dl>
+<dt>Args:    </dt><dd><p>spike_train(array) - Array of spike trains</p>
+<p>bin_size(int) - Histogram bin size</p>
+<p>savefig(bool) - If True, plot will be saved in the cwd</p>
+</dd>
+<dt>Returns: </dt><dd><p>plot object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">hist_incoming_conn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">weights</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">bin_size</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">histtype</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">savefig</span><span class="p">:</span> <span class="n">bool</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#Plotter.hist_incoming_conn"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plot the histogram of number of incoming connections per neuron</p>
+<dl>
+<dt>Args:    </dt><dd><p>weights (array): Connection weights</p>
+<p>bin_size (int): Histogram bin size</p>
+<p>histtype (str): Same as histtype matplotlib</p>
+<p>savefig (bool): If True plot will be saved as png file in the cwd</p>
+</dd>
+<dt>Returns:</dt><dd><p>plot (matplotlib.pyplot): plot object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">hist_outgoing_conn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">weights</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">bin_size</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">histtype</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">savefig</span><span class="p">:</span> <span class="n">bool</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#Plotter.hist_outgoing_conn"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plot the histogram of number of incoming connections per neuron</p>
+<dl>
+<dt>Args:   </dt><dd><p>weights(array) - Connection weights</p>
+<p>bin_size(int) - Histogram bin size</p>
+<p>histtype(str) - Same as histtype matplotlib</p>
+<p>savefig(bool) - If True plot will be saved as png file in the cwd</p>
+</dd>
+<dt>Returns:</dt><dd><p>plot object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">isi_exponential_fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">spike_train</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">neuron</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">bin_size</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">savefig</span><span class="p">:</span> <span class="n">bool</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#Plotter.isi_exponential_fit"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plot Exponential fit on the inter-spike intervals during training or simulation phase</p>
+<dl>
+<dt>Args:</dt><dd><p>spike_train (array) - Array of spike trains</p>
+<p>neuron(int) - If True, firing rate of the network will be plotted</p>
+<p>bin_size(int) - Spike train will be splitted into bins of size bin_size</p>
+<p>savefig(bool) - If True, plot will be saved in the cwd</p>
+</dd>
+<dt>Returns:</dt><dd><p>plot object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">linear_lognormal_fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">weights</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">num_points</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">savefig</span><span class="p">:</span> <span class="n">bool</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#Plotter.linear_lognormal_fit"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Lognormal curve fit on connection weight distribution</p>
+<dl>
+<dt>Args:</dt><dd><p>weights (array) - Connection weights</p>
+<p>num_points(int) - Number of points to be plotted in the x axis</p>
+<p>savefig(bool) - If True, plot will be saved in the cwd</p>
+</dd>
+<dt>Returns:</dt><dd><p>plot object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">network_connection_dynamics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">connection_counts</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">initial_steps</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">final_steps</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">savefig</span><span class="p">:</span> <span class="n">bool</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#Plotter.network_connection_dynamics"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plot number of positive connection in the excitatory pool</p>
+<dl>
+<dt>Args:</dt><dd><p>connection_counts(array) - 1D Array of number of connections in the network per time step</p>
+<p>initial_steps(int) - Plot for initial steps</p>
+<p>final_steps(int) - Plot for final steps</p>
+<p>savefig(bool) - If True plot will be saved as png file in the cwd</p>
+</dd>
+<dt>Returns:</dt><dd><p>plot object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">plot_network</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">corr</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">corr_thres</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">fig_name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#Plotter.plot_network"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Network x graphical visualization of the network using the correlation matrix</p>
+<dl>
+<dt>Args:</dt><dd><p>corr ([type]): Correlation between neurons</p>
+<p>corr_thres ([type]): Threshold to prune the connection</p>
+<p>fig_name ([type], optional): Name of the figure. Defaults to None.</p>
+</dd>
+<dt>Returns:</dt><dd><p>matplotlib.pyplot: Plot instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">raster_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">spike_train</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">savefig</span><span class="p">:</span> <span class="n">bool</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#Plotter.raster_plot"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Raster plot of spike trains</p>
+<dl>
+<dt>Args: </dt><dd><p>spike_train (array) - Array of spike trains</p>
+<p>with_firing_rates(bool) - If True, firing rate of the network will be plotted</p>
+<p>savefig(bool) - If True, plot will be saved in the cwd</p>
+</dd>
+<dt>Returns:</dt><dd><p>plot object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">scatter_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">spike_train</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">savefig</span><span class="p">:</span> <span class="n">bool</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#Plotter.scatter_plot"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Scatter plot of spike trains</p>
+<dl>
+<dt>Args:</dt><dd><p>spike_train (list) - Array of spike trains</p>
+<p>with_firing_rates(bool) - If True, firing rate of the network will be plotted</p>
+<p>savefig(bool) - If True, plot will be saved in the cwd</p>
+</dd>
+<dt>Returns:</dt><dd><p>plot object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">weight_distribution</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">weights</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">bin_size</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">savefig</span><span class="p">:</span> <span class="n">bool</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#Plotter.weight_distribution"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Plot the distribution of synaptic weights</p>
+<dl>
+<dt>Args:   </dt><dd><p>weights (array) - Connection weights</p>
+<p>bin_size(int) - Spike train will be splited into bins of size bin_size</p>
+<p>savefig(bool) - If True, plot will be saved in the cwd</p>
+</dd>
+<dt>Returns: </dt><dd><p>plot object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="statistics-and-analysis">
+<h3>Statistics and Analysis<a class="headerlink" href="#statistics-and-analysis" title="Permalink to this headline">¶</a></h3>
+<p>The following methods are available via <a class="reference internal" href="index.html#utils.Statistics" title="utils.Statistics"><code class="xref py py-class docutils literal notranslate"><span class="pre">utils.Statistics</span></code></a></p>
+<dl class="py class">
+<dt>
+<em class="property">class </em><code class="sig-prename descclassname">utils.</code><code class="sig-name descname">Statistics</code><a class="reference internal" href="_modules/utils.html#Statistics"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Wrapper class for statistical analysis methods</p>
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">autocorr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">firing_rates</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">t</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">2</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#Statistics.autocorr"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Score interpretation,
+scores near 1 imply a smoothly varying series</p>
+<dl>
+<dt>scores near 0 imply that there’s no overall linear relationship between a data point and the following one</dt><dd><p>(that is, plot(x[-length(x)],x[-1]) won’t give a scatter plot with any apparent linearity)</p>
+</dd>
+<dt>scores near -1 suggest that the series is jagged in a particular way: if one point is above the mean, the next</dt><dd><p>is likely to be below the mean by about the same amount, and vice versa.</p>
+</dd>
+<dt>Args:</dt><dd><p>firing_rates (list): Firing rates of the network</p>
+<p>t (int, optional): Window size. Defaults to 2.</p>
+</dd>
+<dt>Returns:</dt><dd><p>array: Autocorrelation between neurons given their firing rates</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">avg_corr_coeff</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">spike_train</span><span class="p">:</span> <span class="n">numpy.array</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#Statistics.avg_corr_coeff"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Measure Average Pearson correlation coeffecient between neurons</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>spike_train (array): Neural activity</p>
+</dd>
+<dt>Returns:</dt><dd><p>array: Average correlation coeffecient</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">fanofactor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">spike_train</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">neuron</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">window_size</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#Statistics.fanofactor"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Investigate whether neuronal spike generation is a poisson process</p>
+<dl>
+<dt>Args:</dt><dd><p>spike_train (np.array): Spike train of neurons in the reservoir</p>
+<p>neuron (int): Target neuron in the pool</p>
+<p>window_size (int): Sliding window size for time step ranges to be considered for measuring the fanofactor</p>
+</dd>
+<dt>Returns:</dt><dd><p>float : Fano factor of the neuron spike train</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">firing_rate_network</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">spike_train</span><span class="p">:</span> <span class="n">numpy.array</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#Statistics.firing_rate_network"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Calculate number of neurons spikes at each time step.Firing rate of the network</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>spike_train(array) - Array of spike trains</p>
+</dd>
+<dt>Returns: </dt><dd><p>int: firing_rate</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">firing_rate_neuron</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">spike_train</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">neuron</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">bin_size</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#Statistics.firing_rate_neuron"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Measure spike rate of given neuron during given time window</p>
+<dl>
+<dt>Args:</dt><dd><p>spike_train(array) - Array of spike trains</p>
+<p>neuron(int) - Target neuron in the reservoir</p>
+<p>bin_size(int) - Divide the spike trains into bins of size bin_size</p>
+</dd>
+<dt>Returns: </dt><dd><p>int: firing_rate</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">hamming_distance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">actual_spike_train</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">perturbed_spike_train</span><span class="p">:</span> <span class="n">numpy.array</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#Statistics.hamming_distance"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Hamming distance between true netorks states and perturbed network states</p>
+<dl>
+<dt>Args:</dt><dd><p>actual_spike_train (np.array): True network’s states</p>
+<p>perturbed_spike_train (np.array): Perturbated network’s states</p>
+</dd>
+<dt>Returns:</dt><dd><p>float: Hamming distance between true and perturbed network states</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">scale_dependent_smoothness_measure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">firing_rates</span><span class="p">:</span> <span class="n">list</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#Statistics.scale_dependent_smoothness_measure"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Smoothem the firing rate depend on its scale. Smaller values corresponds to smoother series</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>firing_rates(list) - List of number of active neurons per time step</p>
+</dd>
+<dt>Returns:</dt><dd><p>sd_diff(list) - Float value signifies the smoothness of the semantic changes in firing rates</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">scale_independent_smoothness_measure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">firing_rates</span><span class="p">:</span> <span class="n">list</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#Statistics.scale_independent_smoothness_measure"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Smoothem the firing rate independent of its scale. Smaller values corresponds to smoother series</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>firing_rates(list) - List of number of active neurons per time step</p>
+</dd>
+<dt>Returns:</dt><dd><p>coeff_var(list) - Float value signifies the smoothness of the semantic changes in firing rates</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">spike_source_entropy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">spike_train</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">num_neurons</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#Statistics.spike_source_entropy"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Measure the uncertainty about the origin of spike from the network using entropy</p>
+<dl>
+<dt>Args:</dt><dd><p>spike_train (np.array): Spike train of neurons</p>
+<p>num_neurons (int): Number of neurons in the reservoir</p>
+</dd>
+<dt>Returns:</dt><dd><p>int : Spike source entropy of the network</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">spike_time_intervals</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">spike_train</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#Statistics.spike_time_intervals"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Generate spike time intervals spike_trains</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>spike_train (array): Network activity</p>
+</dd>
+<dt>Returns:</dt><dd><p>list: Inter spike intervals for each neuron in the reservoir</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<em class="property">static </em><code class="sig-name descname">spike_times</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">spike_train</span><span class="p">:</span> <span class="n">numpy.array</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#Statistics.spike_times"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Get the time instants at which neuron spikes</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>spike_train (array): Spike trains of neurons</p>
+</dd>
+<dt>Returns:</dt><dd><p>(array): Spike time of each neurons in the pool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="contribution.html" class="btn btn-neutral float-right" title="Contributions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Saranraj Nambusubramaniyan
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
