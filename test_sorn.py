@@ -179,7 +179,7 @@ class TestSorn(unittest.TestCase):
         self.assertRaises(
             Exception,
             Statistics.spike_source_entropy(
-                spike_train=np.asarray(Exc_activity), neurons_in_reservoir=200
+                spike_train=np.asarray(Exc_activity), num_neurons=200
             ),
         )
 
