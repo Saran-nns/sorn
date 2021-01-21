@@ -262,16 +262,16 @@ class Plasticity(Sorn):
 
         return wee_t
 
-    def ip(self, te, x):
+    def ip(self, te: np.array, x: np.array):
         """Intrinsic Plasiticity mechanism
 
         Args:
-            te (list): Threshold vector of excitatory units
+            te (array): Threshold vector of excitatory units
             
-            x (tuple): Excitatory network activity
+            x (array): Excitatory network activity
 
         Returns:
-            te (list): Threshold vector of excitatory units
+            te (array): Threshold vector of excitatory units
         """
 
         # IP rule: Active unit increases its threshold and inactive decreases its threshold.
@@ -289,7 +289,7 @@ class Plasticity(Sorn):
 
         return te_update
 
-    def ss(self, wee):
+    def ss(self, wee: np.array):
 
         """Synaptic Scaling or Synaptic Normalization
         
@@ -302,17 +302,17 @@ class Plasticity(Sorn):
         wee = wee / np.sum(wee, axis=0)
         return wee
 
-    def istdp(self, wei, x, y, cutoff_weights):
+    def istdp(self, wei: np.array, x: np.array, y: np.array, cutoff_weights: list):
         """Apply iSTDP rule, which regulates synaptic strength between the pre inhibitory(Xj) and post Excitatory(Xi) synaptic neurons
 
         Args:
             wei (array): Synaptic strengths from inhibitory to excitatory
             
-            x (tuple): Excitatory network activity
+            x (array): Excitatory network activity
             
-            y (tuple): Inhibitory network activity
+            y (array): Inhibitory network activity
             
-            cutoff_weights (float): Maximum and minimum weight ranges
+            cutoff_weights (list): Maximum and minimum weight ranges
 
         Returns:
             wei (array): Synaptic strengths from inhibitory to excitatory"""
@@ -359,7 +359,7 @@ class Plasticity(Sorn):
         return wei_t
 
     @staticmethod
-    def structural_plasticity(wee):
+    def structural_plasticity(wee: np.array):
 
         """Add new connection value to the smallest weight between excitatory units randomly
         
@@ -459,10 +459,6 @@ class Plasticity(Sorn):
         y = y_init.copy()
 
         return wee, wei, wie, te, ti, x, y
-
-    @staticmethod
-    def reorganize_network():
-        return NotImplementedError
 
 
 class MatrixCollection(Sorn):
