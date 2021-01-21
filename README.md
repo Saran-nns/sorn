@@ -58,6 +58,7 @@ To install all optional dependencies run::
 ```python
   pip install 'sorn[all]'
 ```  
+For detailed documentation about usage and development, please visit [SORN-Documentation](https://self-organizing-recurrent-neural-networks.readthedocs.io/)
 
 ## Usage:
 
