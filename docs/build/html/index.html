@@ -60,6 +60,10 @@
           
             
             
+              <div class="version">
+                0.3.19
+              </div>
+            
           
 
           
@@ -223,6 +227,87 @@ at that level may also help us to understand some fundamental aspects of brain n
 <li class="toctree-l1"><a class="reference internal" href="reference.html">Attributes and Methods</a></li>
 </ul>
 </div>
+<span class="target" id="module-sorn.sorn"></span><dl class="py class">
+<dt id="sorn.sorn.NetworkState">
+<em class="property">class </em><code class="sig-prename descclassname">sorn.sorn.</code><code class="sig-name descname">NetworkState</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v_t</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#NetworkState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sorn.sorn.NetworkState" title="Permalink to this definition">¶</a></dt>
+<dd><p>The evolution of network states</p>
+<dl class="py method">
+<dt id="sorn.sorn.NetworkState.excitatory_network_state">
+<code class="sig-name descname">excitatory_network_state</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wee</span></em>, <em class="sig-param"><span class="n">wei</span></em>, <em class="sig-param"><span class="n">te</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">white_noise_e</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#NetworkState.excitatory_network_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sorn.sorn.NetworkState.excitatory_network_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Activity of Excitatory neurons in the network</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sorn.sorn.NetworkState.recurrent_drive">
+<code class="sig-name descname">recurrent_drive</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wee</span></em>, <em class="sig-param"><span class="n">wei</span></em>, <em class="sig-param"><span class="n">te</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">white_noise_e</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#NetworkState.recurrent_drive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sorn.sorn.NetworkState.recurrent_drive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Network state due to recurrent drive received by the each unit at time t+1</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="sorn.sorn.Plasticity">
+<em class="property">class </em><code class="sig-prename descclassname">sorn.sorn.</code><code class="sig-name descname">Plasticity</code><a class="reference internal" href="_modules/sorn/sorn.html#Plasticity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sorn.sorn.Plasticity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instance of class Sorn. Inherits the variables and functions defined in class Sorn
+Encapsulates all plasticity mechanisms mentioned in the article</p>
+<dl class="py method">
+<dt id="sorn.sorn.Plasticity.initialize_plasticity">
+<em class="property">static </em><code class="sig-name descname">initialize_plasticity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#Plasticity.initialize_plasticity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sorn.sorn.Plasticity.initialize_plasticity" title="Permalink to this definition">¶</a></dt>
+<dd><p>NOTE: DO NOT TRANSPOSE THE WEIGHT MATRIX WEI FOR SORN 2 MODEL</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sorn.sorn.Plasticity.ss">
+<code class="sig-name descname">ss</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wee_t</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#Plasticity.ss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sorn.sorn.Plasticity.ss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Synaptic Scaling or Synaptic Normalization</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sorn.sorn.Plasticity.stdp">
+<code class="sig-name descname">stdp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wee</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">cutoff_weights</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#Plasticity.stdp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sorn.sorn.Plasticity.stdp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply STDP rule : Regulates synaptic strength between the pre(Xj) and post(Xi) synaptic neurons</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sorn.sorn.Plasticity.structural_plasticity">
+<em class="property">static </em><code class="sig-name descname">structural_plasticity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wee</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#Plasticity.structural_plasticity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sorn.sorn.Plasticity.structural_plasticity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add new connection value to the smallest weight between excitatory units randomly</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="sorn.sorn.Trainer_">
+<em class="property">class </em><code class="sig-prename descclassname">sorn.sorn.</code><code class="sig-name descname">Trainer_</code><a class="reference internal" href="_modules/sorn/sorn.html#Trainer_"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sorn.sorn.Trainer_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Args:
+inputs - one hot vector of inputs</p>
+<p>Returns:
+matrix_collection - collection of all weight matrices in dictionaries</p>
+<dl class="py method">
+<dt id="sorn.sorn.Trainer_.train_sorn">
+<code class="sig-name descname">train_sorn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inputs</span><span class="p">:</span> <span class="n">numpy.array</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">phase</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'plasticity'</span></em>, <em class="sig-param"><span class="n">matrices</span><span class="p">:</span> <span class="n">numpy.array</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">noise</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#Trainer_.train_sorn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sorn.sorn.Trainer_.train_sorn" title="Permalink to this definition">¶</a></dt>
+<dd><p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>phase</strong> (<em>str</em><em>, </em><em>optional</em>) – [description]. Defaults to ‘plasticity’.</p></li>
+<li><p><strong>matrices</strong> (<em>np.array</em><em>, </em><em>optional</em>) – [description]. Defaults to None.</p></li>
+<li><p><strong>inputs</strong> (<em>np.array</em><em>, </em><em>optional</em>) – [description]. Defaults to None.</p></li>
+<li><p><strong>noise</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description]. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[description]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[type]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-sorn.utils"></span><p>### IMPORT REQUIRED LIBRARIES</p>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Contribution</span></p>
 <ul>
