@@ -7,12 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>utils &mdash; Self-Organizing Recurrent Neural Network (SORN) 0.3.20 documentation</title>
+  <title>utils &mdash; Self-Organizing Recurrent Neural Network (SORN)  documentation</title>
   
 
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
 
   
   
@@ -179,9 +180,9 @@
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1.inset_locator</span> <span class="kn">import</span> <span class="n">InsetPosition</span>
 
-
-<div class="viewcode-block" id="Initializer"><a class="viewcode-back" href="../index.html#utils.Initializer">[docs]</a><span class="k">class</span> <span class="nc">Initializer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">Initializer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Helper class to initialize the matrices for the SORN</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -189,7 +190,7 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
 
-<div class="viewcode-block" id="Initializer.generate_strong_inp"><a class="viewcode-back" href="../index.html#utils.Initializer.generate_strong_inp">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">generate_strong_inp</span><span class="p">(</span><span class="n">length</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">reservoir_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate strong one-hot vector of input. Random neurons in the reservoir acts as inputs</span>
 
@@ -211,11 +212,11 @@
 
         <span class="n">inp</span><span class="p">[:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)]</span> <span class="o">=</span> <span class="n">x</span>
 
-        <span class="k">return</span> <span class="n">inp</span><span class="p">,</span> <span class="n">idx</span></div>
+        <span class="k">return</span> <span class="n">inp</span><span class="p">,</span> <span class="n">idx</span>
 
     <span class="c1"># Generate multi-node one-hot strong inputs</span>
 
-<div class="viewcode-block" id="Initializer.multi_one_hot_inp"><a class="viewcode-back" href="../index.html#utils.Initializer.multi_one_hot_inp">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">multi_one_hot_inp</span><span class="p">(</span><span class="n">ne</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">n_nodes_per_inp</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate multi(n_nodes_per_inp) one hot vector for each input. </span>
 <span class="sd">        For each input, set n_nodes_per_inp equals one and the rest of </span>
@@ -248,9 +249,9 @@
                 <span class="n">one_hot</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
 
-        <span class="k">return</span> <span class="n">one_hot</span><span class="p">,</span> <span class="n">idxs</span></div>
+        <span class="k">return</span> <span class="n">one_hot</span><span class="p">,</span> <span class="n">idxs</span>
 
-<div class="viewcode-block" id="Initializer.generate_gaussian_inputs"><a class="viewcode-back" href="../index.html#utils.Initializer.generate_gaussian_inputs">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">generate_gaussian_inputs</span><span class="p">(</span><span class="n">length</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">reservoir_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;Generate external stimuli sampled from Gaussian distribution.</span>
@@ -276,9 +277,9 @@
 
         <span class="n">out</span><span class="p">[:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)]</span> <span class="o">=</span> <span class="n">x</span>
 
-        <span class="k">return</span> <span class="n">out</span><span class="p">,</span> <span class="n">idx</span></div>
+        <span class="k">return</span> <span class="n">out</span><span class="p">,</span> <span class="n">idx</span>
 
-<div class="viewcode-block" id="Initializer.normalize_weight_matrix"><a class="viewcode-back" href="../index.html#utils.Initializer.normalize_weight_matrix">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">normalize_weight_matrix</span><span class="p">(</span><span class="n">weight_matrix</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
 
         <span class="c1"># Applied only while initializing the weight. During simulation, Synaptic scaling applied on weight matrices</span>
@@ -293,9 +294,9 @@
 
         <span class="n">normalized_weight_matrix</span> <span class="o">=</span> <span class="n">weight_matrix</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weight_matrix</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">normalized_weight_matrix</span></div>
+        <span class="k">return</span> <span class="n">normalized_weight_matrix</span>
 
-<div class="viewcode-block" id="Initializer.generate_lambd_connections"><a class="viewcode-back" href="../index.html#utils.Initializer.generate_lambd_connections">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">generate_lambd_connections</span><span class="p">(</span>
         <span class="n">synaptic_connection</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ne</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">ni</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">lambd_w</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">lambd_std</span><span class="p">:</span> <span class="nb">int</span>
     <span class="p">):</span>
@@ -440,9 +441,9 @@
                 <span class="c1"># Update the global weight values index</span>
                 <span class="n">global_outgoing_weights_idx</span> <span class="o">+=</span> <span class="n">lambdas</span><span class="p">[</span><span class="n">neuron</span><span class="p">]</span>
 
-            <span class="k">return</span> <span class="n">connection_weights</span></div>
+            <span class="k">return</span> <span class="n">connection_weights</span>
 
-<div class="viewcode-block" id="Initializer.get_incoming_connection_dict"><a class="viewcode-back" href="../index.html#utils.Initializer.get_incoming_connection_dict">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_incoming_connection_dict</span><span class="p">(</span><span class="n">weights</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Get the non-zero entries in columns is the incoming connections for the neurons</span>
 
@@ -459,9 +460,9 @@
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>  <span class="c1"># For each neuron</span>
             <span class="n">connection_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">weights</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span>
 
-        <span class="k">return</span> <span class="n">connection_dict</span></div>
+        <span class="k">return</span> <span class="n">connection_dict</span>
 
-<div class="viewcode-block" id="Initializer.get_outgoing_connection_dict"><a class="viewcode-back" href="../index.html#utils.Initializer.get_outgoing_connection_dict">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_outgoing_connection_dict</span><span class="p">(</span><span class="n">weights</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the non-zero entries in rows is the outgoing connections for the neurons</span>
 
@@ -478,9 +479,9 @@
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>  <span class="c1"># For each neuron</span>
             <span class="n">connection_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:])[</span><span class="mi">0</span><span class="p">])</span>
 
-        <span class="k">return</span> <span class="n">connection_dict</span></div>
+        <span class="k">return</span> <span class="n">connection_dict</span>
 
-<div class="viewcode-block" id="Initializer.prune_small_weights"><a class="viewcode-back" href="../index.html#utils.Initializer.prune_small_weights">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">prune_small_weights</span><span class="p">(</span><span class="n">weights</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">cutoff_weight</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Prune the connections with negative connection strength. The weights less than cutoff_weight set to 0</span>
 
@@ -495,9 +496,9 @@
 
         <span class="n">weights</span><span class="p">[</span><span class="n">weights</span> <span class="o">&lt;=</span> <span class="n">cutoff_weight</span><span class="p">]</span> <span class="o">=</span> <span class="n">cutoff_weight</span>
 
-        <span class="k">return</span> <span class="n">weights</span></div>
+        <span class="k">return</span> <span class="n">weights</span>
 
-<div class="viewcode-block" id="Initializer.set_max_cutoff_weight"><a class="viewcode-back" href="../index.html#utils.Initializer.set_max_cutoff_weight">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">set_max_cutoff_weight</span><span class="p">(</span><span class="n">weights</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">cutoff_weight</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set cutoff limit for the values in given array</span>
 <span class="sd">        </span>
@@ -512,9 +513,9 @@
 
         <span class="n">weights</span><span class="p">[</span><span class="n">weights</span> <span class="o">&gt;</span> <span class="n">cutoff_weight</span><span class="p">]</span> <span class="o">=</span> <span class="n">cutoff_weight</span>
 
-        <span class="k">return</span> <span class="n">weights</span></div>
+        <span class="k">return</span> <span class="n">weights</span>
 
-<div class="viewcode-block" id="Initializer.get_unconnected_indexes"><a class="viewcode-back" href="../index.html#utils.Initializer.get_unconnected_indexes">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_unconnected_indexes</span><span class="p">(</span><span class="n">wee</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Helper function for Structural plasticity to randomly select the unconnected units</span>
 
@@ -533,9 +534,9 @@
             <span class="k">if</span> <span class="n">idxs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">idxs</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
                 <span class="n">self_conn_removed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 
-        <span class="k">return</span> <span class="n">self_conn_removed</span></div>
+        <span class="k">return</span> <span class="n">self_conn_removed</span>
 
-<div class="viewcode-block" id="Initializer.white_gaussian_noise"><a class="viewcode-back" href="../index.html#utils.Initializer.white_gaussian_noise">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">white_gaussian_noise</span><span class="p">(</span><span class="n">mu</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">sigma</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;Generates white gaussian noise with mean mu, standard deviation sigma and</span>
@@ -554,12 +555,12 @@
 
         <span class="n">noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">noise</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">noise</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
     <span class="c1"># SANITY CHECK EACH WEIGHTS</span>
     <span class="c1"># Note this function has no influence in weight matrix, will be deprecated in next version</span>
 
-<div class="viewcode-block" id="Initializer.zero_sum_incoming_check"><a class="viewcode-back" href="../index.html#utils.Initializer.zero_sum_incoming_check">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">zero_sum_incoming_check</span><span class="p">(</span><span class="n">weights</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make sure, the each neuron in the pool has atleast 1 incoming connection</span>
 
@@ -585,7 +586,7 @@
                 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rand_indices</span><span class="p">):</span>
                     <span class="n">weights</span><span class="p">[:,</span> <span class="n">zero_sum_incoming</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">rand_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
-        <span class="k">return</span> <span class="n">weights</span></div></div>
+        <span class="k">return</span> <span class="n">weights</span>
 
 
 <div class="viewcode-block" id="Plotter"><a class="viewcode-back" href="../reference.html#utils.Plotter">[docs]</a><span class="k">class</span> <span class="nc">Plotter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>

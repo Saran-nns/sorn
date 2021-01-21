@@ -4,7 +4,9 @@ Reference
 SORN Network 
 ------------
 
-The following methods are available via :class:`sorn.SORN`
+Sorn
+^^^^
+The following methods are available via :class:`SORN`
 
 .. autoclass:: sorn.Sorn
     :members:
@@ -13,7 +15,7 @@ The following methods are available via :class:`sorn.SORN`
 
 MatrixCollection
 ^^^^^^^^^^^^^^^^^
-The following methods are available via :class:`sorn.MatrixCollection`
+The following methods are available via :class:`MatrixCollection`
 
 .. autoclass:: sorn.MatrixCollection
     :members:

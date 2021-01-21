@@ -5,7 +5,7 @@ Update network configuration
 ----------------------------
 
 Configuration file
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^
 Navigate to `home/conda/envs/ENVNAME/Lib/site-packages/sorn` or if you are unsure about the directory of `sorn`:
 
 Run::
@@ -18,7 +18,7 @@ to find the location of the sorn package:
 Then, update/edit arguments in `configuration.ini`
 
 Keyword arguments 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^
 Pass the arguments with valid names (listed below). This will override the default values at `configuration.ini`: 
 
 The allowed `kwargs` are::
@@ -62,7 +62,7 @@ Train the network using the matrices obtained from plasticity phase::
 
 Network Output Descriptions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-During plasticity and training phase, SORN returns a dictionary of below matrices for analysis::
+During plasticity and training phase, SORN returns a dictionary of below matrices for analysis:
 
     `matrices_dict` - Dictionary of connection weights ('Wee','Wei','Wie') , Excitatory network activity ('X'), Inhibitory network activities('Y'), Threshold values ('Te','Ti')
 
