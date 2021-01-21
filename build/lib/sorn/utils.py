@@ -10,6 +10,7 @@ import networkx as nx
 import pandas as pd
 from mpl_toolkits.axes_grid1.inset_locator import InsetPosition
 
+
 class Initializer(object):
     """
     Helper class to initialize the matrices for the SORN
@@ -1067,13 +1068,12 @@ class Statistics(object):
     @staticmethod
     def autocorr(firing_rates: list, t: int = 2):
         """
-        Score interpretation,
-        scores near 1 imply a smoothly varying series
-        
-        scores near 0 imply that there's no overall linear relationship between a data point and the following one
+        Score interpretation
+        - scores near 1 imply a smoothly varying series
+        - scores near 0 imply that there's no overall linear relationship between a data point and the following one
                         (that is, plot(x[-length(x)],x[-1]) won't give a scatter plot with any apparent linearity)
                         
-        scores near -1 suggest that the series is jagged in a particular way: if one point is above the mean, the next
+        - scores near -1 suggest that the series is jagged in a particular way: if one point is above the mean, the next
                         is likely to be below the mean by about the same amount, and vice versa.
 
         Args:
