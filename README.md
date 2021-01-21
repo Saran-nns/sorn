@@ -9,6 +9,7 @@ The network is developed as part of my Master thesis at Universität Osnabrück,
 [![codecov](https://codecov.io/gh/Saran-nns/sorn/branch/master/graph/badge.svg)](https://codecov.io/gh/Saran-nns/sorn)
 [![Documentation Status](https://readthedocs.org/projects/self-organizing-recurrent-neural-networks/badge/?version=latest)](https://self-organizing-recurrent-neural-networks.readthedocs.io/en/latest/?badge=latest)
 [![PyPI version](https://badge.fury.io/py/sorn.svg)](https://badge.fury.io/py/sorn)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 ![PyPI - Downloads](https://img.shields.io/pypi/dw/sorn.svg)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2590449.svg)](https://doi.org/10.5281/zenodo.2590449)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
