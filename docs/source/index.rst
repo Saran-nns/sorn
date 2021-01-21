@@ -51,12 +51,6 @@ at that level may also help us to understand some fundamental aspects of brain n
 
    Attributes and Methods <reference>
 
-.. automodule:: sorn.sorn 
-   :members:
-
-.. automodule:: sorn.utils 
-   :members:
-
 .. toctree::
    :maxdepth: 1
    :caption: Contribution
