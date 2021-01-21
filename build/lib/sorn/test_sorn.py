@@ -3,7 +3,10 @@ import pickle
 import numpy as np
 from sorn.sorn import RunSorn, Generator
 from sorn.utils import Plotter, Statistics, Initializer
+from sorn import Simulator, Trainer
 
+num_features = 10
+inputs = np.random.rand(num_features, 1)
 
 # Get the pickled matrices:
 with open("sample_matrices.pkl", "rb") as f:
@@ -29,6 +32,43 @@ class TestSorn(unittest.TestCase):
 
         self.assertRaises(
             Exception, RunSorn(phase="Training", matrices=matrices_dict).run_sorn([0.0])
+        )
+
+        self.assertRaises(
+            Exception,
+            Simulator.simulate_sorn(
+                inputs=[0.0],
+                phase="plasticity",
+                matrices=None,
+                noise=True,
+                time_steps=2,
+                ne=20,
+                nu=1,
+            ),
+        )
+
+        self.assertRaises(
+            Exception,
+            Simulator.simulate_sorn(
+                inputs=[0.0],
+                phase="plasticity",
+                matrices=matrices_dict,
+                noise=True,
+                time_steps=2,
+                ne=20,
+                nu=10,
+            ),
+        )
+
+        self.assertRaises(
+            Exception,
+            Trainer.train_sorn(
+                inputs=inputs,
+                phase="Training",
+                matrices=matrices_dict,
+                nu=num_features,
+                time_steps=1,
+            ),
         )
 
     def test_plotter(self):

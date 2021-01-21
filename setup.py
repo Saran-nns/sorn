@@ -11,7 +11,7 @@ def read(fname):
 
 setup(
     name="sorn",
-    version="0.3.20",
+    version="0.4.1",
     author="Saranraj Nambusubramaniyan",
     author_email="saran_nns@hotmail.com",
     description="Self-Organizing Recurrent Neural Networks",

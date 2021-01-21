@@ -12,6 +12,9 @@
 #
 import os
 import sys
+import sorn
+
+version = sorn.__version__
 
 # sys.path.insert(0, os.path.abspath("../.."))
 # SORN root folder to sphinx path
