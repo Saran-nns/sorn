@@ -19,4 +19,4 @@ If you wish to contribute, please
 
 and the changes can be discussed there.
 
-If you find a bug in the or errors in the documentation, please open a new issue in the Github repository and report the bug or the error. Please provide sufficient information for the bug to be reproduced. 
+If you find a bug in the code or errors in the documentation, please open a new issue in the Github repository and report the bug or the error. Please provide sufficient information for the bug to be reproduced. 

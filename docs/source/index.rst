@@ -51,10 +51,10 @@ at that level may also help us to understand some fundamental aspects of brain n
 
    Attributes and Methods <reference>
 
-.. automodule:: sorn 
+.. automodule:: sorn.sorn 
    :members:
 
-.. automodule:: utils 
+.. automodule:: sorn.utils 
    :members:
 
 .. toctree::

@@ -7,12 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Usage &mdash; Self-Organizing Recurrent Neural Network (SORN) 0.3.20 documentation</title>
+  <title>Usage &mdash; Self-Organizing Recurrent Neural Network (SORN)  documentation</title>
   
 
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
 
   
   
@@ -194,7 +195,7 @@
 <h3>Configuration file<a class="headerlink" href="#configuration-file" title="Permalink to this headline">¶</a></h3>
 <p>Navigate to <cite>home/conda/envs/ENVNAME/Lib/site-packages/sorn</cite> or if you are unsure about the directory of <cite>sorn</cite>:</p>
 <p>Run:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sorn</span>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sorn</span>
 <span class="n">sorn</span><span class="o">.</span><span class="vm">__file__</span>
 </pre></div>
 </div>
@@ -205,7 +206,7 @@
 <h3>Keyword arguments<a class="headerlink" href="#keyword-arguments" title="Permalink to this headline">¶</a></h3>
 <p>Pass the arguments with valid names (listed below). This will override the default values at <cite>configuration.ini</cite>:</p>
 <p>The allowed <cite>kwargs</cite> are:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">kwargs_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ne&#39;</span><span class="p">,</span> <span class="s1">&#39;nu&#39;</span><span class="p">,</span> <span class="s1">&#39;network_type_ee&#39;</span><span class="p">,</span> <span class="s1">&#39;network_type_ei&#39;</span><span class="p">,</span> <span class="s1">&#39;network_type_ie&#39;</span><span class="p">,</span>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">kwargs_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ne&#39;</span><span class="p">,</span> <span class="s1">&#39;nu&#39;</span><span class="p">,</span> <span class="s1">&#39;network_type_ee&#39;</span><span class="p">,</span> <span class="s1">&#39;network_type_ei&#39;</span><span class="p">,</span> <span class="s1">&#39;network_type_ie&#39;</span><span class="p">,</span>
            <span class="s1">&#39;lambda_ee&#39;</span><span class="p">,</span><span class="s1">&#39;lambda_ei&#39;</span><span class="p">,</span> <span class="s1">&#39;lambda_ie&#39;</span><span class="p">,</span> <span class="s1">&#39;eta_stdp&#39;</span><span class="p">,</span><span class="s1">&#39;eta_inhib&#39;</span><span class="p">,</span> <span class="s1">&#39;eta_ip&#39;</span><span class="p">,</span>
            <span class="s1">&#39;te_max&#39;</span><span class="p">,</span> <span class="s1">&#39;ti_max&#39;</span><span class="p">,</span> <span class="s1">&#39;ti_min&#39;</span><span class="p">,</span> <span class="s1">&#39;te_min&#39;</span><span class="p">,</span> <span class="s1">&#39;mu_ip&#39;</span><span class="p">,</span><span class="s1">&#39;sigma_ip&#39;</span><span class="p">]</span>
 </pre></div>
@@ -217,7 +218,7 @@
 <div class="section" id="plasticity-phase">
 <h3>Plasticity Phase<a class="headerlink" href="#plasticity-phase" title="Permalink to this headline">¶</a></h3>
 <p>The default ne, nu values are overriden by passing them as kwargs insidesimulate_sorn method:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
 <span class="kn">from</span> <span class="nn">sorn</span> <span class="kn">import</span> <span class="n">Simulator</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -237,7 +238,7 @@
 <div class="section" id="training-phase">
 <h3>Training Phase<a class="headerlink" href="#training-phase" title="Permalink to this headline">¶</a></h3>
 <p>Train the network using the matrices obtained from plasticity phase:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
 <span class="kn">from</span> <span class="nn">sorn</span> <span class="kn">import</span> <span class="n">Trainer</span>
 <span class="c1"># Sample input</span>
 <span class="n">inputs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">num_features</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
@@ -250,22 +251,18 @@
 <div class="section" id="network-output-descriptions">
 <h3>Network Output Descriptions<a class="headerlink" href="#network-output-descriptions" title="Permalink to this headline">¶</a></h3>
 <p>During plasticity and training phase, SORN returns a dictionary of below matrices for analysis:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>`matrices_dict` - Dictionary of connection weights (&#39;Wee&#39;,&#39;Wei&#39;,&#39;Wie&#39;) , Excitatory network activity (&#39;X&#39;), Inhibitory network activities(&#39;Y&#39;), Threshold values (&#39;Te&#39;,&#39;Ti&#39;)
-
-`Exc_activity` - Collection of Excitatory network activity of entire simulation period
-
-`Inh_activity` - Collection of Inhibitory network activity of entire simulation period
-
-`Rec_activity` - Collection of Recurrent network activity of entire simulation period
-
-`num_active_connections` - List of number of active connections in the Excitatory pool at each time step
-</pre></div>
-</div>
+<blockquote>
+<div><p><cite>matrices_dict</cite> - Dictionary of connection weights (‘Wee’,’Wei’,’Wie’) , Excitatory network activity (‘X’), Inhibitory network activities(‘Y’), Threshold values (‘Te’,’Ti’)</p>
+<p><cite>Exc_activity</cite> - Collection of Excitatory network activity of entire simulation period</p>
+<p><cite>Inh_activity</cite> - Collection of Inhibitory network activity of entire simulation period</p>
+<p><cite>Rec_activity</cite> - Collection of Recurrent network activity of entire simulation period</p>
+<p><cite>num_active_connections</cite> - List of number of active connections in the Excitatory pool at each time step</p>
+</div></blockquote>
 </div>
 <div class="section" id="sample-use-with-openai-gym">
 <h3>Sample use with OpenAI gym<a class="headerlink" href="#sample-use-with-openai-gym" title="Permalink to this headline">¶</a></h3>
 <p><cite>Cartpole balance problem without changing the default network parameters</cite>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Imports</span>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="c1"># Imports</span>
 
 <span class="kn">from</span> <span class="nn">sorn</span> <span class="kn">import</span> <span class="n">Simulator</span><span class="p">,</span> <span class="n">Trainer</span>
 <span class="kn">import</span> <span class="nn">gym</span>
