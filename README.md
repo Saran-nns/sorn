@@ -14,6 +14,7 @@ The network is developed as part of my Master thesis at Universität Osnabrück,
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2590449.svg)](https://doi.org/10.5281/zenodo.2590449)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Join the chat at https://gitter.im/Self-Organizing-Recurrent-Neural-Networks](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Self-Organizing-Recurrent-Neural-Networks?utm_source=badge&utm_medium=badge&utm_content=badge)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/10TElAAE1dsgzuvaHO_NjgMAE5Pic3_jL#scrollTo=VDa0U4mf1Z75)
 
 <h4 align="Left">SORN Reservoir and the evolution of synaptic efficacies</h4>
 <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/SORN1.png" height="320" width="430"></a> <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/weights.png" height="375" width="425" ></a> <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/networkxx.jpg" height="375" width="425" ></a>
@@ -29,6 +30,7 @@ The network is developed as part of my Master thesis at Universität Osnabrück,
         - [Plasticity Phase](#plasticity-phase)
         - [Training phase](#training-phase)
         - [Network Output Descriptions](#network-output-descriptions)
+        - [Colaboratory Notebook](#colaboratory-notebook)
     - [Usage with OpenAI gym](#usage-with-openai-gym)
         - [Cartpole balance problem](#cartpole-balance-problem)
     - [Plotting functions](#plotting-functions)
@@ -85,7 +87,7 @@ Then, update/edit arguments in ```configuration.ini```
 kwargs_ = ['_ne', '_nu', '_network_type_ee', '_network_type_ei', '_network_type_ie', '_lambda_ee','_lambda_ei', '_lambda_ie', '_eta_stdp','_eta_inhib', '_eta_ip', '_te_max', '_ti_max', '_ti_min', '_te_min', '_mu_ip','_sigma_ip']
 ```
 ### Plasticity Phase
-The default ```_ne, _nu``` values are overriden by passing them as kwargs inside```simulate_sorn``` method.
+The default ```_ne, _nu``` values are overriden by passing them as kwargs inside ```simulate_sorn``` method.
 
 ```Python
 # Import 
@@ -125,6 +127,8 @@ matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections 
 
   ```num_active_connections``` - List of number of active connections in the Excitatory pool at each time step 
 
+### Colaboratory Notebook
+Sample simulation and training runs with few plotting functions are found at [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/10TElAAE1dsgzuvaHO_NjgMAE5Pic3_jL#scrollTo=VDa0U4mf1Z75)
 
 ## Usage with OpenAI gym
 ### Cartpole balance problem
