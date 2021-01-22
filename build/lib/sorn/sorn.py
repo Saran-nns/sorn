@@ -106,7 +106,9 @@ class Sorn(object):
         if (network_type == "Sparse") and (self_connection == "False"):
 
             # Generate weight matrix for E-E/ E-I connections with mean lamda incoming and out-going connections per neuron
-
+            assert (lambd_w <= Sorn._ne) and (
+                lambd_w < Sorn._ni
+            ), "Number of connections per unit (lambda) should be less than number of units(Ne and Ni) in the pool. Ne should be greater than 25"
             weight_matrix = Initializer.generate_lambd_connections(
                 synaptic_connection, Sorn._ne, Sorn._ni, lambd_w, lambd_std=1
             )
@@ -886,23 +888,23 @@ class Simulator_(Sorn):
         self.matrices = matrices
 
         kwargs_ = [
-            "ne",
-            "nu",
-            "network_type_ee",
-            "network_type_ei",
-            "network_type_ie",
-            "lambda_ee",
-            "lambda_ei",
-            "lambda_ie",
-            "eta_stdp",
-            "eta_inhib",
-            "eta_ip",
-            "te_max",
-            "ti_max",
-            "ti_min",
-            "te_min",
-            "mu_ip",
-            "sigma_ip",
+            "_ne",
+            "_nu",
+            "_network_type_ee",
+            "_network_type_ei",
+            "_network_type_ie",
+            "_lambda_ee",
+            "_lambda_ei",
+            "_lambda_ie",
+            "_eta_stdp",
+            "_eta_inhib",
+            "_eta_ip",
+            "_te_max",
+            "_ti_max",
+            "_ti_min",
+            "_te_min",
+            "_mu_ip",
+            "_sigma_ip",
         ]
         for key, value in kwargs.items():
             if key in kwargs_:
