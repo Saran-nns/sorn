@@ -391,25 +391,27 @@ class Initializer(object):
 
     @staticmethod
     def zero_sum_incoming_check(weights: np.array):
-        """Make sure, the each neuron in the pool has atleast 1 incoming connection
+        """Make sure, each neuron in the pool has atleast 1 incoming connection
 
         Args:
             weights (array): Synaptic strengths
 
         Returns:
-            array: Synaptic weights with all neurons with atleast one positive (non-zero) incoming connection strength 
+            array: Synaptic weights of neurons with atleast one positive (non-zero) incoming connection strength 
         """
         zero_sum_incomings = np.where(np.sum(weights, axis=0) == 0.0)
 
+        assert (
+            weights.shape[0] * 0.2 > 2
+        ), "Number units in Excitatory(Ne) and Inhibitory (Ni) should be greater than 10: Ni = 0.2*Ne"
         if len(zero_sum_incomings[-1]) == 0:
             return weights
         else:
             for zero_sum_incoming in zero_sum_incomings[-1]:
 
                 rand_indices = np.random.randint(
-                    weights.shape[0][0] // 40, size=2
-                )  # 40 in sense that size of E = 200
-                # given the probability of connections 0.2
+                    int(weights.shape[0] * 0.2), size=2
+                )  # given the probability of connections 0.2
                 rand_values = np.random.uniform(0.0, 0.1, 2)
 
                 for i, idx in enumerate(rand_indices):
@@ -1070,11 +1072,9 @@ class Statistics(object):
         """
         Score interpretation
         - scores near 1 imply a smoothly varying series
-        - scores near 0 imply that there's no overall linear relationship between a data point and the following one
-                        (that is, plot(x[-length(x)],x[-1]) won't give a scatter plot with any apparent linearity)
+        - scores near 0 imply that there's no overall linear relationship between a data point and the following one (that is, plot(x[-length(x)],x[-1]) won't give a scatter plot with any apparent linearity)
                         
-        - scores near -1 suggest that the series is jagged in a particular way: if one point is above the mean, the next
-                        is likely to be below the mean by about the same amount, and vice versa.
+        - scores near -1 suggest that the series is jagged in a particular way: if one point is above the mean, the next is likely to be below the mean by about the same amount, and vice versa.
 
         Args:
             firing_rates (list): Firing rates of the network

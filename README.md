@@ -82,10 +82,10 @@ Then, update/edit arguments in ```configuration.ini```
 2. Pass the arguments with valid names (listed below). This will override the default values at ```configuration.ini```
 . The allowed ```kwargs``` are,
 ```Python
-kwargs_ = ['ne', 'nu', 'network_type_ee', 'network_type_ei', 'network_type_ie', 'lambda_ee','lambda_ei', 'lambda_ie', 'eta_stdp','eta_inhib', 'eta_ip', 'te_max', 'ti_max', 'ti_min', 'te_min', 'mu_ip','sigma_ip']
+kwargs_ = ['_ne', '_nu', '_network_type_ee', '_network_type_ei', '_network_type_ie', '_lambda_ee','_lambda_ei', '_lambda_ie', '_eta_stdp','_eta_inhib', '_eta_ip', '_te_max', '_ti_max', '_ti_min', '_te_min', '_mu_ip','_sigma_ip']
 ```
 ### Plasticity Phase
-The default ```ne, nu``` values are overriden by passing them as kwargs inside```simulate_sorn``` method.
+The default ```_ne, _nu``` values are overriden by passing them as kwargs inside```simulate_sorn``` method.
 
 ```Python
 # Import 
@@ -98,10 +98,10 @@ time_steps = 200
 inputs = np.random.rand(num_features,time_steps)
 
 # To simulate the network; 
-matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Simulator.simulate_sorn(inputs = inputs, phase='plasticity', matrices=None, noise = True, time_steps=time_steps, ne = 200, nu=num_features)
+matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Simulator.simulate_sorn(inputs = inputs, phase='plasticity', matrices=None, noise = True, time_steps=time_steps, _ne = 200, _nu=num_features)
 
 # To resume the simulation, load the matrices_dict from previous simulation;
-matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Simulator.simulate_sorn(inputs = inputs, phase='plasticity', matrices=matrices_dict, noise= True, time_steps=time_steps,ne = 200, nu=num_features)
+matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Simulator.simulate_sorn(inputs = inputs, phase='plasticity', matrices=matrices_dict, noise= True, time_steps=time_steps,_ne = 200, _nu=num_features)
 ```
 
 ### Training phase
@@ -111,7 +111,7 @@ from sorn import Trainer
 inputs = np.random.rand(num_features,1) 
 
 # SORN network is frozen during training phase
-matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Trainer.train_sorn(inputs = inputs, phase='Training', matrices=matrices_dict,nu=num_features, time_steps=1)
+matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Trainer.train_sorn(inputs = inputs, phase='Training', matrices=matrices_dict,_nu=num_features, time_steps=1)
 ```
 
 ### Network Output Descriptions
