@@ -159,7 +159,7 @@ for EPISODE in range(NUM_EPISODES):
       if EPISODE < NUM_PLASTICITY_EPISODE:
       
         # Plasticity phase
-        sim_matrices,excit_states,inhib_states,recur_states,num_reservoir_conn = Simulator.simulate_sorn(inputs = state, phase ='plasticity', matrices = sim_matrices, noise=False)
+        sim_matrices, excit_states, inhib_states, recur_states, num_reservoir_conn = Simulator.simulate_sorn(inputs = state, phase ='plasticity', matrices = sim_matrices, time_steps = 1, noise=False)
 
       else:
         # Training phase with frozen reservoir connectivity

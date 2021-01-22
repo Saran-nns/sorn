@@ -108,7 +108,7 @@ class Sorn(object):
             # Generate weight matrix for E-E/ E-I connections with mean lamda incoming and out-going connections per neuron
             assert (lambd_w <= Sorn._ne) and (
                 lambd_w < Sorn._ni
-            ), "Number of connections per unit (lambda) should be less than number of units(Ne and Ni) in the pool. Ne should be greater than 25"
+            ), "Number of connections per unit (lambda) should be less than number of units(Ne and Ni) in the pool and also Ne should be greater than 25"
             weight_matrix = Initializer.generate_lambd_connections(
                 synaptic_connection, Sorn._ne, Sorn._ni, lambd_w, lambd_std=1
             )
@@ -641,7 +641,6 @@ class NetworkState(Plasticity):
         super().__init__()
         self.v_t = v_t
         # Check the input feature size
-
         assert Sorn._nu == len(
             self.v_t
         ), "Input units and input size mismatch: {} != {}".format(
@@ -850,7 +849,7 @@ class Simulator_(Sorn):
         inputs: np.array = None,
         phase: str = "plasticity",
         matrices: dict = None,
-        time_steps: int = 1,
+        time_steps: int = None,
         noise: bool = True,
         **kwargs
     ):
@@ -1061,7 +1060,8 @@ class Trainer_(Sorn):
         self,
         inputs: np.array = None,
         phase: str = "training",
-        matrices: np.array = None,
+        matrices: dict = None,
+        time_steps: int = None,
         noise: bool = True,
         **kwargs
     ):
@@ -1095,7 +1095,7 @@ class Trainer_(Sorn):
 
         kwargs_ = [
             "_ne",
-            "_ni",
+            "_nu",
             "_network_type_ee",
             "_network_type_ei",
             "_network_type_ie",
@@ -1120,8 +1120,8 @@ class Trainer_(Sorn):
 
         self.phase = phase
         self.matrices = matrices
-        self.time_steps = 1
-        Sorn._time_steps = 1
+        self.time_steps = time_steps
+        Sorn._time_steps = time_steps
         self.inputs = np.asarray(inputs)
 
         # Collect the network activity at all time steps
@@ -1133,7 +1133,7 @@ class Trainer_(Sorn):
 
         matrix_collection = MatrixCollection(phase=self.phase, matrices=self.matrices)
 
-        for i in range(1):
+        for i in tqdm.tqdm(range(self.time_steps)):
 
             if noise:
                 white_noise_e = Initializer.white_gaussian_noise(
@@ -1147,7 +1147,7 @@ class Trainer_(Sorn):
                 white_noise_i = 0.0
 
             network_state = NetworkState(
-                self.inputs
+                self.inputs[:, i]
             )  # Feed Input as an argument to the class
 
             # Buffers to get the resulting x and y vectors at the current time step and update the master matrix
