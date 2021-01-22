@@ -106,12 +106,6 @@ class TestSorn(unittest.TestCase):
         )
         self.assertRaises(
             Exception,
-            Plotter.hist_outgoing_conn(
-                weights=matrices_dict["Wee"], bin_size=5, histtype="bar", savefig=False
-            ),
-        )
-        self.assertRaises(
-            Exception,
             Plotter.hist_incoming_conn(
                 weights=matrices_dict["Wee"], bin_size=5, histtype="bar", savefig=False
             ),
