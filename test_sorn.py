@@ -14,10 +14,15 @@ with open("sample_matrices.pkl", "rb") as f:
         num_active_connections,
     ) = pickle.load(f)
 
-# Test inputs
+# Default Test inputs
 simulation_inputs = np.random.rand(10, 2)
 gym_input = np.random.rand(10, 1)
 sequence_input = np.random.rand(10, 1)
+
+# Overriding defaults: Sample input
+num_features = 4
+time_steps = 1000
+inputs = np.random.rand(num_features, time_steps)
 
 
 class TestSorn(unittest.TestCase):
@@ -38,7 +43,7 @@ class TestSorn(unittest.TestCase):
                 inputs=gym_input,
                 phase="plasticity",
                 matrices=matrices_dict,
-                epochs=1,
+                time_steps=1,
                 noise=True,
             ),
         )
@@ -48,7 +53,7 @@ class TestSorn(unittest.TestCase):
                 inputs=sequence_input,
                 phase="plasticity",
                 matrices=matrices_dict,
-                epochs=1,
+                time_steps=1,
                 noise=True,
             ),
         )
@@ -58,8 +63,37 @@ class TestSorn(unittest.TestCase):
                 inputs=sequence_input,
                 phase="training",
                 matrices=matrices_dict,
-                epochs=1,
+                time_steps=1,
                 noise=True,
+            ),
+        )
+        self.assertRaises(
+            Exception,
+            Simulator.simulate_sorn(
+                inputs=inputs,
+                phase="plasticity",
+                matrices=None,
+                noise=True,
+                time_steps=time_steps,
+                _ne=26,
+                _lambda_ee=4,
+                _lambda_ei=4,
+                _nu=num_features,
+            ),
+        )
+
+        self.assertRaises(
+            Exception,
+            Trainer.train_sorn(
+                inputs=inputs,
+                phase="plasticity",
+                matrices=None,
+                noise=True,
+                time_steps=time_steps,
+                _ne=40,
+                _lambda_ee=5,
+                _lambda_ei=5,
+                _nu=num_features,
             ),
         )
 

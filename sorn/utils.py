@@ -400,10 +400,6 @@ class Initializer(object):
             array: Synaptic weights of neurons with atleast one positive (non-zero) incoming connection strength 
         """
         zero_sum_incomings = np.where(np.sum(weights, axis=0) == 0.0)
-
-        assert (
-            weights.shape[0] * 0.2 > 2
-        ), "Number units in Excitatory(Ne) and Inhibitory (Ni) should be greater than 10: Ni = 0.2*Ne"
         if len(zero_sum_incomings[-1]) == 0:
             return weights
         else:
