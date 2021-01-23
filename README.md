@@ -19,10 +19,11 @@ The network is developed as part of my Master thesis at Universität Osnabrück,
 <h4 align="Left">SORN Reservoir and the evolution of synaptic efficacies</h4>
 <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/SORN1.png" height="320" width="430"></a> <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/weights.png" height="375" width="425" ></a> <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/networkxx.jpg" height="375" width="425" ></a>
 
-
+## Table of Contents
 <!-- TOC -->
 
 - [Self-Organizing Recurrent Neural Networks](#self-organizing-recurrent-neural-networks)
+    - [Table of Contents](#table-of-contents)
     - [Installation](#installation)
     - [Dependencies](#dependencies)
     - [Usage](#usage)
