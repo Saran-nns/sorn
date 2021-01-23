@@ -23,9 +23,9 @@ The network is developed as part of my Master thesis at Universität Osnabrück,
 <!-- TOC -->
 
 - [Self-Organizing Recurrent Neural Networks](#self-organizing-recurrent-neural-networks)
-    - [Installation:](#installation)
+    - [Installation](#installation)
     - [Dependencies](#dependencies)
-    - [Usage:](#usage)
+    - [Usage](#usage)
         - [Update Network configurations](#update-network-configurations)
         - [Plasticity Phase](#plasticity-phase)
         - [Training phase](#training-phase)
@@ -42,7 +42,7 @@ The network is developed as part of my Master thesis at Universität Osnabrück,
     - [References](#references)
 
 <!-- /TOC -->
-## Installation:
+## Installation
 
 ```python
 pip install sorn
@@ -63,7 +63,7 @@ To install all optional dependencies run::
 ```  
 For detailed documentation about usage and development, please visit [SORN-Documentation](https://self-organizing-recurrent-neural-networks.readthedocs.io/)
 
-## Usage:
+## Usage
 
 ### Update Network configurations
 There are two ways to update/configure the network parameters,
@@ -224,7 +224,7 @@ DOI: 10.13140/RG.2.2.25393.81762
 
 ## Contributions
 I am welcoming contributions. If you wish to contribute, please create a branch with a pull request and the changes can be discussed there.
-If you find a bug in the or errors in the documentation, please open a new issue in the Github repository and report the bug or the error. Please provide sufficient information for the bug to be reproduced. 
+If you find a bug in the code or errors in the documentation, please open a new issue in the Github repository and report the bug or the error. Please provide sufficient information for the bug to be reproduced. 
 
 ## References 
 
