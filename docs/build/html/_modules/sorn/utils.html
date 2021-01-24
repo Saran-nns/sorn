@@ -200,13 +200,13 @@
         <span class="sd">&quot;&quot;&quot;Generate strong one-hot vector of input. Random neurons in the reservoir acts as inputs</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            length (int) - Number of input neurons</span>
+<span class="sd">            length (int): Number of input neurons</span>
 <span class="sd">        </span>
 <span class="sd">        Returns:</span>
-<span class="sd">            inp (array) - Input vector of length equals the number of neurons in the reservoir</span>
+<span class="sd">            inp (array): Input vector of length equals the number of neurons in the reservoir</span>
 <span class="sd">                  with randomly chosen neuron set active</span>
 <span class="sd">        </span>
-<span class="sd">            idx (list) - List of chosen input neurons &quot;&quot;&quot;</span>
+<span class="sd">            idx (list): List of chosen input neurons &quot;&quot;&quot;</span>
 
         <span class="n">inp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">reservoir_size</span>
         <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">length</span>
@@ -228,11 +228,11 @@
 <span class="sd">        neurons in the pool recieves no external stimuli</span>
 <span class="sd">        </span>
 <span class="sd">        Args:</span>
-<span class="sd">          ne(int) - Number of excitatory units in sorn</span>
+<span class="sd">          ne (int): Number of excitatory units in sorn</span>
 <span class="sd">          </span>
-<span class="sd">          inputs(list) - input labels</span>
+<span class="sd">          inputs (list): input labels</span>
 <span class="sd">          </span>
-<span class="sd">          n_nodes_per_inp(int) - Number of target units in pool that receives single input</span>
+<span class="sd">          n_nodes_per_inp(int): Number of target units in pool that receives single input</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">          one_hot_vector for each label with length equals ne </span>
@@ -263,13 +263,13 @@
 <span class="sd">        Randomly neurons in the reservoir receives this input at each timestep</span>
 <span class="sd">        </span>
 <span class="sd">        Args:</span>
-<span class="sd">            length(int) - Number of input neurons</span>
+<span class="sd">            length (int): Number of input neurons</span>
 <span class="sd">        </span>
 <span class="sd">        Returns: </span>
-<span class="sd">            out (array) - Input vector of length equals the number of neurons in the reservoir</span>
+<span class="sd">            out (array): Input vector of length equals the number of neurons in the reservoir</span>
 <span class="sd">                  with randomly chosen neuron set active</span>
 <span class="sd">            </span>
-<span class="sd">            idx (int) - List of chosen input neurons </span>
+<span class="sd">            idx (int): List of chosen input neurons </span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">out</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">reservoir_size</span>
@@ -292,10 +292,10 @@
         <span class="sd">&quot;&quot;&quot; Normalize the weights in the matrix such that incoming connections to a neuron sum up to 1</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            weight_matrix(array) -- Incoming Weights from W_ee or W_ei or W_ie</span>
+<span class="sd">            weight_matrix (array): Incoming Weights from W_ee or W_ei or W_ie</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            weight_matrix(array) -- Normalized weight matrix&quot;&quot;&quot;</span>
+<span class="sd">            weight_matrix (array): Normalized weight matrix&quot;&quot;&quot;</span>
 
         <span class="n">normalized_weight_matrix</span> <span class="o">=</span> <span class="n">weight_matrix</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weight_matrix</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
@@ -309,18 +309,18 @@
         <span class="sd">&quot;&quot;&quot;Generate lambda incoming connections for Excitatory neurons and outgoing connections per Inhibitory neuron</span>
 <span class="sd">        </span>
 <span class="sd">        Args:</span>
-<span class="sd">            synaptic_connection (str) -  Type of sysnpatic connection (EE,EI or IE)</span>
+<span class="sd">            synaptic_connection (str):  Type of sysnpatic connection (EE,EI or IE)</span>
 <span class="sd">            </span>
-<span class="sd">            ne (int) - Number of excitatory units</span>
+<span class="sd">            ne (int): Number of excitatory units</span>
 <span class="sd">            </span>
-<span class="sd">            ni(int) - Number of inhibitory units</span>
+<span class="sd">            ni (int): Number of inhibitory units</span>
 <span class="sd">            </span>
-<span class="sd">            lambd_w(int) - Average number of incoming connections</span>
+<span class="sd">            lambd_w (int): Average number of incoming connections</span>
 <span class="sd">            </span>
-<span class="sd">            lambd_std(int) - Standard deviation of average number of connections per neuron</span>
+<span class="sd">            lambd_std (int): Standard deviation of average number of connections per neuron</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            connection_weights(array) - Weight matrix</span>
+<span class="sd">            connection_weights (array) - Weight matrix</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -525,10 +525,10 @@
         <span class="sd">&quot;&quot;&quot; Helper function for Structural plasticity to randomly select the unconnected units</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            wee (array) -  Weight matrix</span>
+<span class="sd">            wee (array):  Weight matrix</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            list (indices) // indices = (row_idx,col_idx)&quot;&quot;&quot;</span>
+<span class="sd">            list (indices): (row_idx,col_idx)&quot;&quot;&quot;</span>
 
         <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">wee</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">)</span>
         <span class="n">indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">))</span>
@@ -654,13 +654,13 @@
         <span class="sd">&quot;&quot;&quot;Plot the histogram of number of incoming connections per neuron</span>
 <span class="sd">        </span>
 <span class="sd">        Args:   </span>
-<span class="sd">            weights(array) - Connection weights</span>
+<span class="sd">            weights (array): Connection weights</span>
 <span class="sd">            </span>
-<span class="sd">            bin_size(int) - Histogram bin size</span>
+<span class="sd">            bin_size (int): Histogram bin size</span>
 <span class="sd">            </span>
-<span class="sd">            histtype(str) - Same as histtype matplotlib</span>
+<span class="sd">            histtype (str): Same as histtype matplotlib</span>
 <span class="sd">            </span>
-<span class="sd">            savefig(bool) - If True plot will be saved as png file in the cwd</span>
+<span class="sd">            savefig (bool): If True plot will be saved as png file in the cwd</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            plot object &quot;&quot;&quot;</span>
@@ -700,13 +700,13 @@
         <span class="sd">&quot;&quot;&quot;Plot number of positive connection in the excitatory pool</span>
 <span class="sd">        </span>
 <span class="sd">        Args:</span>
-<span class="sd">            connection_counts(array) - 1D Array of number of connections in the network per time step</span>
+<span class="sd">            connection_counts (array) - 1D Array of number of connections in the network per time step</span>
 <span class="sd">            </span>
-<span class="sd">            initial_steps(int) - Plot for initial steps</span>
+<span class="sd">            initial_steps (int) - Plot for initial steps</span>
 <span class="sd">            </span>
-<span class="sd">            final_steps(int) - Plot for final steps</span>
+<span class="sd">            final_steps (int) - Plot for final steps</span>
 <span class="sd">            </span>
-<span class="sd">            savefig(bool) - If True plot will be saved as png file in the cwd</span>
+<span class="sd">            savefig (bool) - If True plot will be saved as png file in the cwd</span>
 <span class="sd">        </span>
 <span class="sd">        Returns:</span>
 <span class="sd">            plot object</span>
@@ -764,11 +764,11 @@
         <span class="sd">&quot;&quot;&quot; Plot the histogram of firing rate (total number of neurons spike at each time step)</span>
 <span class="sd">        </span>
 <span class="sd">        Args:    </span>
-<span class="sd">            spike_train(array) - Array of spike trains</span>
+<span class="sd">            spike_train (array): Array of spike trains</span>
 <span class="sd">            </span>
-<span class="sd">            bin_size(int) - Histogram bin size</span>
+<span class="sd">            bin_size (int): Histogram bin size</span>
 <span class="sd">            </span>
-<span class="sd">            savefig(bool) - If True, plot will be saved in the cwd</span>
+<span class="sd">            savefig (bool): If True, plot will be saved in the cwd</span>
 
 <span class="sd">        Returns: </span>
 <span class="sd">            plot object &quot;&quot;&quot;</span>
@@ -794,11 +794,11 @@
         <span class="sd">&quot;&quot;&quot;Scatter plot of spike trains</span>
 <span class="sd">            </span>
 <span class="sd">        Args:</span>
-<span class="sd">            spike_train (list) - Array of spike trains</span>
+<span class="sd">            spike_train (list): Array of spike trains</span>
 <span class="sd">            </span>
-<span class="sd">            with_firing_rates(bool) - If True, firing rate of the network will be plotted</span>
+<span class="sd">            with_firing_rates (bool): If True, firing rate of the network will be plotted</span>
 <span class="sd">            </span>
-<span class="sd">            savefig(bool) - If True, plot will be saved in the cwd</span>
+<span class="sd">            savefig (bool): If True, plot will be saved in the cwd</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            plot object&quot;&quot;&quot;</span>
@@ -832,11 +832,11 @@
         <span class="sd">&quot;&quot;&quot;Raster plot of spike trains</span>
 <span class="sd">            </span>
 <span class="sd">        Args: </span>
-<span class="sd">            spike_train (array) - Array of spike trains</span>
+<span class="sd">            spike_train (array): Array of spike trains</span>
 <span class="sd">            </span>
-<span class="sd">            with_firing_rates(bool) - If True, firing rate of the network will be plotted</span>
+<span class="sd">            with_firing_rates (bool): If True, firing rate of the network will be plotted</span>
 <span class="sd">            </span>
-<span class="sd">            savefig(bool) - If True, plot will be saved in the cwd</span>
+<span class="sd">            savefig (bool): If True, plot will be saved in the cwd</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            plot object&quot;&quot;&quot;</span>
@@ -912,13 +912,13 @@
         <span class="sd">&quot;&quot;&quot;Plot Exponential fit on the inter-spike intervals during training or simulation phase</span>
 <span class="sd">        </span>
 <span class="sd">        Args:</span>
-<span class="sd">            spike_train (array) - Array of spike trains</span>
+<span class="sd">            spike_train (array): Array of spike trains</span>
 <span class="sd">        </span>
-<span class="sd">            neuron(int) - If True, firing rate of the network will be plotted</span>
+<span class="sd">            neuron (int): If True, firing rate of the network will be plotted</span>
 <span class="sd">        </span>
-<span class="sd">            bin_size(int) - Spike train will be splitted into bins of size bin_size</span>
+<span class="sd">            bin_size (int): Spike train will be splitted into bins of size bin_size</span>
 <span class="sd">        </span>
-<span class="sd">            savefig(bool) - If True, plot will be saved in the cwd</span>
+<span class="sd">            savefig (bool): If True, plot will be saved in the cwd</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            plot object&quot;&quot;&quot;</span>
@@ -961,11 +961,11 @@
         <span class="sd">&quot;&quot;&quot;Plot the distribution of synaptic weights</span>
 <span class="sd">        </span>
 <span class="sd">        Args:   </span>
-<span class="sd">            weights (array) - Connection weights</span>
+<span class="sd">            weights (array): Connection weights</span>
 <span class="sd">            </span>
-<span class="sd">            bin_size(int) - Spike train will be splited into bins of size bin_size</span>
+<span class="sd">            bin_size (int): Spike train will be splited into bins of size bin_size</span>
 <span class="sd">            </span>
-<span class="sd">            savefig(bool) - If True, plot will be saved in the cwd</span>
+<span class="sd">            savefig (bool): If True, plot will be saved in the cwd</span>
 
 <span class="sd">        Returns: </span>
 <span class="sd">            plot object&quot;&quot;&quot;</span>
@@ -990,11 +990,11 @@
         <span class="sd">&quot;&quot;&quot;Lognormal curve fit on connection weight distribution</span>
 <span class="sd">        </span>
 <span class="sd">        Args:</span>
-<span class="sd">            weights (array) - Connection weights</span>
+<span class="sd">            weights (array): Connection weights</span>
 <span class="sd">        </span>
-<span class="sd">            num_points(int) - Number of points to be plotted in the x axis</span>
+<span class="sd">            num_points(int): Number of points to be plotted in the x axis</span>
 <span class="sd">        </span>
-<span class="sd">            savefig(bool) - If True, plot will be saved in the cwd</span>
+<span class="sd">            savefig(bool): If True, plot will be saved in the cwd</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            plot object&quot;&quot;&quot;</span>
@@ -1085,11 +1085,11 @@
         <span class="sd">&quot;&quot;&quot;Network x graphical visualization of the network using the correlation matrix</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            corr ([type]): Correlation between neurons</span>
+<span class="sd">            corr (array): Correlation between neurons</span>
 <span class="sd">            </span>
-<span class="sd">            corr_thres ([type]): Threshold to prune the connection</span>
+<span class="sd">            corr_thres (array): Threshold to prune the connection</span>
 <span class="sd">            </span>
-<span class="sd">            fig_name ([type], optional): Name of the figure. Defaults to None.</span>
+<span class="sd">            fig_name (array, optional): Name of the figure. Defaults to None.</span>
 <span class="sd">            </span>
 <span class="sd">        Returns:</span>
 <span class="sd">            matplotlib.pyplot: Plot instance</span>
@@ -1160,11 +1160,11 @@
         <span class="sd">&quot;&quot;&quot;Measure spike rate of given neuron during given time window</span>
 <span class="sd">            </span>
 <span class="sd">        Args:</span>
-<span class="sd">            spike_train(array) - Array of spike trains</span>
+<span class="sd">            spike_train (array): Array of spike trains</span>
 <span class="sd">            </span>
-<span class="sd">            neuron(int) - Target neuron in the reservoir</span>
+<span class="sd">            neuron (int): Target neuron in the reservoir</span>
 <span class="sd">            </span>
-<span class="sd">            bin_size(int) - Divide the spike trains into bins of size bin_size</span>
+<span class="sd">            bin_size (int): Divide the spike trains into bins of size bin_size</span>
 
 <span class="sd">        Returns: </span>
 <span class="sd">            int: firing_rate &quot;&quot;&quot;</span>
@@ -1194,7 +1194,7 @@
         <span class="sd">&quot;&quot;&quot;Calculate number of neurons spikes at each time step.Firing rate of the network</span>
 <span class="sd">        </span>
 <span class="sd">        Args:</span>
-<span class="sd">            spike_train(array) - Array of spike trains</span>
+<span class="sd">            spike_train (array): Array of spike trains</span>
 
 <span class="sd">        Returns: </span>
 <span class="sd">            int: firing_rate &quot;&quot;&quot;</span>
@@ -1209,10 +1209,10 @@
         <span class="sd">&quot;&quot;&quot;Smoothem the firing rate depend on its scale. Smaller values corresponds to smoother series</span>
 <span class="sd">        </span>
 <span class="sd">        Args:</span>
-<span class="sd">            firing_rates(list) - List of number of active neurons per time step</span>
+<span class="sd">            firing_rates (list): List of number of active neurons per time step</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            sd_diff(list) - Float value signifies the smoothness of the semantic changes in firing rates</span>
+<span class="sd">            sd_diff (list): Float value signifies the smoothness of the semantic changes in firing rates</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">firing_rates</span><span class="p">)</span>
@@ -1226,10 +1226,10 @@
         <span class="sd">&quot;&quot;&quot;Smoothem the firing rate independent of its scale. Smaller values corresponds to smoother series</span>
 <span class="sd">        </span>
 <span class="sd">        Args:</span>
-<span class="sd">            firing_rates(list) - List of number of active neurons per time step</span>
+<span class="sd">            firing_rates (list): List of number of active neurons per time step</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            coeff_var(list) - Float value signifies the smoothness of the semantic changes in firing rates &quot;&quot;&quot;</span>
+<span class="sd">            coeff_var (list):Float value signifies the smoothness of the semantic changes in firing rates &quot;&quot;&quot;</span>
 
         <span class="n">diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">firing_rates</span><span class="p">)</span>
         <span class="n">mean_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span>

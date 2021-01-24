@@ -24,13 +24,13 @@ class Initializer(object):
         """Generate strong one-hot vector of input. Random neurons in the reservoir acts as inputs
 
         Args:
-            length (int) - Number of input neurons
+            length (int): Number of input neurons
         
         Returns:
-            inp (array) - Input vector of length equals the number of neurons in the reservoir
+            inp (array): Input vector of length equals the number of neurons in the reservoir
                   with randomly chosen neuron set active
         
-            idx (list) - List of chosen input neurons """
+            idx (list): List of chosen input neurons """
 
         inp = [0] * reservoir_size
         x = [0] * length
@@ -52,11 +52,11 @@ class Initializer(object):
         neurons in the pool recieves no external stimuli
         
         Args:
-          ne(int) - Number of excitatory units in sorn
+          ne (int): Number of excitatory units in sorn
           
-          inputs(list) - input labels
+          inputs (list): input labels
           
-          n_nodes_per_inp(int) - Number of target units in pool that receives single input
+          n_nodes_per_inp(int): Number of target units in pool that receives single input
 
         Returns:
           one_hot_vector for each label with length equals ne 
@@ -87,13 +87,13 @@ class Initializer(object):
         Randomly neurons in the reservoir receives this input at each timestep
         
         Args:
-            length(int) - Number of input neurons
+            length (int): Number of input neurons
         
         Returns: 
-            out (array) - Input vector of length equals the number of neurons in the reservoir
+            out (array): Input vector of length equals the number of neurons in the reservoir
                   with randomly chosen neuron set active
             
-            idx (int) - List of chosen input neurons 
+            idx (int): List of chosen input neurons 
         """
 
         out = [0] * reservoir_size
@@ -116,10 +116,10 @@ class Initializer(object):
         """ Normalize the weights in the matrix such that incoming connections to a neuron sum up to 1
 
         Args:
-            weight_matrix(array) -- Incoming Weights from W_ee or W_ei or W_ie
+            weight_matrix (array): Incoming Weights from W_ee or W_ei or W_ie
 
         Returns:
-            weight_matrix(array) -- Normalized weight matrix"""
+            weight_matrix (array): Normalized weight matrix"""
 
         normalized_weight_matrix = weight_matrix / np.sum(weight_matrix, axis=0)
 
@@ -133,18 +133,18 @@ class Initializer(object):
         """Generate lambda incoming connections for Excitatory neurons and outgoing connections per Inhibitory neuron
         
         Args:
-            synaptic_connection (str) -  Type of sysnpatic connection (EE,EI or IE)
+            synaptic_connection (str):  Type of sysnpatic connection (EE,EI or IE)
             
-            ne (int) - Number of excitatory units
+            ne (int): Number of excitatory units
             
-            ni(int) - Number of inhibitory units
+            ni (int): Number of inhibitory units
             
-            lambd_w(int) - Average number of incoming connections
+            lambd_w (int): Average number of incoming connections
             
-            lambd_std(int) - Standard deviation of average number of connections per neuron
+            lambd_std (int): Standard deviation of average number of connections per neuron
 
         Returns:
-            connection_weights(array) - Weight matrix
+            connection_weights (array) - Weight matrix
 
         """
 
@@ -349,10 +349,10 @@ class Initializer(object):
         """ Helper function for Structural plasticity to randomly select the unconnected units
 
         Args:
-            wee (array) -  Weight matrix
+            wee (array):  Weight matrix
 
         Returns:
-            list (indices) // indices = (row_idx,col_idx)"""
+            list (indices): (row_idx,col_idx)"""
 
         i, j = np.where(wee <= 0.0)
         indices = list(zip(i, j))
@@ -478,13 +478,13 @@ class Plotter(object):
         """Plot the histogram of number of incoming connections per neuron
         
         Args:   
-            weights(array) - Connection weights
+            weights (array): Connection weights
             
-            bin_size(int) - Histogram bin size
+            bin_size (int): Histogram bin size
             
-            histtype(str) - Same as histtype matplotlib
+            histtype (str): Same as histtype matplotlib
             
-            savefig(bool) - If True plot will be saved as png file in the cwd
+            savefig (bool): If True plot will be saved as png file in the cwd
 
         Returns:
             plot object """
@@ -524,13 +524,13 @@ class Plotter(object):
         """Plot number of positive connection in the excitatory pool
         
         Args:
-            connection_counts(array) - 1D Array of number of connections in the network per time step
+            connection_counts (array) - 1D Array of number of connections in the network per time step
             
-            initial_steps(int) - Plot for initial steps
+            initial_steps (int) - Plot for initial steps
             
-            final_steps(int) - Plot for final steps
+            final_steps (int) - Plot for final steps
             
-            savefig(bool) - If True plot will be saved as png file in the cwd
+            savefig (bool) - If True plot will be saved as png file in the cwd
         
         Returns:
             plot object
@@ -588,11 +588,11 @@ class Plotter(object):
         """ Plot the histogram of firing rate (total number of neurons spike at each time step)
         
         Args:    
-            spike_train(array) - Array of spike trains
+            spike_train (array): Array of spike trains
             
-            bin_size(int) - Histogram bin size
+            bin_size (int): Histogram bin size
             
-            savefig(bool) - If True, plot will be saved in the cwd
+            savefig (bool): If True, plot will be saved in the cwd
 
         Returns: 
             plot object """
@@ -618,11 +618,11 @@ class Plotter(object):
         """Scatter plot of spike trains
             
         Args:
-            spike_train (list) - Array of spike trains
+            spike_train (list): Array of spike trains
             
-            with_firing_rates(bool) - If True, firing rate of the network will be plotted
+            with_firing_rates (bool): If True, firing rate of the network will be plotted
             
-            savefig(bool) - If True, plot will be saved in the cwd
+            savefig (bool): If True, plot will be saved in the cwd
 
         Returns:
             plot object"""
@@ -656,11 +656,11 @@ class Plotter(object):
         """Raster plot of spike trains
             
         Args: 
-            spike_train (array) - Array of spike trains
+            spike_train (array): Array of spike trains
             
-            with_firing_rates(bool) - If True, firing rate of the network will be plotted
+            with_firing_rates (bool): If True, firing rate of the network will be plotted
             
-            savefig(bool) - If True, plot will be saved in the cwd
+            savefig (bool): If True, plot will be saved in the cwd
 
         Returns:
             plot object"""
@@ -736,13 +736,13 @@ class Plotter(object):
         """Plot Exponential fit on the inter-spike intervals during training or simulation phase
         
         Args:
-            spike_train (array) - Array of spike trains
+            spike_train (array): Array of spike trains
         
-            neuron(int) - If True, firing rate of the network will be plotted
+            neuron (int): If True, firing rate of the network will be plotted
         
-            bin_size(int) - Spike train will be splitted into bins of size bin_size
+            bin_size (int): Spike train will be splitted into bins of size bin_size
         
-            savefig(bool) - If True, plot will be saved in the cwd
+            savefig (bool): If True, plot will be saved in the cwd
 
         Returns:
             plot object"""
@@ -785,11 +785,11 @@ class Plotter(object):
         """Plot the distribution of synaptic weights
         
         Args:   
-            weights (array) - Connection weights
+            weights (array): Connection weights
             
-            bin_size(int) - Spike train will be splited into bins of size bin_size
+            bin_size (int): Spike train will be splited into bins of size bin_size
             
-            savefig(bool) - If True, plot will be saved in the cwd
+            savefig (bool): If True, plot will be saved in the cwd
 
         Returns: 
             plot object"""
@@ -814,11 +814,11 @@ class Plotter(object):
         """Lognormal curve fit on connection weight distribution
         
         Args:
-            weights (array) - Connection weights
+            weights (array): Connection weights
         
-            num_points(int) - Number of points to be plotted in the x axis
+            num_points(int): Number of points to be plotted in the x axis
         
-            savefig(bool) - If True, plot will be saved in the cwd
+            savefig(bool): If True, plot will be saved in the cwd
 
         Returns:
             plot object"""
@@ -909,11 +909,11 @@ class Plotter(object):
         """Network x graphical visualization of the network using the correlation matrix
 
         Args:
-            corr ([type]): Correlation between neurons
+            corr (array): Correlation between neurons
             
-            corr_thres ([type]): Threshold to prune the connection
+            corr_thres (array): Threshold to prune the connection
             
-            fig_name ([type], optional): Name of the figure. Defaults to None.
+            fig_name (array, optional): Name of the figure. Defaults to None.
             
         Returns:
             matplotlib.pyplot: Plot instance
@@ -984,11 +984,11 @@ class Statistics(object):
         """Measure spike rate of given neuron during given time window
             
         Args:
-            spike_train(array) - Array of spike trains
+            spike_train (array): Array of spike trains
             
-            neuron(int) - Target neuron in the reservoir
+            neuron (int): Target neuron in the reservoir
             
-            bin_size(int) - Divide the spike trains into bins of size bin_size
+            bin_size (int): Divide the spike trains into bins of size bin_size
 
         Returns: 
             int: firing_rate """
@@ -1018,7 +1018,7 @@ class Statistics(object):
         """Calculate number of neurons spikes at each time step.Firing rate of the network
         
         Args:
-            spike_train(array) - Array of spike trains
+            spike_train (array): Array of spike trains
 
         Returns: 
             int: firing_rate """
@@ -1033,10 +1033,10 @@ class Statistics(object):
         """Smoothem the firing rate depend on its scale. Smaller values corresponds to smoother series
         
         Args:
-            firing_rates(list) - List of number of active neurons per time step
+            firing_rates (list): List of number of active neurons per time step
 
         Returns:
-            sd_diff(list) - Float value signifies the smoothness of the semantic changes in firing rates
+            sd_diff (list): Float value signifies the smoothness of the semantic changes in firing rates
         """
 
         diff = np.diff(firing_rates)
@@ -1050,10 +1050,10 @@ class Statistics(object):
         """Smoothem the firing rate independent of its scale. Smaller values corresponds to smoother series
         
         Args:
-            firing_rates(list) - List of number of active neurons per time step
+            firing_rates (list): List of number of active neurons per time step
 
         Returns:
-            coeff_var(list) - Float value signifies the smoothness of the semantic changes in firing rates """
+            coeff_var (list):Float value signifies the smoothness of the semantic changes in firing rates """
 
         diff = np.diff(firing_rates)
         mean_diff = np.mean(diff)
