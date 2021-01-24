@@ -840,9 +840,9 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>spike_train</strong> (<em>array</em>) – </p></li>
-<li><p><strong>bin_size</strong> (<em>int</em>) – </p></li>
-<li><p><strong>savefig</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>spike_train</strong> (<em>array</em>) – Array of spike trains</p></li>
+<li><p><strong>bin_size</strong> (<em>int</em>) – Histogram bin size</p></li>
+<li><p><strong>savefig</strong> (<em>bool</em>) – If True, plot will be saved in the cwd</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -880,10 +880,10 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>weights</strong> (<em>array</em>) – </p></li>
-<li><p><strong>bin_size</strong> (<em>int</em>) – </p></li>
-<li><p><strong>histtype</strong> (<em>str</em>) – </p></li>
-<li><p><strong>savefig</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>weights</strong> (<em>array</em>) – Connection weights</p></li>
+<li><p><strong>bin_size</strong> (<em>int</em>) – Histogram bin size</p></li>
+<li><p><strong>histtype</strong> (<em>str</em>) – Same as histtype matplotlib</p></li>
+<li><p><strong>savefig</strong> (<em>bool</em>) – If True plot will be saved as png file in the cwd</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -899,10 +899,10 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>spike_train</strong> (<em>array</em>) – </p></li>
-<li><p><strong>neuron</strong> (<em>int</em>) – </p></li>
-<li><p><strong>bin_size</strong> (<em>int</em>) – </p></li>
-<li><p><strong>savefig</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>spike_train</strong> (<em>array</em>) – Array of spike trains</p></li>
+<li><p><strong>neuron</strong> (<em>int</em>) – If True, firing rate of the network will be plotted</p></li>
+<li><p><strong>bin_size</strong> (<em>int</em>) – Spike train will be splitted into bins of size bin_size</p></li>
+<li><p><strong>savefig</strong> (<em>bool</em>) – If True, plot will be saved in the cwd</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -918,9 +918,9 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>weights</strong> (<em>array</em>) – </p></li>
-<li><p><strong>num_points</strong> (<em>int</em>) – </p></li>
-<li><p><strong>savefig</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>weights</strong> (<em>array</em>) – Connection weights</p></li>
+<li><p><strong>num_points</strong> (<em>int</em>) – Number of points to be plotted in the x axis</p></li>
+<li><p><strong>savefig</strong> (<em>bool</em>) – If True, plot will be saved in the cwd</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -955,9 +955,9 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>corr</strong> (<em>[</em><em>type</em><em>]</em>) – Correlation between neurons</p></li>
-<li><p><strong>corr_thres</strong> (<em>[</em><em>type</em><em>]</em>) – Threshold to prune the connection</p></li>
-<li><p><strong>fig_name</strong> (<em>[</em><em>type</em><em>]</em><em>, </em><em>optional</em>) – Name of the figure. Defaults to None.</p></li>
+<li><p><strong>corr</strong> (<em>array</em>) – Correlation between neurons</p></li>
+<li><p><strong>corr_thres</strong> (<em>array</em>) – Threshold to prune the connection</p></li>
+<li><p><strong>fig_name</strong> (<em>array</em><em>, </em><em>optional</em>) – Name of the figure. Defaults to None.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -976,9 +976,9 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>spike_train</strong> (<em>array</em>) – </p></li>
-<li><p><strong>with_firing_rates</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>savefig</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>spike_train</strong> (<em>array</em>) – Array of spike trains</p></li>
+<li><p><strong>with_firing_rates</strong> (<em>bool</em>) – If True, firing rate of the network will be plotted</p></li>
+<li><p><strong>savefig</strong> (<em>bool</em>) – If True, plot will be saved in the cwd</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -994,9 +994,9 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>spike_train</strong> (<em>list</em>) – </p></li>
-<li><p><strong>with_firing_rates</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>savefig</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>spike_train</strong> (<em>list</em>) – Array of spike trains</p></li>
+<li><p><strong>with_firing_rates</strong> (<em>bool</em>) – If True, firing rate of the network will be plotted</p></li>
+<li><p><strong>savefig</strong> (<em>bool</em>) – If True, plot will be saved in the cwd</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1012,9 +1012,9 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>weights</strong> (<em>array</em>) – </p></li>
-<li><p><strong>bin_size</strong> (<em>int</em>) – </p></li>
-<li><p><strong>savefig</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>weights</strong> (<em>array</em>) – Connection weights</p></li>
+<li><p><strong>bin_size</strong> (<em>int</em>) – Spike train will be splited into bins of size bin_size</p></li>
+<li><p><strong>savefig</strong> (<em>bool</em>) – If True, plot will be saved in the cwd</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1102,7 +1102,7 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 <dd><p>Calculate number of neurons spikes at each time step.Firing rate of the network</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>spike_train</strong> (<em>array</em>) – </p>
+<dd class="field-odd"><p><strong>spike_train</strong> (<em>array</em>) – Array of spike trains</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>firing_rate</p>
@@ -1120,9 +1120,9 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>spike_train</strong> (<em>array</em>) – </p></li>
-<li><p><strong>neuron</strong> (<em>int</em>) – </p></li>
-<li><p><strong>bin_size</strong> (<em>int</em>) – </p></li>
+<li><p><strong>spike_train</strong> (<em>array</em>) – Array of spike trains</p></li>
+<li><p><strong>neuron</strong> (<em>int</em>) – Target neuron in the reservoir</p></li>
+<li><p><strong>bin_size</strong> (<em>int</em>) – Divide the spike trains into bins of size bin_size</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1160,10 +1160,13 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 <dd><p>Smoothem the firing rate depend on its scale. Smaller values corresponds to smoother series</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>firing_rates</strong> (<em>list</em>) – </p>
+<dd class="field-odd"><p><strong>firing_rates</strong> (<em>list</em>) – List of number of active neurons per time step</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>sd_diff(list) - Float value signifies the smoothness of the semantic changes in firing rates</p>
+<dd class="field-even"><p>Float value signifies the smoothness of the semantic changes in firing rates</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>sd_diff (list)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1174,10 +1177,13 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 <dd><p>Smoothem the firing rate independent of its scale. Smaller values corresponds to smoother series</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>firing_rates</strong> (<em>list</em>) – </p>
+<dd class="field-odd"><p><strong>firing_rates</strong> (<em>list</em>) – List of number of active neurons per time step</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>coeff_var(list) - Float value signifies the smoothness of the semantic changes in firing rates</p>
+<dd class="field-even"><p>Float value signifies the smoothness of the semantic changes in firing rates</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>coeff_var (list)</p>
 </dd>
 </dl>
 </dd></dl>
