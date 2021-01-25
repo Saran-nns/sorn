@@ -3,7 +3,7 @@
 
 SORN is a class of neuro-inspired artificial network build based on plasticity mechanisms in biological brain and mimic neocortical circuits ability of learning and adaptation through neuroplasticity mechanisms.
 
-The network is developed as part of my Master thesis at Universität Osnabrück, Germany. For the ease of maintainance, the notebooks, use cases and the API(under developement) are moved to [SORN-Notebooks](https://github.com/Saran-nns/PySORN_0.1) 
+The network is developed as part of my Master thesis at Universität Osnabrück, Germany. For the ease of maintainance, the notebooks, use cases and the API(under developement) are moved to https://github.com/Saran-nns/PySORN_0.1 
 
 [![Build Status](https://travis-ci.org/Saran-nns/sorn.svg?branch=master)](https://travis-ci.org/Saran-nns/sorn)
 [![codecov](https://codecov.io/gh/Saran-nns/sorn/branch/master/graph/badge.svg)](https://codecov.io/gh/Saran-nns/sorn)
@@ -18,11 +18,6 @@ The network is developed as part of my Master thesis at Universität Osnabrück,
 
 <h4 align="Left">SORN Reservoir and the evolution of synaptic efficacies</h4>
 <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/SORN1.png" height="320" width="430"></a> <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/weights.png" height="375" width="425" ></a> <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/networkxx.jpg" height="375" width="425" ></a>
-
-<!-- omit in toc -->
-Table of Contents
-=================
-<!-- omit in toc -->
 
 <!-- TOC -->
 
