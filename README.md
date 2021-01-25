@@ -19,28 +19,27 @@ The network is developed as part of my Master thesis at Universität Osnabrück,
 <h4 align="Left">SORN Reservoir and the evolution of synaptic efficacies</h4>
 <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/SORN1.png" height="320" width="430"></a> <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/weights.png" height="375" width="425" ></a> <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/networkxx.jpg" height="375" width="425" ></a>
 
-<!-- TOC -->
-
+## Contents
 - [Self-Organizing Recurrent Neural Networks](#self-organizing-recurrent-neural-networks)
-    - [Installation](#installation)
-    - [Dependencies](#dependencies)
-    - [Usage](#usage)
-        - [Update Network configurations](#update-network-configurations)
-        - [Plasticity Phase](#plasticity-phase)
-        - [Training phase](#training-phase)
-        - [Network Output Descriptions](#network-output-descriptions)
-        - [Colaboratory Notebook](#colaboratory-notebook)
-    - [Usage with OpenAI gym](#usage-with-openai-gym)
-        - [Cartpole balance problem](#cartpole-balance-problem)
-    - [Plotting functions](#plotting-functions)
-    - [Statistics and Analysis functions](#statistics-and-analysis-functions)
-    - [Citation](#citation)
-        - [Package](#package)
-        - [Thesis](#thesis)
-    - [Contributions](#contributions)
-    - [References](#references)
+- [Getting Started](#)
+  - [Installation](#installation)
+  - [Dependencies](#dependencies)
+- [Simulate and Train](#usage)
+  - [Update Network configurations](#update-network-configurations)
+  - [Plasticity Phase](#plasticity-phase)
+  - [Training phase](#training-phase)
+  - [Network Output Descriptions](#network-output-descriptions)
+  - [Colaboratory Notebook](#colaboratory-notebook)
+- [Integrate with OpenAI gym](#usage-with-openai-gym)
+  - [Cartpole balance problem](#cartpole-balance-problem)
+- [Plotting functions](#plotting-functions)
+- [Statistics and Analysis functions](#statistics-and-analysis-functions)
+- [Citation](#citation)
+  - [Package](#package)
+  - [Thesis](#thesis)
+  - [Contributions](#contributions)
+  - [References](#references)
 
-<!-- /TOC -->
 ## Installation
 
 ```python
