@@ -37,8 +37,8 @@ The network is developed as part of my Master thesis at Universität Osnabrück,
 - [Citation](#citation)
   - [Package](#package)
   - [Thesis](#thesis)
-  - [Contributions](#contributions)
-  - [References](#references)
+- [Contributions](#contributions)
+- [References](#references)
 
 ## Installation
 
