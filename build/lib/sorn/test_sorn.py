@@ -22,16 +22,19 @@ with open("sample_matrices.pkl", "rb") as f:
 class TestSorn(unittest.TestCase):
     def test_runsorn(self):
 
-        self.assertRaises(Exception, Generator().get_initial_matrices("./sorn/"))
+        self.assertRaises(
+            Exception, Generator().get_initial_matrices("./sorn/"))
 
         matrices_dict = Generator().get_initial_matrices("./sorn")
 
         self.assertRaises(
-            Exception, RunSorn(phase="Plasticity", matrices=None).run_sorn([0.0])
+            Exception, RunSorn(phase="Plasticity",
+                               matrices=None).run_sorn([0.0])
         )
 
         self.assertRaises(
-            Exception, RunSorn(phase="Training", matrices=matrices_dict).run_sorn([0.0])
+            Exception, RunSorn(
+                phase="Training", matrices=matrices_dict).run_sorn([0.0])
         )
 
         self.assertRaises(
@@ -113,12 +116,14 @@ class TestSorn(unittest.TestCase):
 
         self.assertRaises(
             Exception,
-            Plotter.scatter_plot(spike_train=np.asarray(Exc_activity), savefig=False),
+            Plotter.scatter_plot(spike_train=np.asarray(
+                Exc_activity), savefig=False),
         )
 
         self.assertRaises(
             Exception,
-            Plotter.raster_plot(spike_train=np.asarray(Exc_activity), savefig=False),
+            Plotter.raster_plot(spike_train=np.asarray(
+                Exc_activity), savefig=False),
         )
 
         self.assertRaises(
@@ -163,7 +168,8 @@ class TestSorn(unittest.TestCase):
 
         self.assertRaises(
             Exception,
-            Statistics.firing_rate_network(spike_train=np.asarray(Exc_activity)),
+            Statistics.firing_rate_network(
+                spike_train=np.asarray(Exc_activity)),
         )
 
         self.assertRaises(
@@ -174,15 +180,18 @@ class TestSorn(unittest.TestCase):
         )
 
         self.assertRaises(
-            Exception, Statistics.autocorr(firing_rates=[1, 1, 5, 6, 3, 7], t=2)
+            Exception, Statistics.autocorr(
+                firing_rates=[1, 1, 5, 6, 3, 7], t=2)
         )
 
         self.assertRaises(
-            Exception, Statistics.avg_corr_coeff(spike_train=np.asarray(Exc_activity))
+            Exception, Statistics.avg_corr_coeff(
+                spike_train=np.asarray(Exc_activity))
         )
 
         self.assertRaises(
-            Exception, Statistics.spike_times(spike_train=np.asarray(Exc_activity))
+            Exception, Statistics.spike_times(
+                spike_train=np.asarray(Exc_activity))
         )
 
         self.assertRaises(
@@ -195,7 +204,8 @@ class TestSorn(unittest.TestCase):
 
         self.assertRaises(
             Exception,
-            Statistics.spike_time_intervals(spike_train=np.asarray(Exc_activity)),
+            Statistics.spike_time_intervals(
+                spike_train=np.asarray(Exc_activity)),
         )
 
         self.assertRaises(
@@ -215,4 +225,3 @@ class TestSorn(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
