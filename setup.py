@@ -11,12 +11,12 @@ def read(fname):
 
 setup(
     name="sorn",
-    version="0.4.6",
+    version="0.4.7",
     author="Saranraj Nambusubramaniyan",
     author_email="saran_nns@hotmail.com",
     description="Self-Organizing Recurrent Neural Networks",
     license="OSI Approved :: MIT License",
-    keywords="""Brain-Inspired Computing,Artificial Neural Networks,Neuro Informatics, 
+    keywords="""Brain-Inspired Computing,Artificial Neural Networks,Neuro Informatics,
                   Spiking Cortical Networks, Neural Connectomics,Neuroscience, Artificial General Intelligence, Neural Information Processing""",
     url="https://github.com/Saran-nns/sorn",
     packages=["sorn"],
