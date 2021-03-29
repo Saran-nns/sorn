@@ -10,7 +10,7 @@ The network is developed as part of my Master thesis at Universität Osnabrück,
 [![Documentation Status](https://readthedocs.org/projects/self-organizing-recurrent-neural-networks/badge/?version=latest)](https://self-organizing-recurrent-neural-networks.readthedocs.io/en/latest/?badge=latest)
 [![PyPI version](https://badge.fury.io/py/sorn.svg)](https://badge.fury.io/py/sorn)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-![PyPI - Downloads](https://img.shields.io/pypi/dw/sorn.svg)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/sorn.svg)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2590449.svg)](https://doi.org/10.5281/zenodo.2590449)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Join the chat at https://gitter.im/Self-Organizing-Recurrent-Neural-Networks](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Self-Organizing-Recurrent-Neural-Networks?utm_source=badge&utm_medium=badge&utm_content=badge)
@@ -53,7 +53,7 @@ pip install git+https://github.com/Saran-nns/sorn
 ```
 
 ## Dependencies
-SORN supports Python 3.5+ ONLY. For older Python versions please use the official Python client
+SORN supports Python 3.5+ ONLY. For older Python versions please use the official Python client. 
 To install all optional dependencies run::
 
 ```python
