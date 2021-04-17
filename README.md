@@ -200,6 +200,8 @@ Plotter.raster_plot(spike_train = np.asarray(Exc_activity), savefig=False)
 
 ## Statistics and Analysis functions
 
+There are several neural data analysis and visuzlization methods inbuilt with sorn package. Sample call for few plotting and statistical methods are shown below;
+
 ```Python
 from sorn import Statistics
 #t-lagged auto correlation between neural activity
