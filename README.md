@@ -130,7 +130,7 @@ Sample simulation and training runs with few plotting functions are found at [![
 
 ## Usage with OpenAI gym
 ### Cartpole balance problem
-Without changing the default network parameters. 
+With default network parameters. 
 
 ```python
 # Imports
