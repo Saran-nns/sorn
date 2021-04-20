@@ -184,7 +184,7 @@ for EPISODE in range(NUM_EPISODES):
       if done:
         break
 ```
-There are several neural data analysis and visuzlization methods inbuilt with sorn package. Sample call for few plotting and statistical methods are shown below;
+There are several neural data analysis and visualization methods inbuilt with `sorn` package. Sample call for few plotting and statistical methods are shown below;
 
 ## Plotting functions 
 
