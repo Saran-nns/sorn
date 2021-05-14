@@ -174,15 +174,12 @@ for EPISODE in range(NUM_EPISODES):
       action = np.random.choice(action_space,probs)
       state,reward,done,_ = env.step(action) 
       
-      # YOUR CODE HERE
-      
-      # Compute Gradient based on your objective function
-      # Optimize the  `output_layer_weights` based on your optimization method
-      
-      # YOUR CODE ENDS
-      
       if done:
         break
+        
+  # YOUR CODE HERE
+  # COMPUTE GRADIENTS BASED ON YOUR OBJECTIVE FUNCTION
+  # OPTIMIZE `output_layer_weights` BASED ON YOUR OPTIMIZATION METHOD
 ```
 There are several neural data analysis and visualization methods inbuilt with `sorn` package. Sample call for few plotting and statistical methods are shown below;
 
