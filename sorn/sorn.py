@@ -1132,7 +1132,7 @@ class Trainer_(Sorn):
         matrix_collection = MatrixCollection(
             phase=self.phase, matrices=self.matrices)
 
-        for i in tqdm.tqdm(range(self.time_steps)):
+        for i in range(self.time_steps):
 
             if noise:
                 white_noise_e = Initializer.white_gaussian_noise(
