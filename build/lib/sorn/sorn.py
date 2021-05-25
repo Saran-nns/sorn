@@ -67,7 +67,6 @@ class Sorn(object):
     def __init__(self):
         pass
 
-    """Arguments loaded from `configuration.ini` file"""
     _nu = int(parser.get("Network_Config", "Nu"))
     _ne = int(parser.get("Network_Config", "Ne"))
     _ni = int(0.2 * _ne)
@@ -160,7 +159,6 @@ class Sorn(object):
         y = np.zeros((ni, 2))
 
         return x, y
-
 
 class Plasticity(Sorn):
     """Instance of class Sorn. Inherits the variables and functions defined in class Sorn.
@@ -318,15 +316,10 @@ class Plasticity(Sorn):
             wei (array): Synaptic strengths from inhibitory to excitatory"""
 
         # Excitatory network activity
-        x = np.asarray(x)  # Array sanity check
-        xt_1 = x[:, 0]
-        xt = x[:, 1]
+        xt = np.asarray(x)[:, 1]
 
         # Inhibitory network activity
-        y = np.asarray(y)
-
-        yt_1 = y[:, 0]
-        yt = y[:, 1]
+        yt_1 = np.asarray(y)[:, 0]
 
         # iSTDP applies only on the neurons which are connected.
         wei_t = wei.copy()
@@ -396,9 +389,6 @@ class Plasticity(Sorn):
 
         Returns:
             tuple(array): Weight matrices WEI, WEE, WIE and threshold matrices Te, Ti and Initial state vectors X,Y """
-
-        # Do not transpose weight matrix WEI for SORN 2 model
-        # Create and initialize sorn object and variables
 
         sorn_init = Sorn()
         WEE_init = sorn_init.initialize_weight_matrix(
@@ -543,7 +533,6 @@ class MatrixCollection(Sorn):
             self.X[0] = matrices["X"]
             self.Y[0] = matrices["Y"]
 
-    # @staticmethod
     def weight_matrix(self, wee: np.array, wei: np.array, wie: np.array, i: int):
         """Update weight matrices
 
@@ -565,7 +554,6 @@ class MatrixCollection(Sorn):
 
         return self.Wee, self.Wei, self.Wie
 
-    # @staticmethod
     def threshold_matrix(self, te: np.array, ti: np.array, i: int):
         """Update threshold matrices
 
@@ -582,7 +570,6 @@ class MatrixCollection(Sorn):
         self.Ti[i + 1] = ti
         return self.Te, self.Ti
 
-    # @staticmethod
     def network_activity_t(
         self, excitatory_net: np.array, inhibitory_net: np.array, i: int
     ):
@@ -604,7 +591,6 @@ class MatrixCollection(Sorn):
 
         return self.X, self.Y
 
-    # @staticmethod
     def network_activity_t_1(self, x: np.array, y: np.array, i: int):
         """Network activity at previous time step
 
@@ -638,7 +624,6 @@ class NetworkState(Plasticity):
     def __init__(self, v_t: np.array):
         super().__init__()
         self.v_t = v_t
-        # Check the input feature size
         assert Sorn._nu == len(
             self.v_t
         ), "Input units and input size mismatch: {} != {}".format(
@@ -659,7 +644,6 @@ class NetworkState(Plasticity):
         Returns:
             incoming (array): Excitatory Post synaptic potential towards neurons
         """
-        # Broadcasting weight*acivity vectors
         incoming = weights * activity_vector
         incoming = np.array(incoming.sum(axis=0))
         return incoming
@@ -713,10 +697,7 @@ class NetworkState(Plasticity):
         # Heaviside step function
         heaviside_step = np.expand_dims([0.0] * len(tot_incoming_drive), 1)
         heaviside_step[tot_incoming_drive > 0] = 1.0
-        xt_next = np.asarray(
-            heaviside_step.copy()
-        )  # Additional Memory cost just for the sake of variable name
-        return xt_next
+        return heaviside_step
 
     def inhibitory_network_state(
         self, wie: np.array, ti: np.array, y: np.array, white_noise_i: np.array
@@ -737,7 +718,6 @@ class NetworkState(Plasticity):
         Returns:
             y (array): Current Inhibitory network activity"""
 
-        # Activity of inhibitory neurons
         wie = np.asarray(wie)
         yt = y[:, 1]
         yt = yt.reshape(Sorn._ne, 1)
@@ -750,11 +730,7 @@ class NetworkState(Plasticity):
         heaviside_step = np.expand_dims([0.0] * len(tot_incoming_drive), 1)
         heaviside_step[tot_incoming_drive > 0] = 1.0
 
-        yt_next = np.asarray(
-            heaviside_step.copy()
-        )  # Additional Memory cost just for the sake of variable name
-
-        return yt_next
+        return heaviside_step
 
     def recurrent_drive(
         self,
@@ -800,11 +776,7 @@ class NetworkState(Plasticity):
         heaviside_step = np.expand_dims([0.0] * len(tot_incoming_drive), 1)
         heaviside_step[tot_incoming_drive > 0] = 1.0
 
-        xt_next = np.asarray(
-            heaviside_step.copy()
-        )  # Additional Memory cost just for the sake of variable name
-
-        return xt_next
+        return heaviside_step
 
 
 # Simulate / Train SORN
@@ -937,7 +909,7 @@ class Simulator_(Sorn):
             # Buffers to get the resulting x and y vectors at the current time step and update the master matrix
             x_buffer, y_buffer = np.zeros(
                 (Sorn._ne, 2)), np.zeros((Sorn._ni, 2))
-            # TODO: Return te,ti values in next version # UNUSED
+
             te_buffer, ti_buffer = np.zeros(
                 (Sorn._ne, 1)), np.zeros((Sorn._ni, 1))
 
@@ -978,9 +950,6 @@ class Simulator_(Sorn):
 
             # Plasticity phase
             plasticity = Plasticity()
-
-            # TODO
-            # Can be initialised outside loop--> Plasticity will receive dynamic args in future version
 
             # STDP
             Wee_t = plasticity.stdp(
@@ -1132,7 +1101,7 @@ class Trainer_(Sorn):
         matrix_collection = MatrixCollection(
             phase=self.phase, matrices=self.matrices)
 
-        for i in tqdm.tqdm(range(self.time_steps)):
+        for i in range(self.time_steps):
 
             if noise:
                 white_noise_e = Initializer.white_gaussian_noise(
