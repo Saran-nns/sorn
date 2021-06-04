@@ -5,7 +5,6 @@ import numpy as np
 import os
 from configparser import ConfigParser
 import random
-import tqdm
 
 try:
     from sorn.utils import Initializer
@@ -890,7 +889,7 @@ class Simulator_(Sorn):
         frac_pos_active_conn = []
 
         # To get the last activation status of Exc and Inh neurons
-        for i in tqdm.tqdm(range(self.time_steps)):
+        for i in range(self.time_steps):
 
             if noise:
                 white_noise_e = Initializer.white_gaussian_noise(
@@ -904,7 +903,7 @@ class Simulator_(Sorn):
 
             network_state = NetworkState(
                 inputs[:, i]
-            )  # Feed input and initialize network state
+            )
 
             # Buffers to get the resulting x and y vectors at the current time step and update the master matrix
             x_buffer, y_buffer = np.zeros(
