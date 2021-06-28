@@ -25,11 +25,11 @@ class Initializer(object):
 
         Args:
             length (int): Number of input neurons
-        
+
         Returns:
             inp (array): Input vector of length equals the number of neurons in the reservoir
                   with randomly chosen neuron set active
-        
+
             idx (list): List of chosen input neurons """
 
         inp = [0] * reservoir_size
@@ -47,20 +47,20 @@ class Initializer(object):
 
     @staticmethod
     def multi_one_hot_inp(ne: int, inputs: list, n_nodes_per_inp: int):
-        """Generate multi(n_nodes_per_inp) one hot vector for each input. 
-        For each input, set n_nodes_per_inp equals one and the rest of 
+        """Generate multi(n_nodes_per_inp) one hot vector for each input.
+        For each input, set n_nodes_per_inp equals one and the rest of
         neurons in the pool recieves no external stimuli
-        
+
         Args:
           ne (int): Number of excitatory units in sorn
-          
+
           inputs (list): input labels
-          
+
           n_nodes_per_inp(int): Number of target units in pool that receives single input
 
         Returns:
-          one_hot_vector for each label with length equals ne 
-        
+          one_hot_vector for each label with length equals ne
+
         """
 
         one_hot = np.zeros((ne, len(inputs)))
@@ -85,15 +85,15 @@ class Initializer(object):
 
         """Generate external stimuli sampled from Gaussian distribution.
         Randomly neurons in the reservoir receives this input at each timestep
-        
+
         Args:
             length (int): Number of input neurons
-        
-        Returns: 
+
+        Returns:
             out (array): Input vector of length equals the number of neurons in the reservoir
                   with randomly chosen neuron set active
-            
-            idx (int): List of chosen input neurons 
+
+            idx (int): List of chosen input neurons
         """
 
         out = [0] * reservoir_size
@@ -131,16 +131,16 @@ class Initializer(object):
     ):
 
         """Generate lambda incoming connections for Excitatory neurons and outgoing connections per Inhibitory neuron
-        
+
         Args:
             synaptic_connection (str):  Type of sysnpatic connection (EE,EI or IE)
-            
+
             ne (int): Number of excitatory units
-            
+
             ni (int): Number of inhibitory units
-            
+
             lambd_w (int): Average number of incoming connections
-            
+
             lambd_std (int): Standard deviation of average number of connections per neuron
 
         Returns:
@@ -314,9 +314,9 @@ class Initializer(object):
     def prune_small_weights(weights: np.array, cutoff_weight: float):
         """Prune the connections with negative connection strength. The weights less than cutoff_weight set to 0
 
-        Args:  
+        Args:
             weights (np.array): Synaptic strengths
-            
+
             cutoff_weight (float): Lower weight threshold
 
         Returns:
@@ -330,10 +330,10 @@ class Initializer(object):
     @staticmethod
     def set_max_cutoff_weight(weights: np.array, cutoff_weight: float):
         """ Set cutoff limit for the values in given array
-        
-        Args:    
+
+        Args:
             weights (np.array): Synaptic strengths
-            
+
             cutoff_weight (float): Higher weight threshold
 
         Returns:
@@ -373,21 +373,18 @@ class Initializer(object):
 
         Args:
             mu (float): Mean value of Gaussian noise
-            
+
             sigma (float): Standard deviation of Gaussian noise
-            
+
             t (int): Length of noise vector
 
-        Returns: 
+        Returns:
             array: White gaussian noise of length t
         """
 
         noise = np.random.normal(mu, sigma, t)
 
         return np.expand_dims(noise, 1)
-
-    # SANITY CHECK EACH WEIGHTS
-    # Note this function has no influence in weight matrix, will be deprecated in next version
 
     @staticmethod
     def zero_sum_incoming_check(weights: np.array):
@@ -397,7 +394,7 @@ class Initializer(object):
             weights (array): Synaptic strengths
 
         Returns:
-            array: Synaptic weights of neurons with atleast one positive (non-zero) incoming connection strength 
+            array: Synaptic weights of neurons with atleast one positive (non-zero) incoming connection strength
         """
         zero_sum_incomings = np.where(np.sum(weights, axis=0) == 0.0)
         if len(zero_sum_incomings[-1]) == 0:
@@ -407,7 +404,7 @@ class Initializer(object):
 
                 rand_indices = np.random.randint(
                     int(weights.shape[0] * 0.2), size=2
-                )  # given the probability of connections 0.2
+                )
                 rand_values = np.random.uniform(0.0, 0.1, 2)
 
                 for i, idx in enumerate(rand_indices):
@@ -429,13 +426,13 @@ class Plotter(object):
     ):
         """Plot the histogram of number of incoming connections per neuron
 
-        Args:    
+        Args:
             weights (array): Connection weights
-            
+
             bin_size (int): Histogram bin size
-            
+
             histtype (str): Same as histtype matplotlib
-            
+
             savefig (bool): If True plot will be saved as png file in the cwd
 
         Returns:
@@ -476,14 +473,14 @@ class Plotter(object):
         weights: np.array, bin_size: int, histtype: str, savefig: bool
     ):
         """Plot the histogram of number of incoming connections per neuron
-        
-        Args:   
+
+        Args:
             weights (array): Connection weights
-            
+
             bin_size (int): Histogram bin size
-            
+
             histtype (str): Same as histtype matplotlib
-            
+
             savefig (bool): If True plot will be saved as png file in the cwd
 
         Returns:
@@ -502,7 +499,7 @@ class Plotter(object):
         # Empirical average and variance are computed
         avg = np.mean(num_outgoing_weights)
         var = np.var(num_outgoing_weights)
-        # From hist plot above, it is clear that connection count follow gaussian distribution
+
         pdf_x = np.linspace(
             np.min(num_outgoing_weights), np.max(num_outgoing_weights), 100
         )
@@ -522,22 +519,22 @@ class Plotter(object):
         connection_counts: np.array, initial_steps: int, final_steps: int, savefig: bool
     ):
         """Plot number of positive connection in the excitatory pool
-        
+
         Args:
             connection_counts (array) - 1D Array of number of connections in the network per time step
-            
+
             initial_steps (int) - Plot for initial steps
-            
+
             final_steps (int) - Plot for final steps
-            
+
             savefig (bool) - If True plot will be saved as png file in the cwd
-        
+
         Returns:
             plot object
         """
 
         # Plot graph for entire simulation time period
-        fig1, ax1 = plt.subplots(figsize=(12, 5))
+        _, ax1 = plt.subplots(figsize=(12, 5))
         ax1.plot(connection_counts, label="Connection dynamics")
         plt.margins(x=0)
         ax1.set_xticks(ax1.get_xticks()[::2])
@@ -572,11 +569,6 @@ class Plotter(object):
         ax3.set_title("Final %s time steps of Stable Phase" % final_steps)
         ax3.set_xticks(ax3.get_xticks()[::1])
 
-        # Uncomment to show decay and stable phase in colors
-        # ax1.axvspan(0, 200000, alpha=0.1, color='red')
-        # ax2.axvspan(0, 10000, alpha=0.1, color='red')
-        # ax1.axvspan(200000, 1000000, alpha=0.1, color='green')
-
         if savefig:
             plt.savefig("connection_dynamics")
 
@@ -586,15 +578,15 @@ class Plotter(object):
     def hist_firing_rate_network(spike_train: np.array, bin_size: int, savefig: bool):
 
         """ Plot the histogram of firing rate (total number of neurons spike at each time step)
-        
-        Args:    
+
+        Args:
             spike_train (array): Array of spike trains
-            
+
             bin_size (int): Histogram bin size
-            
+
             savefig (bool): If True, plot will be saved in the cwd
 
-        Returns: 
+        Returns:
             plot object """
 
         fr = np.count_nonzero(spike_train.tolist(), 1)
@@ -616,12 +608,12 @@ class Plotter(object):
     def scatter_plot(spike_train: np.array, savefig: bool):
 
         """Scatter plot of spike trains
-            
+
         Args:
             spike_train (list): Array of spike trains
-            
+
             with_firing_rates (bool): If True, firing rate of the network will be plotted
-            
+
             savefig (bool): If True, plot will be saved in the cwd
 
         Returns:
@@ -639,8 +631,6 @@ class Plotter(object):
         plt.legend(loc="upper left")
 
         plt.scatter(y, x, s=0.1, color="black")
-        # plt.plot(y,x,'|b')
-        # plt.gca().invert_yaxis()
 
         plt.xlabel("Time(ms)")
         plt.ylabel("Neuron #")
@@ -654,12 +644,12 @@ class Plotter(object):
     def raster_plot(spike_train: np.array, savefig: bool):
 
         """Raster plot of spike trains
-            
-        Args: 
+
+        Args:
             spike_train (array): Array of spike trains
-            
+
             with_firing_rates (bool): If True, firing rate of the network will be plotted
-            
+
             savefig (bool): If True, plot will be saved in the cwd
 
         Returns:
@@ -678,8 +668,6 @@ class Plotter(object):
         x, y = np.argwhere(spike_train.T == 1).T
 
         plt.plot(y, x, "|r")
-
-        # plt.gca().invert_yaxis()
         plt.xlabel("Time(ms)")
         plt.ylabel("Neuron #")
 
@@ -694,7 +682,7 @@ class Plotter(object):
 
         Args:
             corr (array): Correlation matrix
-            
+
             savefig (bool): If true will save the plot at the current working directory
 
         Returns:
@@ -709,8 +697,6 @@ class Plotter(object):
 
         # Custom diverging colormap
         cmap = sns.diverging_palette(220, 10, as_cmap=True)
-
-        # Draw the heatmap with the mask and correct aspect ratio
 
         sns.heatmap(
             corr,
@@ -734,14 +720,14 @@ class Plotter(object):
     ):
 
         """Plot Exponential fit on the inter-spike intervals during training or simulation phase
-        
+
         Args:
             spike_train (array): Array of spike trains
-        
+
             neuron (int): If True, firing rate of the network will be plotted
-        
+
             bin_size (int): Spike train will be splitted into bins of size bin_size
-        
+
             savefig (bool): If True, plot will be saved in the cwd
 
         Returns:
@@ -751,7 +737,7 @@ class Plotter(object):
             spike_train.T[neuron]
         )  # Locate the spike time of the target neuron
 
-        isi = Statistics.spike_time_intervals(spike_time)  # ISI intervals of neuron
+        isi = Statistics.spike_time_intervals(spike_time)
 
         y, x = np.histogram(sorted(isi), bins=bin_size)
 
@@ -762,9 +748,8 @@ class Plotter(object):
             return a * np.exp(-b * np.array(y)) - c
 
         # Curve fit
-        popt, pcov = curve_fit(exponential_func, x[1:bin_size], y[1:bin_size])
+        popt, _ = curve_fit(exponential_func, x[1:bin_size], y[1:bin_size])
 
-        # Plot
         plt.plot(
             x[1:bin_size],
             exponential_func(x[1:bin_size], *popt),
@@ -783,15 +768,15 @@ class Plotter(object):
     def weight_distribution(weights: np.array, bin_size: int, savefig: bool):
 
         """Plot the distribution of synaptic weights
-        
-        Args:   
+
+        Args:
             weights (array): Connection weights
-            
+
             bin_size (int): Spike train will be splited into bins of size bin_size
-            
+
             savefig (bool): If True, plot will be saved in the cwd
 
-        Returns: 
+        Returns:
             plot object"""
 
         weights = weights[
@@ -812,12 +797,12 @@ class Plotter(object):
     def linear_lognormal_fit(weights: np.array, num_points: int, savefig: bool):
 
         """Lognormal curve fit on connection weight distribution
-        
+
         Args:
             weights (array): Connection weights
-        
+
             num_points(int): Number of points to be plotted in the x axis
-        
+
             savefig(bool): If True, plot will be saved in the cwd
 
         Returns:
@@ -840,11 +825,11 @@ class Plotter(object):
         mean = np.exp(mu + (sigma ** 2 / 2))  # Note that mean depends on both M and s
         x = np.linspace(
             np.min(weights), np.max(weights), num=num_points
-        )  # values for x-axis
+        )
 
         pdf = stats.lognorm.pdf(
             x, shape, loc=0, scale=scale
-        )  # probability distribution
+        )
 
         plt.figure(figsize=(12, 4.5))
 
@@ -910,11 +895,12 @@ class Plotter(object):
 
         Args:
             corr (array): Correlation between neurons
-            
-            corr_thres (array): Threshold to prune the connection
-            
+
+            corr_thres (array): Threshold to prune the connection. Smaller the threshold,
+                                higher the density of connections
+
             fig_name (array, optional): Name of the figure. Defaults to None.
-            
+
         Returns:
             matplotlib.pyplot: Plot instance
         """
@@ -923,17 +909,12 @@ class Plotter(object):
 
         links = df.stack().reset_index()
         links.columns = ["var1", "var2", "value"]
-        ### threshold = 0.01, smaller the threshold, higher the density of connections
-
         links_filtered = links.loc[
             (links["value"] > corr_thres) & (links["var1"] != links["var2"])
         ]
 
-        # Build your graph
         G = nx.from_pandas_edgelist(links_filtered, "var1", "var2")
-        # Plot the network:
 
-        # Plot the network:
         plt.figure(figsize=(50, 50))
         nx.draw(
             G,
@@ -950,10 +931,10 @@ class Plotter(object):
     @staticmethod
     def hamming_distance(hamming_dist: list, savefig: bool):
         """Hamming distance between true netorks states and perturbed network states
-        
+
         Args:
             hamming_dist (list): Hamming distance values
-            
+
             savefig (bool): If True, save the fig at current working directory
 
         Returns:
@@ -982,15 +963,15 @@ class Statistics(object):
     def firing_rate_neuron(spike_train: np.array, neuron: int, bin_size: int):
 
         """Measure spike rate of given neuron during given time window
-            
+
         Args:
             spike_train (array): Array of spike trains
-            
+
             neuron (int): Target neuron in the reservoir
-            
+
             bin_size (int): Divide the spike trains into bins of size bin_size
 
-        Returns: 
+        Returns:
             int: firing_rate """
 
         time_period = len(spike_train[:, 0])
@@ -1016,11 +997,11 @@ class Statistics(object):
     def firing_rate_network(spike_train: np.array):
 
         """Calculate number of neurons spikes at each time step.Firing rate of the network
-        
+
         Args:
             spike_train (array): Array of spike trains
 
-        Returns: 
+        Returns:
             int: firing_rate """
 
         firing_rate = np.count_nonzero(spike_train.tolist(), 1)
@@ -1031,7 +1012,7 @@ class Statistics(object):
     def scale_dependent_smoothness_measure(firing_rates: list):
 
         """Smoothem the firing rate depend on its scale. Smaller values corresponds to smoother series
-        
+
         Args:
             firing_rates (list): List of number of active neurons per time step
 
@@ -1048,7 +1029,7 @@ class Statistics(object):
     def scale_independent_smoothness_measure(firing_rates: list):
 
         """Smoothem the firing rate independent of its scale. Smaller values corresponds to smoother series
-        
+
         Args:
             firing_rates (list): List of number of active neurons per time step
 
@@ -1069,12 +1050,12 @@ class Statistics(object):
         Score interpretation
         - scores near 1 imply a smoothly varying series
         - scores near 0 imply that there's no overall linear relationship between a data point and the following one (that is, plot(x[-length(x)],x[-1]) won't give a scatter plot with any apparent linearity)
-                        
+
         - scores near -1 suggest that the series is jagged in a particular way: if one point is above the mean, the next is likely to be below the mean by about the same amount, and vice versa.
 
         Args:
             firing_rates (list): Firing rates of the network
-            
+
             t (int, optional): Window size. Defaults to 2.
 
         Returns:
@@ -1094,10 +1075,10 @@ class Statistics(object):
     def avg_corr_coeff(spike_train: np.array):
 
         """Measure Average Pearson correlation coeffecient between neurons
-        
+
         Args:
             spike_train (array): Neural activity
-        
+
         Returns:
             array: Average correlation coeffecient"""
 
@@ -1113,10 +1094,10 @@ class Statistics(object):
     def spike_times(spike_train: np.array):
 
         """Get the time instants at which neuron spikes
-        
+
         Args:
             spike_train (array): Spike trains of neurons
-            
+
         Returns:
             (array): Spike time of each neurons in the pool"""
 
@@ -1127,12 +1108,12 @@ class Statistics(object):
     def spike_time_intervals(spike_train):
 
         """Generate spike time intervals spike_trains
-        
+
         Args:
             spike_train (array): Network activity
-        
+
         Returns:
-            list: Inter spike intervals for each neuron in the reservoir        
+            list: Inter spike intervals for each neuron in the reservoir
         """
 
         spike_times = Statistics.spike_times(spike_train)
@@ -1146,7 +1127,7 @@ class Statistics(object):
 
         Args:
             actual_spike_train (np.array): True network's states
-            
+
             perturbed_spike_train (np.array): Perturbated network's states
 
         Returns:
@@ -1158,8 +1139,6 @@ class Statistics(object):
         ]
         return hd
 
-    # Fano Factor
-
     @staticmethod
     def fanofactor(spike_train: np.array, neuron: int, window_size: int):
 
@@ -1167,9 +1146,9 @@ class Statistics(object):
 
         Args:
             spike_train (np.array): Spike train of neurons in the reservoir
-            
+
             neuron (int): Target neuron in the pool
-            
+
             window_size (int): Sliding window size for time step ranges to be considered for measuring the fanofactor
 
         Returns:
@@ -1195,20 +1174,19 @@ class Statistics(object):
 
         return mean_firing_rate, variance_firing_rate, fano_factor
 
-    # Spike Source Entropy
 
     @staticmethod
     def spike_source_entropy(spike_train: np.array, num_neurons: int):
 
         """Measure the uncertainty about the origin of spike from the network using entropy
-        
+
         Args:
             spike_train (np.array): Spike train of neurons
-            
+
             num_neurons (int): Number of neurons in the reservoir
 
         Returns:
-            int : Spike source entropy of the network 
+            int : Spike source entropy of the network
         """
         # Number of spikes from each neuron during the interval
         n_spikes = np.count_nonzero(spike_train, axis=0)
