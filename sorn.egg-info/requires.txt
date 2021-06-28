@@ -1,5 +1,0 @@
-numpy
-configparser
-tqdm
-scipy
-seaborn
