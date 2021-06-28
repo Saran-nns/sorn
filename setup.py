@@ -11,7 +11,7 @@ def read(fname):
 
 setup(
     name="sorn",
-    version="0.4.8",
+    version="0.4.9",
     author="Saranraj Nambusubramaniyan",
     author_email="saran_nns@hotmail.com",
     description="Self-Organizing Recurrent Neural Networks",
@@ -33,7 +33,7 @@ setup(
         "Programming Language :: Python :: 3.7",
     ],
     include_package_data=True,
-    install_requires=["numpy", "configparser", "tqdm", "scipy", "seaborn"],
+    install_requires=["numpy", "configparser", "scipy", "seaborn"],
     zip_safe=False,
 )
 
