@@ -3,7 +3,7 @@
 
 SORN is a class of neuro-inspired artificial network build based on plasticity mechanisms in biological brain and mimic neocortical circuits ability of learning and adaptation through neuroplasticity mechanisms.
 
-The network is developed as part of my Master thesis at Universität Osnabrück, Germany. For the ease of maintainance, the notebooks, use cases and the API(under developement) are moved to [SORN-Notebook](https://github.com/Saran-nns/PySORN_0.1) 
+The network is developed as part of my Master thesis at Universität Osnabrück, Germany. For the ease of maintainance, the notebooks and the use cases are moved to [SORN-Notebook](https://github.com/Saran-nns/PySORN_0.1) 
 
 [![Build Status](https://travis-ci.org/Saran-nns/sorn.svg?branch=master)](https://travis-ci.org/Saran-nns/sorn)
 [![codecov](https://codecov.io/gh/Saran-nns/sorn/branch/master/graph/badge.svg)](https://codecov.io/gh/Saran-nns/sorn)
