@@ -211,7 +211,7 @@ Statistics.autocorr(firing_rates = [1,1,5,6,3,7],t= 2)
 Statistics.fanofactor(spike_train= np.asarray(Exc_activity),neuron = 10,window_size = 10)
 
 # Measure the uncertainty about the origin of spike from the network using entropy
-Statistics.spike_source_entropy(spike_train: np.array, num_neurons: int)
+Statistics.spike_source_entropy(spike_train= np.asarray(Exc_activity), num_neurons=200)
 ```
 ## Citation
 ### Package
