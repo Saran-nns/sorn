@@ -1,9 +1,9 @@
 
-# Self-Organizing Recurrent Neural Networks 
+# Self-Organizing Recurrent Neural Networks
 
 SORN is a class of neuro-inspired artificial network build based on plasticity mechanisms in biological brain and mimic neocortical circuits ability of learning and adaptation through neuroplasticity mechanisms.
 
-The network is developed as part of my Master thesis at Universität Osnabrück, Germany. For the ease of maintainance, the notebooks and the use cases are moved to [SORN-Notebook](https://github.com/Saran-nns/PySORN_0.1) 
+The network is developed as part of my Master thesis at Universität Osnabrück, Germany. For the ease of maintainance, the notebooks and the use cases are moved to [SORN-Notebook](https://github.com/Saran-nns/PySORN_0.1)
 
 [![Build Status](https://travis-ci.org/Saran-nns/sorn.svg?branch=master)](https://travis-ci.org/Saran-nns/sorn)
 [![codecov](https://codecov.io/gh/Saran-nns/sorn/branch/master/graph/badge.svg)](https://codecov.io/gh/Saran-nns/sorn)
@@ -53,12 +53,12 @@ pip install git+https://github.com/Saran-nns/sorn
 ```
 
 ## Dependencies
-SORN supports Python 3.5+ ONLY. For older Python versions please use the official Python client. 
+SORN supports Python 3.5+ ONLY. For older Python versions please use the official Python client.
 To install all optional dependencies,
 
 ```python
   pip install 'sorn[all]'
-```  
+```
 For detailed documentation about usage and development, please visit [SORN-Documentation](https://self-organizing-recurrent-neural-networks.readthedocs.io/)
 
 ## Usage
@@ -88,16 +88,15 @@ kwargs = {'_ne', '_nu', '_network_type_ee', '_network_type_ei', '_network_type_i
 The default ```_ne, _nu``` values are overriden by passing them as kwargs inside ```simulate_sorn``` method.
 
 ```Python
-# Import 
 from sorn import Simulator
 import numpy as np
 
-# Sample input 
+# Sample input
 num_features = 10
 time_steps = 200
 inputs = np.random.rand(num_features,time_steps)
 
-# To simulate the network; 
+# To simulate the network;
 matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Simulator.simulate_sorn(inputs = inputs, phase='plasticity', matrices=None, noise = True, time_steps=time_steps, _ne = 200, _nu=num_features)
 
 # To resume the simulation, load the matrices_dict from previous simulation;
@@ -108,7 +107,7 @@ matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections 
 
 ```Python
 from sorn import Trainer
-inputs = np.random.rand(num_features,1) 
+inputs = np.random.rand(num_features,1)
 
 # SORN network is frozen during training phase
 matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Trainer.train_sorn(inputs = inputs, phase='Training', matrices=matrices_dict,_nu=num_features, time_steps=1)
@@ -123,25 +122,23 @@ matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections 
 
   ```Rec_activity``` - Collection of Recurrent network activity of entire simulation period
 
-  ```num_active_connections``` - List of number of active connections in the Excitatory pool at each time step 
+  ```num_active_connections``` - List of number of active connections in the Excitatory pool at each time step
 
 ### Colaboratory Notebook
 Sample simulation and training runs with few plotting functions are found at [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/10TElAAE1dsgzuvaHO_NjgMAE5Pic3_jL#scrollTo=VDa0U4mf1Z75)
 
 ## Usage with OpenAI gym
 ### Cartpole balance problem
-With default network parameters. 
+With default network parameters.
 
 ```python
-# Imports
-
 from sorn import Simulator, Trainer
 import gym
 
 # Load the simulated network matrices
-# Note these matrices are obtained after the network achieved convergence under random inputs and noise
+# Note that these matrices are obtained after the network achieved convergence under random inputs and noise
 
-with open('simulation_matrices.pkl','rb') as f:  
+with open('simulation_matrices.pkl','rb') as f:
     sim_matrices,excit_states,inhib_states,recur_states,num_reservoir_conn = pickle.load(f)
 
 # Training parameters
@@ -151,39 +148,46 @@ NUM_PLASTICITY_EPISODES = 20000
 
 env = gym.make('CartPole-v0')
 
+# Policy
+def policy(state,w):
+    "Implementation of softmax policy"
+    z = state.dot(w)
+    exp = np.exp(z)
+    return exp/np.sum(exp)
+
 for EPISODE in range(NUM_EPISODES):
-    
+
     # Environment observation
     state = env.reset()[None,:]
-    
+
     # Play the episode
     while True:
       if EPISODE < NUM_PLASTICITY_EPISODE:
-      
+
         # Plasticity phase
         sim_matrices, excit_states, inhib_states, recur_states, num_reservoir_conn = Simulator.simulate_sorn(inputs = state, phase ='plasticity', matrices = sim_matrices, time_steps = 1, noise=False)
 
       else:
         # Training phase with frozen reservoir connectivity
         sim_matrices,excit_states,inhib_states,recur_states,num_reservoir_conn = Trainer.train_sorn(inputs = state, phase = 'training', matrices = sim_matrices, noise= False)
-      
+
       # Feed excit_states as input states to your RL algorithm, below goes for simple policy gradient algorithm
       # Sample policy w.r.t excitatory states and take action in the environment
-       
       probs = policy(np.asarray(excit_states),output_layer_weights))
       action = np.random.choice(action_space,probs)
-      state,reward,done,_ = env.step(action) 
-      
+
+      state,reward,done,_ = env.step(action)
+
       if done:
         break
-        
+
   # YOUR CODE HERE
   # COMPUTE GRADIENTS BASED ON YOUR OBJECTIVE FUNCTION
   # OPTIMIZE `output_layer_weights` BASED ON YOUR OPTIMIZATION METHOD
 ```
 There are several neural data analysis and visualization methods inbuilt with `sorn` package. Sample call for few plotting and statistical methods are shown below;
 
-## Plotting functions 
+## Plotting functions
 
 ```Python
 from sorn import Plotter
@@ -205,6 +209,9 @@ Statistics.autocorr(firing_rates = [1,1,5,6,3,7],t= 2)
 
 # Fano factor: To verify poissonian process in spike generation of neuron 10
 Statistics.fanofactor(spike_train= np.asarray(Exc_activity),neuron = 10,window_size = 10)
+
+# Measure the uncertainty about the origin of spike from the network using entropy
+Statistics.spike_source_entropy(spike_train: np.array, num_neurons: int)
 ```
 ## Citation
 ### Package
@@ -227,15 +234,15 @@ DOI: 10.13140/RG.2.2.25393.81762
 
 ## Contributions
 I am welcoming contributions. If you wish to contribute, please create a branch with a pull request and the changes can be discussed there.
-If you find a bug in the code or errors in the documentation, please open a new issue in the Github repository and report the bug or the error. Please provide sufficient information for the bug to be reproduced. 
+If you find a bug in the code or errors in the documentation, please open a new issue in the Github repository and report the bug or the error. Please provide sufficient information for the bug to be reproduced.
 
-## References 
+## References
 
 Lazar, A. (2009). SORN: a Self-organizing Recurrent Neural Network. Frontiers in Computational Neuroscience, 3. https://doi.org/10.3389/neuro.10.023.2009
 
-Hartmann, C., Lazar, A., Nessler, B., & Triesch, J. (2015). Where’s the Noise? Key Features of Spontaneous Activity and Neural Variability Arise through Learning in a Deterministic Network. PLoS Computational Biology, 11(12). https://doi.org/10.1371/journal.pcbi.1004640 
+Hartmann, C., Lazar, A., Nessler, B., & Triesch, J. (2015). Where’s the Noise? Key Features of Spontaneous Activity and Neural Variability Arise through Learning in a Deterministic Network. PLoS Computational Biology, 11(12). https://doi.org/10.1371/journal.pcbi.1004640
 
-Del Papa, B., Priesemann, V., & Triesch, J. (2017). Criticality meets learning: Criticality signatures in a self-organizing recurrent neural network. PLoS ONE, 12(5). https://doi.org/10.1371/journal.pone.0178683 
+Del Papa, B., Priesemann, V., & Triesch, J. (2017). Criticality meets learning: Criticality signatures in a self-organizing recurrent neural network. PLoS ONE, 12(5). https://doi.org/10.1371/journal.pone.0178683
 
-Zheng, P., Dimitrakakis, C., & Triesch, J. (2013). Network Self-Organization Explains the Statistics and Dynamics of Synaptic Connection Strengths in Cortex. PLoS Computational Biology, 9(1). https://doi.org/10.1371/journal.pcbi.1002848  
+Zheng, P., Dimitrakakis, C., & Triesch, J. (2013). Network Self-Organization Explains the Statistics and Dynamics of Synaptic Connection Strengths in Cortex. PLoS Computational Biology, 9(1). https://doi.org/10.1371/journal.pcbi.1002848
 
