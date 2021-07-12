@@ -157,11 +157,13 @@ def policy(state,w):
 
 for EPISODE in range(NUM_EPISODES):
 
-    # Environment observation
-    state = env.reset()[None,:]
+    # Environment observation; Input to sorn should be of shape (input_features,time_steps)
+    state = env.reset()[:, None] # (4,) --> (4,1)
+    state = np.array(state)
 
     # Play the episode
     while True:
+      state = np.array(state[:,None])
       if EPISODE < NUM_PLASTICITY_EPISODE:
 
         # Plasticity phase
