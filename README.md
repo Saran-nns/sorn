@@ -102,7 +102,6 @@ matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections 
 # To resume the simulation, load the matrices_dict from previous simulation;
 matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Simulator.simulate_sorn(inputs = inputs, phase='plasticity', matrices=matrices_dict, noise= True, time_steps=time_steps,_ne = 200, _nu=num_features)
 ```
-
 ### Training phase
 
 ```Python
@@ -112,6 +111,24 @@ inputs = np.random.rand(num_features,1)
 # SORN network is frozen during training phase
 matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Trainer.train_sorn(inputs = inputs, phase='Training', matrices=matrices_dict,_nu=num_features, time_steps=1)
 ```
+To turn off any plasticity mechanisms during simulation or training phase, you can use `freeze` argument.
+For example to stop intrinsic plasticity during training phase,
+
+```python
+matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Simulator.simulate_sorn(inputs = inputs, phase='plasticity', matrices=None, noise = True, time_steps=time_steps, _ne = 200, _nu=num_features, freeze=['ip'])
+```
+
+The other options are,
+
+'stdp' - Spike Timing Dependent Plasticity
+
+'ss' - Synaptic Scaling
+
+'sp' - Structural Plasticity
+
+'istdp' - Inhibitory Spike Timing Dependent Plasticity
+
+Note: If you pass all above options to `freeze`, then the network will behave as Echo State Network(ESN)
 
 ### Network Output Descriptions
   ```matrices_dict```  - Dictionary of connection weights ('Wee','Wei','Wie') , Excitatory network activity ('X'), Inhibitory network activities('Y'), Threshold values ('Te','Ti')
