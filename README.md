@@ -120,13 +120,13 @@ matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections 
 
 The other options are,
 
-'stdp' - Spike Timing Dependent Plasticity
+`'stdp'` - Spike Timing Dependent Plasticity
 
-'ss' - Synaptic Scaling
+`'ss'` - Synaptic Scaling
 
-'sp' - Structural Plasticity
+`'sp'` - Structural Plasticity
 
-'istdp' - Inhibitory Spike Timing Dependent Plasticity
+`'istdp'` - Inhibitory Spike Timing Dependent Plasticity
 
 Note: If you pass all above options to `freeze`, then the network will behave as Echo State Network(ESN)
 
