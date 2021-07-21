@@ -128,7 +128,7 @@ The other options are,
 
 `'istdp'` - Inhibitory Spike Timing Dependent Plasticity
 
-Note: If you pass all above options to `freeze`, then the network will behave as Echo State Network(ESN)
+Note: If you pass all above options to `freeze`, then the network will behave as Liquid State Machine(LSM)
 
 ### Network Output Descriptions
   ```matrices_dict```  - Dictionary of connection weights ('Wee','Wei','Wie') , Excitatory network activity ('X'), Inhibitory network activities('Y'), Threshold values ('Te','Ti')
