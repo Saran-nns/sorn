@@ -38,7 +38,6 @@ The network is developed as part of my Master thesis at Universität Osnabrück,
   - [Package](#package)
   - [Thesis](#thesis)
 - [Contributions](#contributions)
-- [References](#references)
 
 ## Installation
 
@@ -255,13 +254,4 @@ DOI: 10.13140/RG.2.2.25393.81762
 I am welcoming contributions. If you wish to contribute, please create a branch with a pull request and the changes can be discussed there.
 If you find a bug in the code or errors in the documentation, please open a new issue in the Github repository and report the bug or the error. Please provide sufficient information for the bug to be reproduced.
 
-## References
-
-Lazar, A. (2009). SORN: a Self-organizing Recurrent Neural Network. Frontiers in Computational Neuroscience, 3. https://doi.org/10.3389/neuro.10.023.2009
-
-Hartmann, C., Lazar, A., Nessler, B., & Triesch, J. (2015). Where’s the Noise? Key Features of Spontaneous Activity and Neural Variability Arise through Learning in a Deterministic Network. PLoS Computational Biology, 11(12). https://doi.org/10.1371/journal.pcbi.1004640
-
-Del Papa, B., Priesemann, V., & Triesch, J. (2017). Criticality meets learning: Criticality signatures in a self-organizing recurrent neural network. PLoS ONE, 12(5). https://doi.org/10.1371/journal.pone.0178683
-
-Zheng, P., Dimitrakakis, C., & Triesch, J. (2013). Network Self-Organization Explains the Statistics and Dynamics of Synaptic Connection Strengths in Cortex. PLoS Computational Biology, 9(1). https://doi.org/10.1371/journal.pcbi.1002848
 
