@@ -76,10 +76,9 @@ sorn.__file__
 ```
 to find the location of the sorn package
 
-Then, update/edit arguments in ```configuration.ini```
+Then, update/edit arguments in `configuration.ini`
 
-2. Pass the arguments with valid names (listed below). This will override the default values at ```configuration.ini```
-. The allowed ```kwargs``` are,
+2. While instantiating the network using `Simulator` or `Trainer` objects, override the defaults by assigning the values to the ```kwargs``` shown below,
 ```Python
 kwargs = {'_ne', '_nu', '_network_type_ee', '_network_type_ei', '_network_type_ie', '_lambda_ee','_lambda_ei', '_lambda_ie', '_eta_stdp','_eta_inhib', '_eta_ip', '_te_max', '_ti_max', '_ti_min', '_te_min', '_mu_ip','_sigma_ip'}
 ```
