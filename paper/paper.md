@@ -58,7 +58,7 @@ $$𝛥𝑊_{𝑖𝑗}^{𝐸𝐸}=𝜂_{𝑆𝑇𝐷𝑃}(𝑥_𝑖(𝑡)𝑥_�
 
 IP update the firing threshold of excitatory neurons based on the state of the neuron at each time step. It increases the threshold if the neuron fires and decrease it otherwise.
 
-$$𝑇_𝑖(𝑡+1)=𝑇_𝑖(𝑡)+𝜂_{𝐼𝑃}(𝑥_𝑖(𝑡)−𝐻_{𝐼𝑃})$$
+$$\𝑇_𝑖(𝑡+1)=𝑇_𝑖(𝑡)+𝜂_{𝐼𝑃}(𝑥_𝑖(𝑡)−𝐻_{𝐼𝑃})\$$
 
 ### Structural Plasticity
 
