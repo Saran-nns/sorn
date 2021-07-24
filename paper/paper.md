@@ -13,11 +13,13 @@ tags:
 
 authors:
     - name: Saranraj Nambusubramaniyan
-      affiliation: 1
+      affiliation: 1,2
       orcid: 0000-0002-4043-3420
 affiliations:
     - name: Indian center for Robotics Innovation and Smart-intelligence(IRIS-i), India
       index: 1
+    - - name: Universität Osnabrück, Germany
+      index: 2
 date: 24 July 2021
 bibliography: paper.bib
 ---
