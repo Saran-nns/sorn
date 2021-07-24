@@ -42,17 +42,13 @@ Excitatory network state
 
 
 $$
-  x_i(t+1) =  \Theta\left (\sum_{j=1}^{N^E} {W_{ij}^{EE}(t)} {x_{j}(t)} − \sum_{j=1}^{N^I}W_{ik}^{EI}(t) y_{k}(t)+u_{i}(t)−T_{i}^{E}(t)+xi_{E}(t)\right)
+  x_i(t+1) =  \Theta\left (\sum_{j=1}^{N^E} {W_{ij}^{EE}(t)} {x_{j}(t)} − \sum_{j=1}^{N^I}W_{ik}^{EI}(t) y_{k}(t)+u_{i}(t)−T_{i}^{E}(t)+\xi_{E}(t)\right)
 $$
-
-
-\begin{equation}\label{eq:fourier}
-\hat f(\omega) = \int_{-\infty}^{\infty} f(x) e^{i\omega x} dx
-\end{equation}
 
 Inhibitory Network state
 
-$$𝑦_𝑖(𝑡+1)=\theta\left(\sum_{j=1}^{N_i}𝑊_{𝑖𝑗}^{𝐼𝐸}(𝑡) 𝑥_𝑗(𝑡)−𝑇_𝑖𝐼+ 𝜉𝐼(t)\right)$$
+$$
+  y_i(t+1)=\theta\left(\sum_{j=1}^{N_i}W_{ij}^{IE}(t) x_j(t)−T_i^I+ \xi_{I}(t)\right)$$
 
 ## Plasticity Rules
 
