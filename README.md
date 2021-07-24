@@ -109,8 +109,7 @@ inputs = np.random.rand(num_features,1)
 # SORN network is frozen during training phase
 matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Trainer.train_sorn(inputs = inputs, phase='Training', matrices=matrices_dict,_nu=num_features, time_steps=1)
 ```
-<<<<<<< HEAD
-=======
+
 To turn off any plasticity mechanisms during simulation or training phase, you can use `freeze` argument.
 For example to stop intrinsic plasticity during training phase,
 
@@ -130,7 +129,6 @@ The other options are,
 
 Note: If you pass all above options to `freeze`, then the network will behave as Liquid State Machine(LSM)
 
->>>>>>> master
 ### Network Output Descriptions
   ```matrices_dict```  - Dictionary of connection weights ('Wee','Wei','Wie') , Excitatory network activity ('X'), Inhibitory network activities('Y'), Threshold values ('Te','Ti')
 
