@@ -22,17 +22,17 @@ bibliography: paper.bib
 Self Organizing Recurrent Neural(SORN) network is a class of neuro-inspired artificial network developed based on plasticity mechanisms in biological brain. It is proven that these class of networks can mimic neocortical circuits ability of learning and adaptation through neuroplasticity mechanisms. Structurally, SORN networks consists of pool of excitatory neurons and small population of inhibitory neurons. The network implements five fundamental plasticity
 mechanisms found in neocortex of brain, namely spike timing dependent plasticity, intrinsic plasticity, synaptic scaling, inhibitory spike timing dependent plasticity and structural plasticity [@zheng2013network; @lazar2009sorn, @papa2017criticality]. Using mathematical modelling, SORN network simplifies the underlying structural and functional connectivity mechanisms that are responsible for learning and memory in brain.
 
-`sorn` is a Python package designed for Self Organizing Recurrent Neural networks. While it is originally developed for SORN networks, it can also serve as an ideal research package for Liquid State Machines in general. The detailed documentation is provided at [https://self-organizing-recurrent-neural-networks.readthedocs.io/en/latest/](self-organizing-recurrent-neural-networks.readthedocs.io).Further to extend the applications of this network, a demonstrative example of neuro robotics experiment with OpenAI gym [@brockman2016openai] is also provided at [sorn package](https://github.com/Saran-nns/sorn/).
+`sorn` is a Python package designed for Self Organizing Recurrent Neural networks. While it is originally developed for SORN networks, it can also serve as an ideal research package for Liquid State Machines in general. The detailed documentation is provided at [https://self-organizing-recurrent-neural-networks.readthedocs.io/en/latest/](self-organizing-recurrent-neural-networks.readthedocs.io). Further to extend the applications of this network, a demonstrative example of neuro robotics experiment with OpenAI gym [@brockman2016openai] is also provided at [sorn package](https://github.com/Saran-nns/sorn/).
 
 ## Statement of the need:
 
 Reservoir computing models are neuro inspired artifical neural networks. RC networks have either sparse or densly connected units with fixed connection weights. Unlike other RC models, SORN has synaptic weights controlled by neuro inspired plasticity mechanisms. The network has two distinct pools of excitatory and inhibitory reservoirs competing with each other to remain in subcritical state suitable for learning. Sub critical regime is a state between chaos and order, otherwise "edge of chaos". At this state, network has intrinsic dynamics with strong affinity towards order, yet sensitive to external perturbations. Under plasticity mechansisms, the network has the ability to overcome the perturbations and return to their subcritical dynamics. That self-adaptive behavior is otherwise called Self Organization. Building such network with synergestic combination of plasticity mechanisms from scratch is a time consuming. Further it also require deeper understanding of neurophysiology and softcomputing. Therefore, to reduce the cognitive load of the theorists, experimentalists or researchers who are new to the field, there is a need to have a realiable package that encapsulates all plasticity mechanisms.
 
-There is another open source code [sorn v1](https://github.com/delpapa/SORN), [sorn v2](https://github.com/delpapa/SORN_V2)], for SORN network but it is intended for problem specific and not a general purpose software package. However, `sorn` is flexible package that allows researchers to develop the network of their interest with respect to the combination of plasticity rules of their choice. Overall, `sorn` provide a research enviroment for computational neuroscients to investigate self organization, adaptation, learning, memory and behavior of brain circuits by reverse engineering neuronal plasticity mechanisms.
+There is another open source code [sorn v1](https://github.com/delpapa/SORN), [sorn v2](https://github.com/delpapa/SORN_V2), for SORN network but it is intended for problem specific and not a general purpose software package. However, `sorn` is flexible package that allows researchers to develop the network of their interest provided the freedom to choose the combination of plasticity rules of their choice. Overall, `sorn` provide a research enviroment for computational neuroscients to investigate self organization, adaptation, learning, memory and behavior of brain circuits by reverse engineering neuronal plasticity mechanisms.
 
 ## Library Overview:
 
-`sorn` package heavily depend on Numpy [@harris2020array] for numerical computations and analysis methods, seaborn and matplotlib [@barrett2005matplotlib] for visualization. The network is developed broadly in 5 classes; `SORN` object encapsulates all required functions that instantiate network variables like connection weights and thresholds. `Plasticity` inherits objects from `SORN` and implements plasticity rules using `stdp()`, `ip()`, `ss()`, `sp()`and `istdp()` methods . `NetworkState` has mthods that evaluates excitatory and inhibitory network states at each timestep and finally the `MatrixCollection` objects acts as a memory cache. It collects the network states and keep track of the variables like weights and thresholds as the network evolves during simulation and training.
+`sorn` package heavily depend on Numpy [@harris2020array] for numerical computations and analysis methods, seaborn and matplotlib [@barrett2005matplotlib] for visualization. The network is developed broadly in 5 classes; `SORN` object encapsulates all required functions that instantiate network variables like connection weights and thresholds. `Plasticity` inherits objects from `SORN` and implements plasticity rules using `stdp()`, `ip()`, `ss()`, `sp()`and `istdp()` methods . `NetworkState` has methods that evaluates excitatory and inhibitory network states at each timestep and finally the `MatrixCollection` objects behave as a memory cache. It collects the network states and keep track of the variables like weights and thresholds as the network evolves during simulation and training.
 
 The network can be instantiated, simulated and trained using two classes `Simulator` and `Trainer` which inherit objects from `SORN`.
 
@@ -128,13 +128,10 @@ Note that, the connection strength from excitatory to inhibitory ($W_{ij}^{IE}$)
 ## Sample Simulation methods
 ```python
 
-from sorn import Simulator
-import numpy as np
-
 # Sample input
 num_features = 10
 time_steps = 200
-inputs = np.random.rand(num_features,time_steps)
+inputs = numpy.random.rand(num_features,time_steps)
 
 state_dict,E,I,R,C=Simulator.simulate_sorn(inputs=inputs,phase='plasticity',
 
@@ -144,7 +141,7 @@ state_dict,E,I,R,C=Simulator.simulate_sorn(inputs=inputs,phase='plasticity',
 
                                         _nu=num_features)
 ```
-and to resume the simulation, load the matrices returned at the previous step as,
+`simulate_sorn` returns the dictionary of network state variables at last time steps, excitatory and inhibitory network activity of the entire simulation period and also the recurrent activity and the count of active connections at each time steps. To resume the simulation, load the matrices returned at the previous step as,
 
 ```python
 state_dict,E,I,R,C=Simulator.simulate_sorn(inputs=inputs,phase='plasticity',
@@ -156,7 +153,6 @@ state_dict,E,I,R,C=Simulator.simulate_sorn(inputs=inputs,phase='plasticity',
                                         _ne = 200,_nu=num_features)
 
 ```
-
 
 ### Network Output Descriptions
 
@@ -259,17 +255,17 @@ The `simulate_sorn` and `train_sorn` methods accepts the following keyword argum
 `sorn` package also includes necessary methods to investigate network properties. Few methods in `Statistics` are,
 
 
-| methods                    |                                      Description                                       |
-|----------------------------|----------------------------------------------------------------------------------------|
-| `autocorr`                 |  t-lagged auto correlation between neural activity                                     |
-| `fanofactor`               |  To verify poissonian process in spike generation of neuron(s)                         |
-| `spike_source_entropy`     |  Measure the uncertainty about the origin of spike from the network using entropy      |
-| `firing_rate_neuron`       |  Spike rate of specific neuron                                                         |
-| `firing_rate_network`      |  Spike rate of entire network                                                          |
-| `avg_corr_coeff`           |  Average Pearson correlation coeffecient between neurons                               |
-| `spike_times`              |  Time instants at which neuron spikes                                                  |
-| `spike_time_intervals`     |  Inter spike intervals for each neuron                                                 |
-| `hamming_distance`         |  Hamming distance between two network states                                           |
+| methods                       |                                      Description                                    |
+|-------------------------------|-------------------------------------------------------------------------------------|
+| `autocorr`                    |  t-lagged auto correlation between neural activity                                  |
+| `fanofactor`                  |  To verify poissonian process in spike generation of neuron(s)                      |
+| `spike_source_entropy`        |  Measure the uncertainty about the origin of spike from the network using entropy   |
+| `firing_rate_neuron`          |  Spike rate of specific neuron                                                      |
+| `firing_rate_network`         |  Spike rate of entire network                                                       |
+| `avg_corr_coeff`              |  Average Pearson correlation coeffecient between neurons                            |
+| `spike_times`                 |  Time instants at which neuron spikes                                               |
+| `spike_time_intervals`        |  Inter spike intervals for each neuron                                              |
+| `hamming_distance`            |  Hamming distance between two network states                                        |
 
 More details about the statistical and plotting tools in the package is found at ([https://self-organizing-recurrent-neural-networks.readthedocs.io/en/latest/](self-organizing-recurrent-neural-networks.readthedocs.io))
 
