@@ -41,22 +41,27 @@ The network can be instantiated, simulated and trained using two classes `Simula
 Excitatory network state
 
 
-$$
-  x_i(t+1) =  \Theta\left (\sum_{j=1}^{N^E} {W_{ij}^{EE}(t)} {x_{j}(t)} − \sum_{j=1}^{N^I}W_{ik}^{EI}(t) y_{k}(t)+u_{i}(t)−T_{i}^{E}(t)+\xi_{E}(t)\right)
-$$
+\begin{equation}
+\label{es}
+x_i(t+1) =  \Theta\left (\sum_{j=1}^{N^E} {W_{ij}^{EE}(t)} {x_{j}(t)} - \sum_{j=1}^{N^I}W_{ik}^{EI}(t) y_{k}(t)+u_{i}(t) - T_{i}^{E}(t)+\xi_{E}(t)\right)
+\end{equation}
 
 Inhibitory Network state
 
-$$
-  y_i(t+1)=\theta\left(\sum_{j=1}^{N_i}W_{ij}^{IE}(t) x_j(t)−T_i^I+ \xi_{I}(t)\right)$$
-
+\begin{equation}
+\label{is}
+y_i(t+1)=\theta\left(\sum_{j=1}^{N_i}W_{ij}^{IE}(t) x_j(t)-T_i^I+ \xi_{I}(t)\right)
+\end{equation}
 ## Plasticity Rules
 
 ### Spike Timing Dependent Plasticity
 
 It changes the  synaptic efficacy between excitatory neurons  based on the spike- timing between pre $j$ and post synaptic neuron $i$.
 
-$$𝛥𝑊_{𝑖𝑗}^{𝐸𝐸}=𝜂_{𝑆𝑇𝐷𝑃}(𝑥_𝑖(𝑡)𝑥_𝑗(𝑡−1)−𝑥_𝑖(𝑡−1)𝑥_𝑗(𝑡)$$
+\begin{equation}
+\label{stdp}
+\delta W_{ij}^{EE}=\eta_{STDP}(x_i(t)x_j(t−1)-x_i(t−1)x_j(t)$$
+\end{equation}
 
 ### Intrinsic Plasticity
 
@@ -64,7 +69,7 @@ IP update the firing threshold of excitatory neurons based on the state of the n
 
 \begin{equation}
 \label{ip}
-𝑇_𝑖(𝑡+1)=𝑇_𝑖(𝑡)+\eta_{𝐼𝑃}{𝑥_𝑖(𝑡)−𝐻_{𝐼𝑃}}
+T_i(t+1)=T_i(t)+\eta_{IP}{x_i(t)-H_{IP}}
 \end{equation}
 
 ### Structural Plasticity
@@ -75,14 +80,18 @@ It is responsible for creating new synapses between excitatory neurons at a rate
 
 SS normalizes the incoming synaptic strenghts of a neuron and prevent the network activity from attenuation or exploding.
 
-$$𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡)←𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡)/Σ𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡)$$
-
+\begin{equation}
+\label{ss}
+W_{ij}^{EE}(t)←W_{ij}^{EE}(t)/\sum 𝑊_{ij}^{EE}(t)
+\end{equation}
 ### Inhibitory Spike Timing Dependent Plasticity
 
 iSTDP is responisble for controlling the synaptic strenghts from Inhibitory to Excitatory network.
 
-$$𝛥𝑊_{𝑖𝑗}^{𝐸I}=𝜂_{i𝑆𝑇𝐷𝑃}(y_j(𝑡-1)(1-x_i(t)(1+\frac{1}{\mu_{ip}})))$$
-
+\begin{equation}
+\label{istdp}
+$$\delta 𝑊_{ij}^{EI}=\eta_{istdp}(y_j(t-1)(1-x_i(t)(1+\frac{1}{\mu_{ip}})))$$
+\end{equation}
 ## Sample Simulation methods
 ```python
 
