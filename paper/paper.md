@@ -18,7 +18,7 @@ authors:
 affiliations:
     - name: Indian center for Robotics Innovation and Smart-intelligence(IRIS-i), India
       index: 1
-    - - name: Institute of Congitive Science, Universität Osnabrück, Germany
+    - name: Institute of Congitive Science, Universität Osnabrück, Germany
       index: 2
 date: 24 July 2021
 bibliography: paper.bib
