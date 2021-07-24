@@ -21,9 +21,8 @@ bibliography: paper.bib
 
 # Summary
 
-Self Organizing Recurrent Neural(SORN) network is a class of neuro-inspired artificial network build based on plasticity mechanisms in biological brain and mimic neocortical circuits ability of learning and adaptation through neuroplasticity mechanisms. Structurally, unlike other liquid
-state models, SORN networks consists of pool of excitatory neurons and small population of inhibitory neurons. The network implements five fundamental plasticity
-mechanisms found in neocortex, namely spike timing dependent plasticity, intrinsic plasticity, synaptic scaling, inhibitory spike timing dependent plasticity and structural plasticity [@zheng2013network] [@lazar2009sorn]. Using mathematical modelling, SORN network simplifies the underlying structural and functional connectivity mechanisms that are responsible for learning and memory encoded in neuro-synapses of neocortex region of mammalian brain.
+Self Organizing Recurrent Neural(SORN) network is a class of neuro-inspired artificial network build based on plasticity mechanisms in biological brain and mimic neocortical circuits ability of learning and adaptation through neuroplasticity mechanisms. Structurally, SORN networks consists of pool of excitatory neurons and small population of inhibitory neurons. The network implements five fundamental plasticity
+mechanisms found in neocortex of brain, namely spike timing dependent plasticity, intrinsic plasticity, synaptic scaling, inhibitory spike timing dependent plasticity and structural plasticity [@zheng2013network] [@lazar2009sorn]. Using mathematical modelling, SORN network simplifies the underlying structural and functional connectivity mechanisms that are responsible for learning and memory encoded in neuro-synapses of neocortex region of mammalian brain.
 
 `sorn` is a Python package designed for Self Organizing Recurrent Neural networks[@PyPiPackage]. While it is originally developed for SORN networks, it can also serve as an ideal research package for Liquid State Machines in general. The detailed documentation is provided at ([https://self-organizing-recurrent-neural-networks.readthedocs.io/en/latest/](self-organizing-recurrent-neural-networks.readthedocs.io)).Further to extend the applications of this network, a demonstrative example of neuro robotics experiment with OpenAI gym[@gym] is also provided in the documentation.
 
@@ -57,7 +56,7 @@ $$𝛥𝑊_{𝑖𝑗}^{𝐸𝐸}=𝜂𝑆𝑇𝐷𝑃(𝑥_𝑖(𝑡)𝑥_𝑗(�
 
 IP update the firing threshold of excitatory neurons based on the state of the neuron at each time step. It increases the threshold if the neuron fires and decrease it otherwise.
 
-$𝑇_𝑖(𝑡+1)=𝑇_𝑖(𝑡)+𝜂_{𝐼𝑃}(𝑥_𝑖(𝑡)−𝐻_{𝐼𝑃})$
+$$𝑇_𝑖(𝑡+1)=𝑇_𝑖(𝑡)+𝜂_{𝐼𝑃}(𝑥_𝑖(𝑡)−𝐻_{𝐼𝑃})$$
 
 ### Structural Plasticity
 
@@ -128,7 +127,7 @@ The other options are,
 
 Note: If you pass all above options to freeze, then the network will behave as Liquid State Machine(LSM)
 
-The `simulate_sorn` and `train_sorn` accepts the following keyword arguments
+The `simulate_sorn` and `train_sorn` methods accepts the following keyword arguments
 
 | kwargs             |                                          Description                                       |
 |--------------------|:------------------------------------------------------------------------------------------:|
