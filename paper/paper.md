@@ -29,7 +29,9 @@ mechanisms found in neocortex, namely spike timing dependent plasticity, intrins
 
 ## Statement of the need:
 
-Reservoir computing models are neuro inspired artifical neural networks. RC networks has either sparse or densly connected units with fixed connection weights. Unlike other RC models, SORN has synaptic weights controlled by neuro inspired plasticity mechanisms. The network has two distinct pools of excitatory and inhibitory reservoirs competing with each other to remain in subcritical state suitable for learning. Sub critical regime is a state between chaos and order, otherwise called `edge of chaos`. At this state, network has intrinsic dynamics with strong affinity towards order, yet sensitive to external perturbations. Under carefully designed plasticity mechansisms, the network has the ability to overcome the perturbations and return to their subcritical dynamics. That self-adaptive behavior is otherwise called Self Organization. Building such network from scratch is time consuming and require deeper understanding of neurophysiology and softcomputing. Therefore, to reduce the cognitive load of the theorists, experimentalist or researchers new to the field, it is necessary to have a package that encapsulates all plasticity mechanisms that can offer us to study self organization, adaptation, learning, memory and behavior of biological brain. There is another open source code [@papa2017criticality] for SORN network but it is intended for problem specific and not a general purpose software package. However, `sorn` has flexible package that allows researchers to develop the network of their interest with the combination of plasticity rules of their choice. Overall, the `sorn` provide a research enviroment for computational neuroscients to investigate the structural and functional properties of the brain networks by reverse engineering neuronal plasticity mechanisms.
+Reservoir computing models are neuro inspired artifical neural networks. RC networks has either sparse or densly connected units with fixed connection weights. Unlike other RC models, SORN has synaptic weights controlled by neuro inspired plasticity mechanisms. The network has two distinct pools of excitatory and inhibitory reservoirs competing with each other to remain in subcritical state suitable for learning. Sub critical regime is a state between chaos and order, otherwise `edge of chaos`. At this state, network has intrinsic dynamics with strong affinity towards order, yet sensitive to external perturbations. Under carefully designed plasticity mechansisms, the network has the ability to overcome the perturbations and return to their subcritical dynamics. That self-adaptive behavior is otherwise called Self Organization. Building such network from scratch is time consuming and require deeper understanding of neurophysiology and softcomputing. Therefore, to reduce the cognitive load of the theorists, experimentalist or researchers new to the field, it is necessary to have a realiable package that encapsulates all plasticity mechanisms to study self organization, adaptation, learning, memory and behavior of biological brain.
+
+There is another open source code [@papa2017criticality] for SORN network but it is intended for problem specific and not a general purpose software package. However, `sorn` is flexible package that allows researchers to develop the network of their interest with respect to the combination of plasticity rules of their choice. Overall, the `sorn` provide a research enviroment for computational neuroscients to investigate the structural and functional properties of the brain networks by reverse engineering neuronal plasticity mechanisms.
 
 ## Library Overview:
 
@@ -48,25 +50,28 @@ $$𝑦_𝑖(𝑡+1)=𝛩\left(\sum_{j=1}^{N_i}𝑊_{𝑖𝑗}^{𝐼𝐸}(𝑡) �
 ## Plasticity Rules
 ### Spike Timing Dependent Plasticity
 
-Controls the efficacy of connection strength between Excitatory neurons
+It changes the  synaptic efficacy between excitatory neurons  based on the spike- timing between pre `j` and post synaptic neuron `i`.
+
 $$𝛥𝑊_{𝑖𝑗}^{𝐸𝐸}=𝜂𝑆𝑇𝐷𝑃(𝑥_𝑖(𝑡)𝑥_𝑗(𝑡−1)−𝑥_𝑖(𝑡−1)𝑥_𝑗(𝑡)$$
 ### Intrinsic Plasticity
 
-Update the firing threshold of excitatory neurons
+IP update the firing threshold of excitatory neurons based on the state of the neuron at each time step. It increases the threshold if the neuron fires and decrease it otherwise.
+
 $𝑇_𝑖(𝑡+1)=𝑇_𝑖(𝑡)+𝜂_{𝐼𝑃}(𝑥_𝑖(𝑡)−𝐻_{𝐼𝑃})$
 
 ### Structural Plasticity
 
-Add new synapses between excitatory neurons at a rate of 0.1
+It is responsible for creating new synapses between excitatory neurons at a rate of 1 per every 10th time step.
 ### Synaptic Scaling
 
-Normalizes the incoming synaptic strenghts of a neuron
+SS normalizes the incoming synaptic strenghts of a neuron and prevent the network activity from attenuation or exploding.
+
 $$𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡)←𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡)/Σ𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡)$$
 ### Inhibitory Spike Timing Dependent Plasticity
 
-Updates the efficac of synapses from Inhibitory to Excitatory network
-$$𝛥𝑊_{𝑖𝑗}^{𝐸I}=𝜂i𝑆𝑇𝐷𝑃(y_j(𝑡-1)(1-x_i(t)(1+\frac{1}{\mu_{ip}})))$$
-## Usage
+iSTDP is responisble for controlling the synaptic strenghts from Inhibitory to Excitatory network.
+$$𝛥𝑊_{𝑖𝑗}^{𝐸I}=𝜂_{i𝑆𝑇𝐷𝑃}(y_j(𝑡-1)(1-x_i(t)(1+\frac{1}{\mu_{ip}})))$$
+## How to use `sorn`
 
 For simulation, the `Simulator.simulate_sorn` has to be called as follows,
 ### Simulation
@@ -180,5 +185,6 @@ The `simulate_sorn` and `train_sorn` accepts the following keyword arguments
 | spike_time_intervals() |  Inter spike intervals for each neuron                                                     |
 | hamming_distance()     |  Hamming distance between two network states                                               |
 
-More details about the statistical tools in the package is found at
+More details about the statistical and plotting tools in the package is found at ([https://self-organizing-recurrent-neural-networks.readthedocs.io/en/latest/](self-organizing-recurrent-neural-networks.readthedocs.io))
+
 # References
