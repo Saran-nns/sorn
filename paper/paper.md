@@ -84,14 +84,16 @@ SS normalizes the incoming synaptic strenghts of a neuron and prevent the networ
 \label{ss}
 W_{ij}^{EE}(t)←W_{ij}^{EE}(t)/\sum 𝑊_{ij}^{EE}(t)
 \end{equation}
+
 ### Inhibitory Spike Timing Dependent Plasticity
 
 iSTDP is responisble for controlling the synaptic strenghts from Inhibitory to Excitatory network.
 
 \begin{equation}
 \label{istdp}
-\delta 𝑊_{ij}^{EI}=\eta_{istdp}(y_j(t-1)(1-x_i(t)(1+\frac{1}{\mu_{ip}})))
+\delta 𝑊_{ij}^{EI}=\eta_{istdp}(y_j(t-1)\left(1-x_i(t)(1+\frac{1}{\mu_{ip}}))\right)
 \end{equation}
+
 ## Sample Simulation methods
 ```python
 
