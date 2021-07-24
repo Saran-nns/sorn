@@ -1,5 +1,5 @@
 ---
-title: `sorn`: ' A Python package for Self Organizing Recurrent Neural Network'
+title: '`sorn`: A Python package for Self Organizing Recurrent Neural Network'
 tags:
     - Python
     - Spiking Neural Network
