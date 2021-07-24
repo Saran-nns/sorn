@@ -61,7 +61,7 @@ It changes the  synaptic efficacy between excitatory neurons  based on the spike
 
 \begin{equation}
 \label{stdp}
-\Delta W_{ij}^{EE}=\eta_{STDP}(x_i(t)x_j(t−1)-x_i(t−1)x_j(t)
+\Delta W_{ij}^{EE}=\eta_{STDP}(x_i(t)x_j(t-1)-x_i(t-1)x_j(t)
 \end{equation}
 
 where,
@@ -111,17 +111,17 @@ iSTDP is responisble for controlling the synaptic strenghts from Inhibitory to E
 
 \begin{equation}
 \label{istdp}
-\Delta 𝑊_{ij}^{EI}=\eta_{istdp}(y_j(t-1)\left(1-x_i(t)(1+\frac{1}{\Mu_{ip}}))\right)
+\Delta W_{ij}^{EI}=\eta_{istdp}(y_j(t-1)\left(1-x_i(t)(1+\frac{1}{\mu_{ip}}))\right)
 \end{equation}
 
 
 where,
 
-$𝑊_{ij}^{EI}$ - Synaptic strenght from Inhibitory to excitatory network
+$W_{ij}^{EI}$ - Synaptic strenght from Inhibitory to excitatory network
 
 $\eta_{istdp}$ - Inhibitory STDP learning rate
 
-$\Mu_{ip}$ - Mean firing rate of the neuron
+$\mu_{ip}$ - Mean firing rate of the neuron
 
 Note that, the connection strength from excitatory to inhibitory ($𝑊_{ij}^{IE}$) remain fixed at the intial state.
 
@@ -260,17 +260,17 @@ The `simulate_sorn` and `train_sorn` methods accepts the following keyword argum
 `sorn` package also includes necessary methods to investigate network properties. Few methods in `Statistics` are,
 
 
-| methods                |                                          Description                                       |
-|------------------------|--------------------------------------------------------------------------------------------|
-| autocorr()             |  t-lagged auto correlation between neural activity                                         |
-| fanofactor()           |  To verify poissonian process in spike generation of neuron(s)                             |
-| spike_source_entropy() |  Measure the uncertainty about the origin of spike from the network using entropy          |
-| firing_rate_neuron()   |  Spike rate of specific neuron                                                             |
-| firing_rate_network()  |  Spike rate of entire network                                                              |
-| avg_corr_coeff()       |  Average Pearson correlation coeffecient between neurons                                   |
-| spike_times()          |  Time instants at which neuron spikes                                                      |
-| spike_time_intervals() |  Inter spike intervals for each neuron                                                     |
-| hamming_distance()     |  Hamming distance between two network states                                               |
+| methods                    |                                      Description                                       |
+|------------------------    |----------------------------------------------------------------------------------------|
+| autocorr()                 |  t-lagged auto correlation between neural activity                                     |
+| fanofactor()               |  To verify poissonian process in spike generation of neuron(s)                         |
+| spike_source_entropy()     |  Measure the uncertainty about the origin of spike from the network using entropy      |
+| firing_rate_neuron()       |  Spike rate of specific neuron                                                         |
+| firing_rate_network()      |  Spike rate of entire network                                                          |
+| avg_corr_coeff()           |  Average Pearson correlation coeffecient between neurons                               |
+| spike_times()              |  Time instants at which neuron spikes                                                  |
+| spike_time_intervals()     |  Inter spike intervals for each neuron                                                 |
+| hamming_distance()         |  Hamming distance between two network states                                           |
 
 More details about the statistical and plotting tools in the package is found at ([https://self-organizing-recurrent-neural-networks.readthedocs.io/en/latest/](self-organizing-recurrent-neural-networks.readthedocs.io))
 
