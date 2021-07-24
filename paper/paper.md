@@ -41,7 +41,7 @@ The network can be instantiated, simulated and trained using two classes `Simula
 Excitatory network state
 
 \begin{equation}\label{eq:exc}
-\𝑥_{𝑖}(𝑡+1)=\theta\left (\sum_{j=1}^{N^E}𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡) 𝑥_{𝑗}(𝑡)−\sum_{j=1}^{N^I}𝑊_{𝑖𝑘}^{𝐸𝐼}(𝑡) 𝑦_{𝑘}(𝑡)+𝑢_{𝑖}(𝑡)−𝑇_{𝑖}^{𝐸}(𝑡)+𝜉_{𝐸}(t)\right)
+\textrm{𝑥_{𝑖}(𝑡+1)}=\theta\left (\sum_{j=1}^{N^E}𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡) 𝑥_{𝑗}(𝑡)−\sum_{j=1}^{N^I}𝑊_{𝑖𝑘}^{𝐸𝐼}(𝑡) 𝑦_{𝑘}(𝑡)+𝑢_{𝑖}(𝑡)−𝑇_{𝑖}^{𝐸}(𝑡)+𝜉_{𝐸}(t)\right)
 \end{equation}
 
 
