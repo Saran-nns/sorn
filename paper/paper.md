@@ -123,7 +123,7 @@ $\eta_{istdp}$ - Inhibitory STDP learning rate
 
 $\mu_{ip}$ - Mean firing rate of the neuron
 
-Note that, the connection strength from excitatory to inhibitory ($𝑊_{ij}^{IE}$) remain fixed at the intial state.
+Note that, the connection strength from excitatory to inhibitory ($W_{ij}^{IE}$) remain fixed at the intial state.
 
 ## Sample Simulation methods
 ```python
@@ -144,10 +144,9 @@ state_dict,E,I,R,C=Simulator.simulate_sorn(inputs=inputs,phase='plasticity',
 
                                         _nu=num_features)
 ```
-and to resume the simulation, load the matrices returned at the previous step as
+and to resume the simulation, load the matrices returned at the previous step as,
 
 ```python
-
 state_dict,E,I,R,C=Simulator.simulate_sorn(inputs=inputs,phase='plasticity',
 
                                         matrices=state_dict, noise=True,
@@ -167,7 +166,7 @@ state_dict,E,I,R,C=Simulator.simulate_sorn(inputs=inputs,phase='plasticity',
 
                Inhibitory network activities('I'),
 
-               Threshold values ($T^{E},T^{I}$)
+               Threshold values $T^E,T^I$
 
 `E` - Collection of Excitatory network activity of entire simulation period
 
@@ -230,29 +229,29 @@ The `simulate_sorn` and `train_sorn` methods accepts the following keyword argum
 
 | kwargs              |                                          Description                                       |
 |---------------------|--------------------------------------------------------------------------------------------|
-| inputs              |  External stimulus                                                                         |
-| phase               |  `plasticity` or `training`                                                                |
-| matrices            |  `state_dict` to resume simulation otherwise `None` to intialize new network               |
-| time_steps          |  `simulaton` total time steps. For `training` should be 1                                  |
-| noise               |  If `True`, Gaussian white noise will be added to excitatory field potentials              |
-| freeze              |  To drop any given plasticity mechanism(s) among [`'ip'`,`'stdp'`,`'istdp'`,`'ss'`, `'sp'`]|
-| _ne                 |  Number of Excitatory neurons in the network                                               |
-| _nu                 |  Number of input units among excitatory neurons                                            |
-| _network_type_ee    |  `sparse` or  `dense` connection between excitatory neurons                                |
-| _network_type_ei    |  `sparse` or  `dense` connection from inhibitory and excitatory neurons                    |
-| _network_type_ie    |  `sparse` or  `dense` connection from excitatory and inhibitory neurons                    |
-| _lambda_ee          |  Connection density between excitatory networks if network type is `sparse`                |
-| _lambda_ei          |  Density of connections from inhibitory to excitatory networks if network type is `sparse` |
-| _lambda_ie          |  Density of connections from inhibitory to excitatory networks if network type is `sparse` |
-| _eta_stdp           |  Hebbian learning rate of excitatory synapses                                              |
-| _eta_inhib          |  Hebbian learning rate synapses from inhibitory to excitatory                              |
-| _eta_ip             |  Learning rate of excitatory neuron threshold                                              |
-| _te_max             |  Maximum of excitatory neuron threshold range                                              |
-| _ti_max             |  Maximum of inhibitory neuron threshold range                                              |
-| _ti_min             |  Minimum of inhibitory neuron threshold range                                              |
-| _te_min             |  Minimum of excitatory neuron threshold range                                              |
-| _mu_ip              |  Target Mean firing rate of excitatory neuron                                              |
-| _sigma_ip           |  Target Standard deviation of firing rate of excitatory neuron                             |
+| `inputs`              |  External stimulus                                                                         |
+| `phase`               |  `plasticity` or `training`                                                                |
+| `matrices`            |  `state_dict` to resume simulation otherwise `None` to intialize new network               |
+| `time_steps`          |  `simulaton` total time steps. For `training` should be 1                                  |
+| `noise`               |  If `True`, Gaussian white noise will be added to excitatory field potentials              |
+| `freeze`              |  To drop any given plasticity mechanism(s) among [`'ip'`,`'stdp'`,`'istdp'`,`'ss'`, `'sp'`]|
+| `_ne`                 |  Number of Excitatory neurons in the network                                               |
+| `_nu`                 |  Number of input units among excitatory neurons                                            |
+| `_network_type_ee`    |  `sparse` or  `dense` connection between excitatory neurons                                |
+| `_network_type_ei`    |  `sparse` or  `dense` connection from inhibitory and excitatory neurons                    |
+| `_network_type_ie`    |  `sparse` or  `dense` connection from excitatory and inhibitory neurons                    |
+| `_lambda_ee`          |  Connection density between excitatory networks if network type is `sparse`                |
+| `_lambda_ei`          |  Density of connections from inhibitory to excitatory networks if network type is `sparse` |
+| `_lambda_ie`          |  Density of connections from inhibitory to excitatory networks if network type is `sparse` |
+| `_eta_stdp`           |  Hebbian learning rate of excitatory synapses                                              |
+| `_eta_inhib`          |  Hebbian learning rate synapses from inhibitory to excitatory                              |
+| `_eta_ip`             |  Learning rate of excitatory neuron threshold                                              |
+| `_te_max`             |  Maximum of excitatory neuron threshold range                                              |
+| `_ti_max`             |  Maximum of inhibitory neuron threshold range                                              |
+| `_ti_min`             |  Minimum of inhibitory neuron threshold range                                              |
+| `_te_min`             |  Minimum of excitatory neuron threshold range                                              |
+| `_mu_ip`              |  Target Mean firing rate of excitatory neuron                                              |
+| `_sigma_ip`           |  Target Standard deviation of firing rate of excitatory neuron                             |
 
 
 ### Analysis functions
@@ -261,16 +260,16 @@ The `simulate_sorn` and `train_sorn` methods accepts the following keyword argum
 
 
 | methods                    |                                      Description                                       |
-|------------------------    |----------------------------------------------------------------------------------------|
-| autocorr()                 |  t-lagged auto correlation between neural activity                                     |
-| fanofactor()               |  To verify poissonian process in spike generation of neuron(s)                         |
-| spike_source_entropy()     |  Measure the uncertainty about the origin of spike from the network using entropy      |
-| firing_rate_neuron()       |  Spike rate of specific neuron                                                         |
-| firing_rate_network()      |  Spike rate of entire network                                                          |
-| avg_corr_coeff()           |  Average Pearson correlation coeffecient between neurons                               |
-| spike_times()              |  Time instants at which neuron spikes                                                  |
-| spike_time_intervals()     |  Inter spike intervals for each neuron                                                 |
-| hamming_distance()         |  Hamming distance between two network states                                           |
+|----------------------------|----------------------------------------------------------------------------------------|
+| `autocorr`                 |  t-lagged auto correlation between neural activity                                     |
+| `fanofactor`               |  To verify poissonian process in spike generation of neuron(s)                         |
+| `spike_source_entropy`     |  Measure the uncertainty about the origin of spike from the network using entropy      |
+| `firing_rate_neuron`       |  Spike rate of specific neuron                                                         |
+| `firing_rate_network`      |  Spike rate of entire network                                                          |
+| `avg_corr_coeff`           |  Average Pearson correlation coeffecient between neurons                               |
+| `spike_times`              |  Time instants at which neuron spikes                                                  |
+| `spike_time_intervals`     |  Inter spike intervals for each neuron                                                 |
+| `hamming_distance`         |  Hamming distance between two network states                                           |
 
 More details about the statistical and plotting tools in the package is found at ([https://self-organizing-recurrent-neural-networks.readthedocs.io/en/latest/](self-organizing-recurrent-neural-networks.readthedocs.io))
 
