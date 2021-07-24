@@ -43,14 +43,14 @@ Excitatory network state
 
 \begin{equation}
 \label{es}
-x_i(t+1) =  \Theta\left (\sum_{j=1}^{N^E} {W_{ij}^{EE}(t)} {x_{j}(t)} - \sum_{j=1}^{N^I}W_{ik}^{EI}(t) y_{k}(t)+u_{i}(t) - T_{i}^{E}(t)+\xi_{E}(t)\right)
+x_i(t+1) =  \Theta\left (\sum_{j=1}^{N^E} {W_{ij}^{EE}(t)} {x_{j}(t)} - \sum_{j=1}^{N^I}W_{ik}^{EI}(t) y_{k}(t)+u_{i}(t) - T_{i}^{E}(t)+\Xi_{E}(t)\right)
 \end{equation}
 
 Inhibitory Network state
 
 \begin{equation}
 \label{is}
-y_i(t+1)=\theta\left(\sum_{j=1}^{N_i}W_{ij}^{IE}(t) x_j(t)-T_i^I+ \xi_{I}(t)\right)
+y_i(t+1)=\Theta\left(\sum_{j=1}^{N_i}W_{ij}^{IE}(t) x_j(t)-T_i^I+ \Xi_{I}(t)\right)
 \end{equation}
 
 ## Plasticity Rules
@@ -61,7 +61,7 @@ It changes the  synaptic efficacy between excitatory neurons  based on the spike
 
 \begin{equation}
 \label{stdp}
-\delta W_{ij}^{EE}=\eta_{STDP}(x_i(t)x_j(t−1)-x_i(t−1)x_j(t)
+\Delta W_{ij}^{EE}=\Eta_{STDP}(x_i(t)x_j(t−1)-x_i(t−1)x_j(t)
 \end{equation}
 
 ### Intrinsic Plasticity
@@ -70,12 +70,12 @@ IP update the firing threshold of excitatory neurons based on the state of the n
 
 \begin{equation}
 \label{ip}
-T_i(t+1)=T_i(t)+\eta_{IP}{x_i(t)-H_{IP}}
+T_i(t+1)=T_i(t)+\Eta_{IP}{x_i(t)-H_{IP}}
 \end{equation}
 
 ### Structural Plasticity
 
-It is responsible for creating new synapses between excitatory neurons at a rate of 1 per every 10th time step.
+It is responsible for creating new synapses between excitatory neurons at a rate of approximately 1 connection per every 10th time step.
 
 ### Synaptic Scaling
 
@@ -83,7 +83,7 @@ SS normalizes the incoming synaptic strenghts of a neuron and prevent the networ
 
 \begin{equation}
 \label{ss}
-W_{ij}^{EE}(t)←W_{ij}^{EE}(t)/\sum 𝑊_{ij}^{EE}(t)
+W_{ij}^{EE}(t)←W_{ij}^{EE}(t)/\sum{𝑊_{ij}^{EE}(t)}
 \end{equation}
 
 ### Inhibitory Spike Timing Dependent Plasticity
@@ -92,7 +92,7 @@ iSTDP is responisble for controlling the synaptic strenghts from Inhibitory to E
 
 \begin{equation}
 \label{istdp}
-\delta 𝑊_{ij}^{EI}=\eta_{istdp}(y_j(t-1)\left(1-x_i(t)(1+\frac{1}{\mu_{ip}}))\right)
+\Delta 𝑊_{ij}^{EI}=\Eta_{istdp}(y_j(t-1)\left(1-x_i(t)(1+\frac{1}{\Mu_{ip}}))\right)
 \end{equation}
 
 ## Sample Simulation methods
@@ -108,11 +108,11 @@ inputs = np.random.rand(num_features,time_steps)
 
 state_dict,E,I,R,C=Simulator.simulate_sorn(inputs=inputs,phase='plasticity',
 
-                                                matrices=None,noise=True,
+                                        matrices=None,noise=True,
 
-                                                time_steps=time_steps,_ne=200,
+                                        time_steps=time_steps,_ne=200,
 
-                                                _nu=num_features)
+                                        _nu=num_features)
 ```
 and to resume the simulation, load the matrices returned at the previous step as
 
@@ -127,7 +127,26 @@ state_dict,E,I,R,C=Simulator.simulate_sorn(inputs=inputs,phase='plasticity',
                                         _ne = 200,_nu=num_features)
 
 ```
-The network can also be trained with and without plasticity mechanisms using the `Trainer` object as
+
+
+### Network Output Descriptions
+
+`state_dict` - Dictionary of connection weights ($W_{ij}^{EE}$,$W_{ij}^{EI}$,$W_{ij}^{IE}$) ,
+
+               Excitatory network activity ('E'),
+
+               Inhibitory network activities('I'),
+
+               Threshold values ($T^E$,$T^I$)
+
+`E` - Collection of Excitatory network activity of entire simulation period
+
+`I` - Collection of Inhibitory network activity of entire simulation period
+
+`R` - Collection of Recurrent network activity of entire simulation period
+
+`C` - List of number of active connections in the Excitatory pool at each time step
+
 
 ## Sample Training methods
 ```python
@@ -147,9 +166,9 @@ state_dict,E,I,R,C=Trainer.train_sorn(inputs=inputs,phase='plasticity',
 
 state_dict,E,I,R,C=Trainer.train_sorn(inputs=inputs,phase='training',
 
-                                      matrices=state_dict,
+                                    matrices=state_dict,
 
-                                      _nu=num_features,time_steps=1)
+                                    _nu=num_features,time_steps=1)
 ```
 
 To turn off any plasticity mechanisms during simulation or training phase, you can use freeze argument. For example to stop intrinsic plasticity during training phase,
@@ -179,43 +198,32 @@ Note: If you pass all above options to freeze, then the network will behave as L
 
 The `simulate_sorn` and `train_sorn` methods accepts the following keyword arguments
 
-| kwargs             |                                          Description                                       |
-|--------------------|--------------------------------------------------------------------------------------------|
-| inputs             |  External stimulus                                                                         |
-| phase              |  `plasticity` or `training`                                                                |
-| matrices           |  `state_dict` to resume simulation otherwise `None` to intialize new network               |
-| time_steps         |  `simulaton` total time steps. For `training` should be 1                                  |
-| noise              |  If `True`, Gaussian white noise will be added to excitatory field potentials              |
-| freeze             |  To drop any given plasticity mechanism(s) among [`'ip'`,`'stdp'`,`'istdp'`,`'ss'`, `'sp'`]|
-| _ne                |  Number of Excitatory neurons in the network                                               |
-| _nu                |  Number of input units among excitatory neurons                                            |
-| _network_type_ee   |  `sparse` or  `dense` connection between excitatory neurons                                |
-| _network_type_ei   |  `sparse` or  `dense` connection from inhibitory and excitatory neurons                    |
-| _network_type_ie   |  `sparse` or  `dense` connection from excitatory and inhibitory neurons                    |
-| _lambda_ee         |  Connection density between excitatory networks if network type is `sparse`                |
-| _lambda_ei         |  Density of connections from inhibitory to excitatory networks if network type is `sparse` |
-| _lambda_ie         |  Density of connections from inhibitory to excitatory networks if network type is `sparse` |
-| _eta_stdp          |  Hebbian learning rate of excitatory synapses                                              |
-| _eta_inhib         |  Hebbian learning rate synapses from inhibitory to excitatory                              |
-| _eta_ip            |  Learning rate of excitatory neuron threshold                                              |
-| _te_max            |  Maximum of excitatory neuron threshold range                                              |
-| _ti_max            |  Maximum of inhibitory neuron threshold range                                              |
-| _ti_min            |  Minimum of inhibitory neuron threshold range                                              |
-| _te_min            |  Minimum of excitatory neuron threshold range                                              |
-| _mu_ip             |  Target Mean firing rate of excitatory neuron                                              |
-| _sigma_ip          |  Target Standard deviation of firing rate of excitatory neuron                             |
+| kwargs              |                                          Description                                       |
+|---------------------|--------------------------------------------------------------------------------------------|
+| inputs              |  External stimulus                                                                         |
+| phase               |  `plasticity` or `training`                                                                |
+| matrices            |  `state_dict` to resume simulation otherwise `None` to intialize new network               |
+| time_steps          |  `simulaton` total time steps. For `training` should be 1                                  |
+| noise               |  If `True`, Gaussian white noise will be added to excitatory field potentials              |
+| freeze              |  To drop any given plasticity mechanism(s) among [`'ip'`,`'stdp'`,`'istdp'`,`'ss'`, `'sp'`]|
+| _ne                 |  Number of Excitatory neurons in the network                                               |
+| _nu                 |  Number of input units among excitatory neurons                                            |
+| _network_type_ee    |  `sparse` or  `dense` connection between excitatory neurons                                |
+| _network_type_ei    |  `sparse` or  `dense` connection from inhibitory and excitatory neurons                    |
+| _network_type_ie    |  `sparse` or  `dense` connection from excitatory and inhibitory neurons                    |
+| _lambda_ee          |  Connection density between excitatory networks if network type is `sparse`                |
+| _lambda_ei          |  Density of connections from inhibitory to excitatory networks if network type is `sparse` |
+| _lambda_ie          |  Density of connections from inhibitory to excitatory networks if network type is `sparse` |
+| _eta_stdp           |  Hebbian learning rate of excitatory synapses                                              |
+| _eta_inhib          |  Hebbian learning rate synapses from inhibitory to excitatory                              |
+| _eta_ip             |  Learning rate of excitatory neuron threshold                                              |
+| _te_max             |  Maximum of excitatory neuron threshold range                                              |
+| _ti_max             |  Maximum of inhibitory neuron threshold range                                              |
+| _ti_min             |  Minimum of inhibitory neuron threshold range                                              |
+| _te_min             |  Minimum of excitatory neuron threshold range                                              |
+| _mu_ip              |  Target Mean firing rate of excitatory neuron                                              |
+| _sigma_ip           |  Target Standard deviation of firing rate of excitatory neuron                             |
 
-
-### Network Output Descriptions
-`state_dict` - Dictionary of connection weights ('Wee','Wei','Wie') , Excitatory network activity ('X'), Inhibitory network activities('Y'), Threshold values ('Te','Ti')
-
-`E` - Collection of Excitatory network activity of entire simulation period
-
-`I` - Collection of Inhibitory network activity of entire simulation period
-
-`R` - Collection of Recurrent network activity of entire simulation period
-
-`C` - List of number of active connections in the Excitatory pool at each time step
 
 ### Analysis functions
 
