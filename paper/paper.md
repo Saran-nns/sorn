@@ -11,17 +11,17 @@ authors:
     - name: Saranraj Nambusubramaniyan
       affiliation: 1
       orcid: 0000-0002-4043-3420
-affiliation:
+affiliations:
     - name: Indian center for Robotics Innovation and Smart-intelligence(IRIS-i), India
       index: 1
+date: 24 July 2021
 
 bibliography: paper.bib
-
 ---
 
 # Summary
 
-Self Organizing Recurrent Neural(SORN) networks is a class of neuro-inspired artificial network build based on plasticity mechanisms in biological brain and mimic neocortical circuits ability of learning and adaptation through neuroplasticity mechanisms. Structurally, unlike other liquid
+Self Organizing Recurrent Neural(SORN) network is a class of neuro-inspired artificial network build based on plasticity mechanisms in biological brain and mimic neocortical circuits ability of learning and adaptation through neuroplasticity mechanisms. Structurally, unlike other liquid
 state models, SORN networks consists of pool of excitatory neurons and small population of inhibitory neurons. The network implements five fundamental plasticity
 mechanisms found in neocortex, namely spike timing dependent plasticity, intrinsic plasticity, synaptic scaling, inhibitory spike timing dependent plasticity and structural plasticity [@zheng2013network] [@lazar2009sorn]. Using mathematical modelling, SORN network simplifies the underlying structural and functional connectivity mechanisms that are responsible for learning and memory encoded in neuro-synapses of neocortex region of mammalian brain.
 
@@ -29,7 +29,7 @@ mechanisms found in neocortex, namely spike timing dependent plasticity, intrins
 
 ## Statement of the need:
 
-Developing SORN network demands multidisciplinary knowledge in Python, Neurophysiology, Numerical Computation and Computational Neuroscience. To reduce the cognitive load of the researchers new to the field, it is necessary to have a package that encapsulates all features in a simple API. There is another open source code available[@papa2017criticality] for SORN network but it is intended for task/problem specific and not a general purpose software package. However, `sorn` allows researchers to develop the network of their interest with the combination of plasticity rules of their choice. Overall, the package provide a research enviroment for computational neuroscients to investigate the structural and functional properties of the brain networks by reverse engineering neuronal plasticity mechanisms.
+Reservoir computing models are neuro inspired artifical neural networks. RC networks has either sparse or densly connected units with fixed connection weights. Unlike other RC models, SORN has synaptic weights controlled by neuro inspired plasticity mechanisms. The network has two distinct pools of excitatory and inhibitory reservoirs competing with each other to remain in subcritical state suitable for learning. Sub critical regime is a state between chaos and order, otherwise called `edge of chaos`. At this state, network has intrinsic dynamics with strong affinity towards order, yet sensitive to external perturbations. Under carefully designed plasticity mechansisms, the network has the ability to overcome the perturbations and return to their subcritical dynamics. That self-adaptive behavior is otherwise called Self Organization. Building such network from scratch is time consuming and require deeper understanding of neurophysiology and softcomputing. Therefore, to reduce the cognitive load of the theorists, experimentalist or researchers new to the field, it is necessary to have a package that encapsulates all plasticity mechanisms that can offer us to study self organization, adaptation, learning, memory and behavior of biological brain. There is another open source code [@papa2017criticality] for SORN network but it is intended for problem specific and not a general purpose software package. However, `sorn` has flexible package that allows researchers to develop the network of their interest with the combination of plasticity rules of their choice. Overall, the `sorn` provide a research enviroment for computational neuroscients to investigate the structural and functional properties of the brain networks by reverse engineering neuronal plasticity mechanisms.
 
 ## Library Overview:
 
@@ -81,9 +81,6 @@ time_steps = 200
 inputs = np.random.rand(num_features,time_steps)
 
 matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Simulator.simulate_sorn(inputs = inputs, phase='plasticity', matrices=None, noise = True, time_steps=time_steps, _ne = 200, _nu=num_features)
-
-The other `kwargs` are,
-{'_ne', '_nu', '_network_type_ee', '_network_type_ei', '_network_type_ie', '_lambda_ee','_lambda_ei', '_lambda_ie', '_eta_stdp','_eta_inhib', '_eta_ip', '_te_max', '_ti_max', '_ti_min', '_te_min', '_mu_ip','_sigma_ip'}
 ```
 and to resume the simulation, load the matrices returned at the previous step as
 
@@ -135,7 +132,7 @@ The `simulate_sorn` and `train_sorn` accepts the following keyword arguments
 | matrices           |  `matrices_dict` to resume simulation otherwise `None` to intialize new network            |
 | time_steps         |  `simulaton` total time steps. For `training` should be 1                                  |
 | noise              |  If `True`, Gaussian white noise will be added to excitatory field potentials              |
-| freeze             |  To drop anu given plasticity mechanism(s) among [`'ip'`,`'stdp'`,`'istdp'`,`'ss'`, `'sp'`]|
+| freeze             |  To drop any given plasticity mechanism(s) among [`'ip'`,`'stdp'`,`'istdp'`,`'ss'`, `'sp'`]|
 | _ne                |  Number of Excitatory neurons in the network                                               |
 | _nu                |  Number of input units among excitatory neurons                                            |
 | _network_type_ee   |  `sparse` or  `dense` connection between excitatory neurons                                |
@@ -166,39 +163,22 @@ The `simulate_sorn` and `train_sorn` accepts the following keyword arguments
 
 `num_active_connections` - List of number of active connections in the Excitatory pool at each time step
 
-## Statistical and Analysis methods
+### Analysis functions
 
-```python
-from sorn import Statistics
-
-# t-lagged auto correlation between neural activity
-corr_coeff = Statistics.autocorr(firing_rates = [1,1,5,6,3,7],t= 2)
-
-# Fano factor: To verify poissonian process in spike generation of neuron 10
-mean_firing_rate, variance_firing_rate, fano_factor = Statistics.fanofactor(spike_train= np.asarray(Exc_activity),neuron = 10,window_size = 10)
-
-# Measure the uncertainty about the origin of spike from the network using entropy
-sse = Statistics.spike_source_entropy(spike_train= np.asarray(Exc_activity), num_neurons=200)
-
-# Spike rate of specific neuron
-time_period, bin_size, spike_rate = Statistics.firing_rate_neuron(spike_train: np.array, neuron: int, bin_size: int)
-
-# Firing rate of the network
-firing_rate = Statistics.firing_rate_network(spike_train: np.array)
+`sorn` package also includes necessary methods to investigate network properties. Few methods in `Statistics` are,
 
 
-# Average Pearson correlation coeffecient between neurons
-corr_mat, corr_coeff = avg_corr_coeff(spike_train: np.array)
+| methods                |                                          Description                                       |
+|------------------------|:------------------------------------------------------------------------------------------:|
+| autocorr()             |  t-lagged auto correlation between neural activity                                         |
+| fanofactor()           |  To verify poissonian process in spike generation of neuron(s)                             |
+| spike_source_entropy() |  Measure the uncertainty about the origin of spike from the network using entropy          |
+| firing_rate_neuron()   |  Spike rate of specific neuron                                                             |
+| firing_rate_network()  |  Spike rate of entire network                                                              |
+| avg_corr_coeff()       |  Average Pearson correlation coeffecient between neurons                                   |
+| spike_times()          |  Time instants at which neuron spikes                                                      |
+| spike_time_intervals() |  Inter spike intervals for each neuron                                                     |
+| hamming_distance()     |  Hamming distance between two network states                                               |
 
-# Time instants at which neuron spikes
-event_time = spike_times(spike_train: np.array)
-
-# Inter spike intervals for each neuron
-isi = spike_time_intervals(spike_train)
-
-# Hamming distance between true netorks states and perturbed network states
-hamming_distance(actual_spike_train: np.array, perturbed_spike_train: np.array)
-```
-## Plotter
-
+More details about the statistical tools in the package is found at
 # References
