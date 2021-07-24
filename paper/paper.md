@@ -106,21 +106,25 @@ num_features = 10
 time_steps = 200
 inputs = np.random.rand(num_features,time_steps)
 
-state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = inputs, phase='plasticity',
+state_dict,E,I,R,C=Simulator.simulate_sorn(inputs=inputs,phase='plasticity',
 
-                                                matrices=None, noise = True,
+                                                matrices=None,noise=True,
 
-                                                time_steps=time_steps, _ne = 200, _nu=num_features)
+                                                time_steps=time_steps,_ne=200,
+
+                                                _nu=num_features)
 ```
 and to resume the simulation, load the matrices returned at the previous step as
 
 ```python
 
-state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = inputs, phase='plasticity',
+state_dict,E,I,R,C=Simulator.simulate_sorn(inputs=inputs,phase='plasticity',
 
-                                                matrices=state_dict, noise= True,
+                                        matrices=state_dict, noise=True,
 
-                                                time_steps=time_steps,_ne = 200, _nu=num_features)
+                                        time_steps=time_steps,
+
+                                        _ne = 200,_nu=num_features)
 
 ```
 The network can also be trained with and without plasticity mechanisms using the `Trainer` object as
@@ -131,33 +135,37 @@ from sorn import Trainer
 inputs = np.random.rand(num_features,1)
 
 # Under all plasticity mechanisms
-state_dict, E, I, R, C = Trainer.train_sorn(inputs = inputs, phase='plasticity',
+state_dict,E,I,R,C=Trainer.train_sorn(inputs=inputs,phase='plasticity',
 
-                                            matrices=state_dict,_nu=num_features,
+                                    matrices=state_dict,
 
-                                            time_steps=1)
+                                    _nu=num_features,time_steps=1)
+
+
 
 # Resume the training without any plasticity mechanisms
 
-state_dict, E, I, R, C = Trainer.train_sorn(inputs = inputs, phase='training',
+state_dict,E,I,R,C=Trainer.train_sorn(inputs=inputs,phase='training',
 
-                                            matrices=state_dict,_nu=num_features,
+                                      matrices=state_dict,
 
-                                            time_steps=1)
+                                      _nu=num_features,time_steps=1)
 ```
 
 To turn off any plasticity mechanisms during simulation or training phase, you can use freeze argument. For example to stop intrinsic plasticity during training phase,
 
 ```python
 
-state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = inputs, phase='plasticity',
+state_dict,E,I,R,C=Trainer.train_sorn(inputs=inputs,phase='plasticity',
 
-                                                matrices=None, noise = True, time_steps=time_steps,
+                                    matrices=None,noise=True,
 
-                                                _ne = 200, _nu=num_features, freeze=['ip'])
+                                    time_steps=1,_ne=200,
+
+                                    _nu=num_features,freeze=['ip'])
 
 ```
-The other options are,
+The other options for `freeze` argument are,
 
 `stdp` - Spike Timing Dependent Plasticity
 
