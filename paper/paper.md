@@ -60,7 +60,7 @@ It changes the  synaptic efficacy between excitatory neurons  based on the spike
 
 \begin{equation}
 \label{stdp}
-\delta W_{ij}^{EE}=\eta_{STDP}(x_i(t)x_j(t−1)-x_i(t−1)x_j(t)$$
+\delta W_{ij}^{EE}=\eta_{STDP}(x_i(t)x_j(t−1)-x_i(t−1)x_j(t)
 \end{equation}
 
 ### Intrinsic Plasticity
@@ -90,7 +90,7 @@ iSTDP is responisble for controlling the synaptic strenghts from Inhibitory to E
 
 \begin{equation}
 \label{istdp}
-$$\delta 𝑊_{ij}^{EI}=\eta_{istdp}(y_j(t-1)(1-x_i(t)(1+\frac{1}{\mu_{ip}})))$$
+\delta 𝑊_{ij}^{EI}=\eta_{istdp}(y_j(t-1)(1-x_i(t)(1+\frac{1}{\mu_{ip}})))
 \end{equation}
 ## Sample Simulation methods
 ```python
