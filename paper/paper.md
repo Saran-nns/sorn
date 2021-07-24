@@ -43,6 +43,15 @@ There are few other open source code [sorn v1](https://github.com/delpapa/SORN),
 
 The network can be instantiated, simulated and trained using two classes `Simulator` and `Trainer` which inherit objects from `SORN`.
 
+The library can be installed by using python package manager `pip` as;
+
+```python
+    pip install sorn
+```
+To install all optional dependencies,
+```python
+    pip install 'sorn[all]'
+```
 ## SORN Network Model
 
 Excitatory network state
