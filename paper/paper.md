@@ -60,7 +60,7 @@ IP update the firing threshold of excitatory neurons based on the state of the n
 
 \begin{equation}
 \label{ip}
-𝑇_𝑖(𝑡+1)=𝑇_𝑖(𝑡)+\eta_{𝐼𝑃}(𝑥_𝑖(𝑡)−𝐻_{𝐼𝑃})
+𝑇_𝑖(𝑡+1)=𝑇_𝑖(𝑡)+\eta_{𝐼𝑃}{𝑥_𝑖(𝑡)−𝐻_{𝐼𝑃}}
 \end{equation}
 
 ### Structural Plasticity
