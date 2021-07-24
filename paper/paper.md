@@ -40,34 +40,39 @@ The network can be instantiated, simulated and trained using two classes `Simula
 
 Excitatory network state
 
-$$𝑥_𝑖(𝑡+1)=𝛩\left (\sum_{j=1}^{N^E}𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡) 𝑥_𝑗(𝑡)−\sum_{j=1}^{N^I}𝑊_{𝑖𝑘}^{𝐸𝐼}(𝑡) 𝑦_𝑘(𝑡)+𝑢_𝑖(𝑡)−𝑇_𝑖𝐸(𝑡)+𝜉_𝐸(t)\right)$$
+$𝑥_𝑖(𝑡+1)=𝛩\left (\sum_{j=1}^{N^E}𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡) 𝑥_𝑗(𝑡)−\sum_{j=1}^{N^I}𝑊_{𝑖𝑘}^{𝐸𝐼}(𝑡) 𝑦_𝑘(𝑡)+𝑢_𝑖(𝑡)−𝑇_𝑖𝐸(𝑡)+𝜉_𝐸(t)\right)$
 
 Inhibitory Network state
+
 $$𝑦_𝑖(𝑡+1)=𝛩\left(\sum_{j=1}^{N_i}𝑊_{𝑖𝑗}^{𝐼𝐸}(𝑡) 𝑥_𝑗(𝑡)−𝑇_𝑖𝐼+ 𝜉𝐼(t)\right)$$
 ## Plasticity Rules
-### Spike Timing Dependent Plasticity
+
+Spike Timing Dependent Plasticity
 
 It changes the  synaptic efficacy between excitatory neurons  based on the spike- timing between pre `j` and post synaptic neuron `i`.
 
-$$𝛥𝑊_{𝑖𝑗}^{𝐸𝐸}=𝜂_{𝑆𝑇𝐷𝑃}(𝑥_𝑖(𝑡)𝑥_𝑗(𝑡−1)−𝑥_𝑖(𝑡−1)𝑥_𝑗(𝑡)$$
-### Intrinsic Plasticity
+$𝛥𝑊_{𝑖𝑗}^{𝐸𝐸}=𝜂_{𝑆𝑇𝐷𝑃}(𝑥_𝑖(𝑡)𝑥_𝑗(𝑡−1)−𝑥_𝑖(𝑡−1)𝑥_𝑗(𝑡)$
+
+Intrinsic Plasticity
 
 IP update the firing threshold of excitatory neurons based on the state of the neuron at each time step. It increases the threshold if the neuron fires and decrease it otherwise.
 
-$$𝑇_𝑖(𝑡+1)=𝑇_𝑖(𝑡)+𝜂_{𝐼𝑃}(𝑥_𝑖(𝑡)−𝐻_{𝐼𝑃})$$
+$𝑇_𝑖(𝑡+1)=𝑇_𝑖(𝑡)+𝜂_{𝐼𝑃}(𝑥_𝑖(𝑡)−𝐻_{𝐼𝑃})$
 
-### Structural Plasticity
+Structural Plasticity
 
 It is responsible for creating new synapses between excitatory neurons at a rate of 1 per every 10th time step.
-### Synaptic Scaling
+
+Synaptic Scaling
 
 SS normalizes the incoming synaptic strenghts of a neuron and prevent the network activity from attenuation or exploding.
 
-$$𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡)←𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡)/Σ𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡)$$
-### Inhibitory Spike Timing Dependent Plasticity
+$𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡)←𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡)/Σ𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡)$
+
+Inhibitory Spike Timing Dependent Plasticity
 
 iSTDP is responisble for controlling the synaptic strenghts from Inhibitory to Excitatory network.
-$$𝛥𝑊_{𝑖𝑗}^{𝐸I}=𝜂_{i𝑆𝑇𝐷𝑃}(y_j(𝑡-1)(1-x_i(t)(1+\frac{1}{\mu_{ip}})))$$
+$𝛥𝑊_{𝑖𝑗}^{𝐸I}=𝜂_{i𝑆𝑇𝐷𝑃}(y_j(𝑡-1)(1-x_i(t)(1+\frac{1}{\mu_{ip}})))$
 ## How to use `sorn`
 
 For simulation, the `Simulator.simulate_sorn` has to be called as follows,
