@@ -52,6 +52,7 @@ Inhibitory Network state
 \label{is}
 y_i(t+1)=\theta\left(\sum_{j=1}^{N_i}W_{ij}^{IE}(t) x_j(t)-T_i^I+ \xi_{I}(t)\right)
 \end{equation}
+
 ## Plasticity Rules
 
 ### Spike Timing Dependent Plasticity
@@ -105,13 +106,21 @@ num_features = 10
 time_steps = 200
 inputs = np.random.rand(num_features,time_steps)
 
-matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Simulator.simulate_sorn(inputs = inputs, phase='plasticity', matrices=None, noise = True, time_steps=time_steps, _ne = 200, _nu=num_features)
+state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = inputs, phase='plasticity',
+
+                                                matrices=None, noise = True,
+
+                                                time_steps=time_steps, _ne = 200, _nu=num_features)
 ```
 and to resume the simulation, load the matrices returned at the previous step as
 
 ```python
 
-matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Simulator.simulate_sorn(inputs = inputs, phase='plasticity', matrices=matrices_dict, noise= True, time_steps=time_steps,_ne = 200, _nu=num_features)
+state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = inputs, phase='plasticity',
+
+                                                matrices=state_dict, noise= True,
+
+                                                time_steps=time_steps,_ne = 200, _nu=num_features)
 
 ```
 The network can also be trained with and without plasticity mechanisms using the `Trainer` object as
@@ -122,18 +131,30 @@ from sorn import Trainer
 inputs = np.random.rand(num_features,1)
 
 # Under all plasticity mechanisms
-matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Trainer.train_sorn(inputs = inputs, phase='plasticity', matrices=matrices_dict,_nu=num_features, time_steps=1)
+state_dict, E, I, R, C = Trainer.train_sorn(inputs = inputs, phase='plasticity',
+
+                                            matrices=state_dict,_nu=num_features,
+
+                                            time_steps=1)
 
 # Resume the training without any plasticity mechanisms
 
-matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Trainer.train_sorn(inputs = inputs, phase='training', matrices=matrices_dict,_nu=num_features, time_steps=1)
+state_dict, E, I, R, C = Trainer.train_sorn(inputs = inputs, phase='training',
+
+                                            matrices=state_dict,_nu=num_features,
+
+                                            time_steps=1)
 ```
 
 To turn off any plasticity mechanisms during simulation or training phase, you can use freeze argument. For example to stop intrinsic plasticity during training phase,
 
 ```python
 
-matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Simulator.simulate_sorn(inputs = inputs, phase='plasticity', matrices=None, noise = True, time_steps=time_steps, _ne = 200, _nu=num_features, freeze=['ip'])
+state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = inputs, phase='plasticity',
+
+                                                matrices=None, noise = True, time_steps=time_steps,
+
+                                                _ne = 200, _nu=num_features, freeze=['ip'])
 
 ```
 The other options are,
@@ -151,10 +172,10 @@ Note: If you pass all above options to freeze, then the network will behave as L
 The `simulate_sorn` and `train_sorn` methods accepts the following keyword arguments
 
 | kwargs             |                                          Description                                       |
-|--------------------|:------------------------------------------------------------------------------------------:|
+|--------------------|--------------------------------------------------------------------------------------------|
 | inputs             |  External stimulus                                                                         |
 | phase              |  `plasticity` or `training`                                                                |
-| matrices           |  `matrices_dict` to resume simulation otherwise `None` to intialize new network            |
+| matrices           |  `state_dict` to resume simulation otherwise `None` to intialize new network               |
 | time_steps         |  `simulaton` total time steps. For `training` should be 1                                  |
 | noise              |  If `True`, Gaussian white noise will be added to excitatory field potentials              |
 | freeze             |  To drop any given plasticity mechanism(s) among [`'ip'`,`'stdp'`,`'istdp'`,`'ss'`, `'sp'`]|
@@ -178,15 +199,15 @@ The `simulate_sorn` and `train_sorn` methods accepts the following keyword argum
 
 
 ### Network Output Descriptions
-`matrices_dict` - Dictionary of connection weights ('Wee','Wei','Wie') , Excitatory network activity ('X'), Inhibitory network activities('Y'), Threshold values ('Te','Ti')
+`state_dict` - Dictionary of connection weights ('Wee','Wei','Wie') , Excitatory network activity ('X'), Inhibitory network activities('Y'), Threshold values ('Te','Ti')
 
-`Exc_activity` - Collection of Excitatory network activity of entire simulation period
+`E` - Collection of Excitatory network activity of entire simulation period
 
-`Inh_activity` - Collection of Inhibitory network activity of entire simulation period
+`I` - Collection of Inhibitory network activity of entire simulation period
 
-`Rec_activity` - Collection of Recurrent network activity of entire simulation period
+`R` - Collection of Recurrent network activity of entire simulation period
 
-`num_active_connections` - List of number of active connections in the Excitatory pool at each time step
+`C` - List of number of active connections in the Excitatory pool at each time step
 
 ### Analysis functions
 
@@ -194,7 +215,7 @@ The `simulate_sorn` and `train_sorn` methods accepts the following keyword argum
 
 
 | methods                |                                          Description                                       |
-|------------------------|:------------------------------------------------------------------------------------------:|
+|------------------------|--------------------------------------------------------------------------------------------|
 | autocorr()             |  t-lagged auto correlation between neural activity                                         |
 | fanofactor()           |  To verify poissonian process in spike generation of neuron(s)                             |
 | spike_source_entropy() |  Measure the uncertainty about the origin of spike from the network using entropy          |
