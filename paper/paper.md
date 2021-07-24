@@ -40,7 +40,10 @@ The network can be instantiated, simulated and trained using two classes `Simula
 
 Excitatory network state
 
-$$𝑥_𝑖(𝑡+1)=𝛩\left (\sum_{j=1}^{N^E}𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡) 𝑥_𝑗(𝑡)−\sum_{j=1}^{N^I}𝑊_{𝑖𝑘}^{𝐸𝐼}(𝑡) 𝑦_𝑘(𝑡)+𝑢_𝑖(𝑡)−𝑇_𝑖𝐸(𝑡)+𝜉_𝐸(t)\right)$$
+\begin{equation}
+\label{ip}
+𝑥_𝑖(𝑡+1)=𝛩\left (\sum_{j=1}^{N^E}𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡) 𝑥_𝑗(𝑡)−\sum_{j=1}^{N^I}𝑊_{𝑖𝑘}^{𝐸𝐼}(𝑡) 𝑦_𝑘(𝑡)+𝑢_𝑖(𝑡)−𝑇_𝑖𝐸(𝑡)+𝜉_𝐸(t)\right)
+\end{equation}
 
 Inhibitory Network state
 
