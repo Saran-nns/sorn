@@ -32,7 +32,7 @@ There is another open source code [see @papa2017criticality] for SORN network bu
 
 ## Library Overview:
 
-`sorn` package heavily depend on Numpy [ @harris2020array] for numerical computations and analysis methods, seaborn and matplotlib [ @barrett2005matplotlib] for visualization. The network is defined broadly in three classes; `SORN` object encapsulates all required functions that instantiate network variables like connection weights and thresholds. `Plasticity` inherits objects from `SORN` and implements plasticity rules using `stdp()`, `ip()`, `ss()`, `sp()`and `istdp()` methods . `NetworkState` has functions that evaluates excitatory and inhibitory network at each timestep and finally the `MatrixCollection` objects acts as a memory cache. It collects the network states and keep track of the variables as the network evolves during simulation and training.
+`sorn` package heavily depend on Numpy [ @harris2020array] for numerical computations and analysis methods, seaborn and matplotlib [ @barrett2005matplotlib] for visualization. The network is defined broadly in three classes; `SORN` object encapsulates all required functions that instantiate network variables like connection weights and thresholds. `Plasticity` inherits objects from `SORN` and implements plasticity rules using `stdp()`, `ip()`, `ss()`, `sp()`and `istdp()` methods . `NetworkState` has mthods that evaluates excitatory and inhibitory network states at each timestep and finally the `MatrixCollection` objects acts as a memory cache. It collects the network states and keep track of the variables like weights and thresholds as the network evolves during simulation and training.
 
 The network can be instantiated, simulated and trained using two classes `Simulator` and `Trainer` which inherit objects from `SORN`.
 
@@ -40,44 +40,43 @@ The network can be instantiated, simulated and trained using two classes `Simula
 
 Excitatory network state
 
-$𝑥_𝑖(𝑡+1)=𝛩\left (\sum_{j=1}^{N^E}𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡) 𝑥_𝑗(𝑡)−\sum_{j=1}^{N^I}𝑊_{𝑖𝑘}^{𝐸𝐼}(𝑡) 𝑦_𝑘(𝑡)+𝑢_𝑖(𝑡)−𝑇_𝑖𝐸(𝑡)+𝜉_𝐸(t)\right)$
+$$𝑥_𝑖(𝑡+1)=𝛩\left (\sum_{j=1}^{N^E}𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡) 𝑥_𝑗(𝑡)−\sum_{j=1}^{N^I}𝑊_{𝑖𝑘}^{𝐸𝐼}(𝑡) 𝑦_𝑘(𝑡)+𝑢_𝑖(𝑡)−𝑇_𝑖𝐸(𝑡)+𝜉_𝐸(t)\right)$$
 
 Inhibitory Network state
 
-$𝑦_𝑖(𝑡+1)=𝛩\left(\sum_{j=1}^{N_i}𝑊_{𝑖𝑗}^{𝐼𝐸}(𝑡) 𝑥_𝑗(𝑡)−𝑇_𝑖𝐼+ 𝜉𝐼(t)\right)$
+$$𝑦_𝑖(𝑡+1)=𝛩\left(\sum_{j=1}^{N_i}𝑊_{𝑖𝑗}^{𝐼𝐸}(𝑡) 𝑥_𝑗(𝑡)−𝑇_𝑖𝐼+ 𝜉𝐼(t)\right)$$
+
 ## Plasticity Rules
 
-Spike Timing Dependent Plasticity
+### Spike Timing Dependent Plasticity
 
-It changes the  synaptic efficacy between excitatory neurons  based on the spike- timing between pre `j` and post synaptic neuron `i`.
+It changes the  synaptic efficacy between excitatory neurons  based on the spike- timing between pre $j$ and post synaptic neuron $i$.
 
-$𝛥𝑊_{𝑖𝑗}^{𝐸𝐸}=𝜂_{𝑆𝑇𝐷𝑃}(𝑥_𝑖(𝑡)𝑥_𝑗(𝑡−1)−𝑥_𝑖(𝑡−1)𝑥_𝑗(𝑡)$
+$$𝛥𝑊_{𝑖𝑗}^{𝐸𝐸}=𝜂_{𝑆𝑇𝐷𝑃}(𝑥_𝑖(𝑡)𝑥_𝑗(𝑡−1)−𝑥_𝑖(𝑡−1)𝑥_𝑗(𝑡)$$
 
-Intrinsic Plasticity
+### Intrinsic Plasticity
 
 IP update the firing threshold of excitatory neurons based on the state of the neuron at each time step. It increases the threshold if the neuron fires and decrease it otherwise.
 
-$𝑇_𝑖(𝑡+1)=𝑇_𝑖(𝑡)+𝜂_{𝐼𝑃}(𝑥_𝑖(𝑡)−𝐻_{𝐼𝑃})$
+$$𝑇_𝑖(𝑡+1)=𝑇_𝑖(𝑡)+𝜂_{𝐼𝑃}(𝑥_𝑖(𝑡)−𝐻_{𝐼𝑃})$$
 
-Structural Plasticity
+### Structural Plasticity
 
 It is responsible for creating new synapses between excitatory neurons at a rate of 1 per every 10th time step.
 
-Synaptic Scaling
+### Synaptic Scaling
 
 SS normalizes the incoming synaptic strenghts of a neuron and prevent the network activity from attenuation or exploding.
 
-$𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡)←𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡)/Σ𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡)$
+$$𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡)←𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡)/Σ𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡)$$
 
-Inhibitory Spike Timing Dependent Plasticity
+### Inhibitory Spike Timing Dependent Plasticity
 
 iSTDP is responisble for controlling the synaptic strenghts from Inhibitory to Excitatory network.
 
-$𝛥𝑊_{𝑖𝑗}^{𝐸I}=𝜂_{i𝑆𝑇𝐷𝑃}(y_j(𝑡-1)(1-x_i(t)(1+\frac{1}{\mu_{ip}})))$
-## How to use `sorn`
+$$𝛥𝑊_{𝑖𝑗}^{𝐸I}=𝜂_{i𝑆𝑇𝐷𝑃}(y_j(𝑡-1)(1-x_i(t)(1+\frac{1}{\mu_{ip}})))$$
 
-For simulation, the `Simulator.simulate_sorn` has to be called as follows,
-### Simulation
+## Sample Simulation methods
 ```python
 
 from sorn import Simulator
@@ -99,7 +98,7 @@ matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections 
 ```
 The network can also be trained with and without plasticity mechanisms using the `Trainer` object as
 
-### Training
+## Sample Training methods
 ```python
 from sorn import Trainer
 inputs = np.random.rand(num_features,1)
