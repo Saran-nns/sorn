@@ -42,15 +42,9 @@ Excitatory network state
 
 
 $$
-  (𝑥_𝑖(𝑡+1)) =  \Theta\left (\sum_{j=1}^{N^E} {𝑊_{𝑖𝑗}^{𝐸𝐸}(𝑡)} {𝑥_{𝑗}(𝑡)} − \sum_{j=1}^{N^I}𝑊_{𝑖𝑘}^{𝐸𝐼}(𝑡) 𝑦_{𝑘}(𝑡)+𝑢_{𝑖}(𝑡)−𝑇_{𝑖}^{𝐸}(𝑡)+\xi_{𝐸}(t)\right)
+  x_i(t+1) =  \Theta\left (\sum_{j=1}^{N^E} {W_{ij}^{EE}(t)} {x_{j}(t)} − \sum_{j=1}^{N^I}W_{ik}^{EI}(t) y_{k}(t)+u_{i}(t)−T_{i}^{E}(t)+xi_{E}(t)\right)
 $$
 
-
-\begin{align}
-(𝑥_𝑖(𝑡+1))
-\intertext{can be written as}
-\sum_1^n{f_i}
-\end{align}
 
 \begin{equation}\label{eq:fourier}
 \hat f(\omega) = \int_{-\infty}^{\infty} f(x) e^{i\omega x} dx
