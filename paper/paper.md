@@ -45,7 +45,7 @@ $$
 
 
 \begin{equation}\label{eq:fourier}
-$\hat f(\omega) = \int_{-\infty}^{\infty} f(x) e^{i\omega x} dx$
+\hat f(\omega) = \int_{-\infty}^{\infty} f(x) e^{i\omega x} dx
 \end{equation}
 
 Inhibitory Network state
