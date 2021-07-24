@@ -9,6 +9,8 @@ tags:
     - Self Organizing Networks
     - Hebbian Learning
     - Associative Networks
+
+
 authors:
     - name: Saranraj Nambusubramaniyan
       affiliation: 1
@@ -20,6 +22,7 @@ date: 24 July 2021
 bibliography: paper.bib
 ---
 # Summary
+
 
 Self Organizing Recurrent Neural(SORN) network is a class of neuro-inspired artificial network. It is proven that these class of networks can mimic neocortical circuits ability of learning and adaptation through neuroplasticity mechanisms. Structurally, SORN networks consists of pool of excitatory neurons and small population of inhibitory neurons. The network uses five fundamental plasticity
 mechanisms found in neocortex of brain, namely spike timing dependent plasticity, intrinsic plasticity, synaptic scaling, inhibitory spike timing dependent plasticity and structural plasticity [@zheng2013network; @lazar2009sorn; @papa2017criticality] for optimizing its parameters. With the help of mathematical tools, SORN network simplifies the underlying structural and functional connectivity mechanisms that are responsible for learning and memory in brain.
@@ -225,8 +228,8 @@ Note: If you pass all above options to freeze, then the network will behave as L
 
 The `simulate_sorn` and `train_sorn` methods accepts the following keyword arguments
 
-| kwargs              |                                          Description                                       |
-|---------------------|--------------------------------------------------------------------------------------------|
+| kwargs                |                                          Description                                       |
+|-----------------------|--------------------------------------------------------------------------------------------|
 | `inputs`              |  External stimulus                                                                         |
 | `phase`               |  `plasticity` or `training`                                                                |
 | `matrices`            |  `state_dict` to resume simulation otherwise `None` to intialize new network               |
