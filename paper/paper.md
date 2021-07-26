@@ -118,7 +118,7 @@ SS normalizes the synaptic strengths of presynaptic neurons and prevents network
 
 \begin{equation}
 \label{ss}
-W_{ij}^{EE}(t)←W_{ij}^{EE}(t)/\sum{𝑊_{ij}^{EE}(t)}
+W_{ij}^{EE}(t)=W_{ij}^{EE}(t)/\sum{W_{ij}^{EE}(t)}
 \end{equation}
 
 ### Inhibitory Spike Timing Dependent Plasticity
