@@ -19,7 +19,7 @@ __pycache__/
 .ionide
 
 ### Github ###
-.github/*
+# .github/*
 
 ### PyCharm ###
 .DS_store/*
