@@ -26,24 +26,24 @@ bibliography: paper.bib
 # Summary
 
 
-Self Organizing Recurrent Neural(SORN) network is a class of neuro-inspired artificial network. It is proven that these class of networks can mimic neocortical circuits ability of learning and adaptation through neuroplasticity mechanisms. Structurally, SORN networks consists of pool of excitatory neurons and small population of inhibitory neurons. The network uses five fundamental plasticity
-mechanisms found in neocortex of brain, namely spike timing dependent plasticity, intrinsic plasticity, synaptic scaling, inhibitory spike timing dependent plasticity and structural plasticity [@zheng2013network; @lazar2009sorn; @papa2017criticality] for optimizing its parameters. With the help of mathematical tools, SORN network simplifies the underlying structural and functional connectivity mechanisms that are responsible for learning and memory in brain.
+The self-organizing recurrent neural(SORN) network is a class of neuro-inspired artificial networks. This class of networks has been shown to mimic the ability of neocortical circuits to learn and adapt through neuroplasticity mechanisms. Structurally, the SORN network consists of a pool of excitatory neurons and a small population of inhibitory neurons. The network uses five basic plasticity mechanisms found in the neocortex of the brain, namely spike-timing-dependent plasticity, intrinsic plasticity, synaptic scaling, inhibitory spike-timing-dependent plasticity, and structural plasticity [@zheng2013network; @lazar2009sorn; @papa2017criticality] to optimize its parameters. Using mathematical tools, SORN network simplifies the underlying structural and functional connectivity mechanisms responsible for learning and memory in the brain.
 
-`sorn` is a Python package designed for Self Organizing Recurrent Neural networks. While it is originally developed for SORN networks, it can also serve as an ideal research package for Liquid State Machines in general. The detailed documentation is provided at [https://self-organizing-recurrent-neural-networks.readthedocs.io/en/latest/](self-organizing-recurrent-neural-networks.readthedocs.io). Further to extend the applications of this network, a demonstrative example of neuro robotics experiment with OpenAI gym [ @brockman2016openai] is also provided at [sorn package](https://github.com/Saran-nns/sorn/).
+'sorn' is a Python package designed for Self Organizing Recurrent Neural Networks. While it was originally developed for SORN networks, it can also serve as an ideal research package for Liquid State Machines in general. The detailed documentation can be found at [https://self-organizing-recurrent-neural-networks.readthedocs.io/en/latest/](self-organizing-recurrent-neural-networks.readthedocs.io). To extend the potential applications of this network, a demonstrative example of a neuro-robotics experiment using OpenAI Gym [ @brockman2016openai] is provided at [sorn package](https://github.com/Saran-nns/sorn/).
 
-## Statement of the need:
+## Statement of need
 
-Reservoir computing models are neuro inspired artifical neural networks. RC networks have either sparse or densly connected units with fixed connection weights. Unlike other RC models, SORN has synaptic weights controlled by neuro inspired plasticity mechanisms. The network has two distinct pools of excitatory and inhibitory reservoirs competing with each other to remain in subcritical state suitable for learning. Sub critical regime is a state between chaos and order, otherwise "edge of chaos". At this state, network has intrinsic dynamics with strong affinity towards order, yet sensitive to external perturbations. Under plasticity mechansisms, the network has the ability to overcome the perturbations and return to their subcritical dynamics. That self-adaptive behavior is otherwise called Self Organization. Building such network with synergestic combination of plasticity mechanisms from scratch  require deeper understanding of neurophysiology and softcomputing. `sorn` reduces the cognitive load of the theorists, experimentalists or researchers there is a need for a realiable package that encapsulates all plasticity mechanisms with high degree of reliability and flexibility.
+Reservoir computing models are neuroinspired artificial neural networks. RC networks have either sparsely or densely connected units with fixed connection weights. Unlike other RC models, SORN has synaptic weights controlled by neuroinspired plasticity mechanisms. The network has two distinct pools of excitatory and inhibitory reservoirs that compete to remain in a subcritical state suitable for learning. The subcritical state is a state between chaos and order, also called the "edge of chaos". In this state, the network has momentum with a strong affinity for order, but is sensitive to external perturbations. Through plasticity mechanisms, the network has the ability to overcome the perturbations and return to its subcritical dynamics. This self-adaptive behavior is also referred to as self-organization. To build such a network with a synergistic combination of plasticity mechanisms from scratch requires a deeper understanding of neurophysiology and soft computing. sorn' reduces the cognitive load of theorists, experimenters or researchers by encapsulating all plasticity mechanisms with a high degree of reliability and flexibility.
 
-There are few other open source code [sorn v1](https://github.com/delpapa/SORN), [sorn v2](https://github.com/delpapa/SORN_V2), for SORN network but they are found to be publication specific and are not general purpose software packages. However, `sorn` is flexible package that allows researchers to develop the network of their interest provided them the freedom to choose the combination of plasticity rules of their choice. Further, it is easy integrate `sorn` with machine learning frameworks like PyTorch and reinforcement learning toolkits like OpenAI Gym. Overall, `sorn` provide a research enviroment for computational neuroscients to investigate self organization, adaptation, learning, memory and behavior of brain circuits by reverse engineering neuronal plasticity mechanisms.
+There are few other open source codes [sorn v1](https://github.com/delpapa/SORN), [sorn v2](https://github.com/delpapa/SORN_V2), for SORN network, but they are considered publication specific and are not general purpose software packages. However, 'sorn' is a flexible package that allows researchers to develop the network of their interest, provided they have the freedom to choose the combination of plasticity rules of their choice. Moreover, it is easy to integrate 'sorn' with machine learning frameworks such as PyTorch and reinforcement learning toolkits such as OpenAI Gym. Overall, 'sorn' provides a research environment for computational neuroscientists to study self-organization, adaptation, learning, memory, and behavior of brain circuits by reverse engineering neural plasticity mechanisms.
 
-## Library Overview:
 
-`sorn` package heavily depend on Numpy [@harris2020array] for numerical computations and analysis methods, seaborn and matplotlib [@barrett2005matplotlib] for visualization. The network is developed broadly in 5 classes; `SORN` object encapsulates all required functions that instantiate network variables like connection weights and thresholds. `Plasticity` inherits objects from `SORN` and implements plasticity rules using `stdp()`, `ip()`, `ss()`, `sp()`and `istdp()` methods . `NetworkState` has methods that evaluates excitatory and inhibitory network states at each timestep and finally the `MatrixCollection` objects behave as a memory cache. It collects the network states and keep track of the variables like weights and thresholds as the network evolves during simulation and training.
+## Library Overview
 
-The network can be instantiated, simulated and trained using two classes `Simulator` and `Trainer` which inherit objects from `SORN`.
+The package 'sorn' is heavily dependent on numpy [@harris2020array] for numerical computation and analysis methods, seaborn and matplotlib [@barrett2005matplotlib] for visualization. The network is roughly constructed in 5 classes; the object 'SORN' encapsulates all the required functions that instantiate network variables such as connection weights and thresholds. 'Plasticity' inherits objects from 'SORN' and implements plasticity rules with methods 'stdp()', 'ip()', 'ss()', 'sp()'and 'istdp()' . 'NetworkState' has methods that evaluate excitatory and inhibitory network states at each time step and finally 'MatrixCollection' objects behave like a memory cache. It collects the network states and keeps track of variables such as weights and thresholds as the network evolves during simulation and training.
 
-The library can be installed by using python package manager `pip` as;
+The network can be instantiated, simulated and trained using two classes 'Simulator' and 'Trainer' which inherit objects from 'SORN'.
+
+The library can be installed as using the Python package manager 'pip';
 
 ```python
     pip install sorn
@@ -73,7 +73,7 @@ y_i(t+1)=\Theta\left(\sum_{j=1}^{N_i}W_{ij}^{IE}(t) x_j(t)-T_i^I+ \xi_{I}(t)\rig
 
 ### Spike Timing Dependent Plasticity
 
-It changes the  synaptic efficacy between excitatory neurons  based on the spike- timing between pre $j$ and post synaptic neuron $i$.
+It alters synaptic efficacy between excitatory neurons  based on the spike timing between pre- $j$ and postsynaptic neuron $i$.
 
 \begin{equation}
 \label{stdp}
@@ -93,7 +93,7 @@ $x_i$ - Postsynaptic neuron state at $t$
 
 ### Intrinsic Plasticity
 
-IP update the firing threshold of excitatory neurons based on the state of the neuron at each time step. It increases the threshold if the neuron fires and decrease it otherwise.
+IP updates the firing threshold of excitatory neurons based on the state of the neuron at each time step. It increases the threshold if the neuron is firing and decreases it otherwise.
 
 \begin{equation}
 \label{ip}
@@ -110,11 +110,11 @@ $H_{IP}$ - Target firing rate of the neuron
 
 ### Structural Plasticity
 
-It is responsible for creating new synapses between excitatory neurons at a rate of approximately 1 connection per every 10th time step.
+It is responsible for creating new synapses between excitatory neurons at a rate of about 1 connection per 10th time step.
 
 ### Synaptic Scaling
 
-SS normalizes the incoming synaptic strenghts of a neuron and prevent the network activity from attenuation or exploding.
+SS normalizes the synaptic strengths of presynaptic neurons and prevents network activity from declining or exploding.
 
 \begin{equation}
 \label{ss}
@@ -123,7 +123,7 @@ W_{ij}^{EE}(t)←W_{ij}^{EE}(t)/\sum{𝑊_{ij}^{EE}(t)}
 
 ### Inhibitory Spike Timing Dependent Plasticity
 
-iSTDP is responisble for controlling the synaptic strenghts from Inhibitory to Excitatory network.
+iSTDP is responsible for controlling synaptic strengths from the inhibitory to the excitatory network.
 
 \begin{equation}
 \label{istdp}
@@ -139,7 +139,7 @@ $\eta_{istdp}$ - Inhibitory STDP learning rate
 
 $\mu_{ip}$ - Mean firing rate of the neuron
 
-Note that, the connection strength from excitatory to inhibitory ($W_{ij}^{IE}$) remain fixed at the intial state.
+Note that, the connection strength from excitatory to inhibitory ($W_{ij}^{IE}$) remains fixed at the intial state.
 
 ## Sample Simulation methods
 ```python
@@ -157,7 +157,7 @@ state_dict,E,I,R,C=Simulator.simulate_sorn(inputs=inputs,phase='plasticity',
 
                                         _nu=num_features)
 ```
-`simulate_sorn` returns the dictionary of network state variables at last time steps, excitatory and inhibitory network activity of the entire simulation period and also the recurrent activity and the count of active connections at each time steps. To resume the simulation, load the matrices returned at the previous step as,
+'simulate_sorn' returns the dictionary of network state variables of the last time steps, the excitatory and inhibitory network activity of the whole simulation period, and also the recurrent activity and the number of active connections at each time step. To continue the simulation, load the matrices returned in the previous step as,
 
 ```python
 state_dict,E,I,R,C=Simulator.simulate_sorn(inputs=inputs,phase='plasticity',
@@ -212,7 +212,7 @@ state_dict,E,I,R,C=Trainer.train_sorn(inputs=inputs,phase='training',
                                     _nu=num_features,time_steps=1)
 ```
 
-To turn off any plasticity mechanisms during simulation or training phase, you can use freeze argument. For example to stop intrinsic plasticity during training phase,
+To turn off any plasticity mechanisms during the simulation or training phase, you can use the argument `freeze`. For example, to stop intrinsic plasticity during the training phase,
 
 ```python
 
