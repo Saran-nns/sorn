@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.4.7
+                0.4.9
               </div>
             
           
@@ -694,7 +694,7 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 </dl>
 <dl class="py method">
 <dt>
-<code class="sig-name descname">simulate_sorn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inputs</span><span class="p">:</span> <span class="n">numpy.array</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">phase</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'plasticity'</span></em>, <em class="sig-param"><span class="n">matrices</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">time_steps</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">noise</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#Simulator_.simulate_sorn"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-name descname">simulate_sorn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inputs</span><span class="p">:</span> <span class="n">numpy.array</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">phase</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'plasticity'</span></em>, <em class="sig-param"><span class="n">matrices</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">time_steps</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">noise</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">freeze</span><span class="p">:</span> <span class="n">list</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#Simulator_.simulate_sorn"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Simulation/Plasticity phase</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -704,6 +704,7 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 <li><p><strong>matrices</strong> (<em>dict</em><em>, </em><em>optional</em>) – Network states, connections and threshold matrices. Defaults to None.</p></li>
 <li><p><strong>time_steps</strong> (<em>int</em><em>, </em><em>optional</em>) – Total number of time steps to simulate the network. Defaults to 1.</p></li>
 <li><p><strong>noise</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, noise will be added. Defaults to True.</p></li>
+<li><p><strong>freeze</strong> (<em>list</em><em>, </em><em>optional</em>) – List of synaptic plasticity mechanisms which will be turned off during simulation. Defaults to None.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -738,6 +739,7 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 <li><p><strong>matrices</strong> (<em>dict</em><em>, </em><em>optional</em>) – Network states, connections and threshold matrices. Defaults to None.</p></li>
 <li><p><strong>time_steps</strong> (<em>int</em><em>, </em><em>optional</em>) – Total number of time steps to simulate the network. Defaults to 1.</p></li>
 <li><p><strong>noise</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, noise will be added. Defaults to True.</p></li>
+<li><p><strong>freeze</strong> (<em>list</em><em>, </em><em>optional</em>) – List of synaptic plasticity mechanisms which will be turned off during simulation. Defaults to None.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -754,7 +756,7 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 </dl>
 <dl class="py method">
 <dt>
-<code class="sig-name descname">train_sorn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inputs</span><span class="p">:</span> <span class="n">numpy.array</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">phase</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'training'</span></em>, <em class="sig-param"><span class="n">matrices</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">time_steps</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">noise</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#Trainer_.train_sorn"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-name descname">train_sorn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inputs</span><span class="p">:</span> <span class="n">numpy.array</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">phase</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'training'</span></em>, <em class="sig-param"><span class="n">matrices</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">time_steps</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">noise</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">freeze</span><span class="p">:</span> <span class="n">list</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#Trainer_.train_sorn"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Train the network with the fresh or pretrained network matrices and external stimuli</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -956,7 +958,8 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>corr</strong> (<em>array</em>) – Correlation between neurons</p></li>
-<li><p><strong>corr_thres</strong> (<em>array</em>) – Threshold to prune the connection</p></li>
+<li><p><strong>corr_thres</strong> (<em>array</em>) – Threshold to prune the connection. Smaller the threshold,
+higher the density of connections</p></li>
 <li><p><strong>fig_name</strong> (<em>array</em><em>, </em><em>optional</em>) – Name of the figure. Defaults to None.</p></li>
 </ul>
 </dd>
