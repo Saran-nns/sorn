@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.4.7
+                0.4.9
               </div>
             
           
@@ -181,7 +181,6 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">configparser</span> <span class="kn">import</span> <span class="n">ConfigParser</span>
 <span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">import</span> <span class="nn">tqdm</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">sorn.utils</span> <span class="kn">import</span> <span class="n">Initializer</span>
@@ -243,7 +242,6 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
 
-    <span class="sd">&quot;&quot;&quot;Arguments loaded from `configuration.ini` file&quot;&quot;&quot;</span>
     <span class="n">_nu</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Network_Config&quot;</span><span class="p">,</span> <span class="s2">&quot;Nu&quot;</span><span class="p">))</span>
     <span class="n">_ne</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Network_Config&quot;</span><span class="p">,</span> <span class="s2">&quot;Ne&quot;</span><span class="p">))</span>
     <span class="n">_ni</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">_ne</span><span class="p">)</span>
@@ -336,7 +334,6 @@
         <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ni</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span></div></div>
-
 
 <div class="viewcode-block" id="Plasticity"><a class="viewcode-back" href="../../reference.html#sorn.sorn.Plasticity">[docs]</a><span class="k">class</span> <span class="nc">Plasticity</span><span class="p">(</span><span class="n">Sorn</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Instance of class Sorn. Inherits the variables and functions defined in class Sorn.</span>
@@ -494,15 +491,10 @@
 <span class="sd">            wei (array): Synaptic strengths from inhibitory to excitatory&quot;&quot;&quot;</span>
 
         <span class="c1"># Excitatory network activity</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># Array sanity check</span>
-        <span class="n">xt_1</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
-        <span class="n">xt</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">xt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span>
 
         <span class="c1"># Inhibitory network activity</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-
-        <span class="n">yt_1</span> <span class="o">=</span> <span class="n">y</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
-        <span class="n">yt</span> <span class="o">=</span> <span class="n">y</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">yt_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">)[:,</span> <span class="mi">0</span><span class="p">]</span>
 
         <span class="c1"># iSTDP applies only on the neurons which are connected.</span>
         <span class="n">wei_t</span> <span class="o">=</span> <span class="n">wei</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -572,9 +564,6 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            tuple(array): Weight matrices WEI, WEE, WIE and threshold matrices Te, Ti and Initial state vectors X,Y &quot;&quot;&quot;</span>
-
-        <span class="c1"># Do not transpose weight matrix WEI for SORN 2 model</span>
-        <span class="c1"># Create and initialize sorn object and variables</span>
 
         <span class="n">sorn_init</span> <span class="o">=</span> <span class="n">Sorn</span><span class="p">()</span>
         <span class="n">WEE_init</span> <span class="o">=</span> <span class="n">sorn_init</span><span class="o">.</span><span class="n">initialize_weight_matrix</span><span class="p">(</span>
@@ -719,7 +708,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">matrices</span><span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">matrices</span><span class="p">[</span><span class="s2">&quot;Y&quot;</span><span class="p">]</span>
 
-    <span class="c1"># @staticmethod</span>
 <div class="viewcode-block" id="MatrixCollection.weight_matrix"><a class="viewcode-back" href="../../reference.html#sorn.sorn.MatrixCollection.weight_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">weight_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wee</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">wei</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">wie</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update weight matrices</span>
 
@@ -741,7 +729,6 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Wee</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Wei</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Wie</span></div>
 
-    <span class="c1"># @staticmethod</span>
 <div class="viewcode-block" id="MatrixCollection.threshold_matrix"><a class="viewcode-back" href="../../reference.html#sorn.sorn.MatrixCollection.threshold_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">threshold_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">te</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">ti</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update threshold matrices</span>
 
@@ -758,7 +745,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">Ti</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">ti</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Te</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Ti</span></div>
 
-    <span class="c1"># @staticmethod</span>
 <div class="viewcode-block" id="MatrixCollection.network_activity_t"><a class="viewcode-back" href="../../reference.html#sorn.sorn.MatrixCollection.network_activity_t">[docs]</a>    <span class="k">def</span> <span class="nf">network_activity_t</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">excitatory_net</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">inhibitory_net</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">int</span>
     <span class="p">):</span>
@@ -780,7 +766,6 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span></div>
 
-    <span class="c1"># @staticmethod</span>
 <div class="viewcode-block" id="MatrixCollection.network_activity_t_1"><a class="viewcode-back" href="../../reference.html#sorn.sorn.MatrixCollection.network_activity_t_1">[docs]</a>    <span class="k">def</span> <span class="nf">network_activity_t_1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Network activity at previous time step</span>
 
@@ -814,7 +799,6 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v_t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">v_t</span> <span class="o">=</span> <span class="n">v_t</span>
-        <span class="c1"># Check the input feature size</span>
         <span class="k">assert</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_nu</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">v_t</span>
         <span class="p">),</span> <span class="s2">&quot;Input units and input size mismatch: </span><span class="si">{}</span><span class="s2"> != </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -835,7 +819,6 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            incoming (array): Excitatory Post synaptic potential towards neurons</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Broadcasting weight*acivity vectors</span>
         <span class="n">incoming</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">*</span> <span class="n">activity_vector</span>
         <span class="n">incoming</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">incoming</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">incoming</span></div>
@@ -889,10 +872,7 @@
         <span class="c1"># Heaviside step function</span>
         <span class="n">heaviside_step</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">([</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">tot_incoming_drive</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">heaviside_step</span><span class="p">[</span><span class="n">tot_incoming_drive</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
-        <span class="n">xt_next</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
-            <span class="n">heaviside_step</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="p">)</span>  <span class="c1"># Additional Memory cost just for the sake of variable name</span>
-        <span class="k">return</span> <span class="n">xt_next</span></div>
+        <span class="k">return</span> <span class="n">heaviside_step</span></div>
 
 <div class="viewcode-block" id="NetworkState.inhibitory_network_state"><a class="viewcode-back" href="../../reference.html#sorn.sorn.NetworkState.inhibitory_network_state">[docs]</a>    <span class="k">def</span> <span class="nf">inhibitory_network_state</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">wie</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">ti</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">white_noise_i</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span>
@@ -913,7 +893,6 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            y (array): Current Inhibitory network activity&quot;&quot;&quot;</span>
 
-        <span class="c1"># Activity of inhibitory neurons</span>
         <span class="n">wie</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">wie</span><span class="p">)</span>
         <span class="n">yt</span> <span class="o">=</span> <span class="n">y</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
         <span class="n">yt</span> <span class="o">=</span> <span class="n">yt</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_ne</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -926,11 +905,7 @@
         <span class="n">heaviside_step</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">([</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">tot_incoming_drive</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">heaviside_step</span><span class="p">[</span><span class="n">tot_incoming_drive</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
 
-        <span class="n">yt_next</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
-            <span class="n">heaviside_step</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="p">)</span>  <span class="c1"># Additional Memory cost just for the sake of variable name</span>
-
-        <span class="k">return</span> <span class="n">yt_next</span></div>
+        <span class="k">return</span> <span class="n">heaviside_step</span></div>
 
 <div class="viewcode-block" id="NetworkState.recurrent_drive"><a class="viewcode-back" href="../../reference.html#sorn.sorn.NetworkState.recurrent_drive">[docs]</a>    <span class="k">def</span> <span class="nf">recurrent_drive</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -976,11 +951,7 @@
         <span class="n">heaviside_step</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">([</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">tot_incoming_drive</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">heaviside_step</span><span class="p">[</span><span class="n">tot_incoming_drive</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
 
-        <span class="n">xt_next</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
-            <span class="n">heaviside_step</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="p">)</span>  <span class="c1"># Additional Memory cost just for the sake of variable name</span>
-
-        <span class="k">return</span> <span class="n">xt_next</span></div></div>
+        <span class="k">return</span> <span class="n">heaviside_step</span></div></div>
 
 
 <span class="c1"># Simulate / Train SORN</span>
@@ -1021,6 +992,7 @@
         <span class="n">matrices</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">time_steps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">noise</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">freeze</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Simulation/Plasticity phase</span>
@@ -1035,6 +1007,8 @@
 <span class="sd">            time_steps (int, optional): Total number of time steps to simulate the network. Defaults to 1.</span>
 
 <span class="sd">            noise (bool, optional): If True, noise will be added. Defaults to True.</span>
+
+<span class="sd">            freeze (list, optional): List of synaptic plasticity mechanisms which will be turned off during simulation. Defaults to None.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            plastic_matrices (dict): Network states, connections and threshold matrices</span>
@@ -1055,6 +1029,7 @@
         <span class="n">Sorn</span><span class="o">.</span><span class="n">_time_steps</span> <span class="o">=</span> <span class="n">time_steps</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">phase</span> <span class="o">=</span> <span class="n">phase</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">matrices</span> <span class="o">=</span> <span class="n">matrices</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span> <span class="o">=</span> <span class="n">freeze</span>
 
         <span class="n">kwargs_</span> <span class="o">=</span> <span class="p">[</span>
             <span class="s2">&quot;_ne&quot;</span><span class="p">,</span>
@@ -1094,7 +1069,7 @@
         <span class="n">frac_pos_active_conn</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="c1"># To get the last activation status of Exc and Inh neurons</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span><span class="p">):</span>
 
             <span class="k">if</span> <span class="n">noise</span><span class="p">:</span>
                 <span class="n">white_noise_e</span> <span class="o">=</span> <span class="n">Initializer</span><span class="o">.</span><span class="n">white_gaussian_noise</span><span class="p">(</span>
@@ -1108,12 +1083,12 @@
 
             <span class="n">network_state</span> <span class="o">=</span> <span class="n">NetworkState</span><span class="p">(</span>
                 <span class="n">inputs</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
-            <span class="p">)</span>  <span class="c1"># Feed input and initialize network state</span>
+            <span class="p">)</span>
 
             <span class="c1"># Buffers to get the resulting x and y vectors at the current time step and update the master matrix</span>
             <span class="n">x_buffer</span><span class="p">,</span> <span class="n">y_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
                 <span class="p">(</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_ne</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_ni</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-            <span class="c1"># TODO: Return te,ti values in next version # UNUSED</span>
+
             <span class="n">te_buffer</span><span class="p">,</span> <span class="n">ti_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
                 <span class="p">(</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_ne</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_ni</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 
@@ -1155,29 +1130,29 @@
             <span class="c1"># Plasticity phase</span>
             <span class="n">plasticity</span> <span class="o">=</span> <span class="n">Plasticity</span><span class="p">()</span>
 
-            <span class="c1"># TODO</span>
-            <span class="c1"># Can be initialised outside loop--&gt; Plasticity will receive dynamic args in future version</span>
-
             <span class="c1"># STDP</span>
-            <span class="n">Wee_t</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">stdp</span><span class="p">(</span>
-                <span class="n">Wee</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x_buffer</span><span class="p">,</span> <span class="n">cutoff_weights</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+            <span class="k">if</span> <span class="s1">&#39;stdp&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span><span class="p">:</span>
+                <span class="n">Wee_t</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">stdp</span><span class="p">(</span>
+                    <span class="n">Wee</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x_buffer</span><span class="p">,</span> <span class="n">cutoff_weights</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
 
             <span class="c1"># Intrinsic plasticity</span>
-            <span class="n">Te_t</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">ip</span><span class="p">(</span><span class="n">Te</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x_buffer</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s1">&#39;ip&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span><span class="p">:</span>
+                <span class="n">Te_t</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">ip</span><span class="p">(</span><span class="n">Te</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x_buffer</span><span class="p">)</span>
 
             <span class="c1"># Structural plasticity</span>
-            <span class="n">Wee_t</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">structural_plasticity</span><span class="p">(</span><span class="n">Wee_t</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s1">&#39;sp&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">freeze</span><span class="p">:</span>
+                <span class="n">Wee_t</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">structural_plasticity</span><span class="p">(</span><span class="n">Wee_t</span><span class="p">)</span>
 
             <span class="c1"># iSTDP</span>
-            <span class="n">Wei_t</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">istdp</span><span class="p">(</span>
-                <span class="n">Wei</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x_buffer</span><span class="p">,</span> <span class="n">y_buffer</span><span class="p">,</span> <span class="n">cutoff_weights</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
-            <span class="p">)</span>
+            <span class="k">if</span> <span class="s1">&#39;istdp&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">freeze</span><span class="p">:</span>
+                <span class="n">Wei_t</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">istdp</span><span class="p">(</span>
+                    <span class="n">Wei</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x_buffer</span><span class="p">,</span> <span class="n">y_buffer</span><span class="p">,</span> <span class="n">cutoff_weights</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+                <span class="p">)</span>
 
             <span class="c1"># Synaptic scaling Wee</span>
-            <span class="n">Wee_t</span> <span class="o">=</span> <span class="n">Plasticity</span><span class="p">()</span><span class="o">.</span><span class="n">ss</span><span class="p">(</span><span class="n">Wee_t</span><span class="p">)</span>
-
-            <span class="c1"># Synaptic scaling Wei</span>
-            <span class="n">Wei_t</span> <span class="o">=</span> <span class="n">Plasticity</span><span class="p">()</span><span class="o">.</span><span class="n">ss</span><span class="p">(</span><span class="n">Wei_t</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s1">&#39;ss&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span><span class="p">:</span>
+                <span class="n">Wee_t</span> <span class="o">=</span> <span class="n">Plasticity</span><span class="p">()</span><span class="o">.</span><span class="n">ss</span><span class="p">(</span><span class="n">Wee_t</span><span class="p">)</span>
+                <span class="n">Wei_t</span> <span class="o">=</span> <span class="n">Plasticity</span><span class="p">()</span><span class="o">.</span><span class="n">ss</span><span class="p">(</span><span class="n">Wei_t</span><span class="p">)</span>
 
             <span class="c1"># Assign the matrices to the matrix collections</span>
             <span class="n">matrix_collection</span><span class="o">.</span><span class="n">weight_matrix</span><span class="p">(</span><span class="n">Wee_t</span><span class="p">,</span> <span class="n">Wei_t</span><span class="p">,</span> <span class="n">Wie</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span><span class="p">)</span>
@@ -1215,6 +1190,8 @@
 
 <span class="sd">        noise (bool, optional): If True, noise will be added. Defaults to True.</span>
 
+<span class="sd">        freeze (list, optional): List of synaptic plasticity mechanisms which will be turned off during simulation. Defaults to None.</span>
+
 <span class="sd">    Returns:</span>
 <span class="sd">        plastic_matrices (dict): Network states, connections and threshold matrices</span>
 
@@ -1237,6 +1214,7 @@
         <span class="n">matrices</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">time_steps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">noise</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">freeze</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Train the network with the fresh or pretrained network matrices and external stimuli</span>
@@ -1297,7 +1275,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span> <span class="o">=</span> <span class="n">time_steps</span>
         <span class="n">Sorn</span><span class="o">.</span><span class="n">_time_steps</span> <span class="o">=</span> <span class="n">time_steps</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span> <span class="o">=</span> <span class="n">freeze</span>
         <span class="c1"># Collect the network activity at all time steps</span>
         <span class="n">X_all</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span>
         <span class="n">Y_all</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span>
@@ -1308,7 +1286,7 @@
         <span class="n">matrix_collection</span> <span class="o">=</span> <span class="n">MatrixCollection</span><span class="p">(</span>
             <span class="n">phase</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">phase</span><span class="p">,</span> <span class="n">matrices</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">matrices</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span><span class="p">):</span>
 
             <span class="k">if</span> <span class="n">noise</span><span class="p">:</span>
                 <span class="n">white_noise_e</span> <span class="o">=</span> <span class="n">Initializer</span><span class="o">.</span><span class="n">white_gaussian_noise</span><span class="p">(</span>
@@ -1367,25 +1345,30 @@
                 <span class="n">plasticity</span> <span class="o">=</span> <span class="n">Plasticity</span><span class="p">()</span>
 
                 <span class="c1"># STDP</span>
-                <span class="n">Wee_t</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">stdp</span><span class="p">(</span>
-                    <span class="n">Wee</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x_buffer</span><span class="p">,</span> <span class="n">cutoff_weights</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+                <span class="k">if</span> <span class="s1">&#39;stdp&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span><span class="p">:</span>
+                    <span class="n">Wee_t</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">stdp</span><span class="p">(</span>
+                        <span class="n">Wee</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x_buffer</span><span class="p">,</span> <span class="n">cutoff_weights</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
 
                 <span class="c1"># Intrinsic plasticity</span>
-                <span class="n">Te_t</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">ip</span><span class="p">(</span><span class="n">Te</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x_buffer</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s1">&#39;ip&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span><span class="p">:</span>
+                    <span class="n">Te_t</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">ip</span><span class="p">(</span><span class="n">Te</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x_buffer</span><span class="p">)</span>
 
                 <span class="c1"># Structural plasticity</span>
-                <span class="n">Wee_t</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">structural_plasticity</span><span class="p">(</span><span class="n">Wee_t</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s1">&#39;sp&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span><span class="p">:</span>
+                    <span class="n">Wee_t</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">structural_plasticity</span><span class="p">(</span><span class="n">Wee_t</span><span class="p">)</span>
 
                 <span class="c1"># iSTDP</span>
-                <span class="n">Wei_t</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">istdp</span><span class="p">(</span>
-                    <span class="n">Wei</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x_buffer</span><span class="p">,</span> <span class="n">y_buffer</span><span class="p">,</span> <span class="n">cutoff_weights</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
-                <span class="p">)</span>
+                <span class="k">if</span> <span class="s1">&#39;istdp&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span><span class="p">:</span>
+                    <span class="n">Wei_t</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">istdp</span><span class="p">(</span>
+                        <span class="n">Wei</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x_buffer</span><span class="p">,</span> <span class="n">y_buffer</span><span class="p">,</span> <span class="n">cutoff_weights</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+                    <span class="p">)</span>
 
                 <span class="c1"># Synaptic scaling Wee</span>
-                <span class="n">Wee_t</span> <span class="o">=</span> <span class="n">Plasticity</span><span class="p">()</span><span class="o">.</span><span class="n">ss</span><span class="p">(</span><span class="n">Wee_t</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s1">&#39;sc&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span><span class="p">:</span>
+                    <span class="n">Wee_t</span> <span class="o">=</span> <span class="n">Plasticity</span><span class="p">()</span><span class="o">.</span><span class="n">ss</span><span class="p">(</span><span class="n">Wee_t</span><span class="p">)</span>
 
-                <span class="c1"># Synaptic scaling Wei</span>
-                <span class="n">Wei_t</span> <span class="o">=</span> <span class="n">Plasticity</span><span class="p">()</span><span class="o">.</span><span class="n">ss</span><span class="p">(</span><span class="n">Wei_t</span><span class="p">)</span>
+                    <span class="c1"># Synaptic scaling Wei</span>
+                    <span class="n">Wei_t</span> <span class="o">=</span> <span class="n">Plasticity</span><span class="p">()</span><span class="o">.</span><span class="n">ss</span><span class="p">(</span><span class="n">Wei_t</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">Wee_t</span><span class="p">,</span> <span class="n">Wei_t</span><span class="p">,</span> <span class="n">Te_t</span> <span class="o">=</span> <span class="n">Wee</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Wei</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Te</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
