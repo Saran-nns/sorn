@@ -1,4 +1,4 @@
-include README.md 
-include LICENSE
+include README.md
+include LICENSE.md
 include requirements.txt
 include sorn/*.ini
