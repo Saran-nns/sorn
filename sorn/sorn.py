@@ -964,11 +964,11 @@ class Simulator_(Sorn):
                 Te_t = plasticity.ip(Te[i], x_buffer)
 
             # Structural plasticity
-            if 'sp' not in freeze:
+            if 'sp' not in self.freeze:
                 Wee_t = plasticity.structural_plasticity(Wee_t)
 
             # iSTDP
-            if 'istdp' not in freeze:
+            if 'istdp' not in self.freeze:
                 Wei_t = plasticity.istdp(
                     Wei[i], x_buffer, y_buffer, cutoff_weights=(0.0, 1.0)
                 )
