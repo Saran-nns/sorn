@@ -853,7 +853,7 @@ class Simulator_(Sorn):
         Sorn._time_steps = time_steps
         self.phase = phase
         self.matrices = matrices
-        self.freeze = freeze
+        self.freeze = [] if freeze == None else freeze
 
         kwargs_ = [
             "_ne",
@@ -1099,7 +1099,7 @@ class Trainer_(Sorn):
         self.time_steps = time_steps
         Sorn._time_steps = time_steps
         self.inputs = np.asarray(inputs)
-        self.freeze = freeze
+        self.freeze = [] if freeze == None else freeze
         # Collect the network activity at all time steps
         X_all = [0] * self.time_steps
         Y_all = [0] * self.time_steps
