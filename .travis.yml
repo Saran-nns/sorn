@@ -15,10 +15,9 @@ jobs:
       python: 3.8
       env: TOXENV=py38
 
-    - name: "Python 3.6.5 on macOS 10.13"
+    - name: "Python 3.6.5 on macOS 10.14"
       os: osx
-      osx_image: xcode10.2
-      dist: xenial
+      osx_image: xcode11.2
       language: shell
       before_script:
         - python3 --version
@@ -36,7 +35,6 @@ jobs:
     - name: "Python 3.7.5 on macOS 10.14"
       os: osx
       osx_image: xcode11.2
-      dist: xenial
       language: shell
       before_script:
         - python3 --version
