@@ -23,7 +23,7 @@ jobs:
         - python3 install coverage
         - python3 -m pip install --upgrade coveralls
         - python3 -m pip install --upgrade codecov
-
+        - python3 -m  pip install -r requirements.txt
       script:
         - python3 test_sorn.py
         - coverage run test_sorn.py
@@ -51,8 +51,7 @@ jobs:
 cache: pip
 
 install:
-  - pip3 install --upgrade pip
-  - pip3 install -r requirements.txt
+  - python3 -m  pip install -r requirements.txt
 
 before_script:
   - python --version
