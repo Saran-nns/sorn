@@ -17,16 +17,15 @@ jobs:
 
     - name: "Python 3.6.5 on macOS 10.13"
       os: osx
-      osx_image: xcode9.4
-      language: shell
+      osx_image: xcode10.2
       before_script:
         - python3 --version
-        - pip install coverage
-        - pip install coveralls
-        - pip install codecov
+        - python3 install coverage
+        - python3 -m pip install --upgrade coveralls
+        - python3 -m pip install --upgrade codecov
 
       script:
-        - python test_sorn.py
+        - python3 test_sorn.py
         - coverage run test_sorn.py
 
       after_success:
@@ -34,7 +33,7 @@ jobs:
 
     - name: "Python 3.7.5 on macOS 10.14"
       os: osx
-      osx_image: xcode10.2
+      osx_image: xcode11.2
       language: shell
       before_script:
         - python3 --version
@@ -52,7 +51,8 @@ jobs:
 cache: pip
 
 install:
-  - pip install -r requirements.txt
+  - pip3 install --upgrade pip
+  - pip3 install -r requirements.txt
 
 before_script:
   - python --version
@@ -61,7 +61,7 @@ before_script:
   - pip install codecov
 
 script:
-  - python test_sorn.py
+  - python3 test_sorn.py
   - coverage run test_sorn.py
 
 after_success:
