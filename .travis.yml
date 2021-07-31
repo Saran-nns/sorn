@@ -3,34 +3,8 @@ language: python
 jobs:
   include:
     - os: linux
-      python: 3.5
-      env: TOXENV=py35
-    - os: linux
-      python: 3.6
-      env: TOXENV=py36
-    - os: linux
-      python: 3.7
-      env: TOXENV=py37
-    - os: linux
       python: 3.8
       env: TOXENV=py38
-
-    - name: "Python 3.6.5 on macOS 10.14"
-      os: osx
-      osx_image: xcode11.2
-      language: shell
-      before_script:
-        - python3 --version
-        - python3 install coverage
-        - python3 -m pip install --upgrade coveralls
-        - python3 -m pip install --upgrade codecov
-        - python3 -m  pip install -r requirements.txt
-      script:
-        - python3 test_sorn.py
-        - coverage run test_sorn.py
-
-      after_success:
-        - codecov
 
     - name: "Python 3.7.5 on macOS 10.14"
       os: osx
