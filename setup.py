@@ -33,7 +33,7 @@ setup(
         "Programming Language :: Python :: 3.7",
     ],
     include_package_data=True,
-    install_requires=["numpy", "configparser", "scipy", "seaborn"],
+    install_requires=["numpy", "configparser", "scipy", "seaborn", "networkx"],
     zip_safe=False,
 )
 
