@@ -2,3 +2,4 @@ numpy
 configparser
 scipy
 seaborn
+networkx
