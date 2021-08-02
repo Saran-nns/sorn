@@ -3,6 +3,6 @@ import logging
 from .utils import *
 
 __author__ = "Saranraj Nambusubramaniyan"
-__version__ = "0.4.9"
+__version__ = "0.5.1"
 
 logging.basicConfig(level=logging.INFO)

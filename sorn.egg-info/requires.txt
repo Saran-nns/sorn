@@ -1,4 +1,0 @@
-numpy
-configparser
-scipy
-seaborn
