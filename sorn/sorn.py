@@ -287,7 +287,8 @@ class Plasticity(Sorn):
 
         return te_update
 
-    def ss(self, wee: np.array):
+    @staticmethod
+    def ss(wee: np.array):
         """Synaptic Scaling or Synaptic Normalization
 
         Args:
@@ -853,7 +854,7 @@ class Simulator_(Sorn):
         Sorn._time_steps = time_steps
         self.phase = phase
         self.matrices = matrices
-        self.freeze = freeze
+        self.freeze = [] if freeze == None else freeze
 
         kwargs_ = [
             "_ne",
@@ -916,7 +917,6 @@ class Simulator_(Sorn):
             te_buffer, ti_buffer = np.zeros(
                 (Sorn._ne, 1)), np.zeros((Sorn._ni, 1))
 
-            # Get the matrices and rename them for ease of reading
             Wee, Wei, Wie = (
                 matrix_collection.Wee,
                 matrix_collection.Wei,
@@ -956,31 +956,31 @@ class Simulator_(Sorn):
 
             # STDP
             if 'stdp' not in self.freeze:
-                Wee_t = plasticity.stdp(
+                Wee[i] = plasticity.stdp(
                     Wee[i], x_buffer, cutoff_weights=(0.0, 1.0))
 
             # Intrinsic plasticity
             if 'ip' not in self.freeze:
-                Te_t = plasticity.ip(Te[i], x_buffer)
+                Te[i] = plasticity.ip(Te[i], x_buffer)
 
             # Structural plasticity
-            if 'sp' not in freeze:
-                Wee_t = plasticity.structural_plasticity(Wee_t)
+            if 'sp' not in self.freeze:
+                Wee[i] = plasticity.structural_plasticity(Wee[i])
 
             # iSTDP
-            if 'istdp' not in freeze:
-                Wei_t = plasticity.istdp(
+            if 'istdp' not in self.freeze:
+                Wei[i] = plasticity.istdp(
                     Wei[i], x_buffer, y_buffer, cutoff_weights=(0.0, 1.0)
                 )
 
             # Synaptic scaling Wee
             if 'ss' not in self.freeze:
-                Wee_t = Plasticity().ss(Wee_t)
-                Wei_t = Plasticity().ss(Wei_t)
+                Wee[i] = plasticity.ss(Wee[i])
+                Wei[i] = plasticity.ss(Wei[i])
 
             # Assign the matrices to the matrix collections
-            matrix_collection.weight_matrix(Wee_t, Wei_t, Wie[i], i)
-            matrix_collection.threshold_matrix(Te_t, Ti[i], i)
+            matrix_collection.weight_matrix(Wee[i], Wei[i], Wie[i], i)
+            matrix_collection.threshold_matrix(Te[i], Ti[i], i)
             matrix_collection.network_activity_t(x_buffer, y_buffer, i)
 
             X_all[i] = x_buffer[:, 1]
@@ -1099,8 +1099,8 @@ class Trainer_(Sorn):
         self.time_steps = time_steps
         Sorn._time_steps = time_steps
         self.inputs = np.asarray(inputs)
-        self.freeze = freeze
-        # Collect the network activity at all time steps
+        self.freeze = [] if freeze == None else freeze
+
         X_all = [0] * self.time_steps
         Y_all = [0] * self.time_steps
         R_all = [0] * self.time_steps
@@ -1125,7 +1125,7 @@ class Trainer_(Sorn):
 
             network_state = NetworkState(
                 self.inputs[:, i]
-            )  # Feed Input as an argument to the class
+            )
 
             # Buffers to get the resulting x and y vectors at the current time step and update the master matrix
             x_buffer, y_buffer = np.zeros(
@@ -1133,7 +1133,6 @@ class Trainer_(Sorn):
             te_buffer, ti_buffer = np.zeros(
                 (Sorn._ne, 1)), np.zeros((Sorn._ni, 1))
 
-            # Get the matrices and rename them for ease of reading
             Wee, Wei, Wie = (
                 matrix_collection.Wee,
                 matrix_collection.Wei,
@@ -1170,35 +1169,36 @@ class Trainer_(Sorn):
 
                 # STDP
                 if 'stdp' not in self.freeze:
-                    Wee_t = plasticity.stdp(
+                    Wee[i] = plasticity.stdp(
                         Wee[i], x_buffer, cutoff_weights=(0.0, 1.0))
 
                 # Intrinsic plasticity
                 if 'ip' not in self.freeze:
-                    Te_t = plasticity.ip(Te[i], x_buffer)
+                    Te[i] = plasticity.ip(Te[i], x_buffer)
 
                 # Structural plasticity
                 if 'sp' not in self.freeze:
-                    Wee_t = plasticity.structural_plasticity(Wee_t)
+                    Wee[i] = plasticity.structural_plasticity(Wee[i])
 
                 # iSTDP
                 if 'istdp' not in self.freeze:
-                    Wei_t = plasticity.istdp(
+                    Wei[i] = plasticity.istdp(
                         Wei[i], x_buffer, y_buffer, cutoff_weights=(0.0, 1.0)
                     )
 
                 # Synaptic scaling Wee
-                if 'sc' not in self.freeze:
-                    Wee_t = Plasticity().ss(Wee_t)
+                if 'ss' not in self.freeze:
+                    Wee[i] = plasticity.ss(Wee[i])
 
                     # Synaptic scaling Wei
-                    Wei_t = Plasticity().ss(Wei_t)
+                    Wei[i] = plasticity.ss(Wei[i])
             else:
-                Wee_t, Wei_t, Te_t = Wee[i], Wei[i], Te[i]
+                # Wee[i], Wei[i], Te[i] remain same
+                pass
 
             # Assign the matrices to the matrix collections
-            matrix_collection.weight_matrix(Wee_t, Wei_t, Wie[i], i)
-            matrix_collection.threshold_matrix(Te_t, Ti[i], i)
+            matrix_collection.weight_matrix(Wee[i], Wei[i], Wie[i], i)
+            matrix_collection.threshold_matrix(Te[i], Ti[i], i)
             matrix_collection.network_activity_t(x_buffer, y_buffer, i)
 
             X_all[i] = x_buffer[:, 1]
