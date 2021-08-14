@@ -186,14 +186,14 @@ action_space = env.action_space.n
 # SORN network parameters
 ne = 50
 nu = 4
-# Init SORN and simulate under random input;
+# Init SORN using Simulator under random input;
 state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = np.random.randn(4,1),
                                                  phase ='plasticity',
                                                  time_steps = 1,
                                                  noise=False,
-                                                 _ne = ne, _nu=nu)
+                                                 ne = ne, nu=nu)
 
-w = np.random.rand(ne, 2)# Output layer weights
+w = np.random.rand(ne, 2) # Output layer weights
 
 # Policy
 def policy(state,w):
@@ -228,14 +228,14 @@ for EPISODE in range(NUM_EPISODES):
         # Plasticity phase
         state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = state, phase ='plasticity',
                                                         matrices = state_dict, time_steps = 1,
-                                                        _ne = ne, _nu=nu,
+                                                        ne = ne, nu=nu,
                                                         noise=False)
 
       else:
         # Training phase with frozen reservoir connectivity
         state_dict, E, I, R, C = Trainer.train_sorn(inputs = state, phase = 'training',
                                                 matrices = state_dict, time_steps = 1,
-                                                _ne = ne, _nu=nu,
+                                                ne = ne, nu=nu,
                                                 noise= False)
 
       # Feed E as input states to your RL algorithm, below goes for simple policy gradient algorithm
