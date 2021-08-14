@@ -62,7 +62,6 @@ For detailed documentation about usage and development, please visit [SORN-Docum
 
 ## Usage
 ### Plasticity Phase
-The default ```ne, nu``` values are overriden by passing them as kwargs inside ```simulate_sorn``` method.
 
 ```python
 import sorn
@@ -80,7 +79,7 @@ state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = inputs, phase='plastic
                                                 time_steps=time_steps)
 
 ```
-The network defaults are,
+The default values of the network hyperparameters are,
 
 Keyword argument | Value | Description |
 --- | --- | --- |
@@ -102,7 +101,7 @@ te_min          | 0.0      | Minimum excitatory neuron threshold value          
 mu_ip           | 0.1      | Target mean firing rate of excitatory neuron                               |
 sigma_ip        | 0.0      | Standard deviation of firing rate of excitatory neuron                     |
 
-Override the default hyperparameters using the `kwargs` as shown below,
+To override the default hyperparameters, use the `kwargs` as shown below,
 ```Python
 
 # To resume the simulation, load the state_dict from previous simulation;
@@ -115,6 +114,8 @@ state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = inputs, phase='plastic
 
 ```Python
 from sorn import Trainer
+# NOTE: During training phase, input to `sorn` should have second (time) dimension set to 1. ie., input shape should be (input_features,1).
+
 inputs = np.random.rand(num_features,1)
 
 # SORN network is frozen during training phase
@@ -172,13 +173,27 @@ from sorn import Simulator, Trainer
 import gym
 
 # Hyperparameters
-NUM_EPISODES = 2e6
-NUM_PLASTICITY_EPISODES = 20000
+NUM_EPISODES = int(2e6)
+NUM_PLASTICITY_EPISODES = 20
 
 LEARNING_RATE = 0.0001 # Gradient ascent learning rate
 GAMMA = 0.99 # Discounting factor for the Rewards
 
+# Open AI gym; Cartpole Environment
 env = gym.make('CartPole-v0')
+action_space = env.action_space.n
+
+# SORN network parameters
+ne = 50
+nu = 4
+# Init SORN and simulate under random input;
+state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = np.random.randn(4,1),
+                                                 phase ='plasticity',
+                                                 time_steps = 1,
+                                                 noise=False,
+                                                 _ne = ne, _nu=nu)
+
+w = np.random.rand(ne, 2)# Output layer weights
 
 # Policy
 def policy(state,w):
@@ -187,53 +202,58 @@ def policy(state,w):
     exp = np.exp(z)
     return exp/np.sum(exp)
 
+# Vectorized softmax Jacobian
+def softmax_grad(softmax):
+    s = softmax.reshape(-1,1)
+    return np.diagflat(s) - np.dot(s, s.T)
+
 for EPISODE in range(NUM_EPISODES):
 
     # Environment observation;
     # NOTE: Input to sorn should have time dimension. ie., input shape should be (input_features,time_steps)
     state = env.reset()[:, None] # (4,) --> (4,1)
-    state = np.array(state)
 
     grads = [] # Episode log policy gradients
     rewards = [] # Episode rewards
 
-    # Keep track of game score to print
+    # Keep track of total score
     score = 0
 
     # Play the episode
     while True:
 
       # env.render() # Uncomment to see your model train in real time (slow down training progress)
-      state = np.array(state[:,None])
-      if EPISODE < NUM_PLASTICITY_EPISODE:
+      if EPISODE < NUM_PLASTICITY_EPISODES:
 
         # Plasticity phase
         state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = state, phase ='plasticity',
-                                                        matrices = None, time_steps = 1,
-                                                        nu=4, noise=False)
+                                                        matrices = state_dict, time_steps = 1,
+                                                        _ne = ne, _nu=nu,
+                                                        noise=False)
 
       else:
         # Training phase with frozen reservoir connectivity
         state_dict, E, I, R, C = Trainer.train_sorn(inputs = state, phase = 'training',
                                                 matrices = state_dict, time_steps = 1,
-                                                nu=4, noise= False)
+                                                _ne = ne, _nu=nu,
+                                                noise= False)
 
       # Feed E as input states to your RL algorithm, below goes for simple policy gradient algorithm
       # Sample policy w.r.t excitatory states and take action in the environment
-      probs = policy(np.asarray(E),output_layer_weights))
-      action = np.random.choice(action_space,probs)
+      probs = policy(np.asarray(E),w)
+      action = np.random.choice(action_space,p=probs[0])
       state,reward,done,_ = env.step(action)
+      state = state[:,None]
 
       # COMPUTE GRADIENTS BASED ON YOUR OBJECTIVE FUNCTION;
       # Sample computation of policy gradient objective function
       dsoftmax = softmax_grad(probs)[action,:]
       dlog = dsoftmax / probs[0,action]
-      grad = np.asarray(reservoir_states).T.dot(dlog[None,:])
+      grad = np.asarray(E).T.dot(dlog[None,:])
       grads.append(grad)
       rewards.append(reward)
       score+=reward
-      # Update old state to new state
-      state = next_state
+
       if done:
           break
 
@@ -243,7 +263,7 @@ for EPISODE in range(NUM_EPISODES):
 
         # Loop through everything that happened in the episode and update towards the log policy gradient times future reward
         w += LEARNING_RATE * grads[i] * sum([ r * (GAMMA ** r) for t,r in enumerate(rewards[i:])])
-    print('Episode %s  Score %s' %(str(e),str(score)))
+    print('Episode %s  Score %s' %(str(EPISODE),str(score)))
 ```
 
 There are several neural data analysis and visualization methods inbuilt with `sorn` package. Sample call for few plotting and statistical methods are shown below;
