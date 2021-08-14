@@ -595,8 +595,8 @@ class Plotter(object):
 
         plt.scatter(y, x, s=0.1, color="black")
 
-        plt.xlabel("Time(ms)")
-        plt.ylabel("Neuron #")
+        plt.xlabel("Time step")
+        plt.ylabel("Neuron")
         plt.legend(loc="upper left")
 
         if savefig:
@@ -631,8 +631,8 @@ class Plotter(object):
         x, y = np.argwhere(spike_train.T == 1).T
 
         plt.plot(y, x, "|r")
-        plt.xlabel("Time(ms)")
-        plt.ylabel("Neuron #")
+        plt.xlabel("Time step")
+        plt.ylabel("Neuron")
 
         if savefig:
             plt.savefig("RasterSpikeTrain.png")
@@ -673,6 +673,8 @@ class Plotter(object):
             linewidths=0.0,
             cbar_kws={"shrink": 0.9},
         )
+        plt.xlabel('Neurons')
+        plt.ylabel('Neurons')
         if savefig:
             plt.savefig("Correlation between neurons")
         return None
@@ -745,11 +747,11 @@ class Plotter(object):
         y, x = np.histogram(weights, bins=bin_size)  # Create histogram with bin_size
 
         plt.scatter(x[:-1], y, s=2.0, c="black")
-        plt.xlabel("Weight")
+        plt.xlabel("Connection strength")
         plt.ylabel("Frequency")
 
         if savefig:
-            plt.savefig("weight distribution")
+            plt.savefig("weight_distribution")
 
         return plt.show()
 

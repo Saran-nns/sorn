@@ -151,7 +151,7 @@ The other options are,
 Note: If you pass all above options to `freeze`, then the network will behave as Liquid State Machine(LSM)
 
 ### Network Output Descriptions
-  `state_dict`  - Dictionary of connection weights ('Wee','Wei','Wie') , Excitatory network activity ('X'), Inhibitory network activities('Y'), Threshold values ('Te','Ti')
+  `state_dict`  - Dictionary of connection weights (`Wee`,`Wei`,`Wie`) , Excitatory network activity (`X`), Inhibitory network activities(`Y`), Threshold values (`Te`,`Ti`)
 
   `E` - Collection of Excitatory network activity of entire simulation period
 
@@ -225,7 +225,7 @@ for EPISODE in range(NUM_EPISODES):
       state,reward,done,_ = env.step(action)
 
       # COMPUTE GRADIENTS BASED ON YOUR OBJECTIVE FUNCTION;
-      # Sample computation of simple policy gradient objective function
+      # Sample computation of policy gradient objective function
       dsoftmax = softmax_grad(probs)[action,:]
       dlog = dsoftmax / probs[0,action]
       grad = np.asarray(reservoir_states).T.dot(dlog[None,:])
@@ -253,15 +253,15 @@ There are several neural data analysis and visualization methods inbuilt with `s
 ```python
 from sorn import Plotter
 # Plot weight distribution in the network
-Wee = np.random.randn(200,200)
-Wee=Wee/Wee.max() # This is for example. Wee returned by the SORN is already normalized
+Wee = np.random.randn(200,200) # For example, the network has 200 neurons in the excitatory pool. Note that generally Wee is sparse
+Wee=Wee/Wee.max() # state_dict['Wee'] returned by the SORN is already normalized
 Plotter.weight_distribution(weights= Wee, bin_size = 5, savefig = True)
 ```
 <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/weight_distribution.png" height="320" width="430"></a>
 
 ```python
 # Plot Spike train of all neurons in the network
-E = np.random.randint(2, size=(200,1000))
+E = np.random.randint(2, size=(200,1000)) # For example, activity of 200 excitatory neurons in 1000 time steps
 Plotter.scatter_plot(spike_train = E, savefig=True)
 ```
 <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/ScatterSpikeTrain.png" height="320" width="430"></a>
@@ -276,7 +276,7 @@ Plotter.raster_plot(spike_train = E[:,0:10], savefig=True)
 # Histogram of number of presynaptic connections per neuron in the excitatory pool
 Plotter.hist_incoming_conn(weights=state_dict['Wee], bin_size=10, histtype='bar', savefig=True)
 ```
-<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/hist_incoming_conn.png" height="320" width="430"></a>
+<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/hist_incoming_conn.png" height="310" width="430"></a>
 
 ```python
 # Distribution of firing rate of the network
@@ -300,28 +300,30 @@ Plotter.isi_exponential_fit(E,neuron=1,bin_size=10, savefig=True)
 
 ```python
 # Distribution of connection weights in linear and lognormal scale
-Plotter.linear_lognormal_fit(weights=state_dict['Wee'],num_points=100, savefig=True)
+Plotter.linear_lognormal_fit(weights=Wee,num_points=100, savefig=True)
 ```
-<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/LinearLognormalFit.png" height="320" width="430"></a>
+<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/LinearLognormalFit.png" height="300" width="440"></a>
 
 ```python
 # Draw network connectivity using the pearson correlation function between neurons in the excitatory pool
 Plotter.plot_network(avg_corr_coeff,corr_thres=0.01,fig_name='network.png')
 ```
-<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/network.png" height="320" width="430"></a>
+<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/network.png" height="340" width="410"></a>
 
 ## Statistics and Analysis functions
 
 ```Python
 from sorn import Statistics
 #t-lagged auto correlation between neural activity
-Statistics.autocorr(firing_rates = [1,1,5,6,3,7],t= 2)
+pearson_corr_matrix = Statistics.autocorr(firing_rates = [1,1,5,6,3,7], t= 2)
 
 # Fano factor: To verify poissonian process in spike generation of neuron 10
-Statistics.fanofactor(spike_train= E,neuron = 10,window_size = 10)
+mean_firing_rate, variance_firing_rate, fano_factor = Statistics.fanofactor(spike_train= E,
+                                                                            neuron = 10,
+                                                                            window_size = 10)
 
 # Measure the uncertainty about the origin of spike from the network using entropy
-Statistics.spike_source_entropy(spike_train= E, num_neurons=200)
+sse = Statistics.spike_source_entropy(spike_train= E, num_neurons=200)
 ```
 ## Citation
 ### Package
