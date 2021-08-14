@@ -11,7 +11,7 @@ def read(fname):
 
 setup(
     name="sorn",
-    version="0.5.2",
+    version="0.5.3",
     author="Saranraj Nambusubramaniyan",
     author_email="saran_nns@hotmail.com",
     description="Self-Organizing Recurrent Neural Networks",
@@ -20,7 +20,7 @@ setup(
                   Spiking Cortical Networks, Neural Connectomics,Neuroscience, Artificial General Intelligence, Neural Information Processing""",
     url="https://github.com/Saran-nns/sorn",
     packages=["sorn"],
-    data_files=["LICENSE.md", "sorn/configuration.ini"],
+    data_files=["LICENSE.md"],
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
     classifiers=[

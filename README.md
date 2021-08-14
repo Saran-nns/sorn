@@ -109,11 +109,16 @@ inputs = np.random.rand(num_features,1)
 # SORN network is frozen during training phase
 matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Trainer.train_sorn(inputs = inputs, phase='training', matrices=matrices_dict,_nu=num_features, time_steps=1)
 ```
-
-To turn off any plasticity mechanisms during simulation or training phase, you can use `freeze` argument.
+### Freeze plasticity
+To turn off any plasticity mechanisms during `simulation` or `training` phase, use `freeze` argument.
 For example to stop intrinsic plasticity during training phase,
 
 ```python
+# Sample input
+num_features = 10
+time_steps = 200
+inputs = np.random.rand(num_features,time_steps)
+
 matrices_dict, Exc_activity, Inh_activity, Rec_activity, num_active_connections = Simulator.simulate_sorn(inputs = inputs, phase='plasticity', matrices=None, noise = True, time_steps=time_steps, _ne = 200, _nu=num_features, freeze=['ip'])
 ```
 
