@@ -82,7 +82,7 @@ state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = inputs, phase='plastic
 ```
 The network defaults are,
 
-Keyword argument | Description | Default Value |
+Keyword argument | Default Value | Description |
 --- | --- | --- |
 ne              | 200      | Number of Encitatory neurons in the reservoir                              |
 nu              | 10       | Number of Input neurons in the reservoir                                   |
