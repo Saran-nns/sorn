@@ -140,12 +140,14 @@ class Sorn(object):
         Returns:
             x (array): Array of activity vectors of excitatory population
 
-            y (array): Array of activity vectors of inhibitory population"""
+            y (array): Array of activity vectors of inhibitory population
+        """
 
         x = np.zeros((ne, 2))
         y = np.zeros((ni, 2))
 
         return x, y
+
 
 class Plasticity(Sorn):
     """Instance of class Sorn. Inherits the variables and functions defined in class Sorn.
