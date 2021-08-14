@@ -62,7 +62,7 @@ class Sorn(object):
         self.ni = int(0.2 * self.ne)
         self.eta_stdp = 0.004
         self.eta_inhib = 0.001
-        self.eta_ip = 0.1
+        self.eta_ip = 0.01
         self.te_max = 1.0
         self.ti_max = 0.5
         self.ti_min = 0.0
