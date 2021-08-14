@@ -166,7 +166,6 @@ Sample simulation and training runs with few plotting functions are found at [![
 
 ## Usage with OpenAI gym
 ### Cartpole balance problem
-With default network parameters.
 
 ```python
 from sorn import Simulator, Trainer
@@ -211,13 +210,13 @@ for EPISODE in range(NUM_EPISODES):
         # Plasticity phase
         state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = state, phase ='plasticity',
                                                         matrices = None, time_steps = 1,
-                                                        noise=False)
+                                                        nu=4, noise=False)
 
       else:
         # Training phase with frozen reservoir connectivity
         state_dict, E, I, R, C = Trainer.train_sorn(inputs = state, phase = 'training',
                                                 matrices = state_dict, time_steps = 1,
-                                                noise= False)
+                                                nu=4, noise= False)
 
       # Feed E as input states to your RL algorithm, below goes for simple policy gradient algorithm
       # Sample policy w.r.t excitatory states and take action in the environment
@@ -291,7 +290,7 @@ from sorn import Statistics
 avg_corr_coeff,_ = Statistics.avg_corr_coeff(E)
 Plotter.correlation(avg_corr_coeff,savefig=True)
 ```
-<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/Correlation_between_neurons.png" height="320" width="430"></a>
+<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/correlation_between_neurons.png" height="320" width="430"></a>
 
 ```python
 # Inter spike intervals with exponential curve fit for neuron 1 in the Excitatory pool
