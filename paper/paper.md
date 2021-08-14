@@ -153,9 +153,9 @@ state_dict,E,I,R,C=Simulator.simulate_sorn(inputs=inputs,phase='plasticity',
 
                                         matrices=None,noise=True,
 
-                                        time_steps=time_steps,_ne=200,
+                                        time_steps=time_steps,ne=200,
 
-                                        _nu=num_features)
+                                        nu=num_features)
 ```
 'simulate_sorn' returns the dictionary of network state variables of the last time steps, the excitatory and inhibitory network activity of the whole simulation period, and also the recurrent activity and the number of active connections at each time step. To continue the simulation, load the matrices returned in the previous step as,
 
@@ -166,19 +166,19 @@ state_dict,E,I,R,C=Simulator.simulate_sorn(inputs=inputs,phase='plasticity',
 
                                         time_steps=time_steps,
 
-                                        _ne = 200,_nu=num_features)
+                                        ne = 200,nu=num_features)
 
 ```
 
 ### Network Output Descriptions
 
-`state_dict` - Dictionary of connection weights ($W_{ij}^{EE}$,$W_{ij}^{EI}$,$W_{ij}^{IE}$) ,
+`state_dict` - Dictionary of connection weights ('Wee','Wei','Wie') ,
 
-               Excitatory network activity ('E'),
+               Excitatory network activity ('X'),
 
-               Inhibitory network activities('I'),
+               Inhibitory network activities('Y'),
 
-               Threshold values $T^E,T^I$
+               Threshold values ('Te','Ti')
 
 `E` - Collection of Excitatory network activity of entire simulation period
 
