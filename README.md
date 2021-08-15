@@ -141,7 +141,7 @@ Note: If you pass all above options to `freeze`, then the network will behave as
   ```num_active_connections``` - List of number of active connections in the Excitatory pool at each time step
 
 ### Colaboratory Notebook
-Sample simulation and training runs with few plotting functions are found at [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/10TElAAE1dsgzuvaHO_NjgMAE5Pic3_jL#scrollTo=VDa0U4mf1Z75)
+Sample simulation and training runs with few plotting functions are found at [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/164AKTA-iCVLq-iR-treLA_Y9keRYrQkH#scrollTo=Rt2YZptMtC14)
 
 ## Usage with OpenAI gym
 ### Cartpole balance problem
