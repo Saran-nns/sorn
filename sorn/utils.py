@@ -594,7 +594,7 @@ class Plotter(object):
         plt.legend(loc="upper left")
 
         plt.scatter(y, x, s=0.1, color="black")
-
+        plt.title('Spike Trains')
         plt.xlabel("Time step")
         plt.ylabel("Neuron")
         plt.legend(loc="upper left")
@@ -626,7 +626,7 @@ class Plotter(object):
         firing_rates = Statistics.firing_rate_network(spike_train).tolist()
         plt.plot(firing_rates, label="Firing rate")
         plt.legend(loc="upper left")
-
+        plt.title('Spike Trains')
         # Get the indices where spike_train is 1
         x, y = np.argwhere(spike_train.T == 1).T
 
@@ -661,7 +661,7 @@ class Plotter(object):
         # Custom diverging colormap
         cmap = sns.diverging_palette(220, 10, as_cmap=True)
 
-        sns.heatmap(
+        ax = sns.heatmap(
             corr,
             mask=mask,
             cmap=cmap,
@@ -673,8 +673,10 @@ class Plotter(object):
             linewidths=0.0,
             cbar_kws={"shrink": 0.9},
         )
-        plt.xlabel('Neurons')
-        plt.ylabel('Neurons')
+        plt.title('Pearson correlation between neurons', fontsize = 20)
+        plt.xlabel('Neurons', fontsize = 15)
+        plt.ylabel('Neurons', fontsize = 15)
+
         if savefig:
             plt.savefig("Correlation between neurons")
         return None
@@ -717,8 +719,9 @@ class Plotter(object):
             exponential_func(x[1:bin_size], *popt),
             label="Exponential fit",
         )
+        plt.title('Distribution of Inter Spike Intervals and Exponential Curve Fit')
         plt.scatter(x[1:bin_size], y[1:bin_size], s=2.0, color="black", label="ISI")
-        plt.xlabel("ISI(time step)")
+        plt.xlabel("ISI")
         plt.ylabel("Frequency")
         plt.legend()
 
@@ -745,7 +748,7 @@ class Plotter(object):
             weights >= 0.01
         ]  # Remove the weight values less than 0.01 # As reported in article SORN 2013
         y, x = np.histogram(weights, bins=bin_size)  # Create histogram with bin_size
-
+        plt.title('Synaptic weight distribution')
         plt.scatter(x[:-1], y, s=2.0, c="black")
         plt.xlabel("Connection strength")
         plt.ylabel("Frequency")
@@ -795,7 +798,7 @@ class Plotter(object):
         )
 
         plt.figure(figsize=(12, 4.5))
-
+        plt.title('Curve fit on connection weight distribution')
         # Figure on linear scale
         plt.subplot(121)
         plt.plot(x, pdf)

@@ -292,7 +292,7 @@ Plotter.raster_plot(spike_train = E[:,0:10], savefig=True)
 
 ```python
 # Histogram of number of presynaptic connections per neuron in the excitatory pool
-Plotter.hist_incoming_conn(weights=state_dict['Wee], bin_size=10, histtype='bar', savefig=True)
+Plotter.hist_incoming_conn(weights=Wee, bin_size=10, histtype='bar', savefig=True)
 ```
 <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/hist_incoming_conn.png" height="310" width="430"></a>
 
@@ -312,7 +312,7 @@ Plotter.correlation(avg_corr_coeff,savefig=True)
 
 ```python
 # Inter spike intervals with exponential curve fit for neuron 1 in the Excitatory pool
-Plotter.isi_exponential_fit(E,neuron=1,bin_size=10, savefig=True)
+Plotter.isi_exponential_fit(E,neuron=1,bin_size=5, savefig=True)
 ```
 <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/isi_exponential_fit.png" height="320" width="430"></a>
 
