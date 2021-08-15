@@ -305,7 +305,7 @@ Plotter.hist_firing_rate_network(E, bin_size=10, savefig=True)
 ```python
 # Plot pearson correlation between neurons
 from sorn import Statistics
-avg_corr_coeff,_ = Statistics.avg_corr_coeff(E)
+avg_corr_coeff,_ = Statistics.avg_corr_coeff(E.T)
 Plotter.correlation(avg_corr_coeff,savefig=True)
 ```
 <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/correlation_between_neurons.png" height="320" width="430"></a>
