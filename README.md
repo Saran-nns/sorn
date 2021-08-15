@@ -294,7 +294,7 @@ Plotter.raster_plot(spike_train = E[:,0:10], savefig=True)
 # Histogram of number of presynaptic connections per neuron in the excitatory pool
 Plotter.hist_incoming_conn(weights=Wee, bin_size=10, histtype='bar', savefig=True)
 ```
-<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/hist_incoming_conn.png" height="310" width="430"></a>
+<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/hist_incoming_conn.png" height="250" width="450"></a>
 
 ```python
 # Distribution of firing rate of the network
@@ -320,7 +320,7 @@ Plotter.isi_exponential_fit(E,neuron=1,bin_size=5, savefig=True)
 # Distribution of connection weights in linear and lognormal scale
 Plotter.linear_lognormal_fit(weights=Wee,num_points=100, savefig=True)
 ```
-<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/LinearLognormalFit.png" height="300" width="440"></a>
+<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/LinearLognormalFit.png" height="200" width="450"></a>
 
 ```python
 # Draw network connectivity using the pearson correlation function between neurons in the excitatory pool
