@@ -424,7 +424,7 @@ class Plotter(object):
     def hist_incoming_conn(
         weights: np.array, bin_size: int, histtype: str, savefig: bool
     ):
-        """Plot the histogram of number of incoming connections per neuron
+        """Plot the histogram of number of presynaptic connections per neuron
 
         Args:
             weights (array): Connection weights
@@ -438,35 +438,29 @@ class Plotter(object):
         Returns:
             plot (matplotlib.pyplot): plot object
         """
-
-        # Plot the histogram of distribution of number of incoming connections in the network
-
         num_incoming_weights = np.sum(np.array(weights) > 0, axis=0)
 
         plt.figure(figsize=(12, 5))
-
-        plt.title("Number of incoming connections")
         plt.xlabel("Number of connections")
-        plt.ylabel("Count")
-        plt.hist(num_incoming_weights, bins=bin_size, histtype=histtype)
+        plt.ylabel("Probability")
 
-        # Empirical average and variance are computed
-        avg = np.mean(num_incoming_weights)
-        var = np.var(num_incoming_weights)
-        # From hist plot above, it is clear that connection count follow gaussian distribution
-        pdf_x = np.linspace(
-            np.min(num_incoming_weights), np.max(num_incoming_weights), 100
-        )
-        pdf_y = 1.0 / np.sqrt(2 * np.pi * var) * np.exp(-0.5 * (pdf_x - avg) ** 2 / var)
+        # Fit a normal distribution to the data
+        mu, std = norm.fit(num_incoming_weights)
+        plt.hist(num_incoming_weights, bins=bin_size, density=True, alpha=0.6, color='b')
 
-        plt.plot(pdf_x, pdf_y, "k--", label="Gaussian fit")
-        plt.axvline(x=avg, color="r", linestyle="--", label="Mean")
-        plt.legend()
+        # PDF
+        xmin, xmax = plt.xlim()
+        x = np.linspace(xmin, xmax, max(num_incoming_weights))
+        p = norm.pdf(x, mu, std)
+        plt.plot(x, p, 'k', linewidth=2)
+        title = "Distribution of presynaptic connections: mu = %.2f,  std = %.2f" % (mu, std)
+        plt.title(title)
 
         if savefig:
             plt.savefig("hist_incoming_conn")
 
         return plt.show()
+
 
     @staticmethod
     def hist_outgoing_conn(
@@ -491,23 +485,20 @@ class Plotter(object):
         num_outgoing_weights = np.sum(np.array(weights) > 0, axis=1)
 
         plt.figure(figsize=(12, 5))
-
-        plt.hist(num_outgoing_weights, bins=bin_size, histtype=histtype)
-        plt.title("Number of Outgoing connections")
         plt.xlabel("Number of connections")
-        plt.ylabel("Count")
-        # Empirical average and variance are computed
-        avg = np.mean(num_outgoing_weights)
-        var = np.var(num_outgoing_weights)
+        plt.ylabel("Probability")
 
-        pdf_x = np.linspace(
-            np.min(num_outgoing_weights), np.max(num_outgoing_weights), 100
-        )
-        pdf_y = 1.0 / np.sqrt(2 * np.pi * var) * np.exp(-0.5 * (pdf_x - avg) ** 2 / var)
+        # Fit a normal distribution to the data
+        mu, std = norm.fit(num_outgoing_weights)
+        plt.hist(num_outgoing_weights, bins=bin_size, density=True, alpha=0.6, color='b')
 
-        plt.plot(pdf_x, pdf_y, "k--", label="Gaussian fit")
-        plt.axvline(x=avg, color="r", linestyle="--", label="Mean")
-        plt.legend()
+        # PDF
+        xmin, xmax = plt.xlim()
+        x = np.linspace(xmin, xmax, max(num_outgoing_weights))
+        p = norm.pdf(x, mu, std)
+        plt.plot(x, p, 'k', linewidth=2)
+        title = "Distribution of post synaptic connections: mu = %.2f,  std = %.2f" % (mu, std)
+        plt.title(title)
 
         if savefig:
             plt.savefig("hist_outgoing_conn")
@@ -516,16 +507,12 @@ class Plotter(object):
 
     @staticmethod
     def network_connection_dynamics(
-        connection_counts: np.array, initial_steps: int, final_steps: int, savefig: bool
+        connection_counts: np.array, savefig: bool
     ):
         """Plot number of positive connection in the excitatory pool
 
         Args:
             connection_counts (array) - 1D Array of number of connections in the network per time step
-
-            initial_steps (int) - Plot for initial steps
-
-            final_steps (int) - Plot for final steps
 
             savefig (bool) - If True plot will be saved as png file in the cwd
 
@@ -544,30 +531,6 @@ class Plotter(object):
         plt.xlabel("Time step")
         plt.legend(loc="upper right")
         plt.tight_layout()
-
-        # Inset plot for initial simulation steps
-
-        ax2 = plt.axes([0, 0, 1, 1])
-
-        # Set the position and relative size of the inset axes within ax1
-        ip = InsetPosition(ax1, [0.25, 0.4, 0.3, 0.3])
-        ax2.set_axes_locator(ip)
-        ax2.plot(connection_counts[0:initial_steps])
-        plt.margins(x=0)
-        ax2.set_title("Initial %s time steps of Decay Phase" % initial_steps)
-        ax2.set_xticks(ax2.get_xticks()[::2])
-
-        # End Inset plot
-        ax3 = plt.axes([0, 0, 0, 0])
-
-        # Set the position and relative size of the inset axes within ax1
-        ip1 = InsetPosition(ax1, [0.6, 0.4, 0.3, 0.3])
-        ax3.set_axes_locator(ip1)
-        # Plot the last 10000 time steps
-        ax3.plot(connection_counts[-final_steps:])
-        plt.margins(x=0)
-        ax3.set_title("Final %s time steps of Stable Phase" % final_steps)
-        ax3.set_xticks(ax3.get_xticks()[::1])
 
         if savefig:
             plt.savefig("connection_dynamics")
@@ -632,8 +595,8 @@ class Plotter(object):
 
         plt.scatter(y, x, s=0.1, color="black")
 
-        plt.xlabel("Time(ms)")
-        plt.ylabel("Neuron #")
+        plt.xlabel("Time step")
+        plt.ylabel("Neuron")
         plt.legend(loc="upper left")
 
         if savefig:
@@ -668,8 +631,8 @@ class Plotter(object):
         x, y = np.argwhere(spike_train.T == 1).T
 
         plt.plot(y, x, "|r")
-        plt.xlabel("Time(ms)")
-        plt.ylabel("Neuron #")
+        plt.xlabel("Time step")
+        plt.ylabel("Neuron")
 
         if savefig:
             plt.savefig("RasterSpikeTrain.png")
@@ -710,6 +673,8 @@ class Plotter(object):
             linewidths=0.0,
             cbar_kws={"shrink": 0.9},
         )
+        plt.xlabel('Neurons')
+        plt.ylabel('Neurons')
         if savefig:
             plt.savefig("Correlation between neurons")
         return None
@@ -724,7 +689,7 @@ class Plotter(object):
         Args:
             spike_train (array): Array of spike trains
 
-            neuron (int): If True, firing rate of the network will be plotted
+            neuron (int): Target neuron
 
             bin_size (int): Spike train will be splitted into bins of size bin_size
 
@@ -733,11 +698,8 @@ class Plotter(object):
         Returns:
             plot object"""
 
-        spike_time = Statistics.spike_times(
-            spike_train.T[neuron]
-        )  # Locate the spike time of the target neuron
 
-        isi = Statistics.spike_time_intervals(spike_time)
+        isi = Statistics.spike_time_intervals(spike_train[:,neuron])
 
         y, x = np.histogram(sorted(isi), bins=bin_size)
 
@@ -785,11 +747,11 @@ class Plotter(object):
         y, x = np.histogram(weights, bins=bin_size)  # Create histogram with bin_size
 
         plt.scatter(x[:-1], y, s=2.0, c="black")
-        plt.xlabel("Weight")
+        plt.xlabel("Connection strength")
         plt.ylabel("Frequency")
 
         if savefig:
-            plt.savefig("weight distribution")
+            plt.savefig("weight_distribution")
 
         return plt.show()
 
@@ -808,15 +770,16 @@ class Plotter(object):
         Returns:
             plot object"""
 
-        X = weights.copy()
+        weights = np.array(weights.tolist())
+        weights = weights[weights >= 0.01]
 
-        M = float(np.mean(X))  # Geometric mean
-        s = float(np.std(X))  # Geometric standard deviation
+        M = float(np.mean(weights))  # Geometric mean
+        s = float(np.std(weights))  # Geometric standard deviation
 
         # Lognormal distribution parameters
 
-        mu = float(np.mean(np.log(X)))  # Mean of log(X)
-        sigma = float(np.std(np.log(X)))  # Standard deviation of log(X)
+        mu = float(np.mean(np.log(weights)))  # Mean of log(X)
+        sigma = float(np.std(np.log(weights)))  # Standard deviation of log(X)
         shape = sigma  # Scipy's shape parameter
         scale = np.exp(mu)  # Scipy's scale parameter
         median = np.exp(mu)
@@ -1117,8 +1080,7 @@ class Statistics(object):
         """
 
         spike_times = Statistics.spike_times(spike_train)
-        # isi = sorted(np.diff(spike_times)[-1])
-        isi = np.diff(spike_times)[-1]
+        isi = np.diff(spike_times[-1])
         return isi
 
     @staticmethod
