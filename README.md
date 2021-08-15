@@ -324,7 +324,7 @@ Plotter.linear_lognormal_fit(weights=Wee,num_points=100, savefig=True)
 
 ```python
 # Draw network connectivity using the pearson correlation function between neurons in the excitatory pool
-Plotter.plot_network(avg_corr_coeff,corr_thres=0.01,fig_name='network.png')
+Plotter.plot_network(avg_corr_coeff,corr_thres=0.1,fig_name='network.png')
 ```
 <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/network.png" height="340" width="410"></a>
 
