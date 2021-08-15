@@ -27,7 +27,7 @@ Plasticity Phase
    * - Keyword argument
      - Value
      - Description
-   * - ne,
+   * - ne
      - 200
      - Number of Encitatory neurons in the reservoir
    * - nu
@@ -343,7 +343,7 @@ Linear and Lognormal curve fit of Synaptic weights
     # Distribution of connection weights in linear and lognormal scale
     Plotter.linear_lognormal_fit(weights=Wee,num_points=100, savefig=True)
 
-    .. image:: https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/LinearLognormalFit.png
+.. image:: https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/LinearLognormalFit.png
 
 Network plot
 ^^^^^^^^^^^^^
