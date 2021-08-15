@@ -661,7 +661,7 @@ class Plotter(object):
         # Custom diverging colormap
         cmap = sns.diverging_palette(220, 10, as_cmap=True)
 
-        ax = sns.heatmap(
+        sns.heatmap(
             corr,
             mask=mask,
             cmap=cmap,
@@ -673,9 +673,6 @@ class Plotter(object):
             linewidths=0.0,
             cbar_kws={"shrink": 0.9},
         )
-        plt.title('Pearson correlation between neurons', fontsize = 20)
-        plt.xlabel('Neurons', fontsize = 15)
-        plt.ylabel('Neurons', fontsize = 15)
 
         if savefig:
             plt.savefig("Correlation between neurons")
