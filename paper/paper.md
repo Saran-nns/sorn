@@ -239,31 +239,31 @@ Note: If you pass all above options to freeze, then the network will behave as L
 
 The `simulate_sorn` and `train_sorn` methods accepts the following keyword arguments
 
-| kwargs                |                                          Description                                       |
-|-----------------------|--------------------------------------------------------------------------------------------|
-| `inputs`              |  External stimulus                                                                         |
-| `phase`               |  `plasticity` or `training`                                                                |
-| `matrices`            |  `state_dict` to resume simulation otherwise `None` to intialize new network               |
-| `time_steps`          |  `simulaton` total time steps. For `training` should be 1                                  |
-| `noise`               |  If `True`, Gaussian white noise will be added to excitatory field potentials              |
-| `freeze`              |  To drop any given plasticity mechanism(s) among [`'ip'`,`'stdp'`,`'istdp'`,`'ss'`, `'sp'`]|
-| `_ne`                 |  Number of Excitatory neurons in the network                                               |
-| `_nu`                 |  Number of input units among excitatory neurons                                            |
-| `_network_type_ee`    |  `sparse` or  `dense` connection between excitatory neurons                                |
-| `_network_type_ei`    |  `sparse` or  `dense` connection from inhibitory and excitatory neurons                    |
-| `_network_type_ie`    |  `sparse` or  `dense` connection from excitatory and inhibitory neurons                    |
-| `_lambda_ee`          |  Connection density between excitatory networks if network type is `sparse`                |
-| `_lambda_ei`          |  Density of connections from inhibitory to excitatory networks if network type is `sparse` |
-| `_lambda_ie`          |  Density of connections from inhibitory to excitatory networks if network type is `sparse` |
-| `_eta_stdp`           |  Hebbian learning rate of excitatory synapses                                              |
-| `_eta_inhib`          |  Hebbian learning rate synapses from inhibitory to excitatory                              |
-| `_eta_ip`             |  Learning rate of excitatory neuron threshold                                              |
-| `_te_max`             |  Maximum of excitatory neuron threshold range                                              |
-| `_ti_max`             |  Maximum of inhibitory neuron threshold range                                              |
-| `_ti_min`             |  Minimum of inhibitory neuron threshold range                                              |
-| `_te_min`             |  Minimum of excitatory neuron threshold range                                              |
-| `_mu_ip`              |  Target Mean firing rate of excitatory neuron                                              |
-| `_sigma_ip`           |  Target Standard deviation of firing rate of excitatory neuron                             |
+| kwargs               |                                          Description                                       |
+|----------------------|--------------------------------------------------------------------------------------------|
+| `inputs`             |  External stimulus                                                                         |
+| `phase`              |  `plasticity` or `training`                                                                |
+| `matrices`           |  `state_dict` to resume simulation otherwise `None` to intialize new network               |
+| `time_steps`         |  `simulaton` total time steps. For `training` should be 1                                  |
+| `noise`              |  If `True`, Gaussian white noise will be added to excitatory field potentials              |
+| `freeze`             |  To drop any given plasticity mechanism(s) among [`'ip'`,`'stdp'`,`'istdp'`,`'ss'`, `'sp'`]|
+| `ne`                 |  Number of Excitatory neurons in the network                                               |
+| `nu`                 |  Number of input units among excitatory neurons                                            |
+| `network_type_ee`    |  `sparse` or  `dense` connection between excitatory neurons                                |
+| `network_type_ei`    |  `sparse` or  `dense` connection from inhibitory and excitatory neurons                    |
+| `network_type_ie`    |  `sparse` or  `dense` connection from excitatory and inhibitory neurons                    |
+| `lambda_ee`          |  Connection density between excitatory networks if network type is `sparse`                |
+| `lambda_ei`          |  Density of connections from inhibitory to excitatory networks if network type is `sparse` |
+| `lambda_ie`          |  Density of connections from inhibitory to excitatory networks if network type is `sparse` |
+| `eta_stdp`           |  Hebbian learning rate of excitatory synapses                                              |
+| `eta_inhib`          |  Hebbian learning rate synapses from inhibitory to excitatory                              |
+| `eta_ip`             |  Learning rate of excitatory neuron threshold                                              |
+| `te_max`             |  Maximum of excitatory neuron threshold range                                              |
+| `ti_max`             |  Maximum of inhibitory neuron threshold range                                              |
+| `ti_min`             |  Minimum of inhibitory neuron threshold range                                              |
+| `te_min`             |  Minimum of excitatory neuron threshold range                                              |
+| `mu_ip`              |  Target Mean firing rate of excitatory neuron                                              |
+| `sigma_ip`           |  Target Standard deviation of firing rate of excitatory neuron                             |
 
 
 ### Analysis functions
