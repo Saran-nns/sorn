@@ -13,7 +13,7 @@ The network is developed as part of my Master thesis at Universität Osnabrück,
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/sorn.svg)
 [![DOI](https://zenodo.org/badge/174756058.svg)](https://zenodo.org/badge/latestdoi/174756058)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/10TElAAE1dsgzuvaHO_NjgMAE5Pic3_jL#scrollTo=VDa0U4mf1Z75)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/164AKTA-iCVLq-iR-treLA_Y9keRYrQkH#scrollTo=Rt2YZptMtC14)
 [![status](https://joss.theoj.org/papers/7dc447f7a0d17d774b59c8ee15c223c2/status.svg)](https://joss.theoj.org/papers/7dc447f7a0d17d774b59c8ee15c223c2)
 
 <h4 align="Left">SORN Reservoir and the evolution of synaptic efficacies</h4>
@@ -78,7 +78,12 @@ state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = inputs, phase='plastic
                                                 matrices=None, noise = True,
                                                 time_steps=time_steps)
 
+# Prints
+Network Initialized
+Number of connections in Wee 3909 , Wei 1574, Wie 8000
+Shapes Wee (200, 200) Wei (40, 200) Wie (200, 40)
 ```
+
 The default values of the network hyperparameters are,
 
 Keyword argument | Value | Description |
@@ -105,8 +110,26 @@ To override the default hyperparameters, use the `kwargs` as shown below,
 ```python
 state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = inputs, phase='plasticity',
                                                 matrices=None, noise= True,
+                                                time_steps=time_steps)
+```
+#### Override default values and simulate new SORN model
+
+```python
+
+# Sample input
+num_features = 5
+time_steps = 1000
+inputs = np.random.rand(num_features,time_steps)
+
+state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = inputs, phase='plasticity',
+                                                matrices=None, noise = True,
                                                 time_steps=time_steps,
-                                                ne = 200, nu=num_features)
+                                                ne = 100, nu=num_features,
+                                                lambda_ee = 10, eta_stdp=0.001)
+# Prints
+Network Initialized
+Number of connections in Wee 959 , Wei 797, Wie 2000
+Shapes Wee (100, 100) Wei (20, 100) Wie (100, 20)
 ```
 ### Training phase
 
@@ -118,8 +141,10 @@ inputs = np.random.rand(num_features,1)
 
 # SORN network is frozen during training phase
 state_dict, E, I, R, C = Trainer.train_sorn(inputs = inputs, phase='training',
-                                            matrices=state_dict,
-                                            nu=num_features, time_steps=1)
+                                            matrices=state_dict, noise= False,
+                                            time_steps=1,
+                                            ne = 100, nu=num_features,
+                                            lambda_ee = 10, eta_stdp=0.001 )
 ```
 ### Freeze plasticity
 To turn off any plasticity mechanisms during `simulation` or `training` phase, use `freeze` argument.
@@ -128,16 +153,36 @@ For example to stop intrinsic plasticity during simulation phase,
 ```python
 # Sample input
 num_features = 10
-time_steps = 200
+time_steps = 20
 inputs = np.random.rand(num_features,time_steps)
 
 state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = inputs, phase='plasticity',
                                                 matrices=None, noise = True,
-                                                time_steps=time_steps, ne = 200,
+                                                time_steps=time_steps, ne = 50,
                                                 nu=num_features, freeze=['ip'])
 ```
+To train the above model under plasticity mechanisms except `ip` and `istdp`, use `freeze` argument
 
-The other options are,
+```python
+
+state_dict, E, I, R, C = Trainer.train_sorn(inputs = inputs, phase='plasticity',
+                                            matrices=state_dict, noise= False,
+                                            time_steps=1,
+                                            ne = 50, nu=num_features,
+                                            freeze=['ip','istdp'])
+
+```
+To train the above model with all plasticity mechanisms frozen , change the `phase` argument value to `training`
+
+```python
+state_dict, E, I, R, C = Trainer.train_sorn(inputs = inputs, phase='training',
+                                            matrices=state_dict, noise= False,
+                                            time_steps=1,
+                                            ne = 50, nu=num_features)
+```
+
+
+The other options for `freeze` keyword argument are,
 
 `stdp` - Spike Timing Dependent Plasticity
 
@@ -147,7 +192,7 @@ The other options are,
 
 `istdp` - Inhibitory Spike Timing Dependent Plasticity
 
-Note: If you pass all above options to `freeze`, then the network will behave as Liquid State Machine(LSM)
+Note: If you pass all above options to `freeze`, then the network will behave as Liquid State Machine(LSM).i,e., the connections strengths and thresholds remains fixed at the random intial state.
 
 ### Network Output Descriptions
   `state_dict`  - Dictionary of connection weights (`Wee`,`Wei`,`Wie`) , Excitatory network activity (`X`), Inhibitory network activities(`Y`), Threshold values (`Te`,`Ti`)
