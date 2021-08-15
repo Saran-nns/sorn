@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.5.3
+                0.5.7
               </div>
             
           
@@ -208,14 +208,14 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>nu</strong> (<em>int</em>) – Number of input units. Defaults to 10</p></li>
-<li><p><strong>ne</strong> (<em>int</em>) – Sorn._ne  # Number of excitatory units. Defaults to 200</p></li>
+<li><p><strong>ne</strong> (<em>int</em>) – Number of excitatory units. Defaults to 200</p></li>
 <li><p><strong>eta_stdp</strong> (<em>float</em>) – STDP plasticity Learning rate constant; SORN1 and SORN2. Defaults to 0.004</p></li>
 <li><p><strong>eta_ip</strong> (<em>float</em>) – Intrinsic plasticity learning rate constant; SORN1 and SORN2. Defaults to 0.001</p></li>
 <li><p><strong>eta_inhib</strong> (<em>float</em>) – Intrinsic plasticity learning rate constant; SORN2 only. Defaults to 0.01</p></li>
-<li><p><strong>h_ip</strong> (<em>float</em>) – Target firing rate. Defaults to 2 * Sorn._nu / Sorn._ne</p></li>
+<li><p><strong>h_ip</strong> (<em>float</em>) – Target firing rate. Defaults to 2 * nu / ne</p></li>
 <li><p><strong>mu_ip</strong> (<em>float</em>) – Mean target firing rate. Defaults to 0.1</p></li>
 <li><p><strong>sigma_ip</strong> (<em>float</em>) – Variance of target firing rate. Defaults to 0.0</p></li>
-<li><p><strong>ni</strong> (<em>int</em>) – Number of inhibitory units in the network. Defaults to int(0.2 * Sorn._ne)</p></li>
+<li><p><strong>ni</strong> (<em>int</em>) – Number of inhibitory units in the network. Defaults to int(0.2*ne)</p></li>
 <li><p><strong>time_steps</strong> (<em>float</em>) – Total time steps of simulation</p></li>
 <li><p><strong>te_min</strong> (<em>float</em>) – Excitatory minimum Threshold. Defaults to 0.0</p></li>
 <li><p><strong>te_max</strong> (<em>float</em>) – Excitatory maximum Threshold. Defaults to 1.0</p></li>
@@ -230,72 +230,159 @@
 </ul>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eta_inhib</code><em class="property"> = 0.001</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eta_ip</code><em class="property"> = 0.01</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">eta_stdp</code><em class="property"> = 0.004</em></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt>
-<code class="sig-name descname">initialize_activity_vector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ne</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">ni</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#Sorn.initialize_activity_vector"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Initialize the activity vectors X and Y for excitatory and inhibitory neurons</p>
+<em class="property">static </em><code class="sig-name descname">initialize_activity_vector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ne</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">ni</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#Sorn.initialize_activity_vector"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Initialize the activity vectors X and Y for excitatory and inhibitory neurons
+:param ne: Number of excitatory neurons
+:type ne: int
+:param ni: Number of inhibitory neurons
+:type ni: int</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ne</strong> (<em>int</em>) – Number of excitatory neurons</p></li>
-<li><p><strong>ni</strong> (<em>int</em>) – Number of inhibitory neurons</p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Array of activity vectors of excitatory population
+y (array): Array of activity vectors of inhibitory population</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><p>Array of activity vectors of excitatory population</p>
-<p>y (array): Array of activity vectors of inhibitory population</p>
-</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>x (array)</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>x (array)</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt>
-<code class="sig-name descname">initialize_threshold_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">te_min</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">te_max</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">ti_min</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">ti_max</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#Sorn.initialize_threshold_matrix"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Initialize the threshold for excitatory and inhibitory neurons</p>
+<em class="property">static </em><code class="sig-name descname">initialize_threshold_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">te_min</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">te_max</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">ti_min</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">ti_max</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#Sorn.initialize_threshold_matrix"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Initialize the threshold for excitatory and inhibitory neurons
+:param te_min: Min threshold value for excitatory units
+:type te_min: float
+:param te_max: Min threshold value for inhibitory units
+:type te_max: float
+:param ti_min: Max threshold value for excitatory units
+:type ti_min: float
+:param ti_max: Max threshold value for inhibitory units
+:type ti_max: float</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>te_min</strong> (<em>float</em>) – Min threshold value for excitatory units</p></li>
-<li><p><strong>te_max</strong> (<em>float</em>) – Min threshold value for inhibitory units</p></li>
-<li><p><strong>ti_min</strong> (<em>float</em>) – Max threshold value for excitatory units</p></li>
-<li><p><strong>ti_max</strong> (<em>float</em>) – Max threshold value for inhibitory units</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Threshold values for excitatory units
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Threshold values for excitatory units
 ti (array): Threshold values for inhibitory units</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>te (array)</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>te (array)</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt>
-<code class="sig-name descname">initialize_weight_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">network_type</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">synaptic_connection</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">self_connection</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">lambd_w</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#Sorn.initialize_weight_matrix"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Wrapper for initializing the weight matrices for SORN</p>
+<em class="property">static </em><code class="sig-name descname">initialize_weight_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">network_type</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">synaptic_connection</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">self_connection</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">lambd_w</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#Sorn.initialize_weight_matrix"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Wrapper for initializing the weight matrices for SORN
+:param network_type: Spare or Dense
+:type network_type: str
+:param synaptic_connection: EE,EI,IE. Note that Spare connection is defined only for EE connections
+:type synaptic_connection: str
+:param self_connection: True or False: Synaptic delay or time delay
+:type self_connection: str
+:param lambd_w: Average number of incoming and outgoing connections per neuron
+:type lambd_w: int</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>network_type</strong> (<em>str</em>) – Spare or Dense</p></li>
-<li><p><strong>synaptic_connection</strong> (<em>str</em>) – EE,EI,IE. Note that Spare connection is defined only for EE connections</p></li>
-<li><p><strong>self_connection</strong> (<em>str</em>) – True or False: Synaptic delay or time delay</p></li>
-<li><p><strong>lambd_w</strong> (<em>int</em>) – Average number of incoming and outgoing connections per neuron</p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Array of connection strengths</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Array of connection strengths</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>weight_matrix (array)</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>weight_matrix (array)</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">lambda_ee</code><em class="property"> = 20</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">lambda_ei</code><em class="property"> = 40</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">lambda_ie</code><em class="property"> = 100</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">mu_ip</code><em class="property"> = 0.1</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">ne</code><em class="property"> = 200</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">network_type_ee</code><em class="property"> = 'Sparse'</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">network_type_ei</code><em class="property"> = 'Sparse'</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">network_type_ie</code><em class="property"> = 'Dense'</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">ni</code><em class="property"> = 40</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">nu</code><em class="property"> = 10</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">sigma_ip</code><em class="property"> = 0.0</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">te_max</code><em class="property"> = 1.0</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">te_min</code><em class="property"> = 0.0</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">ti_max</code><em class="property"> = 0.5</em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">ti_min</code><em class="property"> = 0.0</em></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -306,35 +393,32 @@ ti (array): Threshold values for inhibitory units</p>
 <dl class="py class">
 <dt>
 <em class="property">class </em><code class="sig-prename descclassname">sorn.sorn.</code><code class="sig-name descname">MatrixCollection</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">phase</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">matrices</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#MatrixCollection"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Collect all matrices initialized and updated during simulation (plasiticity and training phases)</p>
+<dd><p>Collect all matrices initialized and updated during simulation (plasiticity and training phases)
+:param phase: Training or Plasticity phase
+:type phase: str
+:param matrices: Network activity, threshold and connection matrices
+:type matrices: dict</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>phase</strong> (<em>str</em>) – Training or Plasticity phase</p></li>
-<li><p><strong>matrices</strong> (<em>dict</em>) – Network activity, threshold and connection matrices</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>MatrixCollection instance</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>MatrixCollection instance</p>
 </dd>
 </dl>
 <dl class="py method">
 <dt>
 <code class="sig-name descname">network_activity_t</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">excitatory_net</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">inhibitory_net</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">i</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#MatrixCollection.network_activity_t"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Network state at current time step</p>
+<dd><p>Network state at current time step
+:param excitatory_net: Excitatory network activity
+:type excitatory_net: array
+:param inhibitory_net: Inhibitory network activity
+:type inhibitory_net: array
+:param i: Time step
+:type i: int</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>excitatory_net</strong> (<em>array</em>) – Excitatory network activity</p></li>
-<li><p><strong>inhibitory_net</strong> (<em>array</em>) – Inhibitory network activity</p></li>
-<li><p><strong>i</strong> (<em>int</em>) – Time step</p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Updated Excitatory and Inhibitory states</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Updated Excitatory and Inhibitory states</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>tuple (array)</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple (array)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -342,20 +426,19 @@ ti (array): Threshold values for inhibitory units</p>
 <dl class="py method">
 <dt>
 <code class="sig-name descname">network_activity_t_1</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">y</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">i</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#MatrixCollection.network_activity_t_1"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Network activity at previous time step</p>
+<dd><p>Network activity at previous time step
+:param x: Excitatory network activity
+:type x: array
+:param y: Inhibitory network activity
+:type y: array
+:param i: Time step
+:type i: int</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>array</em>) – Excitatory network activity</p></li>
-<li><p><strong>y</strong> (<em>array</em>) – Inhibitory network activity</p></li>
-<li><p><strong>i</strong> (<em>int</em>) – Time step</p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Previous Excitatory and Inhibitory states</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Previous Excitatory and Inhibitory states</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>tuple (array)</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple (array)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -363,20 +446,19 @@ ti (array): Threshold values for inhibitory units</p>
 <dl class="py method">
 <dt>
 <code class="sig-name descname">threshold_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">te</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">ti</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">i</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#MatrixCollection.threshold_matrix"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Update threshold matrices</p>
+<dd><p>Update threshold matrices
+:param te: Excitatory threshold
+:type te: array
+:param ti: Inhibitory threshold
+:type ti: array
+:param i: Time step
+:type i: int</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>te</strong> (<em>array</em>) – Excitatory threshold</p></li>
-<li><p><strong>ti</strong> (<em>array</em>) – Inhibitory threshold</p></li>
-<li><p><strong>i</strong> (<em>int</em>) – Time step</p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Threshold Matrices Te and Ti</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Threshold Matrices Te and Ti</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>tuple (array)</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple (array)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -384,21 +466,21 @@ ti (array): Threshold values for inhibitory units</p>
 <dl class="py method">
 <dt>
 <code class="sig-name descname">weight_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wee</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">wei</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">wie</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">i</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#MatrixCollection.weight_matrix"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Update weight matrices</p>
+<dd><p>Update weight matrices
+:param wee: Excitatory-Excitatory weight matrix
+:type wee: array
+:param wei: Inhibitory-Excitatory weight matrix
+:type wei: array
+:param wie: Excitatory-Inhibitory weight matrix
+:type wie: array
+:param i: Time step
+:type i: int</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>wee</strong> (<em>array</em>) – Excitatory-Excitatory weight matrix</p></li>
-<li><p><strong>wei</strong> (<em>array</em>) – Inhibitory-Excitatory weight matrix</p></li>
-<li><p><strong>wie</strong> (<em>array</em>) – Excitatory-Inhibitory weight matrix</p></li>
-<li><p><strong>i</strong> (<em>int</em>) – Time step</p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Weight Matrices Wee, Wei, Wie</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Weight Matrices Wee, Wei, Wie</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>tuple (array)</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple (array)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -413,40 +495,47 @@ ti (array): Threshold values for inhibitory units</p>
 <dt>
 <em class="property">class </em><code class="sig-prename descclassname">sorn.sorn.</code><code class="sig-name descname">Plasticity</code><a class="reference internal" href="_modules/sorn/sorn.html#Plasticity"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Instance of class Sorn. Inherits the variables and functions defined in class Sorn.
-It encapsulates all plasticity mechanisms mentioned in the article. Inherits all attributed from parent class Sorn</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>nu</strong> (<em>int</em>) – Number of input units. Defaults to 10</p></li>
-<li><p><strong>ne</strong> (<em>int</em>) – Sorn._ne  # Number of excitatory units. Defaults to 200</p></li>
-<li><p><strong>eta_stdp</strong> (<em>float</em>) – STDP plasticity Learning rate constant; SORN1 and SORN2. Defaults to 0.004</p></li>
-<li><p><strong>eta_ip</strong> (<em>float</em>) – Intrinsic plasticity learning rate constant; SORN1 and SORN2. Defaults to 0.001</p></li>
-<li><p><strong>eta_inhib</strong> (<em>float</em>) – Intrinsic plasticity learning rate constant; SORN2 only. Defaults to 0.01</p></li>
-<li><p><strong>h_ip</strong> (<em>float</em>) – Target firing rate. Defaults to 2 * Sorn._nu / Sorn._ne</p></li>
-<li><p><strong>mu_ip</strong> (<em>float</em>) – Mean target firing rate. Defaults to 0.1</p></li>
-<li><p><strong>sigma_ip</strong> (<em>float</em>) – Variance of target firing rate. Defaults to 0.0</p></li>
-<li><p><strong>ni</strong> (<em>int</em>) – Number of inhibitory units in the network. Defaults to int(0.2 * Sorn._ne)</p></li>
-<li><p><strong>time_steps</strong> (<em>float</em>) – Total time steps of simulation</p></li>
-<li><p><strong>te_min</strong> (<em>float</em>) – Excitatory minimum Threshold. Defaults to 0.0</p></li>
-<li><p><strong>te_max</strong> (<em>float</em>) – Excitatory maximum Threshold. Defaults to 1.0</p></li>
-<li><p><strong>ti_min</strong> (<em>float</em>) – Inhibitory minimum Threshold. Defaults to 0.0</p></li>
-<li><p><strong>ti_max</strong> (<em>float</em>) – Inhibitory maximum Threshold. Defaults to 0.5</p></li>
-</ul>
-</dd>
-</dl>
+It encapsulates all plasticity mechanisms mentioned in the article. Inherits all attributed from parent class Sorn
+:param nu: Number of input units. Defaults to 10
+:type nu: int
+:param ne: Sorn.ne  # Number of excitatory units. Defaults to 200
+:type ne: int
+:param eta_stdp: STDP plasticity Learning rate constant; SORN1 and SORN2. Defaults to 0.004
+:type eta_stdp: float
+:param eta_ip: Intrinsic plasticity learning rate constant; SORN1 and SORN2. Defaults to 0.001
+:type eta_ip: float
+:param eta_inhib: Intrinsic plasticity learning rate constant; SORN2 only. Defaults to 0.01
+:type eta_inhib: float
+:param h_ip: Target firing rate. Defaults to 2 * Sorn.nu / Sorn.ne
+:type h_ip: float
+:param mu_ip: Mean target firing rate. Defaults to 0.1
+:type mu_ip: float
+:param sigma_ip: Variance of target firing rate. Defaults to 0.0
+:type sigma_ip: float
+:param ni: Number of inhibitory units in the network. Defaults to int(0.2 * Sorn.ne)
+:type ni: int
+:param time_steps: Total time steps of simulation
+:type time_steps: float
+:param te_min: Excitatory minimum Threshold. Defaults to 0.0
+:type te_min: float
+:param te_max: Excitatory maximum Threshold. Defaults to 1.0
+:type te_max: float
+:param ti_min: Inhibitory minimum Threshold. Defaults to 0.0
+:type ti_min: float
+:param ti_max: Inhibitory maximum Threshold. Defaults to 0.5
+:type ti_max: float</p>
 <dl class="py method">
 <dt>
-<code class="sig-name descname">initialize_plasticity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#Plasticity.initialize_plasticity"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Initialize weight matrices for plasticity phase based on network configuration</p>
+<em class="property">static </em><code class="sig-name descname">initialize_plasticity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#Plasticity.initialize_plasticity"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Initialize weight matrices for plasticity phase based on network configuration
+:param kwargs: All arguments are inherited from Sorn attributes
+:type kwargs: self.__dict__</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>kwargs</strong> (<em>self.__dict__</em>) – All arguments are inherited from Sorn attributes</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Weight matrices WEI, WEE, WIE and threshold matrices Te, Ti and Initial state vectors X,Y</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Weight matrices WEI, WEE, WIE and threshold matrices Te, Ti and Initial state vectors X,Y</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>tuple(array)</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple(array)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -454,19 +543,17 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 <dl class="py method">
 <dt>
 <code class="sig-name descname">ip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">te</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">x</span><span class="p">:</span> <span class="n">numpy.array</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#Plasticity.ip"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Intrinsic Plasiticity mechanism</p>
+<dd><p>Intrinsic Plasiticity mechanism
+:param te: Threshold vector of excitatory units
+:type te: array
+:param x: Excitatory network activity
+:type x: array</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>te</strong> (<em>array</em>) – Threshold vector of excitatory units</p></li>
-<li><p><strong>x</strong> (<em>array</em>) – Excitatory network activity</p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Threshold vector of excitatory units</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Threshold vector of excitatory units</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>te (array)</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>te (array)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -474,21 +561,21 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 <dl class="py method">
 <dt>
 <code class="sig-name descname">istdp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wei</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">x</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">y</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">cutoff_weights</span><span class="p">:</span> <span class="n">list</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#Plasticity.istdp"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Apply iSTDP rule, which regulates synaptic strength between the pre inhibitory(Xj) and post Excitatory(Xi) synaptic neurons</p>
+<dd><p>Apply iSTDP rule, which regulates synaptic strength between the pre inhibitory(Xj) and post Excitatory(Xi) synaptic neurons
+:param wei: Synaptic strengths from inhibitory to excitatory
+:type wei: array
+:param x: Excitatory network activity
+:type x: array
+:param y: Inhibitory network activity
+:type y: array
+:param cutoff_weights: Maximum and minimum weight ranges
+:type cutoff_weights: list</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>wei</strong> (<em>array</em>) – Synaptic strengths from inhibitory to excitatory</p></li>
-<li><p><strong>x</strong> (<em>array</em>) – Excitatory network activity</p></li>
-<li><p><strong>y</strong> (<em>array</em>) – Inhibitory network activity</p></li>
-<li><p><strong>cutoff_weights</strong> (<em>list</em>) – Maximum and minimum weight ranges</p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Synaptic strengths from inhibitory to excitatory</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Synaptic strengths from inhibitory to excitatory</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>wei (array)</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>wei (array)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -496,16 +583,15 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 <dl class="py method">
 <dt>
 <em class="property">static </em><code class="sig-name descname">ss</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wee</span><span class="p">:</span> <span class="n">numpy.array</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#Plasticity.ss"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Synaptic Scaling or Synaptic Normalization</p>
+<dd><p>Synaptic Scaling or Synaptic Normalization
+:param wee: Weight matrix
+:type wee: array</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>wee</strong> (<em>array</em>) – Weight matrix</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Scaled Weight matrix</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Scaled Weight matrix</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>wee (array)</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>wee (array)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -513,20 +599,19 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 <dl class="py method">
 <dt>
 <code class="sig-name descname">stdp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wee</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">x</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">cutoff_weights</span><span class="p">:</span> <span class="n">list</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#Plasticity.stdp"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Apply STDP rule : Regulates synaptic strength between the pre(Xj) and post(Xi) synaptic neurons</p>
+<dd><p>Apply STDP rule : Regulates synaptic strength between the pre(Xj) and post(Xi) synaptic neurons
+:param wee: Weight matrix
+:type wee: array
+:param x: Excitatory network activity
+:type x: array
+:param cutoff_weights: Maximum and minimum weight ranges
+:type cutoff_weights: list</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>wee</strong> (<em>array</em>) – Weight matrix</p></li>
-<li><p><strong>x</strong> (<em>array</em>) – Excitatory network activity</p></li>
-<li><p><strong>cutoff_weights</strong> (<em>list</em>) – Maximum and minimum weight ranges</p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Weight matrix</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Weight matrix</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>wee (array)</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>wee (array)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -534,16 +619,15 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 <dl class="py method">
 <dt>
 <em class="property">static </em><code class="sig-name descname">structural_plasticity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wee</span><span class="p">:</span> <span class="n">numpy.array</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#Plasticity.structural_plasticity"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Add new connection value to the smallest weight between excitatory units randomly</p>
+<dd><p>Add new connection value to the smallest weight between excitatory units randomly
+:param wee: Weight matrix
+:type wee: array</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>wee</strong> (<em>array</em>) – Weight matrix</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Weight matrix</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Weight matrix</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>wee (array)</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>wee (array)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -557,38 +641,39 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 <dl class="py class">
 <dt>
 <em class="property">class </em><code class="sig-prename descclassname">sorn.sorn.</code><code class="sig-name descname">NetworkState</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v_t</span><span class="p">:</span> <span class="n">numpy.array</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#NetworkState"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>The evolution of network states</p>
+<dd><p>The evolution of network states
+:param v_t: External input/stimuli
+:type v_t: array</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>v_t</strong> (<em>array</em>) – External input/stimuli</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>NetworkState instance</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>NetworkState instance</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>instance (object)</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>instance (object)</p>
 </dd>
 </dl>
 <dl class="py method">
 <dt>
 <code class="sig-name descname">excitatory_network_state</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wee</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">wei</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">te</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">x</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">y</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">white_noise_e</span><span class="p">:</span> <span class="n">numpy.array</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#NetworkState.excitatory_network_state"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Activity of Excitatory neurons in the network</p>
+<dd><p>Activity of Excitatory neurons in the network
+:param wee: Excitatory-Excitatory weight matrix
+:type wee: array
+:param wei: Inhibitory-Excitatory weight matrix
+:type wei: array
+:param te: Excitatory threshold
+:type te: array
+:param x: Excitatory network activity
+:type x: array
+:param y: Inhibitory network activity
+:type y: array
+:param white_noise_e: Gaussian noise
+:type white_noise_e: array</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>wee</strong> (<em>array</em>) – Excitatory-Excitatory weight matrix</p></li>
-<li><p><strong>wei</strong> (<em>array</em>) – Inhibitory-Excitatory weight matrix</p></li>
-<li><p><strong>te</strong> (<em>array</em>) – Excitatory threshold</p></li>
-<li><p><strong>x</strong> (<em>array</em>) – Excitatory network activity</p></li>
-<li><p><strong>y</strong> (<em>array</em>) – Inhibitory network activity</p></li>
-<li><p><strong>white_noise_e</strong> (<em>array</em>) – Gaussian noise</p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Current Excitatory network activity</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Current Excitatory network activity</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>x (array)</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>x (array)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -596,19 +681,17 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 <dl class="py method">
 <dt>
 <code class="sig-name descname">incoming_drive</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">weights</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">activity_vector</span><span class="p">:</span> <span class="n">numpy.array</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#NetworkState.incoming_drive"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Excitatory Post synaptic potential towards neurons in the reservoir in the absence of external input</p>
+<dd><p>Excitatory Post synaptic potential towards neurons in the reservoir in the absence of external input
+:param weights: Synaptic strengths
+:type weights: array
+:param activity_vector: Acitivity of inhibitory or Excitatory neurons
+:type activity_vector: list</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>weights</strong> (<em>array</em>) – Synaptic strengths</p></li>
-<li><p><strong>activity_vector</strong> (<em>list</em>) – Acitivity of inhibitory or Excitatory neurons</p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Excitatory Post synaptic potential towards neurons</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Excitatory Post synaptic potential towards neurons</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>incoming (array)</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>incoming (array)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -616,22 +699,23 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 <dl class="py method">
 <dt>
 <code class="sig-name descname">inhibitory_network_state</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wie</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">ti</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">y</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">white_noise_i</span><span class="p">:</span> <span class="n">numpy.array</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#NetworkState.inhibitory_network_state"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Activity of Excitatory neurons in the network</p>
+<dd><p>Activity of Excitatory neurons in the network
+:param wee: Excitatory-Excitatory weight matrix
+:type wee: array
+:param wie: Excitatory-Inhibitory weight matrix
+:type wie: array
+:param ti: Inhibitory threshold
+:type ti: array
+:param y: Inhibitory network activity
+:type y: array
+:param white_noise_i: Gaussian noise
+:type white_noise_i: array</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>wee</strong> (<em>array</em>) – Excitatory-Excitatory weight matrix</p></li>
-<li><p><strong>wie</strong> (<em>array</em>) – Excitatory-Inhibitory weight matrix</p></li>
-<li><p><strong>ti</strong> (<em>array</em>) – Inhibitory threshold</p></li>
-<li><p><strong>y</strong> (<em>array</em>) – Inhibitory network activity</p></li>
-<li><p><strong>white_noise_i</strong> (<em>array</em>) – Gaussian noise</p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Current Inhibitory network activity</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Current Inhibitory network activity</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>y (array)</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>y (array)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -639,23 +723,25 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 <dl class="py method">
 <dt>
 <code class="sig-name descname">recurrent_drive</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wee</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">wei</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">te</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">x</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">y</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">white_noise_e</span><span class="p">:</span> <span class="n">numpy.array</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#NetworkState.recurrent_drive"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Network state due to recurrent drive received by the each unit at time t+1. Activity of Excitatory neurons without external stimuli</p>
+<dd><p>Network state due to recurrent drive received by the each unit at time t+1. Activity of Excitatory neurons without external stimuli
+:param wee: Excitatory-Excitatory weight matrix
+:type wee: array
+:param wei: Inhibitory-Excitatory weight matrix
+:type wei: array
+:param te: Excitatory threshold
+:type te: array
+:param x: Excitatory network activity
+:type x: array
+:param y: Inhibitory network activity
+:type y: array
+:param white_noise_e: Gaussian noise
+:type white_noise_e: array</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>wee</strong> (<em>array</em>) – Excitatory-Excitatory weight matrix</p></li>
-<li><p><strong>wei</strong> (<em>array</em>) – Inhibitory-Excitatory weight matrix</p></li>
-<li><p><strong>te</strong> (<em>array</em>) – Excitatory threshold</p></li>
-<li><p><strong>x</strong> (<em>array</em>) – Excitatory network activity</p></li>
-<li><p><strong>y</strong> (<em>array</em>) – Inhibitory network activity</p></li>
-<li><p><strong>white_noise_e</strong> (<em>array</em>) – Gaussian noise</p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Recurrent network state</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Recurrent network state</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>xt (array)</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>xt (array)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -669,54 +755,55 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 <dl class="py class">
 <dt>
 <em class="property">class </em><code class="sig-prename descclassname">sorn.sorn.</code><code class="sig-name descname">Simulator_</code><a class="reference internal" href="_modules/sorn/sorn.html#Simulator_"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Simulate SORN using external input/noise using the fresh or pretrained matrices</p>
+<dd><p>Simulate SORN using external input/noise using the fresh or pretrained matrices
+:param inputs: External stimuli. Defaults to None.
+:type inputs: np.array, optional
+:param phase: Plasticity phase. Defaults to “plasticity”.
+:type phase: str, optional
+:param matrices: Network states, connections and threshold matrices. Defaults to None.
+:type matrices: dict, optional
+:param time_steps: Total number of time steps to simulate the network. Defaults to 1.
+:type time_steps: int, optional
+:param noise: If True, noise will be added. Defaults to True.
+:type noise: bool, optional</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>inputs</strong> (<em>np.array</em><em>, </em><em>optional</em>) – External stimuli. Defaults to None.</p></li>
-<li><p><strong>phase</strong> (<em>str</em><em>, </em><em>optional</em>) – Plasticity phase. Defaults to “plasticity”.</p></li>
-<li><p><strong>matrices</strong> (<em>dict</em><em>, </em><em>optional</em>) – Network states, connections and threshold matrices. Defaults to None.</p></li>
-<li><p><strong>time_steps</strong> (<em>int</em><em>, </em><em>optional</em>) – Total number of time steps to simulate the network. Defaults to 1.</p></li>
-<li><p><strong>noise</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, noise will be added. Defaults to True.</p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Network states, connections and threshold matrices
+X_all (array): Excitatory network activity collected during entire simulation steps
+Y_all (array): Inhibitory network activity collected during entire simulation steps
+R_all (array): Recurrent network activity collected during entire simulation steps
+frac_pos_active_conn (list): Number of positive connection strengths in the network at each time step during simulation</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><p>Network states, connections and threshold matrices</p>
-<p>X_all (array): Excitatory network activity collected during entire simulation steps</p>
-<p>Y_all (array): Inhibitory network activity collected during entire simulation steps</p>
-<p>R_all (array): Recurrent network activity collected during entire simulation steps</p>
-<p>frac_pos_active_conn (list): Number of positive connection strengths in the network at each time step during simulation</p>
-</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>plastic_matrices (dict)</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>plastic_matrices (dict)</p>
 </dd>
 </dl>
 <dl class="py method">
 <dt>
 <code class="sig-name descname">simulate_sorn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inputs</span><span class="p">:</span> <span class="n">numpy.array</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">phase</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'plasticity'</span></em>, <em class="sig-param"><span class="n">matrices</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">time_steps</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">noise</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">freeze</span><span class="p">:</span> <span class="n">list</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#Simulator_.simulate_sorn"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Simulation/Plasticity phase</p>
+<dd><p>Simulation/Plasticity phase
+:param inputs: External stimuli. Defaults to None.
+:type inputs: np.array, optional
+:param phase: Plasticity phase. Defaults to “plasticity”
+:type phase: str, optional
+:param matrices: Network states, connections and threshold matrices. Defaults to None.
+:type matrices: dict, optional
+:param time_steps: Total number of time steps to simulate the network. Defaults to 1.
+:type time_steps: int, optional
+:param noise: If True, noise will be added. Defaults to True.
+:type noise: bool, optional
+:param freeze: List of synaptic plasticity mechanisms which will be turned off during simulation. Defaults to None.
+:type freeze: list, optional</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>inputs</strong> (<em>np.array</em><em>, </em><em>optional</em>) – External stimuli. Defaults to None.</p></li>
-<li><p><strong>phase</strong> (<em>str</em><em>, </em><em>optional</em>) – Plasticity phase. Defaults to “plasticity”</p></li>
-<li><p><strong>matrices</strong> (<em>dict</em><em>, </em><em>optional</em>) – Network states, connections and threshold matrices. Defaults to None.</p></li>
-<li><p><strong>time_steps</strong> (<em>int</em><em>, </em><em>optional</em>) – Total number of time steps to simulate the network. Defaults to 1.</p></li>
-<li><p><strong>noise</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, noise will be added. Defaults to True.</p></li>
-<li><p><strong>freeze</strong> (<em>list</em><em>, </em><em>optional</em>) – List of synaptic plasticity mechanisms which will be turned off during simulation. Defaults to None.</p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Network states, connections and threshold matrices
+X_all (array): Excitatory network activity collected during entire simulation steps
+Y_all (array): Inhibitory network activity collected during entire simulation steps
+R_all (array): Recurrent network activity collected during entire simulation steps
+frac_pos_active_conn (list): Number of positive connection strengths in the network at each time step during simulation</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><p>Network states, connections and threshold matrices</p>
-<p>X_all (array): Excitatory network activity collected during entire simulation steps</p>
-<p>Y_all (array): Inhibitory network activity collected during entire simulation steps</p>
-<p>R_all (array): Recurrent network activity collected during entire simulation steps</p>
-<p>frac_pos_active_conn (list): Number of positive connection strengths in the network at each time step during simulation</p>
-</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>plastic_matrices (dict)</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>plastic_matrices (dict)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -730,54 +817,55 @@ It encapsulates all plasticity mechanisms mentioned in the article. Inherits all
 <dl class="py class">
 <dt>
 <em class="property">class </em><code class="sig-prename descclassname">sorn.sorn.</code><code class="sig-name descname">Trainer_</code><a class="reference internal" href="_modules/sorn/sorn.html#Trainer_"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Train the network with the fresh or pretrained network matrices and external stimuli</p>
+<dd><p>Train the network with the fresh or pretrained network matrices and external stimuli
+:param inputs: External stimuli. Defaults to None.
+:type inputs: np.array, optional
+:param phase: Training phase. Defaults to “training”.
+:type phase: str, optional
+:param matrices: Network states, connections and threshold matrices. Defaults to None.
+:type matrices: dict, optional
+:param time_steps: Total number of time steps to simulate the network. Defaults to 1.
+:type time_steps: int, optional
+:param noise: If True, noise will be added. Defaults to True.
+:type noise: bool, optional
+:param freeze: List of synaptic plasticity mechanisms which will be turned off during simulation. Defaults to None.
+:type freeze: list, optional</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>inputs</strong> (<em>np.array</em><em>, </em><em>optional</em>) – External stimuli. Defaults to None.</p></li>
-<li><p><strong>phase</strong> (<em>str</em><em>, </em><em>optional</em>) – Training phase. Defaults to “training”.</p></li>
-<li><p><strong>matrices</strong> (<em>dict</em><em>, </em><em>optional</em>) – Network states, connections and threshold matrices. Defaults to None.</p></li>
-<li><p><strong>time_steps</strong> (<em>int</em><em>, </em><em>optional</em>) – Total number of time steps to simulate the network. Defaults to 1.</p></li>
-<li><p><strong>noise</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, noise will be added. Defaults to True.</p></li>
-<li><p><strong>freeze</strong> (<em>list</em><em>, </em><em>optional</em>) – List of synaptic plasticity mechanisms which will be turned off during simulation. Defaults to None.</p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Network states, connections and threshold matrices
+X_all (array): Excitatory network activity collected during entire simulation steps
+Y_all (array): Inhibitory network activity collected during entire simulation steps
+R_all (array): Recurrent network activity collected during entire simulation steps
+frac_pos_active_conn (list): Number of positive connection strengths in the network at each time step during simulation</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><p>Network states, connections and threshold matrices</p>
-<p>X_all (array): Excitatory network activity collected during entire simulation steps</p>
-<p>Y_all (array): Inhibitory network activity collected during entire simulation steps</p>
-<p>R_all (array): Recurrent network activity collected during entire simulation steps</p>
-<p>frac_pos_active_conn (list): Number of positive connection strengths in the network at each time step during simulation</p>
-</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>plastic_matrices (dict)</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>plastic_matrices (dict)</p>
 </dd>
 </dl>
 <dl class="py method">
 <dt>
 <code class="sig-name descname">train_sorn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inputs</span><span class="p">:</span> <span class="n">numpy.array</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">phase</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'training'</span></em>, <em class="sig-param"><span class="n">matrices</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">time_steps</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">noise</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">freeze</span><span class="p">:</span> <span class="n">list</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sorn/sorn.html#Trainer_.train_sorn"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Train the network with the fresh or pretrained network matrices and external stimuli</p>
+<dd><p>Train the network with the fresh or pretrained network matrices and external stimuli
+:param inputs: External stimuli. Defaults to None.
+:type inputs: np.array, optional
+:param phase: Training phase. Defaults to “training”.
+:type phase: str, optional
+:param matrices: Network states, connections and threshold matrices. Defaults to None.
+:type matrices: dict, optional
+:param time_steps: Total number of time steps to simulate the network. Defaults to 1.
+:type time_steps: int, optional
+:param noise: If True, noise will be added. Defaults to True.
+:type noise: bool, optional</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>inputs</strong> (<em>np.array</em><em>, </em><em>optional</em>) – External stimuli. Defaults to None.</p></li>
-<li><p><strong>phase</strong> (<em>str</em><em>, </em><em>optional</em>) – Training phase. Defaults to “training”.</p></li>
-<li><p><strong>matrices</strong> (<em>dict</em><em>, </em><em>optional</em>) – Network states, connections and threshold matrices. Defaults to None.</p></li>
-<li><p><strong>time_steps</strong> (<em>int</em><em>, </em><em>optional</em>) – Total number of time steps to simulate the network. Defaults to 1.</p></li>
-<li><p><strong>noise</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, noise will be added. Defaults to True.</p></li>
-</ul>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Network states, connections and threshold matrices
+X_all (array): Excitatory network activity collected during entire simulation steps
+Y_all (array): Inhibitory network activity collected during entire simulation steps
+R_all (array): Recurrent network activity collected during entire simulation steps
+frac_pos_active_conn (list): Number of positive connection strengths in the network at each time step during simulation</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><p>Network states, connections and threshold matrices</p>
-<p>X_all (array): Excitatory network activity collected during entire simulation steps</p>
-<p>Y_all (array): Inhibitory network activity collected during entire simulation steps</p>
-<p>R_all (array): Recurrent network activity collected during entire simulation steps</p>
-<p>frac_pos_active_conn (list): Number of positive connection strengths in the network at each time step during simulation</p>
-</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>plastic_matrices (dict)</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>plastic_matrices (dict)</p>
 </dd>
 </dl>
 </dd></dl>
