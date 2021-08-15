@@ -78,7 +78,8 @@ state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = inputs, phase='plastic
                                                 matrices=None, noise = True,
                                                 time_steps=time_steps)
 
-# Prints
+```
+```
 Network Initialized
 Number of connections in Wee 3909 , Wei 1574, Wie 8000
 Shapes Wee (200, 200) Wei (40, 200) Wie (200, 40)
@@ -126,11 +127,14 @@ state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = inputs, phase='plastic
                                                 time_steps=time_steps,
                                                 ne = 100, nu=num_features,
                                                 lambda_ee = 10, eta_stdp=0.001)
-# Prints
+
+```
+```
 Network Initialized
 Number of connections in Wee 959 , Wei 797, Wie 2000
 Shapes Wee (100, 100) Wei (20, 100) Wie (100, 20)
 ```
+
 ### Training phase
 
 ```Python
