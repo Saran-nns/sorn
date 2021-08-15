@@ -102,9 +102,7 @@ mu_ip           | 0.1      | Target mean firing rate of excitatory neuron       
 sigma_ip        | 0.0      | Standard deviation of firing rate of excitatory neuron                     |
 
 To override the default hyperparameters, use the `kwargs` as shown below,
-```Python
-
-# To resume the simulation, load the state_dict from previous simulation;
+```python
 state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = inputs, phase='plasticity',
                                                 matrices=None, noise= True,
                                                 time_steps=time_steps,
@@ -342,7 +340,7 @@ mean_firing_rate, variance_firing_rate, fano_factor = Statistics.fanofactor(spik
                                                                             neuron = 10,
                                                                             window_size = 10)
 
-# Measure the uncertainty about the origin of spike from the network using entropy
+# Spike Source Entropy: To measure the uncertainty about the origin of spike from the network using entropy
 sse = Statistics.spike_source_entropy(spike_train= E, num_neurons=200)
 ```
 ## Citation
