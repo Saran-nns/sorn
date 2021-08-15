@@ -2,7 +2,9 @@ Usage
 =====
 
 Plasticity Phase
------------------
+----------------
+
+.. code-block:: python
 
     import sorn
     from sorn import Simulator
@@ -14,12 +16,9 @@ Plasticity Phase
     inputs = np.random.rand(num_features,time_steps)
 
     # Simulate the network with default hyperparameters under gaussian white noise
-
     state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = inputs, phase='plasticity',
                                                     matrices= None, noise = True,
                                                     time_steps=time_steps)
-
-The default values of the network hyperparameters are,
 
 .. list-table:: Hyperparameters of the network and default values
    :widths: 25 25 50
@@ -40,7 +39,7 @@ The default values of the network hyperparameters are,
    * - network_type_ie
      - "Dense"
      - `Sparse` or `Dense` connectivity from Excitatory to Inhibitory neurons
-   * - _network_type_ei
+   * - network_type_ei
      - "Sparse"
      - `Sparse` or `Dense` connectivity from Inhibitory to Excitatory neurons
    * - lambda_ee
@@ -55,7 +54,7 @@ The default values of the network hyperparameters are,
    * - eta_stdp
      - 0.004
      - Hebbian Learning rate for connections between excitatory neurons
-   * - eta_stdp
+   * - eta_inhib
      - 0.001
      - Hebbian Learning rate for connections from Inhibitory to Excitatory neurons
    * - eta_ip
@@ -80,7 +79,9 @@ The default values of the network hyperparameters are,
      - 0.0
      - Standard deviation of firing rate of excitatory neuron
 
-To override the default hyperparameters, use the `kwargs` as shown below,
+To override the default hyperparameters, use the `kwargs` as shown below:
+
+.. code-block:: python
 
     state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = inputs, phase='plasticity',
                                                     matrices=None, noise= True,
@@ -88,15 +89,16 @@ To override the default hyperparameters, use the `kwargs` as shown below,
                                                     ne = 200, nu=num_features)
 
 Training phase
----------------
+--------------
+
+.. code-block:: python
 
     from sorn import Trainer
-    # NOTE: During training phase, input to `sorn` should have second (time) dimension set to 1. ie., input shape should be (input_features,1).
-
+    # NOTE: During training phase, input to `sorn` should have second (time) dimension set to 1. ie., input shape
+    # should be (input_features,1).
     inputs = np.random.rand(num_features,1)
 
     # SORN network is frozen during training phase
-
     state_dict, E, I, R, C = Trainer.train_sorn(inputs = inputs, phase='training',
                                                 matrices=state_dict,
                                                 nu=num_features, time_steps=1)
@@ -105,7 +107,9 @@ Freeze plasticity
 -----------------
 
 To turn off any plasticity mechanisms during `simulation` or `training` phase, use `freeze` argument.
-For example to stop intrinsic plasticity during simulation phase,
+For example to stop intrinsic plasticity during simulation phase
+
+.. code-block:: python
 
     # Sample input
     num_features = 10
@@ -119,45 +123,46 @@ For example to stop intrinsic plasticity during simulation phase,
 
 The other options are,
 
-`stdp` - Spike Timing Dependent Plasticity
+    `stdp` - Spike Timing Dependent Plasticity
 
-`ss` - Synaptic Scaling
+    `ss` - Synaptic Scaling
 
-`sp` - Structural Plasticity
+    `sp` - Structural Plasticity
 
-`istdp` - Inhibitory Spike Timing Dependent Plasticity
+    `istdp` - Inhibitory Spike Timing Dependent Plasticity
 
 Note: If you pass all above options to `freeze`, then the network will behave as Liquid State Machine(LSM)
 
 Network Output Descriptions
 ---------------------------
 
-  `state_dict`  - Dictionary of connection weights (`Wee`,`Wei`,`Wie`) , Excitatory network activity (`X`), Inhibitory network activities(`Y`), Threshold values (`Te`,`Ti`)
+    `state_dict`  - Dictionary of connection weights (`Wee`,`Wei`,`Wie`) ,
 
-  `E` - Collection of Excitatory network activity of entire simulation period
+                    Excitatory network activity (`X`),
 
-  `I` - Collection of Inhibitory network activity of entire simulation period
+                    Inhibitory network activities(`Y`),
 
-  `R` - Collection of Recurrent network activity of entire simulation period
+                    Threshold values (`Te`,`Ti`)
 
-  `C` - List of number of active connections in the Excitatory pool at each time step
+    `E` - Collection of Excitatory network activity of entire simulation period
 
-Colaboratory Notebook
-^^^^^^^^^^^^^^^^^^^^^
+    `I` - Collection of Inhibitory network activity of entire simulation period
 
-Sample simulation and training runs with few plotting functions are found at [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/10TElAAE1dsgzuvaHO_NjgMAE5Pic3_jL#scrollTo=VDa0U4mf1Z75)
+    `R` - Collection of Recurrent network activity of entire simulation period
+
+    `C` - List of number of active connections in the Excitatory pool at each time step
 
 Usage with OpenAI gym
 ---------------------
 
 Cartpole balance problem
-^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^
+.. code-block:: python
 
     from sorn import Simulator, Trainer
     import gym
 
     # Hyperparameters
-
     NUM_EPISODES = int(2e6)
     NUM_PLASTICITY_EPISODES = 20
 
@@ -165,7 +170,6 @@ Cartpole balance problem
     GAMMA = 0.99 # Discounting factor for the Rewards
 
     # Open AI gym; Cartpole Environment
-
     env = gym.make('CartPole-v0')
     action_space = env.action_space.n
 
@@ -174,7 +178,6 @@ Cartpole balance problem
     nu = 4
 
     # Init SORN using `Simulator` under random input
-
     state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = np.random.randn(4,1),
                                                     phase ='plasticity',
                                                     time_steps = 1,
@@ -183,16 +186,13 @@ Cartpole balance problem
 
     w = np.random.rand(ne, 2) # Output layer weights
 
-    # Policy
-
+    # Implementation of softmax policy
     def policy(state,w):
-        # Implementation of softmax policy
         z = state.dot(w)
         exp = np.exp(z)
         return exp/np.sum(exp)
 
     # Vectorized softmax Jacobian
-
     def softmax_grad(softmax):
         s = softmax.reshape(-1,1)
         return np.diagflat(s) - np.dot(s, s.T)
@@ -201,26 +201,21 @@ Cartpole balance problem
 
         # Environment observation;
         # NOTE: Input to sorn should have time dimension. ie., input shape should be (input_features,time_steps)
-
         state = env.reset()[:, None] # (4,) --> (4,1)
 
         grads = [] # Episode log policy gradients
         rewards = [] # Episode rewards
 
         # Keep track of total score
-
         score = 0
 
         # Play the episode
-
         while True:
 
         # env.render() # Uncomment to see your model train in real time (slow down training progress)
-
         if EPISODE < NUM_PLASTICITY_EPISODES:
 
             # Plasticity phase
-
             state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = state, phase ='plasticity',
                                                             matrices = state_dict, time_steps = 1,
                                                             ne = ne, nu=nu,
@@ -228,7 +223,6 @@ Cartpole balance problem
 
         else:
             # Training phase with frozen reservoir connectivity
-
             state_dict, E, I, R, C = Trainer.train_sorn(inputs = state, phase = 'training',
                                                     matrices = state_dict, time_steps = 1,
                                                     ne = ne, nu=nu,
@@ -236,7 +230,6 @@ Cartpole balance problem
 
         # Feed E as input states to your RL algorithm, below goes for simple policy gradient algorithm
         # Sample policy w.r.t excitatory states and take action in the environment
-
         probs = policy(np.asarray(E),w)
         action = np.random.choice(action_space,p=probs[0])
         state,reward,done,_ = env.step(action)
@@ -244,7 +237,6 @@ Cartpole balance problem
 
         # COMPUTE GRADIENTS BASED ON YOUR OBJECTIVE FUNCTION;
         # Sample computation of policy gradient objective function
-
         dsoftmax = softmax_grad(probs)[action,:]
         dlog = dsoftmax / probs[0,action]
         grad = np.asarray(E).T.dot(dlog[None,:])
@@ -255,27 +247,32 @@ Cartpole balance problem
         if done:
             break
 
-        # OPTIMIZE OUTPUT LAYER WEIGHTS `w` BASED ON YOUR OPTIMIZATION METHOD;
-        # Below is a sample of weight update based on gradient ascent(maximize cumulative reward) method for temporal difference learning
+        # OPTIMIZE OUTPUT LAYER WEIGHTS `w` BASED ON YOUR OPTIMIZATION METHOD
 
+        # Below is a sample of weight update based on gradient
+        # ascent(maximize cumulative reward) method for temporal difference learning
         for i in range(len(grads)):
 
-            # Loop through everything that happened in the episode and update towards the log policy gradient times future reward
-
+            # Loop through everything that happened in the episode and update towards
+            # the log policy gradient times future reward
             w += LEARNING_RATE * grads[i] * sum([ r * (GAMMA ** r) for t,r in enumerate(rewards[i:])])
 
         print('Episode %s  Score %s' %(str(EPISODE),str(score)))
 
-There are several neural data analysis and visualization methods inbuilt with `sorn` package. Sample call for few plotting and statistical methods are shown below;
+There are several neural data analysis and visualization methods inbuilt with `sorn` package.
+Sample call for few plotting and statistical methods are shown below
 
 Plotting functions
 ------------------
 
 Plot weight distribution in the network
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
 
     from sorn import Plotter
-    Wee = np.random.randn(200,200) # For example, the network has 200 neurons in the excitatory pool. Note that generally Wee is sparse
+    # For example, the network has 200 neurons in the excitatory pool.
+    Wee = np.random.randn(200,200) # Note that generally Wee is sparse
     Wee=Wee/Wee.max() # state_dict['Wee'] returned by the SORN is already normalized
     Plotter.weight_distribution(weights= Wee, bin_size = 5, savefig = True)
 
@@ -285,6 +282,8 @@ Plot weight distribution in the network
 Plot Spike train
 ^^^^^^^^^^^^^^^^^
 
+.. code-block:: python
+
     E = np.random.randint(2, size=(200,1000)) # For example, activity of 200 excitatory neurons in 1000 time steps
     Plotter.scatter_plot(spike_train = E, savefig=True)
 
@@ -292,33 +291,35 @@ Plot Spike train
 
 
 Raster plot of Spike train
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. code-block:: python
 
     # Raster plot of activity of only first 10 neurons in the excitatory pool
-
     Plotter.raster_plot(spike_train = E[:,0:10], savefig=True)
 
 .. image:: https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/RasterSpikeTrain.png
 
 Distribution of presynaptic connections
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. code-block:: python
 
     # Histogram of number of presynaptic connections per neuron in the excitatory pool
-
     Plotter.hist_incoming_conn(weights=Wee, bin_size=10, histtype='bar', savefig=True)
 
-.. image:: https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/hist_incoming_conn.png"
+.. image:: https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/hist_incoming_conn.png
 
 
 Distribution of firing rate of the network
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. code-block:: python
 
     Plotter.hist_firing_rate_network(E, bin_size=10, savefig=True)
 
 .. image:: https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/hist_firing_rate_network.png
 
 Plot pearson correlation between neurons
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. code-block:: python
 
     from sorn import Statistics
     avg_corr_coeff,_ = Statistics.avg_corr_coeff(E)
@@ -328,54 +329,57 @@ Plot pearson correlation between neurons
 
 Inter spike intervals
 ^^^^^^^^^^^^^^^^^^^^^^
+.. code-block:: python
 
     # Inter spike intervals with exponential curve fit for neuron 1 in the Excitatory pool
-
     Plotter.isi_exponential_fit(E,neuron=1,bin_size=10, savefig=True)
 
 .. image:: https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/isi_exponential_fit.png
 
 Linear and Lognormal curve fit of Synaptic weights
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. code-block:: python
 
     # Distribution of connection weights in linear and lognormal scale
-
     Plotter.linear_lognormal_fit(weights=Wee,num_points=100, savefig=True)
 
     .. image:: https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/LinearLognormalFit.png
 
 Network plot
 ^^^^^^^^^^^^^
+.. code-block:: python
 
     # Draw network connectivity using the pearson correlation function between neurons in the excitatory pool
-
     Plotter.plot_network(avg_corr_coeff,corr_thres=0.01,fig_name='network.png')
 
 .. image:: https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/network.png
 
 Statistics and Analysis functions
----------------------------------
-
-    from sorn import Statistics
+----------------------------------
 
 t-lagged auto correlation between neural activity
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. code-block:: python
+
+    from sorn import Statistics
     pearson_corr_matrix = Statistics.autocorr(firing_rates = [1,1,5,6,3,7], t= 2)
 
 Fano factor
-^^^^^^^^^^^
+^^^^^^^^^^^^
+
+.. code-block:: python
 
     # To verify poissonian process in spike generation of neuron 10
-
     mean_firing_rate, variance_firing_rate, fano_factor = Statistics.fanofactor(spike_train= E,
                                                                             neuron = 10,
                                                                             window_size = 10)
 
 Spike Source Entropy
-^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
 
     # Measure the uncertainty about the origin of spike from the network using entropy
-
     sse = Statistics.spike_source_entropy(spike_train= E, num_neurons=200)
 
