@@ -139,7 +139,7 @@ $\eta_{istdp}$ - Inhibitory STDP learning rate
 
 $\mu_{ip}$ - Mean firing rate of the neuron
 
-Note that, the connection strength from excitatory to inhibitory ($W_{ij}^{IE}$) remains fixed at the intial state.
+Note that, the connection strength from excitatory to inhibitory ($W_{ij}^{IE}$) remains fixed at the initial state.
 
 ## Sample Simulation methods
 ```python
@@ -172,13 +172,13 @@ state_dict,E,I,R,C=Simulator.simulate_sorn(inputs=inputs,phase='plasticity',
 
 ### Network Output Descriptions
 
-`state_dict` - Dictionary of connection weights ('Wee','Wei','Wie') ,
+`state_dict` - Dictionary of connection weights ('Wee', 'Wei', 'Wie') ,
 
                Excitatory network activity ('X'),
 
                Inhibitory network activities('Y'),
 
-               Threshold values ('Te','Ti')
+               Threshold values ('Te', 'Ti')
 
 `E` - Collection of Excitatory network activity of entire simulation period
 
@@ -199,7 +199,7 @@ state_dict,E,I,R,C=Trainer.train_sorn(inputs=inputs,phase='plasticity',
 
                                     matrices=state_dict,
 
-                                    _nu=num_features,time_steps=1)
+                                    nu=num_features,time_steps=1)
 
 
 
@@ -209,7 +209,7 @@ state_dict,E,I,R,C=Trainer.train_sorn(inputs=inputs,phase='training',
 
                                     matrices=state_dict,
 
-                                    _nu=num_features,time_steps=1)
+                                    nu=num_features,time_steps=1)
 ```
 
 To turn off any plasticity mechanisms during the simulation or training phase, you can use the argument `freeze`. For example, to stop intrinsic plasticity during the training phase,
@@ -220,9 +220,9 @@ state_dict,E,I,R,C=Trainer.train_sorn(inputs=inputs,phase='plasticity',
 
                                     matrices=None,noise=True,
 
-                                    time_steps=1,_ne=200,
+                                    time_steps=1,ne=200,
 
-                                    _nu=num_features,freeze=['ip'])
+                                    nu=num_features,freeze=['ip'])
 
 ```
 The other options for `freeze` argument are,
