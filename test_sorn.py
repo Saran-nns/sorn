@@ -20,7 +20,7 @@ gym_input = np.random.rand(10, 1)
 sequence_input = np.random.rand(10, 1)
 
 # Overriding defaults: Sample input
-num_features = 4
+num_features = 10
 time_steps = 1000
 inputs = np.random.rand(num_features, time_steps)
 
@@ -32,9 +32,40 @@ class TestSorn(unittest.TestCase):
             Simulator.simulate_sorn(
                 inputs=simulation_inputs,
                 phase="plasticity",
-                matrices=matrices_dict,
+                matrices=None,
                 time_steps=2,
                 noise=True,
+                nu=num_features
+            ),
+        )
+        self.assertRaises(
+            Exception,
+            Simulator.simulate_sorn(
+                inputs=simulation_inputs,
+                phase="plasticity",
+                matrices=matrices_dict,
+                time_steps=2,
+                noise=False,
+            ),
+        )
+        self.assertRaises(
+            Exception,
+            Simulator.simulate_sorn(
+                inputs=simulation_inputs,
+                phase="plasticity",
+                matrices=matrices_dict,
+                time_steps=2,
+                noise=False, freeze=['ip']
+            ),
+        )
+        self.assertRaises(
+            Exception,
+            Simulator.simulate_sorn(
+                inputs=simulation_inputs,
+                phase="plasticity",
+                matrices=matrices_dict,
+                time_steps=2,
+                noise=False, freeze=['stdp,istdp','ss','sp']
             ),
         )
         self.assertRaises(
@@ -64,7 +95,7 @@ class TestSorn(unittest.TestCase):
                 phase="training",
                 matrices=matrices_dict,
                 time_steps=1,
-                noise=True,
+                noise=True, freeze=['stdp,istdp','ss','sp']
             ),
         )
         self.assertRaises(
@@ -75,10 +106,10 @@ class TestSorn(unittest.TestCase):
                 matrices=None,
                 noise=True,
                 time_steps=time_steps,
-                _ne=26,
-                _lambda_ee=4,
-                _lambda_ei=4,
-                _nu=num_features,
+                ne=26,
+                lambda_ee=4,
+                lambda_ei=4,
+                nu=num_features,
             ),
         )
 
@@ -90,10 +121,10 @@ class TestSorn(unittest.TestCase):
                 matrices=None,
                 noise=True,
                 time_steps=time_steps,
-                _ne=40,
-                _lambda_ee=5,
-                _lambda_ei=5,
-                _nu=num_features,
+                ne=40,
+                lambda_ee=5,
+                lambda_ei=5,
+                nu=num_features,
             ),
         )
 
@@ -114,8 +145,6 @@ class TestSorn(unittest.TestCase):
             Exception,
             Plotter.network_connection_dynamics(
                 connection_counts=num_active_connections,
-                initial_steps=10,
-                final_steps=10,
                 savefig=False,
             ),
         )

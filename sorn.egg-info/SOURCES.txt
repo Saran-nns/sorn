@@ -2,7 +2,6 @@ LICENSE.md
 README.md
 setup.py
 sorn/__init__.py
-sorn/configuration.ini
 sorn/sorn.py
 sorn/test_sorn.py
 sorn/utils.py
