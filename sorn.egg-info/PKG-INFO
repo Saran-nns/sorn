@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: sorn
-Version: 0.5.7
+Version: 0.5.8
 Summary: Self-Organizing Recurrent Neural Networks
 Home-page: https://github.com/Saran-nns/sorn
 Author: Saranraj Nambusubramaniyan
@@ -19,7 +19,7 @@ Description:
         [![PyPI version](https://badge.fury.io/py/sorn.svg)](https://badge.fury.io/py/sorn)
         [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
         ![PyPI - Downloads](https://img.shields.io/pypi/dm/sorn.svg)
-        [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2590449.svg)](https://doi.org/10.5281/zenodo.2590449)
+        [![DOI](https://zenodo.org/badge/174756058.svg)](https://zenodo.org/badge/latestdoi/174756058)
         [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
         [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/10TElAAE1dsgzuvaHO_NjgMAE5Pic3_jL#scrollTo=VDa0U4mf1Z75)
         [![status](https://joss.theoj.org/papers/7dc447f7a0d17d774b59c8ee15c223c2/status.svg)](https://joss.theoj.org/papers/7dc447f7a0d17d774b59c8ee15c223c2)
@@ -169,7 +169,7 @@ Description:
           `C` - List of number of active connections in the Excitatory pool at each time step
         
         ### Colaboratory Notebook
-        Sample simulation and training runs with few plotting functions are found at [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/10TElAAE1dsgzuvaHO_NjgMAE5Pic3_jL#scrollTo=VDa0U4mf1Z75)
+        Sample simulation and training runs with few plotting functions are found at [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/164AKTA-iCVLq-iR-treLA_Y9keRYrQkH#scrollTo=Rt2YZptMtC14)
         
         ## Usage with OpenAI gym
         ### Cartpole balance problem
@@ -332,7 +332,7 @@ Description:
         
         ```python
         # Draw network connectivity using the pearson correlation function between neurons in the excitatory pool
-        Plotter.plot_network(avg_corr_coeff,corr_thres=0.01,fig_name='network.png')
+        Plotter.plot_network(avg_corr_coeff,corr_thres=0.1,fig_name='network.png')
         ```
         <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/network.png" height="340" width="410"></a>
         
