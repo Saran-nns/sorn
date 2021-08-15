@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.4.9
+                0.5.3
               </div>
             
           
@@ -179,20 +179,12 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">configparser</span> <span class="kn">import</span> <span class="n">ConfigParser</span>
 <span class="kn">import</span> <span class="nn">random</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">sorn.utils</span> <span class="kn">import</span> <span class="n">Initializer</span>
 <span class="k">except</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">Initializer</span>
-
-<span class="n">parser</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="p">()</span>
-<span class="n">config_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="s2">&quot;configuration.ini&quot;</span>
-<span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">config_file</span><span class="p">)</span>
-
 
 <div class="viewcode-block" id="Sorn"><a class="viewcode-back" href="../../reference.html#sorn.sorn.Sorn">[docs]</a><span class="k">class</span> <span class="nc">Sorn</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
@@ -240,29 +232,27 @@
 <span class="sd">        lambda_ie (int):  Number of connections to and from a single excitatory unit to inhibitory unit at initialization. Defaults to 100&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
 
-    <span class="n">_nu</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Network_Config&quot;</span><span class="p">,</span> <span class="s2">&quot;Nu&quot;</span><span class="p">))</span>
-    <span class="n">_ne</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Network_Config&quot;</span><span class="p">,</span> <span class="s2">&quot;Ne&quot;</span><span class="p">))</span>
-    <span class="n">_ni</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">_ne</span><span class="p">)</span>
-    <span class="n">_eta_stdp</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Network_Config&quot;</span><span class="p">,</span> <span class="s2">&quot;eta_stdp&quot;</span><span class="p">))</span>
-    <span class="n">_eta_inhib</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Network_Config&quot;</span><span class="p">,</span> <span class="s2">&quot;eta_inhib&quot;</span><span class="p">))</span>
-    <span class="n">_eta_ip</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Network_Config&quot;</span><span class="p">,</span> <span class="s2">&quot;eta_ip&quot;</span><span class="p">))</span>
-    <span class="n">_te_max</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Network_Config&quot;</span><span class="p">,</span> <span class="s2">&quot;te_max&quot;</span><span class="p">))</span>
-    <span class="n">_ti_max</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Network_Config&quot;</span><span class="p">,</span> <span class="s2">&quot;ti_max&quot;</span><span class="p">))</span>
-    <span class="n">_ti_min</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Network_Config&quot;</span><span class="p">,</span> <span class="s2">&quot;ti_min&quot;</span><span class="p">))</span>
-    <span class="n">_te_min</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Network_Config&quot;</span><span class="p">,</span> <span class="s2">&quot;te_min&quot;</span><span class="p">))</span>
-    <span class="n">_mu_ip</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Network_Config&quot;</span><span class="p">,</span> <span class="s2">&quot;mu_ip&quot;</span><span class="p">))</span>
-    <span class="n">_sigma_ip</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Network_Config&quot;</span><span class="p">,</span> <span class="s2">&quot;sigma_ip&quot;</span><span class="p">))</span>
-    <span class="n">_network_type_ee</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Network_Config&quot;</span><span class="p">,</span> <span class="s2">&quot;network_type_ee&quot;</span><span class="p">))</span>
-    <span class="n">_network_type_ei</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Network_Config&quot;</span><span class="p">,</span> <span class="s2">&quot;network_type_ei&quot;</span><span class="p">))</span>
-    <span class="n">_network_type_ie</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Network_Config&quot;</span><span class="p">,</span> <span class="s2">&quot;network_type_ie&quot;</span><span class="p">))</span>
-    <span class="n">_lambda_ee</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Network_Config&quot;</span><span class="p">,</span> <span class="s2">&quot;lambda_ee&quot;</span><span class="p">))</span>
-    <span class="n">_lambda_ei</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Network_Config&quot;</span><span class="p">,</span> <span class="s2">&quot;lambda_ei&quot;</span><span class="p">))</span>
-    <span class="n">_lambda_ie</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Network_Config&quot;</span><span class="p">,</span> <span class="s2">&quot;lambda_ie&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nu</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ne</span> <span class="o">=</span> <span class="mi">200</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ni</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ne</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eta_stdp</span> <span class="o">=</span> <span class="mf">0.004</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eta_inhib</span> <span class="o">=</span> <span class="mf">0.001</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eta_ip</span> <span class="o">=</span> <span class="mf">0.01</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">te_max</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ti_max</span> <span class="o">=</span> <span class="mf">0.5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ti_min</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">te_min</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mu_ip</span> <span class="o">=</span> <span class="mf">0.1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigma_ip</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network_type_ee</span> <span class="o">=</span> <span class="s2">&quot;Sparse&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network_type_ei</span> <span class="o">=</span> <span class="s2">&quot;Sparse&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network_type_ie</span> <span class="o">=</span> <span class="s2">&quot;Dense&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lambda_ee</span> <span class="o">=</span> <span class="mi">20</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lambda_ei</span> <span class="o">=</span> <span class="mi">40</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lambda_ie</span> <span class="o">=</span> <span class="mi">100</span>
 
-<div class="viewcode-block" id="Sorn.initialize_weight_matrix"><a class="viewcode-back" href="../../reference.html#sorn.sorn.Sorn.initialize_weight_matrix">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">initialize_weight_matrix</span><span class="p">(</span>
+<div class="viewcode-block" id="Sorn.initialize_weight_matrix"><a class="viewcode-back" href="../../reference.html#sorn.sorn.Sorn.initialize_weight_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">initialize_weight_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
         <span class="n">network_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">synaptic_connection</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">self_connection</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lambd_w</span><span class="p">:</span> <span class="nb">int</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Wrapper for initializing the weight matrices for SORN</span>
@@ -280,22 +270,21 @@
         <span class="k">if</span> <span class="p">(</span><span class="n">network_type</span> <span class="o">==</span> <span class="s2">&quot;Sparse&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">self_connection</span> <span class="o">==</span> <span class="s2">&quot;False&quot;</span><span class="p">):</span>
 
             <span class="c1"># Generate weight matrix for E-E/ E-I connections with mean lamda incoming and out-going connections per neuron</span>
-            <span class="k">assert</span> <span class="p">(</span><span class="n">lambd_w</span> <span class="o">&lt;=</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_ne</span><span class="p">),</span> <span class="s2">&quot;Number of connections per unit (lambda) should be less than number of units(Ne) in the pool and also Ne should be greater than 25&quot;</span>
+            <span class="k">assert</span> <span class="p">(</span><span class="n">lambd_w</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ne</span><span class="p">),</span> <span class="s2">&quot;Number of connections per unit (lambda) should be less than number of units(Ne) in the pool and also Ne should be greater than 25&quot;</span>
             <span class="n">weight_matrix</span> <span class="o">=</span> <span class="n">Initializer</span><span class="o">.</span><span class="n">generate_lambd_connections</span><span class="p">(</span>
-                <span class="n">synaptic_connection</span><span class="p">,</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_ne</span><span class="p">,</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_ni</span><span class="p">,</span> <span class="n">lambd_w</span><span class="p">,</span> <span class="n">lambd_std</span><span class="o">=</span><span class="mi">1</span>
+                <span class="n">synaptic_connection</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ne</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ni</span><span class="p">,</span> <span class="n">lambd_w</span><span class="p">,</span> <span class="n">lambd_std</span><span class="o">=</span><span class="mi">1</span>
             <span class="p">)</span>
 
         <span class="c1"># Dense matrix for W_ie</span>
         <span class="k">elif</span> <span class="p">(</span><span class="n">network_type</span> <span class="o">==</span> <span class="s2">&quot;Dense&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">self_connection</span> <span class="o">==</span> <span class="s2">&quot;False&quot;</span><span class="p">):</span>
 
             <span class="c1"># Uniform distribution of weights</span>
-            <span class="n">weight_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="p">(</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_ne</span><span class="p">,</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_ni</span><span class="p">))</span>
-            <span class="n">weight_matrix</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_ne</span><span class="p">,</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_ni</span><span class="p">))</span>
+            <span class="n">weight_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ne</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ni</span><span class="p">))</span>
+            <span class="n">weight_matrix</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">ne</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ni</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">weight_matrix</span></div>
 
-<div class="viewcode-block" id="Sorn.initialize_threshold_matrix"><a class="viewcode-back" href="../../reference.html#sorn.sorn.Sorn.initialize_threshold_matrix">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">initialize_threshold_matrix</span><span class="p">(</span>
+<div class="viewcode-block" id="Sorn.initialize_threshold_matrix"><a class="viewcode-back" href="../../reference.html#sorn.sorn.Sorn.initialize_threshold_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">initialize_threshold_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
         <span class="n">te_min</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">te_max</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">ti_min</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">ti_max</span><span class="p">:</span> <span class="nb">float</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the threshold for excitatory and inhibitory neurons</span>
@@ -311,13 +300,12 @@
 <span class="sd">            ti (array): Threshold values for inhibitory units</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">te</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">te_min</span><span class="p">,</span> <span class="n">te_max</span><span class="p">,</span> <span class="p">(</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_ne</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-        <span class="n">ti</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">ti_min</span><span class="p">,</span> <span class="n">ti_max</span><span class="p">,</span> <span class="p">(</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_ni</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">te</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">te_min</span><span class="p">,</span> <span class="n">te_max</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ne</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">ti</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">ti_min</span><span class="p">,</span> <span class="n">ti_max</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ni</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">te</span><span class="p">,</span> <span class="n">ti</span></div>
 
-<div class="viewcode-block" id="Sorn.initialize_activity_vector"><a class="viewcode-back" href="../../reference.html#sorn.sorn.Sorn.initialize_activity_vector">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">initialize_activity_vector</span><span class="p">(</span><span class="n">ne</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">ni</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<div class="viewcode-block" id="Sorn.initialize_activity_vector"><a class="viewcode-back" href="../../reference.html#sorn.sorn.Sorn.initialize_activity_vector">[docs]</a>    <span class="k">def</span> <span class="nf">initialize_activity_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ne</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">ni</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the activity vectors X and Y for excitatory and inhibitory neurons</span>
 
 <span class="sd">        Args:</span>
@@ -328,12 +316,14 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            x (array): Array of activity vectors of excitatory population</span>
 
-<span class="sd">            y (array): Array of activity vectors of inhibitory population&quot;&quot;&quot;</span>
+<span class="sd">            y (array): Array of activity vectors of inhibitory population</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ne</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
         <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ni</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span></div></div>
+
 
 <div class="viewcode-block" id="Plasticity"><a class="viewcode-back" href="../../reference.html#sorn.sorn.Plasticity">[docs]</a><span class="k">class</span> <span class="nc">Plasticity</span><span class="p">(</span><span class="n">Sorn</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Instance of class Sorn. Inherits the variables and functions defined in class Sorn.</span>
@@ -370,26 +360,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nu</span> <span class="o">=</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_nu</span>  <span class="c1"># Number of input units</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ne</span> <span class="o">=</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_ne</span>  <span class="c1"># Number of excitatory units</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">eta_stdp</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">Sorn</span><span class="o">.</span><span class="n">_eta_stdp</span>
-        <span class="p">)</span>  <span class="c1"># STDP plasticity Learning rate constant; SORN1 and SORN2</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">eta_ip</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">Sorn</span><span class="o">.</span><span class="n">_eta_ip</span>
-        <span class="p">)</span>  <span class="c1"># Intrinsic plasticity learning rate constant; SORN1 and SORN2</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">eta_inhib</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">Sorn</span><span class="o">.</span><span class="n">_eta_inhib</span>
-        <span class="p">)</span>  <span class="c1"># Intrinsic plasticity learning rate constant; SORN2 only</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">h_ip</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_nu</span> <span class="o">/</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_ne</span>  <span class="c1"># Target firing rate</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mu_ip</span> <span class="o">=</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_mu_ip</span>  <span class="c1"># Mean target firing rate</span>
-        <span class="c1"># Number of inhibitory units in the network</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ni</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_ne</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span> <span class="o">=</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_time_steps</span>  <span class="c1"># Total time steps of simulation</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">te_min</span> <span class="o">=</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_te_min</span>  <span class="c1"># Excitatory minimum Threshold</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">te_max</span> <span class="o">=</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_te_max</span>  <span class="c1"># Excitatory maximum Threshold</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_ip</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">ne</span>  <span class="c1"># Target firing rate</span>
 
 <div class="viewcode-block" id="Plasticity.stdp"><a class="viewcode-back" href="../../reference.html#sorn.sorn.Plasticity.stdp">[docs]</a>    <span class="k">def</span> <span class="nf">stdp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wee</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">cutoff_weights</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Apply STDP rule : Regulates synaptic strength between the pre(Xj) and post(Xi) synaptic neurons</span>
@@ -463,7 +435,8 @@
 
         <span class="k">return</span> <span class="n">te_update</span></div>
 
-<div class="viewcode-block" id="Plasticity.ss"><a class="viewcode-back" href="../../reference.html#sorn.sorn.Plasticity.ss">[docs]</a>    <span class="k">def</span> <span class="nf">ss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wee</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+<div class="viewcode-block" id="Plasticity.ss"><a class="viewcode-back" href="../../reference.html#sorn.sorn.Plasticity.ss">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">ss</span><span class="p">(</span><span class="n">wee</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Synaptic Scaling or Synaptic Normalization</span>
 
 <span class="sd">        Args:</span>
@@ -555,8 +528,7 @@
 
         <span class="k">return</span> <span class="n">wee</span></div>
 
-<div class="viewcode-block" id="Plasticity.initialize_plasticity"><a class="viewcode-back" href="../../reference.html#sorn.sorn.Plasticity.initialize_plasticity">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">initialize_plasticity</span><span class="p">():</span>
+<div class="viewcode-block" id="Plasticity.initialize_plasticity"><a class="viewcode-back" href="../../reference.html#sorn.sorn.Plasticity.initialize_plasticity">[docs]</a>    <span class="k">def</span> <span class="nf">initialize_plasticity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize weight matrices for plasticity phase based on network configuration</span>
 
 <span class="sd">        Args:</span>
@@ -565,24 +537,23 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            tuple(array): Weight matrices WEI, WEE, WIE and threshold matrices Te, Ti and Initial state vectors X,Y &quot;&quot;&quot;</span>
 
-        <span class="n">sorn_init</span> <span class="o">=</span> <span class="n">Sorn</span><span class="p">()</span>
-        <span class="n">WEE_init</span> <span class="o">=</span> <span class="n">sorn_init</span><span class="o">.</span><span class="n">initialize_weight_matrix</span><span class="p">(</span>
-            <span class="n">network_type</span><span class="o">=</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_network_type_ee</span><span class="p">,</span>
+        <span class="n">WEE_init</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialize_weight_matrix</span><span class="p">(</span>
+            <span class="n">network_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">network_type_ee</span><span class="p">,</span>
             <span class="n">synaptic_connection</span><span class="o">=</span><span class="s2">&quot;EE&quot;</span><span class="p">,</span>
             <span class="n">self_connection</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">,</span>
-            <span class="n">lambd_w</span><span class="o">=</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_lambda_ee</span><span class="p">,</span>
+            <span class="n">lambd_w</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lambda_ee</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">WEI_init</span> <span class="o">=</span> <span class="n">sorn_init</span><span class="o">.</span><span class="n">initialize_weight_matrix</span><span class="p">(</span>
-            <span class="n">network_type</span><span class="o">=</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_network_type_ei</span><span class="p">,</span>
+        <span class="n">WEI_init</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialize_weight_matrix</span><span class="p">(</span>
+            <span class="n">network_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">network_type_ei</span><span class="p">,</span>
             <span class="n">synaptic_connection</span><span class="o">=</span><span class="s2">&quot;EI&quot;</span><span class="p">,</span>
             <span class="n">self_connection</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">,</span>
-            <span class="n">lambd_w</span><span class="o">=</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_lambda_ei</span><span class="p">,</span>
+            <span class="n">lambd_w</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lambda_ei</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">WIE_init</span> <span class="o">=</span> <span class="n">sorn_init</span><span class="o">.</span><span class="n">initialize_weight_matrix</span><span class="p">(</span>
-            <span class="n">network_type</span><span class="o">=</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_network_type_ie</span><span class="p">,</span>
+        <span class="n">WIE_init</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialize_weight_matrix</span><span class="p">(</span>
+            <span class="n">network_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">network_type_ie</span><span class="p">,</span>
             <span class="n">synaptic_connection</span><span class="o">=</span><span class="s2">&quot;IE&quot;</span><span class="p">,</span>
             <span class="n">self_connection</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">,</span>
-            <span class="n">lambd_w</span><span class="o">=</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_lambda_ie</span><span class="p">,</span>
+            <span class="n">lambd_w</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lambda_ie</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="n">Wee_init</span> <span class="o">=</span> <span class="n">Initializer</span><span class="o">.</span><span class="n">zero_sum_incoming_check</span><span class="p">(</span><span class="n">WEE_init</span><span class="p">)</span>
@@ -607,11 +578,11 @@
         <span class="n">normalized_wei</span> <span class="o">=</span> <span class="n">Initializer</span><span class="o">.</span><span class="n">normalize_weight_matrix</span><span class="p">(</span><span class="n">Wei_init</span><span class="p">)</span>
         <span class="n">normalized_wie</span> <span class="o">=</span> <span class="n">Initializer</span><span class="o">.</span><span class="n">normalize_weight_matrix</span><span class="p">(</span><span class="n">Wie_init</span><span class="p">)</span>
 
-        <span class="n">te_init</span><span class="p">,</span> <span class="n">ti_init</span> <span class="o">=</span> <span class="n">sorn_init</span><span class="o">.</span><span class="n">initialize_threshold_matrix</span><span class="p">(</span>
-            <span class="n">Sorn</span><span class="o">.</span><span class="n">_te_min</span><span class="p">,</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_te_max</span><span class="p">,</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_ti_min</span><span class="p">,</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_ti_max</span>
+        <span class="n">te_init</span><span class="p">,</span> <span class="n">ti_init</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialize_threshold_matrix</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">te_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">te_max</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ti_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ti_max</span>
         <span class="p">)</span>
-        <span class="n">x_init</span><span class="p">,</span> <span class="n">y_init</span> <span class="o">=</span> <span class="n">sorn_init</span><span class="o">.</span><span class="n">initialize_activity_vector</span><span class="p">(</span>
-            <span class="n">Sorn</span><span class="o">.</span><span class="n">_ne</span><span class="p">,</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_ni</span><span class="p">)</span>
+        <span class="n">x_init</span><span class="p">,</span> <span class="n">y_init</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialize_activity_vector</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ne</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ni</span><span class="p">)</span>
 
         <span class="c1"># Initializing variables from sorn_initialize.py</span>
 
@@ -644,7 +615,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">matrices</span> <span class="o">=</span> <span class="n">matrices</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">phase</span> <span class="o">==</span> <span class="s2">&quot;plasticity&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrices</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span> <span class="o">=</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_time_steps</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># Total training steps</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># Total training steps</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">Wee</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Wei</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Wie</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Te</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Ti</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span><span class="p">,</span>
                 <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span><span class="p">,</span>
@@ -667,7 +638,7 @@
 
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">phase</span> <span class="o">==</span> <span class="s2">&quot;plasticity&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrices</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span> <span class="o">=</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_time_steps</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># Total training steps</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># Total training steps</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">Wee</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Wei</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Wie</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Te</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Ti</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span><span class="p">,</span>
                 <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span><span class="p">,</span>
@@ -689,7 +660,7 @@
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">phase</span> <span class="o">==</span> <span class="s2">&quot;training&quot;</span><span class="p">:</span>
 
             <span class="c1"># NOTE:time_steps here is diferent for plasticity and training phase</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span> <span class="o">=</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_time_steps</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># Total training steps</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># Total training steps</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">Wee</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Wei</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Wie</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Te</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Ti</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span><span class="p">,</span>
                 <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span><span class="p">,</span>
@@ -799,13 +770,13 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v_t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">v_t</span> <span class="o">=</span> <span class="n">v_t</span>
-        <span class="k">assert</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_nu</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">v_t</span>
         <span class="p">),</span> <span class="s2">&quot;Input units and input size mismatch: </span><span class="si">{}</span><span class="s2"> != </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">Sorn</span><span class="o">.</span><span class="n">_nu</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_t</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_t</span><span class="p">)</span>
         <span class="p">)</span>
-        <span class="k">if</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_nu</span> <span class="o">!=</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_ne</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">v_t</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_t</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_ne</span> <span class="o">-</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_nu</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ne</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">v_t</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_t</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ne</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">v_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_t</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
 <div class="viewcode-block" id="NetworkState.incoming_drive"><a class="viewcode-back" href="../../reference.html#sorn.sorn.NetworkState.incoming_drive">[docs]</a>    <span class="k">def</span> <span class="nf">incoming_drive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weights</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">activity_vector</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
@@ -895,7 +866,7 @@
 
         <span class="n">wie</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">wie</span><span class="p">)</span>
         <span class="n">yt</span> <span class="o">=</span> <span class="n">y</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
-        <span class="n">yt</span> <span class="o">=</span> <span class="n">yt</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_ne</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">yt</span> <span class="o">=</span> <span class="n">yt</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ne</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
         <span class="n">incoming_drive_e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">incoming_drive</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">wie</span><span class="p">,</span> <span class="n">activity_vector</span><span class="o">=</span><span class="n">yt</span><span class="p">),</span> <span class="mi">1</span>
@@ -983,7 +954,6 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="k">pass</span>
 
 <div class="viewcode-block" id="Simulator_.simulate_sorn"><a class="viewcode-back" href="../../reference.html#sorn.sorn.Simulator_.simulate_sorn">[docs]</a>    <span class="k">def</span> <span class="nf">simulate_sorn</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1026,35 +996,34 @@
         <span class="p">),</span> <span class="s2">&quot;Phase can be either &#39;plasticity&#39; or &#39;training&#39;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span> <span class="o">=</span> <span class="n">time_steps</span>
-        <span class="n">Sorn</span><span class="o">.</span><span class="n">_time_steps</span> <span class="o">=</span> <span class="n">time_steps</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">phase</span> <span class="o">=</span> <span class="n">phase</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">matrices</span> <span class="o">=</span> <span class="n">matrices</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span> <span class="o">=</span> <span class="n">freeze</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span> <span class="o">=</span> <span class="p">[]</span> <span class="k">if</span> <span class="n">freeze</span> <span class="o">==</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">freeze</span>
 
         <span class="n">kwargs_</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s2">&quot;_ne&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_nu&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_network_type_ee&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_network_type_ei&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_network_type_ie&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_lambda_ee&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_lambda_ei&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_lambda_ie&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_eta_stdp&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_eta_inhib&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_eta_ip&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_te_max&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_ti_max&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_ti_min&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_te_min&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_mu_ip&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_sigma_ip&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ne&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;nu&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;network_type_ee&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;network_type_ei&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;network_type_ie&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;lambda_ee&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;lambda_ei&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;lambda_ie&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;eta_stdp&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;eta_inhib&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;eta_ip&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;te_max&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ti_max&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ti_min&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;te_min&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;mu_ip&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;sigma_ip&quot;</span><span class="p">,</span>
         <span class="p">]</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">kwargs_</span><span class="p">:</span>
                 <span class="nb">setattr</span><span class="p">(</span><span class="n">Sorn</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
         <span class="c1"># assert Sorn._nu == len(inputs[:,0]),&quot;Size mismatch: Input != Nu &quot;</span>
-        <span class="n">Sorn</span><span class="o">.</span><span class="n">_ni</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_ne</span><span class="p">)</span>
+        <span class="n">Sorn</span><span class="o">.</span><span class="n">ni</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">ne</span><span class="p">)</span>
 
         <span class="c1"># Initialize/Get the weight, threshold matrices and activity vectors</span>
         <span class="n">matrix_collection</span> <span class="o">=</span> <span class="n">MatrixCollection</span><span class="p">(</span>
@@ -1073,10 +1042,10 @@
 
             <span class="k">if</span> <span class="n">noise</span><span class="p">:</span>
                 <span class="n">white_noise_e</span> <span class="o">=</span> <span class="n">Initializer</span><span class="o">.</span><span class="n">white_gaussian_noise</span><span class="p">(</span>
-                    <span class="n">mu</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_ne</span>
+                    <span class="n">mu</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ne</span>
                 <span class="p">)</span>
                 <span class="n">white_noise_i</span> <span class="o">=</span> <span class="n">Initializer</span><span class="o">.</span><span class="n">white_gaussian_noise</span><span class="p">(</span>
-                    <span class="n">mu</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_ni</span>
+                    <span class="n">mu</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ni</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">white_noise_e</span><span class="p">,</span> <span class="n">white_noise_i</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span>
@@ -1087,12 +1056,11 @@
 
             <span class="c1"># Buffers to get the resulting x and y vectors at the current time step and update the master matrix</span>
             <span class="n">x_buffer</span><span class="p">,</span> <span class="n">y_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
-                <span class="p">(</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_ne</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_ni</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ne</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">ni</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 
             <span class="n">te_buffer</span><span class="p">,</span> <span class="n">ti_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
-                <span class="p">(</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_ne</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_ni</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ne</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">ni</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 
-            <span class="c1"># Get the matrices and rename them for ease of reading</span>
             <span class="n">Wee</span><span class="p">,</span> <span class="n">Wei</span><span class="p">,</span> <span class="n">Wie</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">matrix_collection</span><span class="o">.</span><span class="n">Wee</span><span class="p">,</span>
                 <span class="n">matrix_collection</span><span class="o">.</span><span class="n">Wei</span><span class="p">,</span>
@@ -1132,31 +1100,31 @@
 
             <span class="c1"># STDP</span>
             <span class="k">if</span> <span class="s1">&#39;stdp&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span><span class="p">:</span>
-                <span class="n">Wee_t</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">stdp</span><span class="p">(</span>
+                <span class="n">Wee</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">stdp</span><span class="p">(</span>
                     <span class="n">Wee</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x_buffer</span><span class="p">,</span> <span class="n">cutoff_weights</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
 
             <span class="c1"># Intrinsic plasticity</span>
             <span class="k">if</span> <span class="s1">&#39;ip&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span><span class="p">:</span>
-                <span class="n">Te_t</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">ip</span><span class="p">(</span><span class="n">Te</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x_buffer</span><span class="p">)</span>
+                <span class="n">Te</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">ip</span><span class="p">(</span><span class="n">Te</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x_buffer</span><span class="p">)</span>
 
             <span class="c1"># Structural plasticity</span>
-            <span class="k">if</span> <span class="s1">&#39;sp&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">freeze</span><span class="p">:</span>
-                <span class="n">Wee_t</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">structural_plasticity</span><span class="p">(</span><span class="n">Wee_t</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s1">&#39;sp&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span><span class="p">:</span>
+                <span class="n">Wee</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">structural_plasticity</span><span class="p">(</span><span class="n">Wee</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 
             <span class="c1"># iSTDP</span>
-            <span class="k">if</span> <span class="s1">&#39;istdp&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">freeze</span><span class="p">:</span>
-                <span class="n">Wei_t</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">istdp</span><span class="p">(</span>
+            <span class="k">if</span> <span class="s1">&#39;istdp&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span><span class="p">:</span>
+                <span class="n">Wei</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">istdp</span><span class="p">(</span>
                     <span class="n">Wei</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x_buffer</span><span class="p">,</span> <span class="n">y_buffer</span><span class="p">,</span> <span class="n">cutoff_weights</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
                 <span class="p">)</span>
 
             <span class="c1"># Synaptic scaling Wee</span>
             <span class="k">if</span> <span class="s1">&#39;ss&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span><span class="p">:</span>
-                <span class="n">Wee_t</span> <span class="o">=</span> <span class="n">Plasticity</span><span class="p">()</span><span class="o">.</span><span class="n">ss</span><span class="p">(</span><span class="n">Wee_t</span><span class="p">)</span>
-                <span class="n">Wei_t</span> <span class="o">=</span> <span class="n">Plasticity</span><span class="p">()</span><span class="o">.</span><span class="n">ss</span><span class="p">(</span><span class="n">Wei_t</span><span class="p">)</span>
+                <span class="n">Wee</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">ss</span><span class="p">(</span><span class="n">Wee</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="n">Wei</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">ss</span><span class="p">(</span><span class="n">Wei</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 
             <span class="c1"># Assign the matrices to the matrix collections</span>
-            <span class="n">matrix_collection</span><span class="o">.</span><span class="n">weight_matrix</span><span class="p">(</span><span class="n">Wee_t</span><span class="p">,</span> <span class="n">Wei_t</span><span class="p">,</span> <span class="n">Wie</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span><span class="p">)</span>
-            <span class="n">matrix_collection</span><span class="o">.</span><span class="n">threshold_matrix</span><span class="p">(</span><span class="n">Te_t</span><span class="p">,</span> <span class="n">Ti</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span><span class="p">)</span>
+            <span class="n">matrix_collection</span><span class="o">.</span><span class="n">weight_matrix</span><span class="p">(</span><span class="n">Wee</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Wei</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Wie</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span><span class="p">)</span>
+            <span class="n">matrix_collection</span><span class="o">.</span><span class="n">threshold_matrix</span><span class="p">(</span><span class="n">Te</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Ti</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span><span class="p">)</span>
             <span class="n">matrix_collection</span><span class="o">.</span><span class="n">network_activity_t</span><span class="p">(</span><span class="n">x_buffer</span><span class="p">,</span> <span class="n">y_buffer</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
 
             <span class="n">X_all</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_buffer</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
@@ -1246,37 +1214,36 @@
         <span class="p">),</span> <span class="s2">&quot;Phase can be either &#39;plasticity&#39; or &#39;training&#39;&quot;</span>
 
         <span class="n">kwargs_</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s2">&quot;_ne&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_nu&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_network_type_ee&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_network_type_ei&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_network_type_ie&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_lambda_ee&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_lambda_ei&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_lambda_ie&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_eta_stdp&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_eta_inhib&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_eta_ip&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_te_max&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_ti_max&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_ti_min&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_te_min&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_mu_ip&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;_sigma_ip&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ne&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;nu&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;network_type_ee&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;network_type_ei&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;network_type_ie&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;lambda_ee&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;lambda_ei&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;lambda_ie&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;eta_stdp&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;eta_inhib&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;eta_ip&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;te_max&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ti_max&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ti_min&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;te_min&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;mu_ip&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;sigma_ip&quot;</span><span class="p">,</span>
         <span class="p">]</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">kwargs_</span><span class="p">:</span>
                 <span class="nb">setattr</span><span class="p">(</span><span class="n">Sorn</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-        <span class="n">Sorn</span><span class="o">.</span><span class="n">_ni</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">Sorn</span><span class="o">.</span><span class="n">_ne</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ni</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ne</span><span class="p">)</span>
         <span class="c1"># assert Sorn._nu == len(inputs[:,0]),&quot;Size mismatch: Input != Nu &quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">phase</span> <span class="o">=</span> <span class="n">phase</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">matrices</span> <span class="o">=</span> <span class="n">matrices</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span> <span class="o">=</span> <span class="n">time_steps</span>
-        <span class="n">Sorn</span><span class="o">.</span><span class="n">_time_steps</span> <span class="o">=</span> <span class="n">time_steps</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span> <span class="o">=</span> <span class="n">freeze</span>
-        <span class="c1"># Collect the network activity at all time steps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span> <span class="o">=</span> <span class="p">[]</span> <span class="k">if</span> <span class="n">freeze</span> <span class="o">==</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">freeze</span>
+
         <span class="n">X_all</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span>
         <span class="n">Y_all</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span>
         <span class="n">R_all</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_steps</span>
@@ -1290,10 +1257,10 @@
 
             <span class="k">if</span> <span class="n">noise</span><span class="p">:</span>
                 <span class="n">white_noise_e</span> <span class="o">=</span> <span class="n">Initializer</span><span class="o">.</span><span class="n">white_gaussian_noise</span><span class="p">(</span>
-                    <span class="n">mu</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_ne</span>
+                    <span class="n">mu</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ne</span>
                 <span class="p">)</span>
                 <span class="n">white_noise_i</span> <span class="o">=</span> <span class="n">Initializer</span><span class="o">.</span><span class="n">white_gaussian_noise</span><span class="p">(</span>
-                    <span class="n">mu</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_ni</span>
+                    <span class="n">mu</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ni</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">white_noise_e</span> <span class="o">=</span> <span class="mf">0.0</span>
@@ -1301,15 +1268,14 @@
 
             <span class="n">network_state</span> <span class="o">=</span> <span class="n">NetworkState</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
-            <span class="p">)</span>  <span class="c1"># Feed Input as an argument to the class</span>
+            <span class="p">)</span>
 
             <span class="c1"># Buffers to get the resulting x and y vectors at the current time step and update the master matrix</span>
             <span class="n">x_buffer</span><span class="p">,</span> <span class="n">y_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
-                <span class="p">(</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_ne</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_ni</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ne</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">ni</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
             <span class="n">te_buffer</span><span class="p">,</span> <span class="n">ti_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
-                <span class="p">(</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_ne</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Sorn</span><span class="o">.</span><span class="n">_ni</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ne</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">ni</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 
-            <span class="c1"># Get the matrices and rename them for ease of reading</span>
             <span class="n">Wee</span><span class="p">,</span> <span class="n">Wei</span><span class="p">,</span> <span class="n">Wie</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">matrix_collection</span><span class="o">.</span><span class="n">Wee</span><span class="p">,</span>
                 <span class="n">matrix_collection</span><span class="o">.</span><span class="n">Wei</span><span class="p">,</span>
@@ -1346,35 +1312,36 @@
 
                 <span class="c1"># STDP</span>
                 <span class="k">if</span> <span class="s1">&#39;stdp&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span><span class="p">:</span>
-                    <span class="n">Wee_t</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">stdp</span><span class="p">(</span>
+                    <span class="n">Wee</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">stdp</span><span class="p">(</span>
                         <span class="n">Wee</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x_buffer</span><span class="p">,</span> <span class="n">cutoff_weights</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
 
                 <span class="c1"># Intrinsic plasticity</span>
                 <span class="k">if</span> <span class="s1">&#39;ip&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span><span class="p">:</span>
-                    <span class="n">Te_t</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">ip</span><span class="p">(</span><span class="n">Te</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x_buffer</span><span class="p">)</span>
+                    <span class="n">Te</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">ip</span><span class="p">(</span><span class="n">Te</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x_buffer</span><span class="p">)</span>
 
                 <span class="c1"># Structural plasticity</span>
                 <span class="k">if</span> <span class="s1">&#39;sp&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span><span class="p">:</span>
-                    <span class="n">Wee_t</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">structural_plasticity</span><span class="p">(</span><span class="n">Wee_t</span><span class="p">)</span>
+                    <span class="n">Wee</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">structural_plasticity</span><span class="p">(</span><span class="n">Wee</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 
                 <span class="c1"># iSTDP</span>
                 <span class="k">if</span> <span class="s1">&#39;istdp&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span><span class="p">:</span>
-                    <span class="n">Wei_t</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">istdp</span><span class="p">(</span>
+                    <span class="n">Wei</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">istdp</span><span class="p">(</span>
                         <span class="n">Wei</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x_buffer</span><span class="p">,</span> <span class="n">y_buffer</span><span class="p">,</span> <span class="n">cutoff_weights</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
                     <span class="p">)</span>
 
                 <span class="c1"># Synaptic scaling Wee</span>
-                <span class="k">if</span> <span class="s1">&#39;sc&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span><span class="p">:</span>
-                    <span class="n">Wee_t</span> <span class="o">=</span> <span class="n">Plasticity</span><span class="p">()</span><span class="o">.</span><span class="n">ss</span><span class="p">(</span><span class="n">Wee_t</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s1">&#39;ss&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span><span class="p">:</span>
+                    <span class="n">Wee</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">ss</span><span class="p">(</span><span class="n">Wee</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 
                     <span class="c1"># Synaptic scaling Wei</span>
-                    <span class="n">Wei_t</span> <span class="o">=</span> <span class="n">Plasticity</span><span class="p">()</span><span class="o">.</span><span class="n">ss</span><span class="p">(</span><span class="n">Wei_t</span><span class="p">)</span>
+                    <span class="n">Wei</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">plasticity</span><span class="o">.</span><span class="n">ss</span><span class="p">(</span><span class="n">Wei</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">Wee_t</span><span class="p">,</span> <span class="n">Wei_t</span><span class="p">,</span> <span class="n">Te_t</span> <span class="o">=</span> <span class="n">Wee</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Wei</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Te</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="c1"># Wee[i], Wei[i], Te[i] remain same</span>
+                <span class="k">pass</span>
 
             <span class="c1"># Assign the matrices to the matrix collections</span>
-            <span class="n">matrix_collection</span><span class="o">.</span><span class="n">weight_matrix</span><span class="p">(</span><span class="n">Wee_t</span><span class="p">,</span> <span class="n">Wei_t</span><span class="p">,</span> <span class="n">Wie</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span><span class="p">)</span>
-            <span class="n">matrix_collection</span><span class="o">.</span><span class="n">threshold_matrix</span><span class="p">(</span><span class="n">Te_t</span><span class="p">,</span> <span class="n">Ti</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span><span class="p">)</span>
+            <span class="n">matrix_collection</span><span class="o">.</span><span class="n">weight_matrix</span><span class="p">(</span><span class="n">Wee</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Wei</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Wie</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span><span class="p">)</span>
+            <span class="n">matrix_collection</span><span class="o">.</span><span class="n">threshold_matrix</span><span class="p">(</span><span class="n">Te</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Ti</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span><span class="p">)</span>
             <span class="n">matrix_collection</span><span class="o">.</span><span class="n">network_activity_t</span><span class="p">(</span><span class="n">x_buffer</span><span class="p">,</span> <span class="n">y_buffer</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
 
             <span class="n">X_all</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_buffer</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>

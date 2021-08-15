@@ -1,5 +1,5 @@
 # set base image (host OS)
-FROM python:3.5
+FROM python:3.8
 
 # set the working directory in the scontainer
 WORKDIR /sorn
