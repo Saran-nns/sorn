@@ -107,13 +107,9 @@ te_min          | 0.0      | Minimum excitatory neuron threshold value          
 mu_ip           | 0.1      | Target mean firing rate of excitatory neuron                               |
 sigma_ip        | 0.0      | Standard deviation of firing rate of excitatory neuron                     |
 
-To override the default hyperparameters, use the `kwargs` as shown below,
-```python
-state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = inputs, phase='plasticity',
-                                                matrices=None, noise= True,
-                                                time_steps=time_steps)
-```
 #### Override default values and simulate new SORN model
+
+To override the default hyperparameters, use the `kwargs` as shown below,
 
 ```python
 
@@ -196,7 +192,7 @@ The other options for `freeze` keyword argument are,
 
 `istdp` - Inhibitory Spike Timing Dependent Plasticity
 
-Note: If you pass all above options to `freeze`, then the network will behave as Liquid State Machine(LSM).i,e., the connections strengths and thresholds remains fixed at the random intial state.
+Note: If you pass all above options to `freeze`, then the network will behave as Liquid State Machine(LSM) i,e., the connection strengths and thresholds remains fixed at the random intial state.
 
 ### Network Output Descriptions
   `state_dict`  - Dictionary of connection weights (`Wee`,`Wei`,`Wie`) , Excitatory network activity (`X`), Inhibitory network activities(`Y`), Threshold values (`Te`,`Ti`)
