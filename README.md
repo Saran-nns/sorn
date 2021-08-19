@@ -25,7 +25,6 @@ The network is developed as part of my Master thesis at Universität Osnabrück,
   - [Installation](#installation)
   - [Dependencies](#dependencies)
 - [Simulate and Train](#usage)
-  - [Update Network configurations](#update-network-configurations)
   - [Plasticity Phase](#plasticity-phase)
   - [Training phase](#training-phase)
   - [Network Output Descriptions](#network-output-descriptions)
