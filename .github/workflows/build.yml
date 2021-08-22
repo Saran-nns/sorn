@@ -27,4 +27,5 @@ jobs:
         run: |
           python -m unittest test_sorn.py
           pytest --cov=./ --cov-report=xml
+
         uses: codecov/codecov-action@v2
