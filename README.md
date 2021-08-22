@@ -5,7 +5,7 @@ SORN is a class of neuro-inspired artificial network build based on plasticity m
 
 The network is developed as part of my Master thesis at Universität Osnabrück, Germany. For the ease of maintainance, the notebooks and the use cases are moved to [SORN-Notebook](https://github.com/Saran-nns/PySORN_0.1)
 
-[![Build Status](https://github.com/saran-nns/sorn/workflows/Build and Test [Python 3.5, 3.6, 3,7, 3,8, 3.9]/badge.svg)](https://github.com/{saran-nns}/sorn/actions)
+[![Build Status](https://github.com/saran-nns/sorn/workflows/Build and Test [Python 3.5, 3.6, 3,7, 3,8, 3.9]/badge.svg)](https://github.com/saran-nns/sorn/actions)
 [![codecov](https://codecov.io/gh/Saran-nns/sorn/branch/master/graph/badge.svg)](https://codecov.io/gh/Saran-nns/sorn)
 [![Documentation Status](https://readthedocs.org/projects/self-organizing-recurrent-neural-networks/badge/?version=latest)](https://self-organizing-recurrent-neural-networks.readthedocs.io/en/latest/?badge=latest)
 [![PyPI version](https://badge.fury.io/py/sorn.svg)](https://badge.fury.io/py/sorn)
