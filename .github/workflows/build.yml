@@ -19,19 +19,12 @@ jobs:
           python -m pip install pip --upgrade pip
           pip install flake8
           pip install pytest
+          pip install coverage
           pip install -r requirements.txt
           pip install -e .
 
       - name: Unit tests
         run: |
           python -m unittest test_sorn.py
-
-      - name: Upload coverage to Codecov
+          pytest --cov=./ --cov-report=xml
         uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          env_vars: OS,PYTHON
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: false
-          verbose: false
