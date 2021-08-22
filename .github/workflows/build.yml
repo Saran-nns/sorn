@@ -26,6 +26,7 @@ jobs:
           python -m unittest test_sorn.py
           coverage run test_sorn.py.py test && coverage report --fail-under=75 && coverage xml
 
+      - name: Upload Codecov
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
