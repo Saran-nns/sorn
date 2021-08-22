@@ -2,6 +2,9 @@ name: Build
 
 on: [push, pull_request]
 
+codecov:
+  disable_default_path_fixes: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
