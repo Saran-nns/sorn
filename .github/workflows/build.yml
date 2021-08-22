@@ -22,13 +22,9 @@ jobs:
           pip install -e .
 
       - name: Unit tests
-        run: python -m unittest test_sorn.py
-
-      - name: Generate coverage report
         run: |
-          pip install pytest
-          pip install pytest-cov
-          pytest --cov=./ --cov-report=xml
+          python -m unittest test_sorn.py
+          coverage run test_sorn.py
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
