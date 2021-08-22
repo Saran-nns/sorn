@@ -24,7 +24,7 @@ jobs:
       - name: Unit tests
         run: |
           python -m unittest test_sorn.py
-          coverage run test_sorn.py.py test && coverage report --fail-under=75 && coverage xml
+          coverage run ./sorn/test_sorn.py.py test && coverage report --fail-under=75 && coverage xml
 
       - name: Upload Codecov
         uses: codecov/codecov-action@v1
