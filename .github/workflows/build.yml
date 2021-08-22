@@ -22,10 +22,13 @@ jobs:
           pip install -e .
 
       - name: Unit tests
-        run: python -m unittest test_sorn.py
+        run: |
+          python -m unittest test_sorn.py
+          coverage run test_sorn.py.py test && coverage report --fail-under=75 && coverage xml
 
-      - name: Report coverage to codecov
-          run:
-            coverage run test_sorn.py.py test && coverage report --fail-under=75 && coverage xml
-          after_success:
-            - codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
+          directory: ./coverage/reports/
+          fail_ci_if_error: true
