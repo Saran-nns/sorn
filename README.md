@@ -319,32 +319,32 @@ Wee = np.random.randn(200,200) # For example, the network has 200 neurons in the
 Wee=Wee/Wee.max() # state_dict['Wee'] returned by the SORN is already normalized
 Plotter.weight_distribution(weights= Wee, bin_size = 5, savefig = True)
 ```
-<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/weight_distribution.png" height="320" width="430"></a>
+<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/weight_distribution.png" height="320" width="430"></a>
 
 ```python
 # Plot Spike train of all neurons in the network
 E = np.random.randint(2, size=(200,1000)) # For example, activity of 200 excitatory neurons in 1000 time steps
 Plotter.scatter_plot(spike_train = E, savefig=True)
 ```
-<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/ScatterSpikeTrain.png" height="320" width="430"></a>
+<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/ScatterSpikeTrain.png" height="320" width="430"></a>
 
 ```python
 # Raster plot of activity of only first 10 neurons in the excitatory pool
 Plotter.raster_plot(spike_train = E[:,0:10], savefig=True)
 ```
-<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/RasterSpikeTrain.png" height="320" width="430"></a>
+<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/RasterSpikeTrain.png" height="320" width="430"></a>
 
 ```python
 # Histogram of number of presynaptic connections per neuron in the excitatory pool
 Plotter.hist_incoming_conn(weights=Wee, bin_size=10, histtype='bar', savefig=True)
 ```
-<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/hist_incoming_conn.png" height="250" width="450"></a>
+<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/hist_incoming_conn.png" height="250" width="450"></a>
 
 ```python
 # Distribution of firing rate of the network
 Plotter.hist_firing_rate_network(E, bin_size=10, savefig=True)
 ```
-<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/hist_firing_rate_network.png" height="320" width="430"></a>
+<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/hist_firing_rate_network.png" height="320" width="430"></a>
 
 ```python
 # Plot pearson correlation between neurons
@@ -352,25 +352,25 @@ from sorn import Statistics
 avg_corr_coeff,_ = Statistics.avg_corr_coeff(E.T)
 Plotter.correlation(avg_corr_coeff,savefig=True)
 ```
-<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/correlation_between_neurons.png" height="320" width="430"></a>
+<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/correlation_between_neurons.png" height="320" width="430"></a>
 
 ```python
 # Inter spike intervals with exponential curve fit for neuron 1 in the Excitatory pool
 Plotter.isi_exponential_fit(E,neuron=1,bin_size=5, savefig=True)
 ```
-<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/isi_exponential_fit.png" height="320" width="430"></a>
+<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/isi_exponential_fit.png" height="320" width="430"></a>
 
 ```python
 # Distribution of connection weights in linear and lognormal scale
 Plotter.linear_lognormal_fit(weights=Wee,num_points=100, savefig=True)
 ```
-<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/LinearLognormalFit.png" height="200" width="450"></a>
+<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/LinearLognormalFit.png" height="200" width="450"></a>
 
 ```python
 # Draw network connectivity using the pearson correlation function between neurons in the excitatory pool
 Plotter.plot_network(avg_corr_coeff,corr_thres=0.1,fig_name='network.png')
 ```
-<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/network.png" height="340" width="410"></a>
+<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/network.png" height="340" width="410"></a>
 
 ## Statistics and Analysis functions
 
