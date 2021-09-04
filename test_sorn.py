@@ -7,7 +7,7 @@ from sorn.utils import Plotter, Statistics, Initializer
 # Getting back the pickled matrices:
 with open("sample_matrices.pkl", "rb") as f:
     (
-        matrices_dict,
+        state_dict,
         Exc_activity,
         Inh_activity,
         Rec_activity,
@@ -27,6 +27,11 @@ inputs = np.random.rand(num_features, time_steps)
 
 class TestSorn(unittest.TestCase):
     def test_runsorn(self):
+        """Test network initialization, simulation and training with different
+        initialization methods and plasticity rules
+        """
+
+        # Initialize and simulate SORN with the default hyperparameters
         self.assertRaises(
             Exception,
             Simulator.simulate_sorn(
@@ -38,66 +43,65 @@ class TestSorn(unittest.TestCase):
                 nu=num_features
             ),
         )
+        # Initilize and resume the simulation of SORN using the state dictionary, state_dict
         self.assertRaises(
             Exception,
             Simulator.simulate_sorn(
                 inputs=simulation_inputs,
                 phase="plasticity",
-                matrices=matrices_dict,
+                matrices=state_dict,
                 time_steps=2,
                 noise=False,
             ),
         )
+        # Freeze a particular plasticity during simulation
         self.assertRaises(
             Exception,
             Simulator.simulate_sorn(
                 inputs=simulation_inputs,
                 phase="plasticity",
-                matrices=matrices_dict,
+                matrices=state_dict,
                 time_steps=2,
                 noise=False, freeze=['ip']
             ),
         )
+
+        # Freeze multiple plasticity mechanisms during simulation
         self.assertRaises(
             Exception,
             Simulator.simulate_sorn(
                 inputs=simulation_inputs,
                 phase="plasticity",
-                matrices=matrices_dict,
+                matrices=state_dict,
                 time_steps=2,
-                noise=False, freeze=['stdp,istdp','ss','sp']
+                noise=False, freeze=['stdp','istdp','ss','sp']
             ),
         )
+
+        # Train SORN with all plasticity mechanisms active
         self.assertRaises(
             Exception,
             Trainer.train_sorn(
                 inputs=gym_input,
                 phase="plasticity",
-                matrices=matrices_dict,
+                matrices=state_dict,
                 time_steps=1,
                 noise=True,
             ),
         )
-        self.assertRaises(
-            Exception,
-            Trainer.train_sorn(
-                inputs=sequence_input,
-                phase="plasticity",
-                matrices=matrices_dict,
-                time_steps=1,
-                noise=True,
-            ),
-        )
+        # Freeze multiple plasticity mechanisms during training
         self.assertRaises(
             Exception,
             Trainer.train_sorn(
                 inputs=sequence_input,
                 phase="training",
-                matrices=matrices_dict,
+                matrices=state_dict,
                 time_steps=1,
-                noise=True, freeze=['stdp,istdp','ss','sp']
+                noise=True, freeze=['stdp','istdp','ss','sp']
             ),
         )
+
+        # Override the default hyperparameters, initialize SORN and simulate under all plasticity mechanisms
         self.assertRaises(
             Exception,
             Simulator.simulate_sorn(
@@ -113,6 +117,7 @@ class TestSorn(unittest.TestCase):
             ),
         )
 
+        # Override the default hyperparameters, initialize SORN and train under all plasticity mechanisms
         self.assertRaises(
             Exception,
             Trainer.train_sorn(
@@ -129,18 +134,24 @@ class TestSorn(unittest.TestCase):
         )
 
     def test_plotter(self):
+        """Test the Plotter class methods in utils module
+        """
+
+        # Histogram of number of postsynaptic connections per neuron in the excitatory pool
         self.assertRaises(
             Exception,
             Plotter.hist_outgoing_conn(
-                weights=matrices_dict["Wee"], bin_size=5, histtype="bar", savefig=False
+                weights=state_dict["Wee"], bin_size=5, histtype="bar", savefig=False
             ),
         )
+        # Histogram of number of presynaptic connections per neuron in the excitatory pool
         self.assertRaises(
             Exception,
             Plotter.hist_incoming_conn(
-                weights=matrices_dict["Wee"], bin_size=5, histtype="bar", savefig=False
+                weights=state_dict["Wee"], bin_size=5, histtype="bar", savefig=False
             ),
         )
+        # Plot number of positive connection strengths (weights>0) in the network at each time step
         self.assertRaises(
             Exception,
             Plotter.network_connection_dynamics(
@@ -148,20 +159,24 @@ class TestSorn(unittest.TestCase):
                 savefig=False,
             ),
         )
+        # Histogram of firing rate of the network
         self.assertRaises(
             Exception,
             Plotter.hist_firing_rate_network(
                 spike_train=np.asarray(Exc_activity), bin_size=5, savefig=False
             ),
         )
+        # Plot Spike train of all neurons in the network
         self.assertRaises(
             Exception,
             Plotter.scatter_plot(spike_train=np.asarray(Exc_activity), savefig=False),
         )
+        # Raster plot of activity of neurons in the excitatory pool
         self.assertRaises(
             Exception,
             Plotter.raster_plot(spike_train=np.asarray(Exc_activity), savefig=False),
         )
+        # Inter spike intervals with exponential curve fit for neuron 10 in the Excitatory pool
         self.assertRaises(
             Exception,
             Plotter.isi_exponential_fit(
@@ -171,18 +186,22 @@ class TestSorn(unittest.TestCase):
                 savefig=False,
             ),
         )
+
+        # Plot weight distribution in the network
         self.assertRaises(
             Exception,
             Plotter.weight_distribution(
-                weights=matrices_dict["Wee"], bin_size=5, savefig=False
+                weights=state_dict["Wee"], bin_size=5, savefig=False
             ),
         )
+        # Distribution of connection weights in linear and lognormal scale
         self.assertRaises(
             Exception,
             Plotter.linear_lognormal_fit(
-                weights=matrices_dict["Wee"], num_points=10, savefig=False
+                weights=state_dict["Wee"], num_points=10, savefig=False
             ),
         )
+
         self.assertRaises(
             Exception,
             Plotter.hamming_distance(
@@ -191,31 +210,41 @@ class TestSorn(unittest.TestCase):
         )
 
     def test_statistics(self):
+        """Test the functions in Statistics class
+        """
+        # Firing rate of a neuron
         self.assertRaises(
             Exception,
             Statistics.firing_rate_neuron(
                 spike_train=np.asarray(Exc_activity), neuron=10, bin_size=5
             ),
         )
+
+        # Firing rate of the network
         self.assertRaises(
             Exception,
             Statistics.firing_rate_network(spike_train=np.asarray(Exc_activity)),
         )
+        # Smoothness of the firing rate curve
         self.assertRaises(
             Exception,
             Statistics.scale_dependent_smoothness_measure(
                 firing_rates=[1, 1, 5, 6, 3, 7]
             ),
         )
+        # t lagged auto correlation between neurons given their firing rates
         self.assertRaises(
             Exception, Statistics.autocorr(firing_rates=[1, 1, 5, 6, 3, 7], t=2)
         )
+        # Average of pearson correlation between neurons
         self.assertRaises(
             Exception, Statistics.avg_corr_coeff(spike_train=np.asarray(Exc_activity))
         )
+        # Return the spike event times of each neuron in the pool
         self.assertRaises(
             Exception, Statistics.spike_times(spike_train=np.asarray(Exc_activity))
         )
+        # Hamming distance measure for stability analysis
         self.assertRaises(
             Exception,
             Statistics.hamming_distance(
@@ -223,16 +252,19 @@ class TestSorn(unittest.TestCase):
                 perturbed_spike_train=np.asarray(Exc_activity),
             ),
         )
+        #  Inter spike interval of neurons
         self.assertRaises(
             Exception,
             Statistics.spike_time_intervals(spike_train=np.asarray(Exc_activity)),
         )
+        # Verify whether the neural spiking obeys poisson
         self.assertRaises(
             Exception,
             Statistics.fanofactor(
                 spike_train=np.asarray(Exc_activity), neuron=10, window_size=10
             ),
         )
+        # Degree of uncertainty in the origin of spiking
         self.assertRaises(
             Exception,
             Statistics.spike_source_entropy(
