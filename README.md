@@ -1,10 +1,9 @@
 
 # Self-Organizing Recurrent Neural Networks
 
-SORN is a class of neuro-inspired artificial network build based on plasticity mechanisms in biological brain and mimic neocortical circuits ability of learning and adaptation through neuroplasticity mechanisms.
+SORN is a class of neuro-inspired artificial network build based on plasticity mechanisms in biological brain and mimic neocortical circuits ability of learning and adaptation. SORN consists of pool of excitatory neurons and small population of inhibitory neurons which are controlled by 5 plasticity mechanisms found in neocortex, namely Spike Ti ming Dependent Plasticity (STDP), Intrinsic Plasticity (IP), Synaptic Scaling (SS),Synaptic Normalization(SN) and inhibitory Spike Timing Dependent Plasticity (iSTDP).
 
-The network is developed as part of my Master thesis at Universität Osnabrück, Germany. For the ease of maintainance, the notebooks and the use cases are moved to [SORN-Notebook](https://github.com/Saran-nns/PySORN_0.1)
-
+'sorn' is a Python package designed for Self Organizing Recurrent Neural Networks. It encapsulates all 5 plastcity mechansims and allows researchers to develop the network of their interest, provided they have the freedom to choose the combination of plasticity rules of their choice While it was originally developed for SORN networks, it can also serve as an ideal research package for Liquid State Machines.
 [![Build Status](https://github.com/saran-nns/sorn/workflows/Build/badge.svg)](https://github.com/saran-nns/sorn/actions)
 [![codecov](https://codecov.io/gh/Saran-nns/sorn/branch/master/graph/badge.svg)](https://codecov.io/gh/Saran-nns/sorn)
 [![Documentation Status](https://readthedocs.org/projects/self-organizing-recurrent-neural-networks/badge/?version=latest)](https://self-organizing-recurrent-neural-networks.readthedocs.io/en/latest/?badge=latest)
@@ -17,7 +16,7 @@ The network is developed as part of my Master thesis at Universität Osnabrück,
 [![status](https://joss.theoj.org/papers/7dc447f7a0d17d774b59c8ee15c223c2/status.svg)](https://joss.theoj.org/papers/7dc447f7a0d17d774b59c8ee15c223c2)
 
 <h4 align="Left">SORN Reservoir and the evolution of synaptic efficacies</h4>
-<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/SORN1.png" height="320" width="430"></a> <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/weights.png" height="375" width="425" ></a> <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/networkxx.jpg" height="375" width="425" ></a>
+<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/SORN1.png" height="320" width="430"></a>
 
 ## Contents
 - [Self-Organizing Recurrent Neural Networks](#self-organizing-recurrent-neural-networks)
