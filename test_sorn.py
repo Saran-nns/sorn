@@ -27,8 +27,8 @@ inputs = np.random.rand(num_features, time_steps)
 
 class TestSorn(unittest.TestCase):
     def test_runsorn(self):
-        """Test network initialization, simulation and training with different
-        initialization methods and plasticity rules
+        """Test SORN initialization, simulation and training methods with different
+        initialization schemes and plasticity rules
         """
 
         # Initialize and simulate SORN with the default hyperparameters

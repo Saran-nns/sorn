@@ -28,6 +28,8 @@ bibliography: paper.bib
 
 The self-organizing recurrent neural(SORN) network is a class of neuro-inspired artificial networks. This class of networks has been shown to mimic the ability of neocortical circuits to learn and adapt through neuroplasticity mechanisms. Structurally, the SORN network consists of a pool of excitatory neurons and a small population of inhibitory neurons. The network uses five basic plasticity mechanisms found in the neocortex of the brain, namely spike-timing-dependent plasticity, intrinsic plasticity, synaptic scaling, inhibitory spike-timing-dependent plasticity, and structural plasticity [@zheng2013network; @lazar2009sorn; @papa2017criticality] to optimize its parameters. Using mathematical tools, SORN network simplifies the underlying structural and functional connectivity mechanisms responsible for learning and memory in the brain.
 
+<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/paper/imgs/SORN1.png" height="320" width="430"></a>
+
 'sorn' is a Python package designed for Self Organizing Recurrent Neural Networks. While it was originally developed for SORN networks, it can also serve as an ideal research package for Liquid State Machines [@jaeger2002adaptive; @jaeger2007special] in general. The detailed documentation can be found at [https://self-organizing-recurrent-neural-networks.readthedocs.io/en/latest/](self-organizing-recurrent-neural-networks.readthedocs.io). To extend the potential applications of this network, a demonstrative example of a neuro-robotics experiment using OpenAI Gym [ @brockman2016openai] is provided at [sorn package](https://github.com/Saran-nns/sorn/).
 
  ## Statement of need
@@ -43,15 +45,6 @@ The package 'sorn' is heavily dependent on numpy [@harris2020array] for numerica
 
 The network can be instantiated, simulated and trained using two classes 'Simulator' and 'Trainer' which inherit objects from 'SORN'.
 
-The library can be installed as using the Python package manager 'pip';
-
-```python
-    pip install sorn
-```
-To install all optional dependencies,
-```python
-    pip install 'sorn[all]'
-```
 ## SORN Network Model
 
 Excitatory network state

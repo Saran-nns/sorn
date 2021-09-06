@@ -195,13 +195,13 @@ Note: If you pass all above options to `freeze`, then the network will behave as
 ### Network Output Descriptions
   `state_dict`  - Dictionary of connection weights (`Wee`,`Wei`,`Wie`) , Excitatory network activity (`X`), Inhibitory network activities(`Y`), Threshold values (`Te`,`Ti`)
 
-  `E` - Collection of Excitatory network activity of entire simulation period
+  `E` - Excitatory network activity of entire simulation period
 
-  `I` - Collection of Inhibitory network activity of entire simulation period
+  `I` - Inhibitory network activity of entire simulation period
 
-  `R` - Collection of Recurrent network activity of entire simulation period
+  `R` - Recurrent network activity of entire simulation period
 
-  `C` - List of number of active connections in the Excitatory pool at each time step
+  `C` - Number of active connections in the Excitatory pool at each time step
 
 ### Colaboratory Notebook
 Sample simulation and training runs with few plotting functions are found at [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/164AKTA-iCVLq-iR-treLA_Y9keRYrQkH#scrollTo=Rt2YZptMtC14)
