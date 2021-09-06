@@ -47,8 +47,7 @@ The network can be instantiated, simulated and trained using two classes 'Simula
 
 ## SORN Network Model
 
-Excitatory network state
-
+The activity of neurons in the excitatory pool is given by,
 
 \begin{equation}
 \label{es}
