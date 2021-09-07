@@ -12,51 +12,7 @@ except:
 
 class Sorn(object):
 
-    """ This class wraps initialization of the network and its parameters
-
-    Args:
-        nu (int): Number of input units. Defaults to 10
-
-        ne (int): Number of excitatory units. Defaults to 200
-
-        eta_stdp (float): STDP plasticity Learning rate constant; SORN1 and SORN2. Defaults to 0.004
-
-        eta_ip (float): Intrinsic plasticity learning rate constant; SORN1 and SORN2. Defaults to 0.001
-
-        eta_inhib (float): Intrinsic plasticity learning rate constant; SORN2 only. Defaults to 0.01
-
-        h_ip (float): Target firing rate. Defaults to 2 * nu / ne
-
-        mu_ip (float): Mean target firing rate. Defaults to 0.1
-
-        sigma_ip (float): Variance of target firing rate. Defaults to 0.0
-
-        ni (int): Number of inhibitory units in the network. Defaults to int(0.2*ne)
-
-        time_steps (float): Total time steps of simulation
-
-        te_min (float): Excitatory minimum Threshold. Defaults to 0.0
-
-        te_max (float): Excitatory maximum Threshold. Defaults to 1.0
-
-        ti_min (float): Inhibitory minimum Threshold. Defaults to 0.0
-
-        ti_max (float): Inhibitory maximum Threshold. Defaults to 0.5
-
-        network_type_ee (str): Dense or Sparse. Defaults to Sparse
-
-        network_type_ei (str): Dense or Sparse. Defaults to Sparse
-
-        network_type_ie (str): Dense or Sparse. Defaults to Dense
-
-        lambda_ee (int):  Number of connections to and from a single excitatory unit to another at initialization. Defaults to 20
-
-        lambda_ei (int): Number of connections to and from a single inhibitory unit to exitatory unit at initialization. Defaults to 40
-
-        lambda_ie (int):  Number of connections to and from a single excitatory unit to inhibitory unit at initialization. Defaults to 100"""
-
-    def __init__(self):
-        pass
+    """ This class wraps initialization of the network and its parameters"""
 
     nu = 10
 
@@ -95,15 +51,19 @@ class Sorn(object):
     lambda_ie = 100
 
     @staticmethod
-    def initialize_weight_matrix(
-        network_type: str, synaptic_connection: str, self_connection: str, lambd_w: int
+    def initialize_weight_matrix(network_type: str, synaptic_connection: str, self_connection: str, lambd_w: int
     ):
         """Wrapper for initializing the weight matrices for SORN
+
         Args:
             network_type (str): Spare or Dense
+
             synaptic_connection (str): EE,EI,IE. Note that Spare connection is defined only for EE connections
+
             self_connection (str): True or False: Synaptic delay or time delay
+
             lambd_w (int): Average number of incoming and outgoing connections per neuron
+
         Returns:
             weight_matrix (array): Array of connection strengths
         """
@@ -126,15 +86,15 @@ class Sorn(object):
         return weight_matrix
 
     @staticmethod
-    def initialize_threshold_matrix(
-        te_min: float, te_max: float, ti_min: float, ti_max: float
-    ):
+    def initialize_threshold_matrix(te_min: float, te_max: float, ti_min: float, ti_max: float):
         """Initialize the threshold for excitatory and inhibitory neurons
+
         Args:
             te_min (float): Min threshold value for excitatory units
             te_max (float): Min threshold value for inhibitory units
             ti_min (float): Max threshold value for excitatory units
             ti_max (float): Max threshold value for inhibitory units
+
         Returns:
             te (array): Threshold values for excitatory units
             ti (array): Threshold values for inhibitory units
@@ -148,9 +108,11 @@ class Sorn(object):
     @staticmethod
     def initialize_activity_vector(ne: int, ni: int):
         """Initialize the activity vectors X and Y for excitatory and inhibitory neurons
+
         Args:
             ne (int): Number of excitatory neurons
             ni (int): Number of inhibitory neurons
+
         Returns:
             x (array): Array of activity vectors of excitatory population
             y (array): Array of activity vectors of inhibitory population"""
@@ -163,21 +125,6 @@ class Sorn(object):
 class Plasticity(Sorn):
     """Instance of class Sorn. Inherits the variables and functions defined in class Sorn.
     It encapsulates all plasticity mechanisms mentioned in the article. Inherits all attributed from parent class Sorn
-    Args:
-        nu (int): Number of input units. Defaults to 10
-        ne (int): Sorn.ne  # Number of excitatory units. Defaults to 200
-        eta_stdp (float): STDP plasticity Learning rate constant; SORN1 and SORN2. Defaults to 0.004
-        eta_ip (float): Intrinsic plasticity learning rate constant; SORN1 and SORN2. Defaults to 0.001
-        eta_inhib (float): Intrinsic plasticity learning rate constant; SORN2 only. Defaults to 0.01
-        h_ip (float): Target firing rate. Defaults to 2 * Sorn.nu / Sorn.ne
-        mu_ip (float): Mean target firing rate. Defaults to 0.1
-        sigma_ip (float): Variance of target firing rate. Defaults to 0.0
-        ni (int): Number of inhibitory units in the network. Defaults to int(0.2 * Sorn.ne)
-        time_steps (float): Total time steps of simulation
-        te_min (float): Excitatory minimum Threshold. Defaults to 0.0
-        te_max (float): Excitatory maximum Threshold. Defaults to 1.0
-        ti_min (float): Inhibitory minimum Threshold. Defaults to 0.0
-        ti_max (float): Inhibitory maximum Threshold. Defaults to 0.5
     """
 
     def __init__(self):
@@ -204,10 +151,14 @@ class Plasticity(Sorn):
 
     def stdp(self, wee: np.array, x: np.array, cutoff_weights: list):
         """Apply STDP rule : Regulates synaptic strength between the pre(Xj) and post(Xi) synaptic neurons
+
         Args:
             wee (array):  Weight matrix
+
             x (array): Excitatory network activity
+
             cutoff_weights (list): Maximum and minimum weight ranges
+
         Returns:
             wee (array):  Weight matrix
         """
@@ -245,9 +196,12 @@ class Plasticity(Sorn):
 
     def ip(self, te: np.array, x: np.array):
         """Intrinsic Plasiticity mechanism
+
         Args:
             te (array): Threshold vector of excitatory units
+
             x (array): Excitatory network activity
+
         Returns:
             te (array): Threshold vector of excitatory units
         """
@@ -270,8 +224,10 @@ class Plasticity(Sorn):
     @staticmethod
     def ss(wee: np.array):
         """Synaptic Scaling or Synaptic Normalization
+
         Args:
             wee (array):  Weight matrix
+
         Returns:
             wee (array):  Scaled Weight matrix
         """
@@ -280,11 +236,16 @@ class Plasticity(Sorn):
 
     def istdp(self, wei: np.array, x: np.array, y: np.array, cutoff_weights: list):
         """Apply iSTDP rule, which regulates synaptic strength between the pre inhibitory(Xj) and post Excitatory(Xi) synaptic neurons
+
         Args:
             wei (array): Synaptic strengths from inhibitory to excitatory
+
             x (array): Excitatory network activity
+
             y (array): Inhibitory network activity
+
             cutoff_weights (list): Maximum and minimum weight ranges
+
         Returns:
             wei (array): Synaptic strengths from inhibitory to excitatory"""
 
@@ -328,8 +289,10 @@ class Plasticity(Sorn):
     @staticmethod
     def structural_plasticity(wee: np.array):
         """Add new connection value to the smallest weight between excitatory units randomly
+
         Args:
             wee (array): Weight matrix
+
         Returns:
             wee (array):  Weight matrix"""
 
@@ -354,8 +317,10 @@ class Plasticity(Sorn):
     @staticmethod
     def initialize_plasticity():
         """Initialize weight matrices for plasticity phase based on network configuration
+
         Args:
             kwargs (self.__dict__): All arguments are inherited from Sorn attributes
+
         Returns:
             tuple(array): Weight matrices WEI, WEE, WIE and threshold matrices Te, Ti and Initial state vectors X,Y """
 
@@ -422,9 +387,12 @@ class Plasticity(Sorn):
 
 class MatrixCollection(Sorn):
     """Collect all matrices initialized and updated during simulation (plasiticity and training phases)
+
     Args:
         phase (str): Training or Plasticity phase
+
         matrices (dict): Network activity, threshold and connection matrices
+
     Returns:
         MatrixCollection instance"""
 
@@ -501,10 +469,14 @@ class MatrixCollection(Sorn):
 
     def weight_matrix(self, wee: np.array, wei: np.array, wie: np.array, i: int):
         """Update weight matrices
+
         Args:
             wee (array): Excitatory-Excitatory weight matrix
+
             wei (array): Inhibitory-Excitatory weight matrix
+
             wie (array): Excitatory-Inhibitory weight matrix
+
             i (int): Time step
         Returns:
             tuple (array): Weight Matrices Wee, Wei, Wie"""
@@ -517,10 +489,14 @@ class MatrixCollection(Sorn):
 
     def threshold_matrix(self, te: np.array, ti: np.array, i: int):
         """Update threshold matrices
+
         Args:
             te (array): Excitatory threshold
+
             ti (array): Inhibitory threshold
+
             i (int): Time step
+
         Returns:
             tuple (array): Threshold Matrices Te and Ti"""
 
@@ -532,10 +508,14 @@ class MatrixCollection(Sorn):
         self, excitatory_net: np.array, inhibitory_net: np.array, i: int
     ):
         """Network state at current time step
+
         Args:
             excitatory_net (array): Excitatory network activity
+
             inhibitory_net (array): Inhibitory network activity
+
             i (int): Time step
+
         Returns:
             tuple (array): Updated Excitatory and Inhibitory states
         """
@@ -547,10 +527,14 @@ class MatrixCollection(Sorn):
 
     def network_activity_t_1(self, x: np.array, y: np.array, i: int):
         """Network activity at previous time step
+
         Args:
             x (array): Excitatory network activity
+
             y (array): Inhibitory network activity
+
             i (int): Time step
+
         Returns:
             tuple (array): Previous Excitatory and Inhibitory states
         """
@@ -564,8 +548,10 @@ class MatrixCollection(Sorn):
 class NetworkState(Plasticity):
 
     """The evolution of network states
+
     Args:
         v_t (array): External input/stimuli
+
     Returns:
         instance (object): NetworkState instance"""
 
@@ -583,9 +569,12 @@ class NetworkState(Plasticity):
 
     def incoming_drive(self, weights: np.array, activity_vector: np.array):
         """Excitatory Post synaptic potential towards neurons in the reservoir in the absence of external input
+
         Args:
             weights (array): Synaptic strengths
+
             activity_vector (list): Acitivity of inhibitory or Excitatory neurons
+
         Returns:
             incoming (array): Excitatory Post synaptic potential towards neurons
         """
@@ -603,13 +592,20 @@ class NetworkState(Plasticity):
         white_noise_e: np.array,
     ):
         """Activity of Excitatory neurons in the network
+
         Args:
             wee (array): Excitatory-Excitatory weight matrix
+
             wei (array): Inhibitory-Excitatory weight matrix
+
             te (array): Excitatory threshold
+
             x (array): Excitatory network activity
+
             y (array): Inhibitory network activity
+
             white_noise_e (array): Gaussian noise
+
         Returns:
             x (array): Current Excitatory network activity
         """
@@ -641,12 +637,18 @@ class NetworkState(Plasticity):
         self, wie: np.array, ti: np.array, y: np.array, white_noise_i: np.array
     ):
         """Activity of Excitatory neurons in the network
+
         Args:
             wee (array): Excitatory-Excitatory weight matrix
+
             wie (array): Excitatory-Inhibitory weight matrix
+
             ti (array): Inhibitory threshold
+
             y (array): Inhibitory network activity
+
             white_noise_i (array): Gaussian noise
+
         Returns:
             y (array): Current Inhibitory network activity"""
 
@@ -674,13 +676,21 @@ class NetworkState(Plasticity):
         white_noise_e: np.array,
     ):
         """Network state due to recurrent drive received by the each unit at time t+1. Activity of Excitatory neurons without external stimuli
+
         Args:
+
             wee (array): Excitatory-Excitatory weight matrix
+
             wei (array): Inhibitory-Excitatory weight matrix
+
             te (array): Excitatory threshold
+
             x (array): Excitatory network activity
+
             y (array): Inhibitory network activity
+
             white_noise_e (array): Gaussian noise
+
         Returns:
             xt (array): Recurrent network state
         """
@@ -708,17 +718,27 @@ class NetworkState(Plasticity):
 class Simulator_(Sorn):
 
     """Simulate SORN using external input/noise using the fresh or pretrained matrices
+
     Args:
         inputs (np.array, optional): External stimuli. Defaults to None.
+
         phase (str, optional): Plasticity phase. Defaults to "plasticity".
+
         matrices (dict, optional): Network states, connections and threshold matrices. Defaults to None.
+
         time_steps (int, optional): Total number of time steps to simulate the network. Defaults to 1.
+
         noise (bool, optional): If True, noise will be added. Defaults to True.
+
     Returns:
         plastic_matrices (dict): Network states, connections and threshold matrices
+
         X_all (array): Excitatory network activity collected during entire simulation steps
+
         Y_all (array): Inhibitory network activity collected during entire simulation steps
+
         R_all (array): Recurrent network activity collected during entire simulation steps
+
         frac_pos_active_conn (list): Number of positive connection strengths in the network at each time step during simulation"""
 
     def __init__(self):
@@ -736,18 +756,29 @@ class Simulator_(Sorn):
         **kwargs
     ):
         """Simulation/Plasticity phase
+
         Args:
             inputs (np.array, optional): External stimuli. Defaults to None.
+
             phase (str, optional): Plasticity phase. Defaults to "plasticity"
+
             matrices (dict, optional): Network states, connections and threshold matrices. Defaults to None.
+
             time_steps (int, optional): Total number of time steps to simulate the network. Defaults to 1.
+
             noise (bool, optional): If True, noise will be added. Defaults to True.
+
             freeze (list, optional): List of synaptic plasticity mechanisms which will be turned off during simulation. Defaults to None.
+
         Returns:
             plastic_matrices (dict): Network states, connections and threshold matrices
+
             X_all (array): Excitatory network activity collected during entire simulation steps
+
             Y_all (array): Inhibitory network activity collected during entire simulation steps
+
             R_all (array): Recurrent network activity collected during entire simulation steps
+
             frac_pos_active_conn (list): Number of positive connection strengths in the network at each time step during simulation"""
 
         assert (
@@ -906,18 +937,29 @@ class Simulator_(Sorn):
 
 class Trainer_(Sorn):
     """Train the network with the fresh or pretrained network matrices and external stimuli
+
     Args:
         inputs (np.array, optional): External stimuli. Defaults to None.
+
         phase (str, optional): Training phase. Defaults to "training".
+
         matrices (dict, optional): Network states, connections and threshold matrices. Defaults to None.
+
         time_steps (int, optional): Total number of time steps to simulate the network. Defaults to 1.
+
         noise (bool, optional): If True, noise will be added. Defaults to True.
+
         freeze (list, optional): List of synaptic plasticity mechanisms which will be turned off during simulation. Defaults to None.
+
     Returns:
         plastic_matrices (dict): Network states, connections and threshold matrices
+
         X_all (array): Excitatory network activity collected during entire simulation steps
+
         Y_all (array): Inhibitory network activity collected during entire simulation steps
+
         R_all (array): Recurrent network activity collected during entire simulation steps
+
         frac_pos_active_conn (list): Number of positive connection strengths in the network at each time step during simulation"""
 
     def __init__(self):
@@ -935,17 +977,28 @@ class Trainer_(Sorn):
         **kwargs
     ):
         """Train the network with the fresh or pretrained network matrices and external stimuli
+
         Args:
             inputs (np.array, optional): External stimuli. Defaults to None.
+
             phase (str, optional): Training phase. Defaults to "training".
+
             matrices (dict, optional): Network states, connections and threshold matrices. Defaults to None.
+
             time_steps (int, optional): Total number of time steps to simulate the network. Defaults to 1.
+
             noise (bool, optional): If True, noise will be added. Defaults to True.
+
         Returns:
+
             plastic_matrices (dict): Network states, connections and threshold matrices
+
             X_all (array): Excitatory network activity collected during entire simulation steps
+
             Y_all (array): Inhibitory network activity collected during entire simulation steps
+
             R_all (array): Recurrent network activity collected during entire simulation steps
+
             frac_pos_active_conn (list): Number of positive connection strengths in the network at each time step during simulation"""
 
         assert (

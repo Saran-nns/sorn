@@ -1,7 +1,7 @@
 Reference
 ==========
 
-SORN Network 
+SORN Network
 ------------
 
 Sorn
@@ -9,6 +9,15 @@ Sorn
 The following methods are available via :class:`SORN`
 
 .. autoclass:: sorn.sorn.Sorn
+    :members:
+    :undoc-members:
+    :noindex:
+
+Plasticity
+^^^^^^^^^^
+The following methods are available via :class:`Plasticity`
+
+.. autoclass:: sorn.sorn.Plasticity
     :members:
     :undoc-members:
     :noindex:
@@ -22,18 +31,9 @@ The following methods are available via :class:`MatrixCollection`
     :undoc-members:
     :noindex:
 
-Plasticity
-^^^^^^^^^^
-The following methods are available via :class:`sorn.Plasticity`
-
-.. autoclass:: sorn.sorn.Plasticity
-    :members:
-    :undoc-members:
-    :noindex:
-
 NetworkState
 ^^^^^^^^^^^^
-The following methods are available via :class:`sorn.NetworkState`
+The following methods are available via :class:`NetworkState`
 
 .. autoclass:: sorn.sorn.NetworkState
     :members:
@@ -42,7 +42,7 @@ The following methods are available via :class:`sorn.NetworkState`
 
 Simulator
 ^^^^^^^^^
-The following methods are available via :class:`sorn.Simulator_`
+The following methods are available via :class:`Simulator_`
 
 .. autoclass:: sorn.sorn.Simulator_
     :members:
@@ -51,7 +51,7 @@ The following methods are available via :class:`sorn.Simulator_`
 
 Trainer
 ^^^^^^^
-The following methods are available via :class:`sorn.Trainer_`
+The following methods are available via :class:`Trainer_`
 
 .. autoclass:: sorn.sorn.Trainer_
     :members:
@@ -63,7 +63,7 @@ Utility Functions
 
 Plotting
 ^^^^^^^^
-The following methods are available via :class:`utils.Plotter`
+The following methods are available via :class:`Plotter`
 
 .. autoclass:: sorn.utils.Plotter
     :members:
@@ -72,7 +72,7 @@ The following methods are available via :class:`utils.Plotter`
 
 Statistics and Analysis
 ^^^^^^^^^^^^^^^^^^^^^^^^
-The following methods are available via :class:`utils.Statistics`
+The following methods are available via :class:`Statistics`
 
 .. autoclass:: sorn.utils.Statistics
     :members:
