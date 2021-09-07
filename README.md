@@ -24,15 +24,11 @@ SORN is a class of neuro-inspired artificial network build based on plasticity m
 - [Getting Started](#)
   - [Installation](#installation)
   - [Dependencies](#dependencies)
-- [Simulate and Train](#usage)
+- [Usage](#usage)
   - [Plasticity Phase](#plasticity-phase)
   - [Training phase](#training-phase)
   - [Network Output Descriptions](#network-output-descriptions)
-  - [Colaboratory Notebook](#colaboratory-notebook)
-- [Integrate with OpenAI gym](#usage-with-openai-gym)
-  - [Cartpole balance problem](#cartpole-balance-problem)
-- [Plotting functions](#plotting-functions)
-- [Statistics and Analysis functions](#statistics-and-analysis-functions)
+
 - [Citation](#citation)
   - [Package](#package)
   - [Thesis](#thesis)
@@ -106,15 +102,11 @@ from sorn import Trainer
 
   `C` - Number of active connections in the Excitatory pool at each time step
 
-### Colaboratory Notebook
-Sample simulation and training runs with few plotting functions are found at [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/164AKTA-iCVLq-iR-treLA_Y9keRYrQkH#scrollTo=Rt2YZptMtC14)
+### Usage and sample experiment with OpenAIGym
 
-## Usage with OpenAI gym
-For detailed documentation about usage and development, please visit [SORN-Documentation](https://self-organizing-recurrent-neural-networks.readthedocs.io/)
+For detailed documentation about development, analysis, plotting methods and a sample experiment with OpenAI Gym, please visit[SORN-Documentation](https://self-organizing-recurrent-neural-networks.readthedocs.io/en/latest/usage.html)
 
-There are several neural data analysis and visualization methods inbuilt with `sorn` package. Sample call for few plotting and statistical methods are shown below;
-
-## Plotting functions
+Sample call for few plotting and statistical methods in `sorn` package are shown below;
 
 ```python
 from sorn import Plotter
@@ -135,13 +127,9 @@ Plotter.isi_exponential_fit(E,neuron=1,bin_size=5, savefig=True)
 # Distribution of connection weights in linear and lognormal scale
 Plotter.linear_lognormal_fit(weights=Wee,num_points=100, savefig=True)
 ```
-<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/LinearLognormalFit.png" height="200" width="450"></a>
+<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/LinearLognormalFit.png" height="240" width="480"></a>
 
-```python
-# Draw network connectivity using the pearson correlation function between neurons in the excitatory pool
-Plotter.plot_network(avg_corr_coeff,corr_thres=0.1,fig_name='network.png')
-```
-<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/network.png" height="340" width="410"></a>
+Sample simulation and training runs with few plotting functions are found at [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/164AKTA-iCVLq-iR-treLA_Y9keRYrQkH#scrollTo=Rt2YZptMtC14)
 
 ## Statistics and Analysis functions
 
