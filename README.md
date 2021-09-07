@@ -25,7 +25,7 @@ SORN is a class of neuro-inspired artificial network build based on plasticity m
 pip install sorn
 ```
 
-The library is still in alpha stage, so you may also want to install the latest version from the development branch:
+The library is still in alpha stage, so you may also want to install the latest version from the development branch
 
 ```python
 pip install git+https://github.com/Saran-nns/sorn
@@ -65,16 +65,16 @@ Shapes Wee (200, 200) Wei (40, 200) Wie (200, 40)
 ### Training Phase
 ```python
 from sorn import Trainer
-    # NOTE: During training phase, input to `sorn` should have second (time) dimension set to 1. ie., input shape should be (input_features,1).
+# NOTE: During training phase, input to `sorn` should have second (time) dimension set to 1. ie., input shape should be (input_features,1).
 
-    inputs = np.random.rand(num_features,1)
+inputs = np.random.rand(num_features,1)
 
-    # SORN network is frozen during training phase
-    state_dict, E, I, R, C = Trainer.train_sorn(inputs = inputs, phase='training',
-                                                matrices=state_dict, noise= False,
-                                                time_steps=1,
-                                                ne = 100, nu=num_features,
-                                                lambda_ee = 10, eta_stdp=0.001 )
+# SORN network is frozen during training phase
+state_dict, E, I, R, C = Trainer.train_sorn(inputs = inputs, phase='training',
+                                            matrices=state_dict, noise= False,
+                                            time_steps=1,
+                                            ne = 100, nu=num_features,
+                                            lambda_ee = 10, eta_stdp=0.001 )
 ```
 ### Network Output Descriptions
   `state_dict`  - Dictionary of connection weights (`Wee`,`Wei`,`Wie`) , Excitatory network activity (`X`), Inhibitory network activities(`Y`), Threshold values (`Te`,`Ti`)
@@ -90,7 +90,7 @@ from sorn import Trainer
 ### Documentation
 For detailed documentation about development, analysis, plotting methods and a sample experiment with OpenAI Gym, please visit [SORN Documentation](https://self-organizing-recurrent-neural-networks.readthedocs.io/en/latest/usage.html)
 
-## Citation
+### Citation
 
 ```Python
 @software{saranraj_nambusubramaniyan_2020_4184103,
@@ -105,7 +105,7 @@ For detailed documentation about development, analysis, plotting methods and a s
 }
 ```
 
-## Contributions
+### Contributions
 I am welcoming contributions. If you wish to contribute, please create a branch with a pull request and the changes can be discussed there.
 If you find a bug in the code or errors in the documentation, please open a new issue in the Github repository and report the bug or the error. Please provide sufficient information for the bug to be reproduced.
 
