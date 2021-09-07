@@ -105,7 +105,7 @@ IP updates the firing threshold of excitatory neurons based on the state of the 
 
 \begin{equation}
 \label{ip}
-T_i(t+1)=T_i(t)+\eta_\text{IP}{x_i(t)-\text{H_{IP}}
+T_i(t+1)=T_i(t)+\eta_\text{IP}{x_i(t)-\text{H_{IP}}}
 \end{equation}
 
 where,
