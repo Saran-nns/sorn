@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.5.7
+                0.5.8
               </div>
             
           
@@ -91,10 +91,14 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#plasticity-phase">Plasticity Phase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plasticity-phase">Plasticity Phase</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#override-the-default-hyperparameters-and-simulate-new-sorn-model">Override the default hyperparameters and simulate new SORN model</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#training-phase">Training phase</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#freeze-plasticity">Freeze plasticity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#network-output-descriptions">Network Output Descriptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#colaboratory-notebook">Colaboratory Notebook</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#usage-with-openai-gym">Usage with OpenAI gym</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#cartpole-balance-problem">Cartpole balance problem</a></li>
 </ul>
@@ -220,10 +224,16 @@
 
 <span class="c1"># Simulate the network with default hyperparameters under gaussian white noise</span>
 <span class="n">state_dict</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="n">Simulator</span><span class="o">.</span><span class="n">simulate_sorn</span><span class="p">(</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="s1">&#39;plasticity&#39;</span><span class="p">,</span>
-                                                <span class="n">matrices</span><span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">noise</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                                                <span class="n">matrices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">noise</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
                                                 <span class="n">time_steps</span><span class="o">=</span><span class="n">time_steps</span><span class="p">)</span>
 </pre></div>
 </div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Network</span> <span class="n">Initialized</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">connections</span> <span class="ow">in</span> <span class="n">Wee</span> <span class="mi">3909</span> <span class="p">,</span> <span class="n">Wei</span> <span class="mi">1574</span><span class="p">,</span> <span class="n">Wie</span> <span class="mi">8000</span>
+<span class="n">Shapes</span> <span class="n">Wee</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span> <span class="n">Wei</span> <span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span> <span class="n">Wie</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The default values of the network hyperparameters are,</p>
 <table class="colwidths-given docutils align-default" id="id1">
 <caption><span class="caption-text">Hyperparameters of the network and default values</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
 <colgroup>
@@ -308,41 +318,71 @@
 </tr>
 </tbody>
 </table>
-<p>To override the default hyperparameters, use the <cite>kwargs</cite> as shown below:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">state_dict</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="n">Simulator</span><span class="o">.</span><span class="n">simulate_sorn</span><span class="p">(</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="s1">&#39;plasticity&#39;</span><span class="p">,</span>
-                                                <span class="n">matrices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<div class="section" id="override-the-default-hyperparameters-and-simulate-new-sorn-model">
+<h3>Override the default hyperparameters and simulate new SORN model<a class="headerlink" href="#override-the-default-hyperparameters-and-simulate-new-sorn-model" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sample input</span>
+<span class="n">num_features</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">time_steps</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">inputs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">num_features</span><span class="p">,</span><span class="n">time_steps</span><span class="p">)</span>
+
+<span class="n">state_dict</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="n">Simulator</span><span class="o">.</span><span class="n">simulate_sorn</span><span class="p">(</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="s1">&#39;plasticity&#39;</span><span class="p">,</span>
+                                                <span class="n">matrices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">noise</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
                                                 <span class="n">time_steps</span><span class="o">=</span><span class="n">time_steps</span><span class="p">,</span>
-                                                <span class="n">ne</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="n">num_features</span><span class="p">)</span>
+                                                <span class="n">ne</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="n">num_features</span><span class="p">,</span>
+                                                <span class="n">lambda_ee</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">eta_stdp</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
 </pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Network</span> <span class="n">Initialized</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">connections</span> <span class="ow">in</span> <span class="n">Wee</span> <span class="mi">959</span> <span class="p">,</span> <span class="n">Wei</span> <span class="mi">797</span><span class="p">,</span> <span class="n">Wie</span> <span class="mi">2000</span>
+<span class="n">Shapes</span> <span class="n">Wee</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="n">Wei</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="n">Wie</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="training-phase">
 <h2>Training phase<a class="headerlink" href="#training-phase" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sorn</span> <span class="kn">import</span> <span class="n">Trainer</span>
-<span class="c1"># NOTE: During training phase, input to `sorn` should have second (time) dimension set to 1. ie., input shape</span>
-<span class="c1"># should be (input_features,1).</span>
+<span class="c1"># NOTE: During training phase, input to `sorn` should have second (time) dimension set to 1. ie., input shape should be (input_features,1).</span>
+
 <span class="n">inputs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">num_features</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="c1"># SORN network is frozen during training phase</span>
 <span class="n">state_dict</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="n">Trainer</span><span class="o">.</span><span class="n">train_sorn</span><span class="p">(</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="s1">&#39;training&#39;</span><span class="p">,</span>
-                                            <span class="n">matrices</span><span class="o">=</span><span class="n">state_dict</span><span class="p">,</span>
-                                            <span class="n">nu</span><span class="o">=</span><span class="n">num_features</span><span class="p">,</span> <span class="n">time_steps</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                                            <span class="n">matrices</span><span class="o">=</span><span class="n">state_dict</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                                            <span class="n">time_steps</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                            <span class="n">ne</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="n">num_features</span><span class="p">,</span>
+                                            <span class="n">lambda_ee</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">eta_stdp</span><span class="o">=</span><span class="mf">0.001</span> <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="freeze-plasticity">
 <h2>Freeze plasticity<a class="headerlink" href="#freeze-plasticity" title="Permalink to this headline">¶</a></h2>
-<p>To turn off any plasticity mechanisms during <cite>simulation</cite> or <cite>training</cite> phase, use <cite>freeze</cite> argument.
-For example to stop intrinsic plasticity during simulation phase</p>
+<p>To turn off any plasticity mechanisms during simulation or training phase, use freeze argument.
+For example to stop intrinsic plasticity during simulation phase,</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sample input</span>
 <span class="n">num_features</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">time_steps</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">time_steps</span> <span class="o">=</span> <span class="mi">20</span>
 <span class="n">inputs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">num_features</span><span class="p">,</span><span class="n">time_steps</span><span class="p">)</span>
 
 <span class="n">state_dict</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="n">Simulator</span><span class="o">.</span><span class="n">simulate_sorn</span><span class="p">(</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="s1">&#39;plasticity&#39;</span><span class="p">,</span>
                                                 <span class="n">matrices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">noise</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-                                                <span class="n">time_steps</span><span class="o">=</span><span class="n">time_steps</span><span class="p">,</span> <span class="n">ne</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span>
+                                                <span class="n">time_steps</span><span class="o">=</span><span class="n">time_steps</span><span class="p">,</span> <span class="n">ne</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>
                                                 <span class="n">nu</span><span class="o">=</span><span class="n">num_features</span><span class="p">,</span> <span class="n">freeze</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ip&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>To train the above model under plasticity mechanisms except ip and istdp, use freeze argument</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">state_dict</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="n">Trainer</span><span class="o">.</span><span class="n">train_sorn</span><span class="p">(</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="s1">&#39;plasticity&#39;</span><span class="p">,</span>
+                                            <span class="n">matrices</span><span class="o">=</span><span class="n">state_dict</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                                            <span class="n">time_steps</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                            <span class="n">ne</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="n">num_features</span><span class="p">,</span>
+                                            <span class="n">freeze</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ip&#39;</span><span class="p">,</span><span class="s1">&#39;istdp&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>To train the above model with all plasticity mechanisms frozen , change the phase argument value to training</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">state_dict</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="n">Trainer</span><span class="o">.</span><span class="n">train_sorn</span><span class="p">(</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="s1">&#39;training&#39;</span><span class="p">,</span>
+                                            <span class="n">matrices</span><span class="o">=</span><span class="n">state_dict</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                                            <span class="n">time_steps</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                            <span class="n">ne</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="n">num_features</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The other options are,</p>
@@ -352,7 +392,8 @@ For example to stop intrinsic plasticity during simulation phase</p>
 <p><cite>sp</cite> - Structural Plasticity</p>
 <p><cite>istdp</cite> - Inhibitory Spike Timing Dependent Plasticity</p>
 </div></blockquote>
-<p>Note: If you pass all above options to <cite>freeze</cite>, then the network will behave as Liquid State Machine(LSM)</p>
+<p>Note: If you pass all above options to freeze, then the network will behave as Liquid State Machine(LSM) i,e., the connection
+strengths and thresholds remains fixed at the random intial state.</p>
 </div>
 <div class="section" id="network-output-descriptions">
 <h2>Network Output Descriptions<a class="headerlink" href="#network-output-descriptions" title="Permalink to this headline">¶</a></h2>
@@ -363,10 +404,16 @@ For example to stop intrinsic plasticity during simulation phase</p>
 <p>Inhibitory network activities(<cite>Y</cite>),</p>
 <p>Threshold values (<cite>Te</cite>,`Ti`)</p>
 </div></blockquote>
-<p><cite>E</cite> - Collection of Excitatory network activity of entire simulation period</p>
-<p><cite>I</cite> - Collection of Inhibitory network activity of entire simulation period</p>
-<p><cite>R</cite> - Collection of Recurrent network activity of entire simulation period</p>
-<p><cite>C</cite> - List of number of active connections in the Excitatory pool at each time step</p>
+<p><cite>E</cite> - Excitatory network activity of entire simulation period</p>
+<p><cite>I</cite> - Inhibitory network activity of entire simulation period</p>
+<p><cite>R</cite> - Recurrent network activity of entire simulation period</p>
+<p><cite>C</cite> - Number of active connections in the Excitatory pool at each time step</p>
+</div></blockquote>
+</div>
+<div class="section" id="colaboratory-notebook">
+<h2>Colaboratory Notebook<a class="headerlink" href="#colaboratory-notebook" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>Sample simulation and training runs with few plotting functions are found at Colab</p>
 </div></blockquote>
 </div>
 <div class="section" id="usage-with-openai-gym">
@@ -390,8 +437,7 @@ For example to stop intrinsic plasticity during simulation phase</p>
 <span class="c1"># SORN network parameters</span>
 <span class="n">ne</span> <span class="o">=</span> <span class="mi">50</span>
 <span class="n">nu</span> <span class="o">=</span> <span class="mi">4</span>
-
-<span class="c1"># Init SORN using `Simulator` under random input</span>
+<span class="c1"># Init SORN using Simulator under random input;</span>
 <span class="n">state_dict</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="n">Simulator</span><span class="o">.</span><span class="n">simulate_sorn</span><span class="p">(</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span>
                                                 <span class="n">phase</span> <span class="o">=</span><span class="s1">&#39;plasticity&#39;</span><span class="p">,</span>
                                                 <span class="n">time_steps</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
@@ -400,8 +446,9 @@ For example to stop intrinsic plasticity during simulation phase</p>
 
 <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">ne</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># Output layer weights</span>
 
-<span class="c1"># Implementation of softmax policy</span>
+<span class="c1"># Policy</span>
 <span class="k">def</span> <span class="nf">policy</span><span class="p">(</span><span class="n">state</span><span class="p">,</span><span class="n">w</span><span class="p">):</span>
+    <span class="s2">&quot;Implementation of softmax policy&quot;</span>
     <span class="n">z</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
     <span class="n">exp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">exp</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
@@ -426,8 +473,8 @@ For example to stop intrinsic plasticity during simulation phase</p>
     <span class="c1"># Play the episode</span>
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
 
-    <span class="c1"># env.render() # Uncomment to see your model train in real time (slow down training progress)</span>
-    <span class="k">if</span> <span class="n">EPISODE</span> <span class="o">&lt;</span> <span class="n">NUM_PLASTICITY_EPISODES</span><span class="p">:</span>
+      <span class="c1"># env.render() # Uncomment to see your model train in real time (slow down training progress)</span>
+      <span class="k">if</span> <span class="n">EPISODE</span> <span class="o">&lt;</span> <span class="n">NUM_PLASTICITY_EPISODES</span><span class="p">:</span>
 
         <span class="c1"># Plasticity phase</span>
         <span class="n">state_dict</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="n">Simulator</span><span class="o">.</span><span class="n">simulate_sorn</span><span class="p">(</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">state</span><span class="p">,</span> <span class="n">phase</span> <span class="o">=</span><span class="s1">&#39;plasticity&#39;</span><span class="p">,</span>
@@ -435,47 +482,43 @@ For example to stop intrinsic plasticity during simulation phase</p>
                                                         <span class="n">ne</span> <span class="o">=</span> <span class="n">ne</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="n">nu</span><span class="p">,</span>
                                                         <span class="n">noise</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-    <span class="k">else</span><span class="p">:</span>
+      <span class="k">else</span><span class="p">:</span>
         <span class="c1"># Training phase with frozen reservoir connectivity</span>
         <span class="n">state_dict</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="n">Trainer</span><span class="o">.</span><span class="n">train_sorn</span><span class="p">(</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">state</span><span class="p">,</span> <span class="n">phase</span> <span class="o">=</span> <span class="s1">&#39;training&#39;</span><span class="p">,</span>
                                                 <span class="n">matrices</span> <span class="o">=</span> <span class="n">state_dict</span><span class="p">,</span> <span class="n">time_steps</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
                                                 <span class="n">ne</span> <span class="o">=</span> <span class="n">ne</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="n">nu</span><span class="p">,</span>
                                                 <span class="n">noise</span><span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
 
-    <span class="c1"># Feed E as input states to your RL algorithm, below goes for simple policy gradient algorithm</span>
-    <span class="c1"># Sample policy w.r.t excitatory states and take action in the environment</span>
-    <span class="n">probs</span> <span class="o">=</span> <span class="n">policy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">E</span><span class="p">),</span><span class="n">w</span><span class="p">)</span>
-    <span class="n">action</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">action_space</span><span class="p">,</span><span class="n">p</span><span class="o">=</span><span class="n">probs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">state</span><span class="p">,</span><span class="n">reward</span><span class="p">,</span><span class="n">done</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
-    <span class="n">state</span> <span class="o">=</span> <span class="n">state</span><span class="p">[:,</span><span class="kc">None</span><span class="p">]</span>
+      <span class="c1"># Feed E as input states to your RL algorithm, below goes for simple policy gradient algorithm</span>
+      <span class="c1"># Sample policy w.r.t excitatory states and take action in the environment</span>
+      <span class="n">probs</span> <span class="o">=</span> <span class="n">policy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">E</span><span class="p">),</span><span class="n">w</span><span class="p">)</span>
+      <span class="n">action</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">action_space</span><span class="p">,</span><span class="n">p</span><span class="o">=</span><span class="n">probs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+      <span class="n">state</span><span class="p">,</span><span class="n">reward</span><span class="p">,</span><span class="n">done</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+      <span class="n">state</span> <span class="o">=</span> <span class="n">state</span><span class="p">[:,</span><span class="kc">None</span><span class="p">]</span>
 
-    <span class="c1"># COMPUTE GRADIENTS BASED ON YOUR OBJECTIVE FUNCTION;</span>
-    <span class="c1"># Sample computation of policy gradient objective function</span>
-    <span class="n">dsoftmax</span> <span class="o">=</span> <span class="n">softmax_grad</span><span class="p">(</span><span class="n">probs</span><span class="p">)[</span><span class="n">action</span><span class="p">,:]</span>
-    <span class="n">dlog</span> <span class="o">=</span> <span class="n">dsoftmax</span> <span class="o">/</span> <span class="n">probs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">action</span><span class="p">]</span>
-    <span class="n">grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">E</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">dlog</span><span class="p">[</span><span class="kc">None</span><span class="p">,:])</span>
-    <span class="n">grads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">grad</span><span class="p">)</span>
-    <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
-    <span class="n">score</span><span class="o">+=</span><span class="n">reward</span>
+      <span class="c1"># COMPUTE GRADIENTS BASED ON YOUR OBJECTIVE FUNCTION;</span>
+      <span class="c1"># Sample computation of policy gradient objective function</span>
+      <span class="n">dsoftmax</span> <span class="o">=</span> <span class="n">softmax_grad</span><span class="p">(</span><span class="n">probs</span><span class="p">)[</span><span class="n">action</span><span class="p">,:]</span>
+      <span class="n">dlog</span> <span class="o">=</span> <span class="n">dsoftmax</span> <span class="o">/</span> <span class="n">probs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">action</span><span class="p">]</span>
+      <span class="n">grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">E</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">dlog</span><span class="p">[</span><span class="kc">None</span><span class="p">,:])</span>
+      <span class="n">grads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">grad</span><span class="p">)</span>
+      <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
+      <span class="n">score</span><span class="o">+=</span><span class="n">reward</span>
 
-    <span class="k">if</span> <span class="n">done</span><span class="p">:</span>
-        <span class="k">break</span>
+      <span class="k">if</span> <span class="n">done</span><span class="p">:</span>
+          <span class="k">break</span>
 
-    <span class="c1"># OPTIMIZE OUTPUT LAYER WEIGHTS `w` BASED ON YOUR OPTIMIZATION METHOD</span>
-
-    <span class="c1"># Below is a sample of weight update based on gradient</span>
-    <span class="c1"># ascent(maximize cumulative reward) method for temporal difference learning</span>
+    <span class="c1"># OPTIMIZE OUTPUT LAYER WEIGHTS `w` BASED ON YOUR OPTIMIZATION METHOD;</span>
+    <span class="c1"># Below is a sample of weight update based on gradient ascent(maximize cumulative reward) method for temporal difference learning</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">grads</span><span class="p">)):</span>
 
-        <span class="c1"># Loop through everything that happened in the episode and update towards</span>
-        <span class="c1"># the log policy gradient times future reward</span>
+        <span class="c1"># Loop through everything that happened in the episode and update towards the log policy gradient times future reward</span>
         <span class="n">w</span> <span class="o">+=</span> <span class="n">LEARNING_RATE</span> <span class="o">*</span> <span class="n">grads</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">([</span> <span class="n">r</span> <span class="o">*</span> <span class="p">(</span><span class="n">GAMMA</span> <span class="o">**</span> <span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span><span class="p">,</span><span class="n">r</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rewards</span><span class="p">[</span><span class="n">i</span><span class="p">:])])</span>
-
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Episode </span><span class="si">%s</span><span class="s1">  Score </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">EPISODE</span><span class="p">),</span><span class="nb">str</span><span class="p">(</span><span class="n">score</span><span class="p">)))</span>
 </pre></div>
 </div>
 <p>There are several neural data analysis and visualization methods inbuilt with <cite>sorn</cite> package.
-Sample call for few plotting and statistical methods are shown below</p>
+Sample call for few plotting and statistical methods are shown below;</p>
 </div>
 </div>
 <div class="section" id="plotting-functions">
@@ -489,7 +532,7 @@ Sample call for few plotting and statistical methods are shown below</p>
 <span class="n">Plotter</span><span class="o">.</span><span class="n">weight_distribution</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span> <span class="n">Wee</span><span class="p">,</span> <span class="n">bin_size</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">savefig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/weight_distribution.png" src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/weight_distribution.png" />
+<img alt="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/weight_distribution.png" src="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/weight_distribution.png" />
 </div>
 <div class="section" id="plot-spike-train">
 <h3>Plot Spike train<a class="headerlink" href="#plot-spike-train" title="Permalink to this headline">¶</a></h3>
@@ -497,7 +540,7 @@ Sample call for few plotting and statistical methods are shown below</p>
 <span class="n">Plotter</span><span class="o">.</span><span class="n">scatter_plot</span><span class="p">(</span><span class="n">spike_train</span> <span class="o">=</span> <span class="n">E</span><span class="p">,</span> <span class="n">savefig</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/ScatterSpikeTrain.png" src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/ScatterSpikeTrain.png" />
+<img alt="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/ScatterSpikeTrain.png" src="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/ScatterSpikeTrain.png" />
 </div>
 <div class="section" id="raster-plot-of-spike-train">
 <h3>Raster plot of Spike train<a class="headerlink" href="#raster-plot-of-spike-train" title="Permalink to this headline">¶</a></h3>
@@ -505,7 +548,7 @@ Sample call for few plotting and statistical methods are shown below</p>
 <span class="n">Plotter</span><span class="o">.</span><span class="n">raster_plot</span><span class="p">(</span><span class="n">spike_train</span> <span class="o">=</span> <span class="n">E</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">],</span> <span class="n">savefig</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/RasterSpikeTrain.png" src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/RasterSpikeTrain.png" />
+<img alt="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/RasterSpikeTrain.png" src="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/RasterSpikeTrain.png" />
 </div>
 <div class="section" id="distribution-of-presynaptic-connections">
 <h3>Distribution of presynaptic connections<a class="headerlink" href="#distribution-of-presynaptic-connections" title="Permalink to this headline">¶</a></h3>
@@ -513,14 +556,14 @@ Sample call for few plotting and statistical methods are shown below</p>
 <span class="n">Plotter</span><span class="o">.</span><span class="n">hist_incoming_conn</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">Wee</span><span class="p">,</span> <span class="n">bin_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">savefig</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/hist_incoming_conn.png" src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/hist_incoming_conn.png" />
+<img alt="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/hist_incoming_conn.png" src="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/hist_incoming_conn.png" />
 </div>
 <div class="section" id="distribution-of-firing-rate-of-the-network">
 <h3>Distribution of firing rate of the network<a class="headerlink" href="#distribution-of-firing-rate-of-the-network" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Plotter</span><span class="o">.</span><span class="n">hist_firing_rate_network</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">bin_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">savefig</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/hist_firing_rate_network.png" src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/hist_firing_rate_network.png" />
+<img alt="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/hist_firing_rate_network.png" src="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/hist_firing_rate_network.png" />
 </div>
 <div class="section" id="plot-pearson-correlation-between-neurons">
 <h3>Plot pearson correlation between neurons<a class="headerlink" href="#plot-pearson-correlation-between-neurons" title="Permalink to this headline">¶</a></h3>
@@ -529,7 +572,7 @@ Sample call for few plotting and statistical methods are shown below</p>
 <span class="n">Plotter</span><span class="o">.</span><span class="n">correlation</span><span class="p">(</span><span class="n">avg_corr_coeff</span><span class="p">,</span><span class="n">savefig</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/correlation_between_neurons.png" src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/correlation_between_neurons.png" />
+<img alt="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/correlation_between_neurons.png" src="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/correlation_between_neurons.png" />
 </div>
 <div class="section" id="inter-spike-intervals">
 <h3>Inter spike intervals<a class="headerlink" href="#inter-spike-intervals" title="Permalink to this headline">¶</a></h3>
@@ -537,7 +580,7 @@ Sample call for few plotting and statistical methods are shown below</p>
 <span class="n">Plotter</span><span class="o">.</span><span class="n">isi_exponential_fit</span><span class="p">(</span><span class="n">E</span><span class="p">,</span><span class="n">neuron</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">bin_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">savefig</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/isi_exponential_fit.png" src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/isi_exponential_fit.png" />
+<img alt="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/isi_exponential_fit.png" src="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/isi_exponential_fit.png" />
 </div>
 <div class="section" id="linear-and-lognormal-curve-fit-of-synaptic-weights">
 <h3>Linear and Lognormal curve fit of Synaptic weights<a class="headerlink" href="#linear-and-lognormal-curve-fit-of-synaptic-weights" title="Permalink to this headline">¶</a></h3>
@@ -545,7 +588,7 @@ Sample call for few plotting and statistical methods are shown below</p>
 <span class="n">Plotter</span><span class="o">.</span><span class="n">linear_lognormal_fit</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">Wee</span><span class="p">,</span><span class="n">num_points</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">savefig</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/LinearLognormalFit.png" src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/LinearLognormalFit.png" />
+<img alt="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/LinearLognormalFit.png" src="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/LinearLognormalFit.png" />
 </div>
 <div class="section" id="network-plot">
 <h3>Network plot<a class="headerlink" href="#network-plot" title="Permalink to this headline">¶</a></h3>
@@ -553,7 +596,7 @@ Sample call for few plotting and statistical methods are shown below</p>
 <span class="n">Plotter</span><span class="o">.</span><span class="n">plot_network</span><span class="p">(</span><span class="n">avg_corr_coeff</span><span class="p">,</span><span class="n">corr_thres</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span><span class="n">fig_name</span><span class="o">=</span><span class="s1">&#39;network.png&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/network.png" src="https://raw.githubusercontent.com/Saran-nns/sorn/revision/imgs/network.png" />
+<img alt="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/network.png" src="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/network.png" />
 </div>
 </div>
 <div class="section" id="statistics-and-analysis-functions">
