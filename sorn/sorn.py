@@ -15,39 +15,22 @@ class Sorn(object):
     """ This class wraps initialization of the network and its parameters"""
 
     nu = 10
-
     ne = 200
-
     ni = int(0.2 * ne)
-
     eta_stdp = 0.004
-
     eta_inhib = 0.001
-
     eta_ip = 0.01
-
     te_max = 1.0
-
     ti_max = 0.5
-
     ti_min = 0.0
-
     te_min = 0.0
-
     mu_ip = 0.1
-
     sigma_ip = 0.0
-
     network_type_ee = "Sparse"
-
     network_type_ei = "Sparse"
-
     network_type_ie = "Dense"
-
     lambda_ee = 20
-
     lambda_ei = 40
-
     lambda_ie = 100
 
     @staticmethod
