@@ -28,7 +28,7 @@ bibliography: paper.bib
 
 The self-organizing recurrent neural(SORN) network is a class of neuro-inspired artificial networks. This class of networks has been shown to mimic the ability of neocortical circuits to learn and adapt through neuroplasticity mechanisms. Structurally, the SORN network consists of a pool of excitatory neurons and a small population of inhibitory neurons. The network uses five basic plasticity mechanisms found in the neocortex of the brain, namely spike-timing-dependent plasticity, intrinsic plasticity, synaptic scaling, inhibitory spike-timing-dependent plasticity, and structural plasticity [@zheng2013network; @lazar2009sorn; @papa2017criticality] to optimize its parameters. Using mathematical tools, SORN network simplifies the underlying structural and functional connectivity mechanisms responsible for learning and memory in the brain.
 
-![SORN network](../imgs/SORN1.png){width=10%}
+![SORN network](../imgs/SORN1.png){width=100%}
 
 'sorn' is a Python package designed for Self Organizing Recurrent Neural Networks. While it was originally developed for SORN networks, it can also serve as an ideal research package for Liquid State Machines [@jaeger2002adaptive; @jaeger2007special] in general. The detailed documentation can be found at [https://self-organizing-recurrent-neural-networks.readthedocs.io/en/latest/](self-organizing-recurrent-neural-networks.readthedocs.io). To extend the potential applications of this network, a demonstrative example of a neuro-robotics experiment using OpenAI Gym [ @brockman2016openai] is provided at [sorn package](https://github.com/Saran-nns/sorn/).
 
