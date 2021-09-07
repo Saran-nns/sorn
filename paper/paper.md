@@ -114,7 +114,7 @@ $T_i(t)$ - Firing threshold of the neuron $i$ at time $t$
 
 $\eta_\text{IP}$ - Intrinsic plasticity step size
 
-$\text{H_{IP}}$ - Target firing rate of the neuron
+$H_\text{IP}$ - Target firing rate of the neuron
 
 ### Structural Plasticity
 
