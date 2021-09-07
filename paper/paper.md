@@ -32,7 +32,8 @@ The self-organizing recurrent neural(SORN) network is a class of neuro-inspired 
 
 'sorn' is a Python package designed for Self Organizing Recurrent Neural Networks. While it was originally developed for SORN networks, it can also serve as an ideal research package for Liquid State Machines [@jaeger2002adaptive; @jaeger2007special] in general. The detailed documentation can be found at [https://self-organizing-recurrent-neural-networks.readthedocs.io/en/latest/](self-organizing-recurrent-neural-networks.readthedocs.io). To extend the potential applications of this network, a demonstrative example of a neuro-robotics experiment using OpenAI Gym [ @brockman2016openai] is provided at [sorn package](https://github.com/Saran-nns/sorn/).
 
- ## Statement of need
+
+## Statement of need
 
 Reservoir computing models are neuroinspired artificial neural networks. RC networks have either sparsely or densely connected units with fixed connection weights. Unlike other RC models, SORN has synaptic weights controlled by neuroinspired plasticity mechanisms. The network has two distinct pools of excitatory and inhibitory reservoirs that compete to remain in a subcritical state suitable for learning. The subcritical state is a state between chaos and order, also called the "edge of chaos". In this state, the network has momentum with a strong affinity for order, but is sensitive to external perturbations. Through plasticity mechanisms, the network has the ability to overcome the perturbations and return to its subcritical dynamics. This self-adaptive behavior is also referred to as self-organization. To build such a network with a synergistic combination of plasticity mechanisms from scratch requires a deeper understanding of neurophysiology and soft computing. sorn' reduces the cognitive load of theorists, experimenters or researchers by encapsulating all plasticity mechanisms with a high degree of reliability and flexibility.
 
@@ -47,7 +48,7 @@ The network can be instantiated, simulated and trained using two classes 'Simula
 
 ## SORN Network Model
 
-As described in [ @lazar2009sorn; @zheng2013network;] the activity of neurons in the excitatory and inhibitory pool is given by the following state equations,
+As defined in [@lazar2009sorn; @zheng2013network] the activity of neurons in the excitatory and inhibitory pool is given by the following state equations,
 
 \begin{equation}
 \label{es}
@@ -60,13 +61,21 @@ y_i(t+1)=\Theta\left(\sum_{j=1}^{N_i}W_{ij}^{IE}(t) x_j(t)-T_i^I+ \xi_{I}(t)\rig
 \end{equation}
 
 $W_{ij}^{EE}$ -  Connection strength between excitatory neurons
+
 $W_{ik}^{EI}$ - Synaptic strenght from Inhibitory to excitatory network
+
 $W_{ki}^{IE}$ - Synaptic strenght from Exciatory to inhibitory network
+
 $x_j(t)$ - Presynaptic excitatory neuron state at $t$
+
 $y_k(t)$ - Presynaptic inhibitory neuron state at $t$
+
 $x_i$ - Postsynaptic neuron state at $t$
+
 $u_{i}$ - External stimuli
+
 $T_i(t)$ - Firing threshold of the neuron $i$ at time $t$
+
 
 ## Plasticity Rules
 
