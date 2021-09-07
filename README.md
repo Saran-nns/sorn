@@ -5,6 +5,7 @@ SORN is a class of neuro-inspired artificial network build based on plasticity m
 
 'sorn' is a Python package designed for Self Organizing Recurrent Neural Networks. It provides a research environment for computational neuroscientists to study the self-organization, adaption, learning,memory and behavior of brain circuits by reverse engineering neural plasticity mechanisms. Further to extend the potential applications of `sorn`, a demostrative example of setting up a neuro-robotics experiment using OpenAI gym is also [documented](https://self-organizing-recurrent-neural-networks.readthedocs.io/en/latest/usage.html).
 
+
 [![Build Status](https://github.com/saran-nns/sorn/workflows/Build/badge.svg)](https://github.com/saran-nns/sorn/actions)
 [![codecov](https://codecov.io/gh/Saran-nns/sorn/branch/master/graph/badge.svg)](https://codecov.io/gh/Saran-nns/sorn)
 [![Documentation Status](https://readthedocs.org/projects/self-organizing-recurrent-neural-networks/badge/?version=latest)](https://self-organizing-recurrent-neural-networks.readthedocs.io/en/latest/?badge=latest)
