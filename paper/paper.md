@@ -279,7 +279,7 @@ The `simulate_sorn` and `train_sorn` methods accepts the following keyword argum
 The `sorn` package also includes necessary methods to investigate network properties. A few of the methods in the `Statistics` module are:
 
 
-| methods                         |                                      Description                                    |
+| methods                         |                                      Description                                  |
 |---------------------------------|-----------------------------------------------------------------------------------|
 | `autocorr`                      |  t-lagged auto correlation between neural activity                                |
 | `fanofactor`                    |  To verify poissonian process in spike generation of neuron(s)                    |
