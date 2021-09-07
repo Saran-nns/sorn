@@ -19,21 +19,6 @@ SORN is a class of neuro-inspired artificial network build based on plasticity m
 <h4 align="Left">SORN Reservoir and the evolution of synaptic efficacies</h4>
 <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/SORN1.png" height="320" width="430"></a>
 
-## Contents
-- [Self-Organizing Recurrent Neural Networks](#self-organizing-recurrent-neural-networks)
-- [Getting Started](#)
-  - [Installation](#installation)
-  - [Dependencies](#dependencies)
-- [Usage](#usage)
-  - [Plasticity Phase](#plasticity-phase)
-  - [Training phase](#training-phase)
-  - [Network Output Descriptions](#network-output-descriptions)
-- [Documentation](#documentation)
-- [Citation](#citation)
-  - [Package](#package)
-  - [Thesis](#thesis)
-- [Contributions](#contributions)
-
 ## Installation
 
 ```python
