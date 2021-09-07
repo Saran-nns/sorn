@@ -60,7 +60,7 @@ x_i(t+1) =  \Theta\left (\sum_{j=1}^{N^\text{E}} {W_{ij}^\text{EE}(t)} {x_{j}(t)
 y_i(t+1)=\Theta\left(\sum_{j=1}^{N_i}W_{ij}^\text{IE}(t) x_j(t)-T_i^\text{I}+ \xi_\text{I}(t)\right)
 \end{equation}
 
-$W_{ij}^\text{EE}}$ -  Connection strength between excitatory neurons
+$W_{ij}^\text{EE}$ -  Connection strength between excitatory neurons
 
 $W_{ik}^\text{EI}$ - Synaptic strenght from Inhibitory to excitatory network
 
