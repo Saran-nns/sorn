@@ -3,7 +3,7 @@
 
 SORN is a class of neuro-inspired artificial network build based on plasticity mechanisms in biological brain and mimic neocortical circuits ability of learning and adaptation. SORN consists of pool of excitatory neurons and small population of inhibitory neurons which are controlled by 5 plasticity mechanisms found in neocortex, namely Spike Ti ming Dependent Plasticity (STDP), Intrinsic Plasticity (IP), Synaptic Scaling (SS),Synaptic Normalization(SN) and inhibitory Spike Timing Dependent Plasticity (iSTDP). Using mathematical tools, SORN network simplifies the underlying structural and functional connectivity mechanisms responsible for learning and memory in the brain
 
-'sorn' is a Python package designed for Self Organizing Recurrent Neural Networks. It provides a research environment for computational neuroscientists to study the self-organization, adaption, learning,memory and behavior of brain circuits by reverse engineering neural plasticity mechanisms. Further to extend the potential applications of `sorn`, a demostrative example of setting up a neuro-robotics experiment using OpenAI gym is also documented.
+'sorn' is a Python package designed for Self Organizing Recurrent Neural Networks. It provides a research environment for computational neuroscientists to study the self-organization, adaption, learning,memory and behavior of brain circuits by reverse engineering neural plasticity mechanisms. Further to extend the potential applications of `sorn`, a demostrative example of setting up a neuro-robotics experiment using OpenAI gym is also [documented](https://self-organizing-recurrent-neural-networks.readthedocs.io/en/latest/usage.html).
 
 [![Build Status](https://github.com/saran-nns/sorn/workflows/Build/badge.svg)](https://github.com/saran-nns/sorn/actions)
 [![codecov](https://codecov.io/gh/Saran-nns/sorn/branch/master/graph/badge.svg)](https://codecov.io/gh/Saran-nns/sorn)
@@ -88,7 +88,7 @@ state_dict, E, I, R, C = Trainer.train_sorn(inputs = inputs, phase='training',
   `C` - Number of active connections in the Excitatory pool at each time step
 
 ### Documentation
-For detailed documentation about development, analysis, plotting methods and a sample experiment with OpenAI Gym, please visit [SORN Documentation](https://self-organizing-recurrent-neural-networks.readthedocs.io/en/latest/usage.html)
+For detailed documentation about development, analysis, plotting methods and a sample experiment with OpenAI Gym, please visit [SORN Documentation](https://self-organizing-recurrent-neural-networks.readthedocs.io/en/latest/)
 
 ### Citation
 
