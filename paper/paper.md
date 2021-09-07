@@ -47,19 +47,26 @@ The network can be instantiated, simulated and trained using two classes 'Simula
 
 ## SORN Network Model
 
-The activity of neurons in the excitatory pool is given by,
+As described in [ @lazar2009sorn; @zheng2013network;] the activity of neurons in the excitatory and inhibitory pool is given by the following state equations,
 
 \begin{equation}
 \label{es}
 x_i(t+1) =  \Theta\left (\sum_{j=1}^{N^E} {W_{ij}^{EE}(t)} {x_{j}(t)} - \sum_{j=1}^{N^I}W_{ik}^{EI}(t) y_{k}(t)+u_{i}(t) - T_{i}^{E}(t)+\xi_{E}(t)\right)
 \end{equation}
 
-Inhibitory Network state
-
 \begin{equation}
 \label{is}
 y_i(t+1)=\Theta\left(\sum_{j=1}^{N_i}W_{ij}^{IE}(t) x_j(t)-T_i^I+ \xi_{I}(t)\right)
 \end{equation}
+
+$W_{ij}^{EE}$ -  Connection strength between excitatory neurons
+$W_{ik}^{EI}$ - Synaptic strenght from Inhibitory to excitatory network
+$W_{ki}^{IE}$ - Synaptic strenght from Exciatory to inhibitory network
+$x_j(t)$ - Presynaptic excitatory neuron state at $t$
+$y_k(t)$ - Presynaptic inhibitory neuron state at $t$
+$x_i$ - Postsynaptic neuron state at $t$
+$u_{i}$ - External stimuli
+$T_i(t)$ - Firing threshold of the neuron $i$ at time $t$
 
 ## Plasticity Rules
 
