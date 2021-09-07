@@ -26,7 +26,7 @@ bibliography: paper.bib
 # Summary
 
 
-The self-organizing recurrent neural (SORN) network is a class of neuro-inspired artificial networks. This class of networks has been shown to mimic the ability of neocortical circuits to learn and adapt through neuroplasticity mechanisms. Structurally, the SORN network consists of a pool of excitatory neurons and a small population of inhibitory neurons. The network uses five basic plasticity mechanisms found in the neocortex of the brain, namely, spike-timing-dependent plasticity, intrinsic plasticity, synaptic scaling, inhibitory spike-timing-dependent plasticity, and structural plasticity [@zheng2013network; @lazar2009sorn; @papa2017criticality] to optimize its parameters. Using a mathematical tools, SORN network simplifies the underlying structural and functional connectivity mechanisms responsible for learning and memory in the brain.
+The self-organizing recurrent neural (SORN) network is a class of neuro-inspired artificial networks. This class of networks has been shown to mimic the ability of neocortical circuits to learn and adapt through neuroplasticity mechanisms. Structurally, the SORN network consists of a pool of excitatory neurons and a small population of inhibitory neurons. The network uses five basic plasticity mechanisms found in the neocortex of the brain, namely, spike-timing-dependent plasticity, intrinsic plasticity, synaptic scaling, inhibitory spike-timing-dependent plasticity, and structural plasticity [@zheng2013network; @lazar2009sorn; @papa2017criticality] to optimize its parameters. Using mathematical tools, a SORN network simplifies the underlying structural and functional connectivity mechanisms responsible for learning and memory in the brain.
 
 ![SORN network](../imgs/SORN1.png){width=80%}
 
@@ -42,7 +42,7 @@ There are few other open source codes [sorn v1](https://github.com/delpapa/SORN)
 
 ## Library Overview
 
-The package `sorn` is heavily dependent on numpy [@harris2020array] for numerical computation and analysis methods, seaborn and matplotlib [@barrett2005matplotlib] for visualization. The network is constructed in five classes; the object `SORN` encapsulates all the required functions that instantiate network variables such as connection weights and thresholds. `Plasticity` inherits objects from `SORN` and implements plasticity rules with methods `stdp()`, `ip()`, `ss()`, `sp()` and `istdp()` . `NetworkState` has methods that evaluate excitatory and inhibitory network states at each time step and finally `MatrixCollection` objects behave like a memory cache. It collects the network states and keeps track of variables such as weights and thresholds as the network evolves during simulation and training.
+The package `sorn` is heavily dependent on numpy [@harris2020array] for numerical computation and analysis methods, seaborn and matplotlib [@barrett2005matplotlib] for visualization. The network is constructed in five classes; the object `SORN` encapsulates all the required functions that instantiate network variables such as connection weights and thresholds. `Plasticity` inherits objects from `SORN` and implements plasticity rules with methods `stdp()`, `ip()`, `ss()`, `sp()` and `istdp()`. `NetworkState` has methods that evaluate excitatory and inhibitory network states at each time step and finally `MatrixCollection` objects behave like a memory cache. It collects the network states and keeps track of variables such as weights and thresholds as the network evolves during simulation and training.
 
 The network can be instantiated, simulated and trained using two classes: `Simulator` and `Trainer`, which inherit objects from `SORN`.
 
@@ -85,7 +85,7 @@ Spike Timing Dependent Plasticity (STDP) alters synaptic efficacy between excita
 
 \begin{equation}
 \label{stdp}
-\Delta W_{ij}^{EE}=\eta_{STDP}(x_i(t)x_j(t-1)-x_i(t-1)x_j(t))
+\Delta W_{ij}^\text{EE}=\eta_\text{STDP}\left(x_i(t)x_j(t-1)-x_i(t-1)x_j(t)\right)
 \end{equation}
 
 where,
@@ -96,7 +96,7 @@ $\eta_\text{STDP}$ - STDP learning rate
 
 $x_j(t-1)$ - Presynaptic neuron state at $t-1$
 
-$x_i$ - Postsynaptic neuron state at $t$
+$x_i(t)$ - Postsynaptic neuron state at $t$
 
 
 ### Intrinsic Plasticity
@@ -135,7 +135,7 @@ Inhibitory Spike Timing Dependent Plasticity (iSTDP) is responsible for controll
 
 \begin{equation}
 \label{istdp}
-\Delta W_{ij}^\text{EI}=\eta_\text{istdp}\left(y_j(t-1)(1-x_i(t)(1+\frac{1}{\mu_\text{ip}}))\right)
+\Delta W_{ij}^\text{EI}=\eta_\text{iSTDP}\left(y_j(t-1)(1-x_i(t)(1+\frac{1}{\mu_\text{IP}}))\right)
 \end{equation}
 
 
@@ -143,9 +143,9 @@ where,
 
 $W_{ij}^\text{EI}$ - Synaptic strength from Inhibitory to excitatory network
 
-$\eta_\text{istdp}$ - Inhibitory STDP learning rate
+$\eta_\text{iSTDP}$ - Inhibitory STDP learning rate
 
-$\mu_\text{ip}$ - Mean firing rate of the neuron
+$\mu_\text{IP}$ - Mean firing rate of the neuron
 
 Note that the connection strength from excitatory to inhibitory ($W_{ij}^\text{IE}$) remains fixed at the initial state and also the connections between inhibitory neurons are not allowed.
 
@@ -243,9 +243,7 @@ The other options for `freeze` argument are,
 
 `istdp` - Inhibitory Spike Timing Dependent Plasticity
 
-Note: If you pass all above options to freeze, then the network will behave as Liquid State Machine(LSM)
-
-The `simulate_sorn` and `train_sorn` methods accepts the following keyword arguments
+The `simulate_sorn` and `train_sorn` methods accepts the following keyword arguments:
 
 | kwargs                 |                                          Description                                       |
 |------------------------|--------------------------------------------------------------------------------------------|
