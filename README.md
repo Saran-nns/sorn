@@ -28,7 +28,7 @@ SORN is a class of neuro-inspired artificial network build based on plasticity m
   - [Plasticity Phase](#plasticity-phase)
   - [Training phase](#training-phase)
   - [Network Output Descriptions](#network-output-descriptions)
-
+- [Documentation](#documentation)
 - [Citation](#citation)
   - [Package](#package)
   - [Thesis](#thesis)
@@ -102,52 +102,11 @@ from sorn import Trainer
 
   `C` - Number of active connections in the Excitatory pool at each time step
 
-### Usage and sample experiment with OpenAIGym
+### Documentation
+For detailed documentation about development, analysis, plotting methods and a sample experiment with OpenAI Gym, please visit [SORN Documentation](https://self-organizing-recurrent-neural-networks.readthedocs.io/en/latest/usage.html)
 
-For detailed documentation about development, analysis, plotting methods and a sample experiment with OpenAI Gym, please visit[SORN-Documentation](https://self-organizing-recurrent-neural-networks.readthedocs.io/en/latest/usage.html)
-
-Sample call for few plotting and statistical methods in `sorn` package are shown below;
-
-```python
-from sorn import Plotter
-
-# Plot Spike train of all neurons in the network
-E = np.random.randint(2, size=(200,1000)) # For example, activity of 200 excitatory neurons in 1000 time steps
-Plotter.scatter_plot(spike_train = E, savefig=True)
-```
-<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/ScatterSpikeTrain.png" height="320" width="430"></a>
-
-```python
-# Inter spike intervals with exponential curve fit for neuron 1 in the Excitatory pool
-Plotter.isi_exponential_fit(E,neuron=1,bin_size=5, savefig=True)
-```
-<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/isi_exponential_fit.png" height="320" width="430"></a>
-
-```python
-# Distribution of connection weights in linear and lognormal scale
-Plotter.linear_lognormal_fit(weights=Wee,num_points=100, savefig=True)
-```
-<a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/sorn/master/imgs/LinearLognormalFit.png" height="240" width="480"></a>
-
-Sample simulation and training runs with few plotting functions are found at [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/164AKTA-iCVLq-iR-treLA_Y9keRYrQkH#scrollTo=Rt2YZptMtC14)
-
-## Statistics and Analysis functions
-
-```Python
-from sorn import Statistics
-#t-lagged auto correlation between neural activity
-pearson_corr_matrix = Statistics.autocorr(firing_rates = [1,1,5,6,3,7], t= 2)
-
-# Fano factor: To verify poissonian process in spike generation of neuron 10
-mean_firing_rate, variance_firing_rate, fano_factor = Statistics.fanofactor(spike_train= E,
-                                                                            neuron = 10,
-                                                                            window_size = 10)
-
-# Spike Source Entropy: To measure the uncertainty about the origin of spike from the network using entropy
-sse = Statistics.spike_source_entropy(spike_train= E, num_neurons=200)
-```
 ## Citation
-### Package
+
 ```Python
 @software{saranraj_nambusubramaniyan_2020_4184103,
   author       = {Saranraj Nambusubramaniyan},
