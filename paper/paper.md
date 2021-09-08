@@ -101,7 +101,7 @@ $x_i(t)$ - Postsynaptic neuron state at $t$
 
 ### Intrinsic Plasticity
 
-IP updates the firing threshold of excitatory neurons based on the state of the neuron at each time step. It increases the threshold if the neuron is firing and decreases it otherwise.
+Intrinsic Plasticity (IP) updates the firing threshold of excitatory neurons based on the state of the neuron at each time step. It increases the threshold if the neuron is firing and decreases it otherwise.
 
 \begin{equation}
 \label{ip}
