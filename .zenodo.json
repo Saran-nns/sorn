@@ -1,0 +1,31 @@
+{
+    "description": "PyPi Package of Self-Organizing Recurrent Neural Networks (SORN) and Neuro-robotics using OpenAI Gym",
+    "license": "MIT",
+    "title": "sorn: A Python package for Self Organizing Recurrent Neural Network",
+    "version": "v0.6.2-beta",
+    "upload_type": "software",
+    "publication_date": "2021-09-08",
+    "creators": [
+        {
+            "name": "Saranraj Nambusubramaniyan"
+        }
+    ],
+    "access_right": "open",
+    "related_identifiers": [
+        {
+            "scheme": "url",
+            "identifier": "https://github.com/Saran-nns/sorn/tree/v0.6.2-beta",
+            "relation": "isSupplementTo"
+        },
+        {
+            "scheme": "doi",
+            "identifier": "10.5281/zenodo.2590449",
+            "relation": "isVersionOf"
+        },
+        {
+            "scheme": "doi",
+            "identifier": "10.21105/joss.03545",
+            "relation": "isDocumentedBy"
+        }
+    ]
+}
