@@ -4,6 +4,19 @@ authors:
   - family-names: Nambusubramaniyan
     given-names: Saranraj
     orcid: https://orcid.org/0000-0002-7314-0261
-title: sorn: A Python package for Self Organizing Recurrent Neural Network
+title: Saran-nns/sorn: Stable pre-release of Self Organizing Recurrent Neural Network
 version: v0.6.2-beta
 date-released: 2021-09-08
+doi: "10.5281/zenodo.5496017"
+url: "https://github.com/saran-nns/sorn"
+
+preferred-citation:
+  type: article
+  authors:
+  - family-names: Nambusubramaniyan
+    given-names: Saranraj
+    orcid: https://orcid.org/0000-0002-7314-0261
+  doi: "10.21105/joss.03545"
+  journal: "JOSS"
+  title: sorn: A Python package for Self Organizing Recurrent Neural Network
+
