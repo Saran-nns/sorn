@@ -1,0 +1,9 @@
+cff-version: 1.1.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Nambusubramaniyan
+    given-names: Saranraj
+    orcid: https://orcid.org/0000-0002-7314-0261
+title: sorn: A Python package for Self Organizing Recurrent Neural Network
+version: v0.6.2-beta
+date-released: 2021-09-08
