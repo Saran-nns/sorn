@@ -94,15 +94,17 @@ For detailed documentation about development, analysis, plotting methods and a s
 ### Citation
 
 ```Python
-@software{saranraj_nambusubramaniyan_2020_4184103,
-  author       = {Saranraj Nambusubramaniyan},
-  title        = {Saran-nns/sorn: Stable alpha release},
-  month        = nov,
-  year         = 2020,
-  publisher    = {Zenodo},
-  version      = {v0.3.1},
-  doi          = {10.5281/zenodo.4184103},
-  url          = {https://doi.org/10.5281/zenodo.4184103}
+@article{Nambusubramaniyan2021,
+  doi = {10.21105/joss.03545},
+  url = {https://doi.org/10.21105/joss.03545},
+  year = {2021},
+  publisher = {The Open Journal},
+  volume = {6},
+  number = {65},
+  pages = {3545},
+  author = {Saranraj Nambusubramaniyan},
+  title = {`sorn`: A Python package for Self Organizing Recurrent Neural Network},
+  journal = {Journal of Open Source Software}
 }
 ```
 
