@@ -14,7 +14,7 @@ tags:
 authors:
     - name: Saranraj Nambusubramaniyan
       affiliation: "1,2"
-      orcid: 0000-0002-4043-3420
+      orcid: 0000-0002-7314-0261
 affiliations:
     - name: Indian center for Robotics Innovation and Smart-intelligence(IRIS-i), India
       index: 1
