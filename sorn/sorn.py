@@ -4,15 +4,17 @@ from __future__ import division
 import numpy as np
 import os
 import random
+import concurrent
 
 try:
     from sorn.utils import Initializer
 except:
     from utils import Initializer
 
+
 class Sorn(object):
 
-    """ This class wraps initialization of the network and its parameters"""
+    """This class wraps initialization of the network and its parameters"""
 
     nu = 10
     ne = 200
@@ -34,7 +36,8 @@ class Sorn(object):
     lambda_ie = 100
 
     @staticmethod
-    def initialize_weight_matrix(network_type: str, synaptic_connection: str, self_connection: str, lambd_w: int
+    def initialize_weight_matrix(
+        network_type: str, synaptic_connection: str, self_connection: str, lambd_w: int
     ):
         """Wrapper for initializing the weight matrices for SORN
 
@@ -54,7 +57,9 @@ class Sorn(object):
         if (network_type == "Sparse") and (self_connection == "False"):
 
             # Generate weight matrix for E-E/ E-I connections with mean lamda incoming and out-going connections per neuron
-            assert (lambd_w <= Sorn.ne), "Number of connections per unit (lambda) should be less than number of units(Ne) in the pool and also Ne should be greater than 25"
+            assert (
+                lambd_w <= Sorn.ne
+            ), "Number of connections per unit (lambda) should be less than number of units(Ne) in the pool and also Ne should be greater than 25"
             weight_matrix = Initializer.generate_lambd_connections(
                 synaptic_connection, Sorn.ne, Sorn.ni, lambd_w, lambd_std=1
             )
@@ -69,7 +74,9 @@ class Sorn(object):
         return weight_matrix
 
     @staticmethod
-    def initialize_threshold_matrix(te_min: float, te_max: float, ti_min: float, ti_max: float):
+    def initialize_threshold_matrix(
+        te_min: float, te_max: float, ti_min: float, ti_max: float
+    ):
         """Initialize the threshold for excitatory and inhibitory neurons
 
         Args:
@@ -104,6 +111,7 @@ class Sorn(object):
         y = np.zeros((ni, 2))
 
         return x, y
+
 
 class Plasticity(Sorn):
     """Instance of class Sorn. Inherits the variables and functions defined in class Sorn.
@@ -162,8 +170,7 @@ class Plasticity(Sorn):
                 if wee_t[j][i] != 0.0:  # Check connectivity
 
                     # Get the change in weight
-                    delta_wee_t = self.eta_stdp * \
-                        (xt[i] * xt_1[j] - xt_1[i] * xt[j])
+                    delta_wee_t = self.eta_stdp * (xt[i] * xt_1[j] - xt_1[i] * xt[j])
 
                     # Update the weight between jth neuron to i ""Different from notation in article
 
@@ -253,8 +260,7 @@ class Plasticity(Sorn):
 
                     # Get the change in weight
                     delta_wei_t = (
-                        -self.eta_inhib * yt_1[j] *
-                        (1 - xt[i] * (1 + 1 / self.mu_ip))
+                        -self.eta_inhib * yt_1[j] * (1 - xt[i] * (1 + 1 / self.mu_ip))
                     )
 
                     # Update the weight between jth neuron to i ""Different from notation in article
@@ -305,7 +311,7 @@ class Plasticity(Sorn):
             kwargs (self.__dict__): All arguments are inherited from Sorn attributes
 
         Returns:
-            tuple(array): Weight matrices WEI, WEE, WIE and threshold matrices Te, Ti and Initial state vectors X,Y """
+            tuple(array): Weight matrices WEI, WEE, WIE and threshold matrices Te, Ti and Initial state vectors X,Y"""
 
         sorn_init = Sorn()
         WEE_init = sorn_init.initialize_weight_matrix(
@@ -352,8 +358,7 @@ class Plasticity(Sorn):
         te_init, ti_init = sorn_init.initialize_threshold_matrix(
             Sorn.te_min, Sorn.te_max, Sorn.ti_min, Sorn.ti_max
         )
-        x_init, y_init = sorn_init.initialize_activity_vector(
-            Sorn.ne, Sorn.ni)
+        x_init, y_init = sorn_init.initialize_activity_vector(Sorn.ne, Sorn.ni)
 
         # Initializing variables from sorn_initialize.py
 
@@ -366,6 +371,45 @@ class Plasticity(Sorn):
         y = y_init.copy()
 
         return wee, wei, wie, te, ti, x, y
+
+    class Aync:
+        def __init__(self, max_workers=4):
+            self.plasticity = Plasticity()
+            self.max_workers = max_workers
+
+        def step(self, X, Y, Wee, Wei, Te, freeze):
+
+            with concurrent.futures.ThreadPoolExecutor(
+                max_workers=self.max_workers
+            ) as executor:
+
+                # STDP
+                if "stdp" not in freeze:
+                    stdp = executor.submit(
+                        self.plasticity.stdp, Wee, X, cutoff_weights=(0.0, 1.0)
+                    )
+                    Wee = stdp.result()
+
+                # Intrinsic plasticity
+                if "ip" not in freeze:
+                    ip = executor.submit(self.plasticity.ip, Te, X)
+                    Te = ip.result()
+                # Structural plasticity
+                if "sp" not in freeze:
+                    sp = executor.submit(self.plasticity.structural_plasticity, Wee)
+                    Wee = sp.result()
+                # iSTDP
+                if "istdp" not in freeze:
+                    istdp = executor.submit(
+                        self.plasticity.istdp, self.Wei, X, Y, cutoff_weights=(0.0, 1.0)
+                    )
+                    Wei = istdp.result()
+
+            # Synaptic scaling Wee
+            if "ss" not in freeze:
+                Wee = self.plasticity.ss(Wee)
+                Wei = self.plasticity.ss(Wei)
+            return Wee, Wei, Te
 
 
 class MatrixCollection(Sorn):
@@ -736,6 +780,7 @@ class Simulator_(Sorn):
         time_steps: int = None,
         noise: bool = True,
         freeze: list = None,
+        max_workers: int = 4,
         **kwargs
     ):
         """Simulation/Plasticity phase
@@ -752,6 +797,8 @@ class Simulator_(Sorn):
             noise (bool, optional): If True, noise will be added. Defaults to True.
 
             freeze (list, optional): List of synaptic plasticity mechanisms which will be turned off during simulation. Defaults to None.
+
+            max_workers (int, optional): Maximum workers for multhreading the plasticity steps
 
         Returns:
             plastic_matrices (dict): Network states, connections and threshold matrices
@@ -773,7 +820,7 @@ class Simulator_(Sorn):
         self.phase = phase
         self.matrices = matrices
         self.freeze = [] if freeze == None else freeze
-
+        self.max_workers = max_workers
         kwargs_ = [
             "ne",
             "nu",
@@ -800,8 +847,7 @@ class Simulator_(Sorn):
         Sorn.ni = int(0.2 * Sorn.ne)
 
         # Initialize/Get the weight, threshold matrices and activity vectors
-        matrix_collection = MatrixCollection(
-            phase=self.phase, matrices=self.matrices)
+        matrix_collection = MatrixCollection(phase=self.phase, matrices=self.matrices)
 
         # Collect the network activity at all time steps
 
@@ -824,16 +870,10 @@ class Simulator_(Sorn):
             else:
                 white_noise_e, white_noise_i = 0.0, 0.0
 
-            network_state = NetworkState(
-                inputs[:, i]
-            )
+            network_state = NetworkState(inputs[:, i])
 
             # Buffers to get the resulting x and y vectors at the current time step and update the master matrix
-            x_buffer, y_buffer = np.zeros(
-                (Sorn.ne, 2)), np.zeros((Sorn.ni, 2))
-
-            te_buffer, ti_buffer = np.zeros(
-                (Sorn.ne, 1)), np.zeros((Sorn.ni, 1))
+            x_buffer, y_buffer = np.zeros((Sorn.ne, 2)), np.zeros((Sorn.ni, 2))
 
             Wee, Wei, Wie = (
                 matrix_collection.Wee,
@@ -869,33 +909,11 @@ class Simulator_(Sorn):
             y_buffer[:, 0] = Y[i][:, 1]
             y_buffer[:, 1] = inhibitory_state_yt_buffer.T
 
-            # Plasticity phase
-            plasticity = Plasticity()
-
-            # STDP
-            if 'stdp' not in self.freeze:
-                Wee[i] = plasticity.stdp(
-                    Wee[i], x_buffer, cutoff_weights=(0.0, 1.0))
-
-            # Intrinsic plasticity
-            if 'ip' not in self.freeze:
-                Te[i] = plasticity.ip(Te[i], x_buffer)
-
-            # Structural plasticity
-            if 'sp' not in self.freeze:
-                Wee[i] = plasticity.structural_plasticity(Wee[i])
-
-            # iSTDP
-            if 'istdp' not in self.freeze:
-                Wei[i] = plasticity.istdp(
-                    Wei[i], x_buffer, y_buffer, cutoff_weights=(0.0, 1.0)
-                )
-
-            # Synaptic scaling Wee
-            if 'ss' not in self.freeze:
-                Wee[i] = plasticity.ss(Wee[i])
-                Wei[i] = plasticity.ss(Wei[i])
-
+            Wee[i], Wei[i], Te[i] = (
+                Plasticity()
+                .Async(max_workers=max_workers)
+                .step(x_buffer, y_buffer, Wee[i], Wei[i], Te[i], self.freeze)
+            )
             # Assign the matrices to the matrix collections
             matrix_collection.weight_matrix(Wee[i], Wei[i], Wie[i], i)
             matrix_collection.threshold_matrix(Te[i], Ti[i], i)
@@ -919,31 +937,7 @@ class Simulator_(Sorn):
 
 
 class Trainer_(Sorn):
-    """Train the network with the fresh or pretrained network matrices and external stimuli
-
-    Args:
-        inputs (np.array, optional): External stimuli. Defaults to None.
-
-        phase (str, optional): Training phase. Defaults to "training".
-
-        matrices (dict, optional): Network states, connections and threshold matrices. Defaults to None.
-
-        time_steps (int, optional): Total number of time steps to simulate the network. Defaults to 1.
-
-        noise (bool, optional): If True, noise will be added. Defaults to True.
-
-        freeze (list, optional): List of synaptic plasticity mechanisms which will be turned off during simulation. Defaults to None.
-
-    Returns:
-        plastic_matrices (dict): Network states, connections and threshold matrices
-
-        X_all (array): Excitatory network activity collected during entire simulation steps
-
-        Y_all (array): Inhibitory network activity collected during entire simulation steps
-
-        R_all (array): Recurrent network activity collected during entire simulation steps
-
-        frac_pos_active_conn (list): Number of positive connection strengths in the network at each time step during simulation"""
+    """Train the network with the fresh or pretrained network matrices and external stimuli"""
 
     def __init__(self):
         super().__init__()
@@ -957,11 +951,12 @@ class Trainer_(Sorn):
         time_steps: int = None,
         noise: bool = True,
         freeze: list = None,
+        max_workers: int = 4,
         **kwargs
     ):
         """Train the network with the fresh or pretrained network matrices and external stimuli
 
-        Args:
+            Args:
             inputs (np.array, optional): External stimuli. Defaults to None.
 
             phase (str, optional): Training phase. Defaults to "training".
@@ -972,8 +967,11 @@ class Trainer_(Sorn):
 
             noise (bool, optional): If True, noise will be added. Defaults to True.
 
-        Returns:
+            freeze (list, optional): List of synaptic plasticity mechanisms which will be turned off during simulation. Defaults to None.
 
+            max_workers (int, optional): Maximum workers for multhreading the plasticity steps
+
+        Returns:
             plastic_matrices (dict): Network states, connections and threshold matrices
 
             X_all (array): Excitatory network activity collected during entire simulation steps
@@ -1026,8 +1024,7 @@ class Trainer_(Sorn):
 
         frac_pos_active_conn = []
 
-        matrix_collection = MatrixCollection(
-            phase=self.phase, matrices=self.matrices)
+        matrix_collection = MatrixCollection(phase=self.phase, matrices=self.matrices)
 
         for i in range(self.time_steps):
 
@@ -1042,15 +1039,11 @@ class Trainer_(Sorn):
                 white_noise_e = 0.0
                 white_noise_i = 0.0
 
-            network_state = NetworkState(
-                self.inputs[:, i]
-            )
+            network_state = NetworkState(self.inputs[:, i])
 
             # Buffers to get the resulting x and y vectors at the current time step and update the master matrix
-            x_buffer, y_buffer = np.zeros(
-                (Sorn.ne, 2)), np.zeros((Sorn.ni, 2))
-            te_buffer, ti_buffer = np.zeros(
-                (Sorn.ne, 1)), np.zeros((Sorn.ni, 1))
+            x_buffer, y_buffer = np.zeros((Sorn.ne, 2)), np.zeros((Sorn.ni, 2))
+            te_buffer, ti_buffer = np.zeros((Sorn.ne, 1)), np.zeros((Sorn.ni, 1))
 
             Wee, Wei, Wie = (
                 matrix_collection.Wee,
@@ -1084,33 +1077,11 @@ class Trainer_(Sorn):
             y_buffer[:, 1] = inhibitory_state_yt_buffer.T
 
             if self.phase == "plasticity":
-                plasticity = Plasticity()
-
-                # STDP
-                if 'stdp' not in self.freeze:
-                    Wee[i] = plasticity.stdp(
-                        Wee[i], x_buffer, cutoff_weights=(0.0, 1.0))
-
-                # Intrinsic plasticity
-                if 'ip' not in self.freeze:
-                    Te[i] = plasticity.ip(Te[i], x_buffer)
-
-                # Structural plasticity
-                if 'sp' not in self.freeze:
-                    Wee[i] = plasticity.structural_plasticity(Wee[i])
-
-                # iSTDP
-                if 'istdp' not in self.freeze:
-                    Wei[i] = plasticity.istdp(
-                        Wei[i], x_buffer, y_buffer, cutoff_weights=(0.0, 1.0)
-                    )
-
-                # Synaptic scaling Wee
-                if 'ss' not in self.freeze:
-                    Wee[i] = plasticity.ss(Wee[i])
-
-                    # Synaptic scaling Wei
-                    Wei[i] = plasticity.ss(Wei[i])
+                Wee[i], Wei[i], Te[i] = (
+                    Plasticity()
+                    .Async(max_workers=self.max_workers)
+                    .step(x_buffer, y_buffer, Wee[i], Wei[i], Te[i], self.freeze)
+                )
             else:
                 # Wee[i], Wei[i], Te[i] remain same
                 pass
