@@ -40,7 +40,7 @@ class TestSorn(unittest.TestCase):
                 matrices=None,
                 time_steps=2,
                 noise=True,
-                nu=num_features
+                nu=num_features,
             ),
         )
         # Initilize and resume the simulation of SORN using the state dictionary, state_dict
@@ -62,7 +62,8 @@ class TestSorn(unittest.TestCase):
                 phase="plasticity",
                 matrices=state_dict,
                 time_steps=2,
-                noise=False, freeze=['ip']
+                noise=False,
+                freeze=["ip"],
             ),
         )
 
@@ -74,7 +75,8 @@ class TestSorn(unittest.TestCase):
                 phase="plasticity",
                 matrices=state_dict,
                 time_steps=2,
-                noise=False, freeze=['stdp','istdp','ss','sp']
+                noise=False,
+                freeze=["stdp", "istdp", "ss", "sp"],
             ),
         )
 
@@ -97,7 +99,8 @@ class TestSorn(unittest.TestCase):
                 phase="training",
                 matrices=state_dict,
                 time_steps=1,
-                noise=True, freeze=['stdp','istdp','ss','sp']
+                noise=True,
+                freeze=["stdp", "istdp", "ss", "sp"],
             ),
         )
 
@@ -134,8 +137,7 @@ class TestSorn(unittest.TestCase):
         )
 
     def test_plotter(self):
-        """Test the Plotter class methods in utils module
-        """
+        """Test the Plotter class methods in utils module"""
 
         # Histogram of number of postsynaptic connections per neuron in the excitatory pool
         self.assertRaises(
@@ -210,8 +212,7 @@ class TestSorn(unittest.TestCase):
         )
 
     def test_statistics(self):
-        """Test the functions in Statistics class
-        """
+        """Test the functions in Statistics class"""
         # Firing rate of a neuron
         self.assertRaises(
             Exception,
@@ -272,6 +273,6 @@ class TestSorn(unittest.TestCase):
             ),
         )
 
-if __name__ == "__main__":
-    unittest.main(argv=['first-arg-is-ignored'], exit=False)
 
+if __name__ == "__main__":
+    unittest.main(argv=["first-arg-is-ignored"], exit=False)

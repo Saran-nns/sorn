@@ -4,7 +4,7 @@ from __future__ import division
 import numpy as np
 import os
 import random
-import concurrent
+import concurrent.futures
 
 try:
     from sorn.utils import Initializer
@@ -372,44 +372,46 @@ class Plasticity(Sorn):
 
         return wee, wei, wie, te, ti, x, y
 
-    class Aync:
-        def __init__(self, max_workers=4):
-            self.plasticity = Plasticity()
-            self.max_workers = max_workers
 
-        def step(self, X, Y, Wee, Wei, Te, freeze):
+class Async:
+    def __init__(self, max_workers=4):
+        super().__init__()
+        self.max_workers = max_workers
+        self.plasticity = Plasticity()
 
-            with concurrent.futures.ThreadPoolExecutor(
-                max_workers=self.max_workers
-            ) as executor:
+    def step(self, X, Y, Wee, Wei, Te, freeze):
 
-                # STDP
-                if "stdp" not in freeze:
-                    stdp = executor.submit(
-                        self.plasticity.stdp, Wee, X, cutoff_weights=(0.0, 1.0)
-                    )
-                    Wee = stdp.result()
+        with concurrent.futures.ThreadPoolExecutor(
+            max_workers=self.max_workers
+        ) as executor:
 
-                # Intrinsic plasticity
-                if "ip" not in freeze:
-                    ip = executor.submit(self.plasticity.ip, Te, X)
-                    Te = ip.result()
-                # Structural plasticity
-                if "sp" not in freeze:
-                    sp = executor.submit(self.plasticity.structural_plasticity, Wee)
-                    Wee = sp.result()
-                # iSTDP
-                if "istdp" not in freeze:
-                    istdp = executor.submit(
-                        self.plasticity.istdp, self.Wei, X, Y, cutoff_weights=(0.0, 1.0)
-                    )
-                    Wei = istdp.result()
+            # STDP
+            if "stdp" not in freeze:
+                stdp = executor.submit(
+                    self.plasticity.stdp, Wee, X, cutoff_weights=(0.0, 1.0)
+                )
+                Wee = stdp.result()
 
-            # Synaptic scaling Wee
-            if "ss" not in freeze:
-                Wee = self.plasticity.ss(Wee)
-                Wei = self.plasticity.ss(Wei)
-            return Wee, Wei, Te
+            # Intrinsic plasticity
+            if "ip" not in freeze:
+                ip = executor.submit(self.plasticity.ip, Te, X)
+                Te = ip.result()
+            # Structural plasticity
+            if "sp" not in freeze:
+                sp = executor.submit(self.plasticity.structural_plasticity, Wee)
+                Wee = sp.result()
+            # iSTDP
+            if "istdp" not in freeze:
+                istdp = executor.submit(
+                    self.plasticity.istdp, Wei, X, Y, cutoff_weights=(0.0, 1.0)
+                )
+                Wei = istdp.result()
+
+        # Synaptic scaling Wee
+        if "ss" not in freeze:
+            Wee = self.plasticity.ss(Wee)
+            Wei = self.plasticity.ss(Wei)
+        return Wee, Wei, Te
 
 
 class MatrixCollection(Sorn):
@@ -909,10 +911,8 @@ class Simulator_(Sorn):
             y_buffer[:, 0] = Y[i][:, 1]
             y_buffer[:, 1] = inhibitory_state_yt_buffer.T
 
-            Wee[i], Wei[i], Te[i] = (
-                Plasticity()
-                .Async(max_workers=max_workers)
-                .step(x_buffer, y_buffer, Wee[i], Wei[i], Te[i], self.freeze)
+            Wee[i], Wei[i], Te[i] = Async(max_workers=max_workers).step(
+                x_buffer, y_buffer, Wee[i], Wei[i], Te[i], self.freeze
             )
             # Assign the matrices to the matrix collections
             matrix_collection.weight_matrix(Wee[i], Wei[i], Wie[i], i)
@@ -1017,7 +1017,7 @@ class Trainer_(Sorn):
         Sorn.time_steps = time_steps
         self.inputs = np.asarray(inputs)
         self.freeze = [] if freeze == None else freeze
-
+        self.max_workers = max_workers
         X_all = [0] * self.time_steps
         Y_all = [0] * self.time_steps
         R_all = [0] * self.time_steps
@@ -1043,7 +1043,6 @@ class Trainer_(Sorn):
 
             # Buffers to get the resulting x and y vectors at the current time step and update the master matrix
             x_buffer, y_buffer = np.zeros((Sorn.ne, 2)), np.zeros((Sorn.ni, 2))
-            te_buffer, ti_buffer = np.zeros((Sorn.ne, 1)), np.zeros((Sorn.ni, 1))
 
             Wee, Wei, Wie = (
                 matrix_collection.Wee,
@@ -1077,11 +1076,10 @@ class Trainer_(Sorn):
             y_buffer[:, 1] = inhibitory_state_yt_buffer.T
 
             if self.phase == "plasticity":
-                Wee[i], Wei[i], Te[i] = (
-                    Plasticity()
-                    .Async(max_workers=self.max_workers)
-                    .step(x_buffer, y_buffer, Wee[i], Wei[i], Te[i], self.freeze)
+                Wee[i], Wei[i], Te[i] = Async(max_workers=self.max_workers).step(
+                    x_buffer, y_buffer, Wee[i], Wei[i], Te[i], self.freeze
                 )
+
             else:
                 # Wee[i], Wei[i], Te[i] remain same
                 pass
