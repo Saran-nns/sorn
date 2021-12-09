@@ -10,6 +10,11 @@ __pycache__/
 # Notebook checkpoints
 .ipynb_checkpoints
 
+# Pypi binaries
+build/
+dist/
+sorn.egg-info/
+ 
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/tasks.json
