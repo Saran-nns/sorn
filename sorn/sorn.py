@@ -170,7 +170,8 @@ class Plasticity(Sorn):
                 if wee_t[j][i] != 0.0:  # Check connectivity
 
                     # Get the change in weight
-                    delta_wee_t = self.eta_stdp * (xt[i] * xt_1[j] - xt_1[i] * xt[j])
+                    delta_wee_t = self.eta_stdp * \
+                        (xt[i] * xt_1[j] - xt_1[i] * xt[j])
 
                     # Update the weight between jth neuron to i ""Different from notation in article
 
@@ -260,7 +261,8 @@ class Plasticity(Sorn):
 
                     # Get the change in weight
                     delta_wei_t = (
-                        -self.eta_inhib * yt_1[j] * (1 - xt[i] * (1 + 1 / self.mu_ip))
+                        -self.eta_inhib * yt_1[j] *
+                        (1 - xt[i] * (1 + 1 / self.mu_ip))
                     )
 
                     # Update the weight between jth neuron to i ""Different from notation in article
@@ -334,7 +336,6 @@ class Plasticity(Sorn):
         )
 
         Wee_init = Initializer.zero_sum_incoming_check(WEE_init)
-        # Wei_init = initializer.zero_sum_incoming_check(WEI_init.T)  # For SORN 1
         Wei_init = Initializer.zero_sum_incoming_check(WEI_init)
         Wie_init = Initializer.zero_sum_incoming_check(WIE_init)
 
@@ -374,53 +375,91 @@ class Plasticity(Sorn):
 
 
 class Async:
-    def __init__(self, max_workers=4):
-        super().__init__()
-        self.max_workers = max_workers
-        self.plasticity = Plasticity()
+    """Execute STDP, iSTDP, IP and SP asynchrously followed by SS
 
-    def step(self, X, Y, Wee, Wei, Te, freeze):
+    Args:
+        X(array): Excitatory network activity
+        Y(array): Inhibitory network activity
+        Wee(array): Synaptic strengths from excitatory to excitatory
+        Wei(array): Synaptic strengths from inhibitory to excitatory
+        Te(array): Excitatory threshold
+        freeze(array): List of synaptic plasticity mechanisms which will 
+                        be turned off during simulation. Defaults to None.
+        max_workers (int, optional): Defaults to min(32, os.cpu_count() + 4).
+        This default value preserves at least 5 workers for I/O bound tasks.
+        It utilizes at most 32 CPU cores for CPU bound tasks which release the GIL.
+        And it avoids using very large resources implicitly on many-core machines
+
+    Returns:
+        params(dict): Dictionary networks parameters Wee, Wei, Te
+        """
+
+    def __init__(self, X, Y, Wee, Wei, Te, freeze, max_workers=min(32, os.cpu_count() + 4)):
+
+        super().__init__()
+        self.X = X
+        self.Y = Y
+        self.freeze = freeze
+        self.max_workers = max_workers
+        self.params = {'Wee': Wee, 'Wei': Wei, 'Te': Te}
+        self.plasticity = Plasticity()
+        self.execute()
+        self.update_params()
+
+    def execute(self):
 
         with concurrent.futures.ThreadPoolExecutor(
             max_workers=self.max_workers
         ) as executor:
 
-            # STDP
-            if "stdp" not in freeze:
-                stdp = executor.submit(
-                    self.plasticity.stdp, Wee, X, cutoff_weights=(0.0, 1.0)
+            if "stdp" not in self.freeze:
+                self.stdp = executor.submit(
+                    self.plasticity.stdp, self.params['Wee'], self.X, cutoff_weights=(
+                        0.0, 1.0)
                 )
-                Wee = stdp.result()
 
-            # Intrinsic plasticity
-            if "ip" not in freeze:
-                ip = executor.submit(self.plasticity.ip, Te, X)
-                Te = ip.result()
-            # Structural plasticity
-            if "sp" not in freeze:
-                sp = executor.submit(self.plasticity.structural_plasticity, Wee)
-                Wee = sp.result()
-            # iSTDP
-            if "istdp" not in freeze:
-                istdp = executor.submit(
-                    self.plasticity.istdp, Wei, X, Y, cutoff_weights=(0.0, 1.0)
+            if "ip" not in self.freeze:
+                self.ip = executor.submit(self.plasticity.ip,
+                                          self.params['Te'], self.X)
+
+            if "sp" not in self.freeze:
+                self.sp = executor.submit(
+                    self.plasticity.structural_plasticity, self.params['Wee'])
+
+            if "istdp" not in self.freeze:
+                self.istdp = executor.submit(
+                    self.plasticity.istdp, self.params['Wei'], self.X, self.Y, cutoff_weights=(
+                        0.0, 1.0)
                 )
-                Wei = istdp.result()
 
-        # Synaptic scaling Wee
-        if "ss" not in freeze:
-            Wee = self.plasticity.ss(Wee)
-            Wei = self.plasticity.ss(Wei)
-        return Wee, Wei, Te
+    def update_params(self):
+
+        self.params['Wee'] = self.stdp.result(
+        ) if "stdp" not in self.freeze else self.params['Wee']
+        self.params['Wei'] = self.istdp.result(
+        ) if "istdp" not in self.freeze else self.params['Wei']
+        self.params['Te'] = self.ip.result(
+        ) if "ip" not in self.freeze else self.params['Te']
+        self.params['Wee'] = self.sp.result(
+        ) if "sp" not in self.freeze else self.params['Wee']
+
+        if "ss" not in self.freeze:
+            self.params['Wee'] = self.plasticity.ss(self.params['Wee'])
+            self.params['Wei'] = self.plasticity.ss(self.params['Wei'])
+
+    def __new__(cls, X, Y, Wee, Wei, Te, freeze, max_workers=min(32, os.cpu_count() + 4)):
+        async_instance = super(Async, cls).__new__(cls)
+        async_instance.__init__(X, Y, Wee, Wei, Te, freeze, max_workers)
+        return async_instance.params
 
 
 class MatrixCollection(Sorn):
-    """Collect all matrices initialized and updated during simulation (plasiticity and training phases)
+    """Collect all matrices initialized and updated during simulation(plasiticity and training phases)
 
     Args:
-        phase (str): Training or Plasticity phase
+        phase(str): Training or Plasticity phase
 
-        matrices (dict): Network activity, threshold and connection matrices
+        matrices(dict): Network activity, threshold and connection matrices
 
     Returns:
         MatrixCollection instance"""
@@ -500,15 +539,15 @@ class MatrixCollection(Sorn):
         """Update weight matrices
 
         Args:
-            wee (array): Excitatory-Excitatory weight matrix
+            wee(array): Excitatory-Excitatory weight matrix
 
-            wei (array): Inhibitory-Excitatory weight matrix
+            wei(array): Inhibitory-Excitatory weight matrix
 
-            wie (array): Excitatory-Inhibitory weight matrix
+            wie(array): Excitatory-Inhibitory weight matrix
 
-            i (int): Time step
+            i(int): Time step
         Returns:
-            tuple (array): Weight Matrices Wee, Wei, Wie"""
+            tuple(array): Weight Matrices Wee, Wei, Wie"""
 
         self.Wee[i + 1] = wee
         self.Wei[i + 1] = wei
@@ -520,14 +559,14 @@ class MatrixCollection(Sorn):
         """Update threshold matrices
 
         Args:
-            te (array): Excitatory threshold
+            te(array): Excitatory threshold
 
-            ti (array): Inhibitory threshold
+            ti(array): Inhibitory threshold
 
-            i (int): Time step
+            i(int): Time step
 
         Returns:
-            tuple (array): Threshold Matrices Te and Ti"""
+            tuple(array): Threshold Matrices Te and Ti"""
 
         self.Te[i + 1] = te
         self.Ti[i + 1] = ti
@@ -539,14 +578,14 @@ class MatrixCollection(Sorn):
         """Network state at current time step
 
         Args:
-            excitatory_net (array): Excitatory network activity
+            excitatory_net(array): Excitatory network activity
 
-            inhibitory_net (array): Inhibitory network activity
+            inhibitory_net(array): Inhibitory network activity
 
-            i (int): Time step
+            i(int): Time step
 
         Returns:
-            tuple (array): Updated Excitatory and Inhibitory states
+            tuple(array): Updated Excitatory and Inhibitory states
         """
 
         self.X[i + 1] = excitatory_net
@@ -558,14 +597,14 @@ class MatrixCollection(Sorn):
         """Network activity at previous time step
 
         Args:
-            x (array): Excitatory network activity
+            x(array): Excitatory network activity
 
-            y (array): Inhibitory network activity
+            y(array): Inhibitory network activity
 
-            i (int): Time step
+            i(int): Time step
 
         Returns:
-            tuple (array): Previous Excitatory and Inhibitory states
+            tuple(array): Previous Excitatory and Inhibitory states
         """
         x_1, y_1 = [0] * self.time_steps, [0] * self.time_steps
         x_1[i] = x
@@ -579,10 +618,10 @@ class NetworkState(Plasticity):
     """The evolution of network states
 
     Args:
-        v_t (array): External input/stimuli
+        v_t(array): External input/stimuli
 
     Returns:
-        instance (object): NetworkState instance"""
+        instance(object): NetworkState instance"""
 
     def __init__(self, v_t: np.array):
         super().__init__()
@@ -600,12 +639,12 @@ class NetworkState(Plasticity):
         """Excitatory Post synaptic potential towards neurons in the reservoir in the absence of external input
 
         Args:
-            weights (array): Synaptic strengths
+            weights(array): Synaptic strengths
 
-            activity_vector (list): Acitivity of inhibitory or Excitatory neurons
+            activity_vector(list): Acitivity of inhibitory or Excitatory neurons
 
         Returns:
-            incoming (array): Excitatory Post synaptic potential towards neurons
+            incoming(array): Excitatory Post synaptic potential towards neurons
         """
         incoming = weights * activity_vector
         incoming = np.array(incoming.sum(axis=0))
@@ -623,20 +662,20 @@ class NetworkState(Plasticity):
         """Activity of Excitatory neurons in the network
 
         Args:
-            wee (array): Excitatory-Excitatory weight matrix
+            wee(array): Excitatory-Excitatory weight matrix
 
-            wei (array): Inhibitory-Excitatory weight matrix
+            wei(array): Inhibitory-Excitatory weight matrix
 
-            te (array): Excitatory threshold
+            te(array): Excitatory threshold
 
-            x (array): Excitatory network activity
+            x(array): Excitatory network activity
 
-            y (array): Inhibitory network activity
+            y(array): Inhibitory network activity
 
-            white_noise_e (array): Gaussian noise
+            white_noise_e(array): Gaussian noise
 
         Returns:
-            x (array): Current Excitatory network activity
+            x(array): Current Excitatory network activity
         """
         xt = x[:, 1]
         xt = xt.reshape(self.ne, 1)
@@ -668,18 +707,18 @@ class NetworkState(Plasticity):
         """Activity of Excitatory neurons in the network
 
         Args:
-            wee (array): Excitatory-Excitatory weight matrix
+            wee(array): Excitatory-Excitatory weight matrix
 
-            wie (array): Excitatory-Inhibitory weight matrix
+            wie(array): Excitatory-Inhibitory weight matrix
 
-            ti (array): Inhibitory threshold
+            ti(array): Inhibitory threshold
 
-            y (array): Inhibitory network activity
+            y(array): Inhibitory network activity
 
-            white_noise_i (array): Gaussian noise
+            white_noise_i(array): Gaussian noise
 
         Returns:
-            y (array): Current Inhibitory network activity"""
+            y(array): Current Inhibitory network activity"""
 
         wie = np.asarray(wie)
         yt = y[:, 1]
@@ -708,20 +747,20 @@ class NetworkState(Plasticity):
 
         Args:
 
-            wee (array): Excitatory-Excitatory weight matrix
+            wee(array): Excitatory-Excitatory weight matrix
 
-            wei (array): Inhibitory-Excitatory weight matrix
+            wei(array): Inhibitory-Excitatory weight matrix
 
-            te (array): Excitatory threshold
+            te(array): Excitatory threshold
 
-            x (array): Excitatory network activity
+            x(array): Excitatory network activity
 
-            y (array): Inhibitory network activity
+            y(array): Inhibitory network activity
 
-            white_noise_e (array): Gaussian noise
+            white_noise_e(array): Gaussian noise
 
         Returns:
-            xt (array): Recurrent network state
+            xt(array): Recurrent network state
         """
         xt = x[:, 1]
         xt = xt.reshape(self.ne, 1)
@@ -749,26 +788,26 @@ class Simulator_(Sorn):
     """Simulate SORN using external input/noise using the fresh or pretrained matrices
 
     Args:
-        inputs (np.array, optional): External stimuli. Defaults to None.
+        inputs(np.array, optional): External stimuli. Defaults to None.
 
-        phase (str, optional): Plasticity phase. Defaults to "plasticity".
+        phase(str, optional): Plasticity phase. Defaults to "plasticity".
 
-        matrices (dict, optional): Network states, connections and threshold matrices. Defaults to None.
+        matrices(dict, optional): Network states, connections and threshold matrices. Defaults to None.
 
-        time_steps (int, optional): Total number of time steps to simulate the network. Defaults to 1.
+        time_steps(int, optional): Total number of time steps to simulate the network. Defaults to 1.
 
-        noise (bool, optional): If True, noise will be added. Defaults to True.
+        noise(bool, optional): If True, noise will be added. Defaults to True.
 
     Returns:
-        plastic_matrices (dict): Network states, connections and threshold matrices
+        plastic_matrices(dict): Network states, connections and threshold matrices
 
-        X_all (array): Excitatory network activity collected during entire simulation steps
+        X_all(array): Excitatory network activity collected during entire simulation steps
 
-        Y_all (array): Inhibitory network activity collected during entire simulation steps
+        Y_all(array): Inhibitory network activity collected during entire simulation steps
 
-        R_all (array): Recurrent network activity collected during entire simulation steps
+        R_all(array): Recurrent network activity collected during entire simulation steps
 
-        frac_pos_active_conn (list): Number of positive connection strengths in the network at each time step during simulation"""
+        frac_pos_active_conn(list): Number of positive connection strengths in the network at each time step during simulation"""
 
     def __init__(self):
         super().__init__()
@@ -788,30 +827,30 @@ class Simulator_(Sorn):
         """Simulation/Plasticity phase
 
         Args:
-            inputs (np.array, optional): External stimuli. Defaults to None.
+            inputs(np.array, optional): External stimuli. Defaults to None.
 
-            phase (str, optional): Plasticity phase. Defaults to "plasticity"
+            phase(str, optional): Plasticity phase. Defaults to "plasticity"
 
-            matrices (dict, optional): Network states, connections and threshold matrices. Defaults to None.
+            matrices(dict, optional): Network states, connections and threshold matrices. Defaults to None.
 
-            time_steps (int, optional): Total number of time steps to simulate the network. Defaults to 1.
+            time_steps(int, optional): Total number of time steps to simulate the network. Defaults to 1.
 
-            noise (bool, optional): If True, noise will be added. Defaults to True.
+            noise(bool, optional): If True, noise will be added. Defaults to True.
 
-            freeze (list, optional): List of synaptic plasticity mechanisms which will be turned off during simulation. Defaults to None.
+            freeze(list, optional): List of synaptic plasticity mechanisms which will be turned off during simulation. Defaults to None.
 
-            max_workers (int, optional): Maximum workers for multhreading the plasticity steps
+            max_workers(int, optional): Maximum workers for multhreading the plasticity steps
 
         Returns:
-            plastic_matrices (dict): Network states, connections and threshold matrices
+            plastic_matrices(dict): Network states, connections and threshold matrices
 
-            X_all (array): Excitatory network activity collected during entire simulation steps
+            X_all(array): Excitatory network activity collected during entire simulation steps
 
-            Y_all (array): Inhibitory network activity collected during entire simulation steps
+            Y_all(array): Inhibitory network activity collected during entire simulation steps
 
-            R_all (array): Recurrent network activity collected during entire simulation steps
+            R_all(array): Recurrent network activity collected during entire simulation steps
 
-            frac_pos_active_conn (list): Number of positive connection strengths in the network at each time step during simulation"""
+            frac_pos_active_conn(list): Number of positive connection strengths in the network at each time step during simulation"""
 
         assert (
             phase == "plasticity" or "training"
@@ -849,7 +888,8 @@ class Simulator_(Sorn):
         Sorn.ni = int(0.2 * Sorn.ne)
 
         # Initialize/Get the weight, threshold matrices and activity vectors
-        matrix_collection = MatrixCollection(phase=self.phase, matrices=self.matrices)
+        matrix_collection = MatrixCollection(
+            phase=self.phase, matrices=self.matrices)
 
         # Collect the network activity at all time steps
 
@@ -957,30 +997,30 @@ class Trainer_(Sorn):
         """Train the network with the fresh or pretrained network matrices and external stimuli
 
             Args:
-            inputs (np.array, optional): External stimuli. Defaults to None.
+            inputs(np.array, optional): External stimuli. Defaults to None.
 
-            phase (str, optional): Training phase. Defaults to "training".
+            phase(str, optional): Training phase. Defaults to "training".
 
-            matrices (dict, optional): Network states, connections and threshold matrices. Defaults to None.
+            matrices(dict, optional): Network states, connections and threshold matrices. Defaults to None.
 
-            time_steps (int, optional): Total number of time steps to simulate the network. Defaults to 1.
+            time_steps(int, optional): Total number of time steps to simulate the network. Defaults to 1.
 
-            noise (bool, optional): If True, noise will be added. Defaults to True.
+            noise(bool, optional): If True, noise will be added. Defaults to True.
 
-            freeze (list, optional): List of synaptic plasticity mechanisms which will be turned off during simulation. Defaults to None.
+            freeze(list, optional): List of synaptic plasticity mechanisms which will be turned off during simulation. Defaults to None.
 
-            max_workers (int, optional): Maximum workers for multhreading the plasticity steps
+            max_workers(int, optional): Maximum workers for multhreading the plasticity steps
 
         Returns:
-            plastic_matrices (dict): Network states, connections and threshold matrices
+            plastic_matrices(dict): Network states, connections and threshold matrices
 
-            X_all (array): Excitatory network activity collected during entire simulation steps
+            X_all(array): Excitatory network activity collected during entire simulation steps
 
-            Y_all (array): Inhibitory network activity collected during entire simulation steps
+            Y_all(array): Inhibitory network activity collected during entire simulation steps
 
-            R_all (array): Recurrent network activity collected during entire simulation steps
+            R_all(array): Recurrent network activity collected during entire simulation steps
 
-            frac_pos_active_conn (list): Number of positive connection strengths in the network at each time step during simulation"""
+            frac_pos_active_conn(list): Number of positive connection strengths in the network at each time step during simulation"""
 
         assert (
             phase == "plasticity" or "training"
@@ -1024,7 +1064,8 @@ class Trainer_(Sorn):
 
         frac_pos_active_conn = []
 
-        matrix_collection = MatrixCollection(phase=self.phase, matrices=self.matrices)
+        matrix_collection = MatrixCollection(
+            phase=self.phase, matrices=self.matrices)
 
         for i in range(self.time_steps):
 
