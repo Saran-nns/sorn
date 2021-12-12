@@ -392,7 +392,7 @@ class Async:
         Wee(array): Synaptic strengths from excitatory to excitatory
         Wei(array): Synaptic strengths from inhibitory to excitatory
         Te(array): Excitatory threshold
-        freeze(array): List of synaptic plasticity mechanisms which will 
+        freeze(array): List of synaptic plasticity mechanisms which will
                         be turned off during simulation. Defaults to None.
         max_workers (int, optional): Defaults to min(32, os.cpu_count() + 4).
         This default value preserves at least 5 workers for I/O bound tasks.
@@ -403,14 +403,17 @@ class Async:
         params(dict): Dictionary networks parameters Wee, Wei, Te
         """
 
-    def __init__(self, X, Y, Wee, Wei, Te, freeze, max_workers=min(32, os.cpu_count() + 4)):
+    def __init__(self, X, Y, Wee, Wei, Te, freeze, max_workers):
 
         super().__init__()
         self.X = X
         self.Y = Y
         self.freeze = freeze
-        self.max_workers = max_workers
         self.params = {'Wee': Wee, 'Wei': Wei, 'Te': Te}
+        if max_workers == None:
+            self.max_workers = min(32, os.cpu_count() + 4)
+        else:
+            self.max_workers = max_workers
         self.plasticity = Plasticity()
         self.execute()
         self.update_params()
@@ -960,9 +963,8 @@ class Simulator_(Sorn):
             y_buffer[:, 0] = Y[i][:, 1]
             y_buffer[:, 1] = inhibitory_state_yt_buffer.T
 
-            Wee[i], Wei[i], Te[i] = Async(max_workers=max_workers).step(
-                x_buffer, y_buffer, Wee[i], Wei[i], Te[i], self.freeze
-            )
+            Wee[i], Wei[i], Te[i] = Async(x_buffer, y_buffer, Wee[i], Wei[i], Te[i],
+                                          self.freeze, max_workers=max_workers)
             # Assign the matrices to the matrix collections
             matrix_collection.weight_matrix(Wee[i], Wei[i], Wie[i], i)
             matrix_collection.threshold_matrix(Te[i], Ti[i], i)
