@@ -450,7 +450,7 @@ class Async:
     def __new__(cls, X, Y, Wee, Wei, Te, freeze, max_workers=min(32, os.cpu_count() + 4)):
         async_instance = super(Async, cls).__new__(cls)
         async_instance.__init__(X, Y, Wee, Wei, Te, freeze, max_workers)
-        return async_instance.params
+        return async_instance.params.values()
 
 
 class MatrixCollection(Sorn):
