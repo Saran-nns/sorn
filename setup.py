@@ -5,12 +5,15 @@ from setuptools import setup
 # Used for the long_description.  It's nice, because now 1) we have a top level
 # README file and 2) it's easier to type in the README file than to put a raw
 # string in below ...
+
+
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+
 setup(
     name="sorn",
-    version="0.6.2",
+    version="0.7.1",
     author="Saranraj Nambusubramaniyan",
     author_email="saran_nns@hotmail.com",
     description="Self-Organizing Recurrent Neural Networks",
@@ -31,9 +34,10 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
     ],
     include_package_data=True,
-    install_requires=["numpy", "configparser", "scipy", "seaborn", "pandas", "networkx"],
+    install_requires=["numpy", "configparser",
+                      "scipy", "seaborn", "pandas", "networkx"],
     zip_safe=False,
 )
-

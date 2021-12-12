@@ -14,7 +14,10 @@ __pycache__/
 build/
 dist/
 sorn.egg-info/
- 
+
+# Logs
+*.logs 
+
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/tasks.json

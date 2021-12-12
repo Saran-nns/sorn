@@ -5,11 +5,19 @@ import numpy as np
 import os
 import random
 import concurrent.futures
+import logging
 
 try:
     from sorn.utils import Initializer
 except:
     from utils import Initializer
+
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s:%(levelname)s:%(message)s',
+                    handlers=[
+                        logging.FileHandler("sorn.log"),
+                        logging.StreamHandler()
+                    ])
 
 
 class Sorn(object):
@@ -343,9 +351,10 @@ class Plasticity(Sorn):
         v = np.count_nonzero(Wei_init)
         b = np.count_nonzero(Wie_init)
 
-        print("Network Initialized")
-        print("Number of connections in Wee %s , Wei %s, Wie %s" % (c, v, b))
-        print(
+        logging.info("Network Initialized")
+        logging.info(
+            "Number of connections in Wee %s , Wei %s, Wie %s" % (c, v, b))
+        logging.info(
             "Shapes Wee %s Wei %s Wie %s"
             % (Wee_init.shape, Wei_init.shape, Wie_init.shape)
         )
@@ -1049,7 +1058,6 @@ class Trainer_(Sorn):
             if key in kwargs_:
                 setattr(Sorn, key, value)
         Sorn.ni = int(0.2 * Sorn.ne)
-        # assert Sorn.nu == len(inputs[:,0]),"Size mismatch: Input != Nu "
 
         self.phase = phase
         self.matrices = matrices
