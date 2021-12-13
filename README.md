@@ -33,7 +33,7 @@ pip install git+https://github.com/Saran-nns/sorn
 ```
 
 ## Dependencies
-SORN supports Python 3.5+ ONLY. For older Python versions please use the official Python client.
+SORN supports Python 3.7+ ONLY. For older Python versions please use the official Python client.
 To install all optional dependencies,
 
 ```python

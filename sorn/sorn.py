@@ -12,12 +12,11 @@ try:
 except:
     from utils import Initializer
 
-logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s:%(levelname)s:%(message)s',
-                    handlers=[
-                        logging.FileHandler("sorn.log"),
-                        logging.StreamHandler()
-                    ])
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s:%(levelname)s:%(message)s",
+    handlers=[logging.FileHandler("sorn.log"), logging.StreamHandler()],
+)
 
 
 class Sorn(object):
@@ -178,8 +177,7 @@ class Plasticity(Sorn):
                 if wee_t[j][i] != 0.0:  # Check connectivity
 
                     # Get the change in weight
-                    delta_wee_t = self.eta_stdp * \
-                        (xt[i] * xt_1[j] - xt_1[i] * xt[j])
+                    delta_wee_t = self.eta_stdp * (xt[i] * xt_1[j] - xt_1[i] * xt[j])
 
                     # Update the weight between jth neuron to i ""Different from notation in article
 
@@ -269,8 +267,7 @@ class Plasticity(Sorn):
 
                     # Get the change in weight
                     delta_wei_t = (
-                        -self.eta_inhib * yt_1[j] *
-                        (1 - xt[i] * (1 + 1 / self.mu_ip))
+                        -self.eta_inhib * yt_1[j] * (1 - xt[i] * (1 + 1 / self.mu_ip))
                     )
 
                     # Update the weight between jth neuron to i ""Different from notation in article
@@ -352,8 +349,7 @@ class Plasticity(Sorn):
         b = np.count_nonzero(Wie_init)
 
         logging.info("Network Initialized")
-        logging.info(
-            "Number of connections in Wee %s , Wei %s, Wie %s" % (c, v, b))
+        logging.info("Number of connections in Wee %s , Wei %s, Wie %s" % (c, v, b))
         logging.info(
             "Shapes Wee %s Wei %s Wie %s"
             % (Wee_init.shape, Wei_init.shape, Wie_init.shape)
@@ -401,7 +397,7 @@ class Async:
 
     Returns:
         params(dict): Dictionary networks parameters Wee, Wei, Te
-        """
+    """
 
     def __init__(self, X, Y, Wee, Wei, Te, freeze, max_workers):
 
@@ -409,14 +405,13 @@ class Async:
         self.X = X
         self.Y = Y
         self.freeze = freeze
-        self.params = {'Wee': Wee, 'Wei': Wei, 'Te': Te}
+        self.params = {"Wee": Wee, "Wei": Wei, "Te": Te}
         if max_workers == None:
             self.max_workers = min(32, os.cpu_count() + 4)
         else:
             self.max_workers = max_workers
         self.plasticity = Plasticity()
         self.execute()
-        self.update_params()
 
     def execute(self):
 
@@ -426,40 +421,51 @@ class Async:
 
             if "stdp" not in self.freeze:
                 self.stdp = executor.submit(
-                    self.plasticity.stdp, self.params['Wee'], self.X, cutoff_weights=(
-                        0.0, 1.0)
+                    self.plasticity.stdp,
+                    self.params["Wee"],
+                    self.X,
+                    cutoff_weights=(0.0, 1.0),
                 )
 
             if "ip" not in self.freeze:
-                self.ip = executor.submit(self.plasticity.ip,
-                                          self.params['Te'], self.X)
+                self.ip = executor.submit(self.plasticity.ip, self.params["Te"], self.X)
 
             if "sp" not in self.freeze:
                 self.sp = executor.submit(
-                    self.plasticity.structural_plasticity, self.params['Wee'])
+                    self.plasticity.structural_plasticity, self.params["Wee"]
+                )
 
             if "istdp" not in self.freeze:
                 self.istdp = executor.submit(
-                    self.plasticity.istdp, self.params['Wei'], self.X, self.Y, cutoff_weights=(
-                        0.0, 1.0)
+                    self.plasticity.istdp,
+                    self.params["Wei"],
+                    self.X,
+                    self.Y,
+                    cutoff_weights=(0.0, 1.0),
                 )
 
-    def update_params(self):
-
-        self.params['Wee'] = self.stdp.result(
-        ) if "stdp" not in self.freeze else self.params['Wee']
-        self.params['Wei'] = self.istdp.result(
-        ) if "istdp" not in self.freeze else self.params['Wei']
-        self.params['Te'] = self.ip.result(
-        ) if "ip" not in self.freeze else self.params['Te']
-        self.params['Wee'] = self.sp.result(
-        ) if "sp" not in self.freeze else self.params['Wee']
+            self.params["Wee"] = (
+                self.stdp.result() if "stdp" not in self.freeze else self.params["Wee"]
+            )
+            self.params["Wei"] = (
+                self.istdp.result()
+                if "istdp" not in self.freeze
+                else self.params["Wei"]
+            )
+            self.params["Te"] = (
+                self.ip.result() if "ip" not in self.freeze else self.params["Te"]
+            )
+            self.params["Wee"] = (
+                self.sp.result() if "sp" not in self.freeze else self.params["Wee"]
+            )
 
         if "ss" not in self.freeze:
-            self.params['Wee'] = self.plasticity.ss(self.params['Wee'])
-            self.params['Wei'] = self.plasticity.ss(self.params['Wei'])
+            self.params["Wee"] = self.plasticity.ss(self.params["Wee"])
+            self.params["Wei"] = self.plasticity.ss(self.params["Wei"])
 
-    def __new__(cls, X, Y, Wee, Wei, Te, freeze, max_workers=min(32, os.cpu_count() + 4)):
+    def __new__(
+        cls, X, Y, Wee, Wei, Te, freeze, max_workers=min(32, os.cpu_count() + 4)
+    ):
         async_instance = super(Async, cls).__new__(cls)
         async_instance.__init__(X, Y, Wee, Wei, Te, freeze, max_workers)
         return async_instance.params.values()
@@ -900,8 +906,7 @@ class Simulator_(Sorn):
         Sorn.ni = int(0.2 * Sorn.ne)
 
         # Initialize/Get the weight, threshold matrices and activity vectors
-        matrix_collection = MatrixCollection(
-            phase=self.phase, matrices=self.matrices)
+        matrix_collection = MatrixCollection(phase=self.phase, matrices=self.matrices)
 
         # Collect the network activity at all time steps
 
@@ -963,8 +968,15 @@ class Simulator_(Sorn):
             y_buffer[:, 0] = Y[i][:, 1]
             y_buffer[:, 1] = inhibitory_state_yt_buffer.T
 
-            Wee[i], Wei[i], Te[i] = Async(x_buffer, y_buffer, Wee[i], Wei[i], Te[i],
-                                          self.freeze, max_workers=max_workers)
+            Wee[i], Wei[i], Te[i] = Async(
+                x_buffer,
+                y_buffer,
+                Wee[i],
+                Wei[i],
+                Te[i],
+                self.freeze,
+                max_workers=max_workers,
+            )
             # Assign the matrices to the matrix collections
             matrix_collection.weight_matrix(Wee[i], Wei[i], Wie[i], i)
             matrix_collection.threshold_matrix(Te[i], Ti[i], i)
@@ -1074,8 +1086,7 @@ class Trainer_(Sorn):
 
         frac_pos_active_conn = []
 
-        matrix_collection = MatrixCollection(
-            phase=self.phase, matrices=self.matrices)
+        matrix_collection = MatrixCollection(phase=self.phase, matrices=self.matrices)
 
         for i in range(self.time_steps):
 
@@ -1127,8 +1138,14 @@ class Trainer_(Sorn):
             y_buffer[:, 1] = inhibitory_state_yt_buffer.T
 
             if self.phase == "plasticity":
-                Wee[i], Wei[i], Te[i] = Async(max_workers=self.max_workers).step(
-                    x_buffer, y_buffer, Wee[i], Wei[i], Te[i], self.freeze
+                Wee[i], Wei[i], Te[i] = Async(
+                    x_buffer,
+                    y_buffer,
+                    Wee[i],
+                    Wei[i],
+                    Te[i],
+                    self.freeze,
+                    max_workers=max_workers,
                 )
 
             else:
