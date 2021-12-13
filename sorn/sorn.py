@@ -415,7 +415,7 @@ class Async:
 
     def execute(self):
 
-        with concurrent.futures.ThreadPoolExecutor(
+        with concurrent.futures.ProcessPoolExecutor(
             max_workers=self.max_workers
         ) as executor:
 
