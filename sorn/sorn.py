@@ -899,14 +899,14 @@ class Simulator_(Sorn):
                 if "sp" not in self.freeze:
                     sp = executor.submit(self.plasticity.structural_plasticity, Wee[i])
 
-                if "stdp" not in self.freeze:
-                    Wee[i] = stdp.result()
                 if "istdp" not in self.freeze:
                     Wei[i] = istdp.result()
                 if "ip" not in self.freeze:
                     Te[i] = ip.result()
                 if "sp" not in self.freeze:
                     Wee[i] = sp.result()
+                if "stdp" not in self.freeze:
+                    Wee[i] = stdp.result()
 
             if "ss" not in self.freeze:
                 Wee[i] = self.plasticity.ss(Wee[i])
