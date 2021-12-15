@@ -877,7 +877,6 @@ class Simulator_(Sorn):
             y_buffer[:, 0] = Y[i][:, 1]
             y_buffer[:, 1] = inhibitory_state_yt_buffer.T
 
-
             with concurrent.futures.ProcessPoolExecutor(
                 max_workers=min(32, os.cpu_count() + 4)
             ) as executor:
@@ -886,23 +885,23 @@ class Simulator_(Sorn):
                     stdp = executor.submit(
                         self.plasticity.stdp,
                         Wee[i],
-                        self.X,
+                        X,
                         cutoff_weights=(0.0, 1.0),
                     )
 
                 if "ip" not in self.freeze:
-                    ip = executor.submit(self.plasticity.ip, Te[i], self.X)
+                    ip = executor.submit(self.plasticity.ip, Te[i], X)
 
                 if "istdp" not in self.freeze:
                     istdp = executor.submit(
                         self.plasticity.istdp,
                         Wei[i],
-                        self.X,
-                        self.Y,
+                        X,
+                        Y,
                         cutoff_weights=(0.0, 1.0),
                     )
                 if "sp" not in self.freeze:
-                    sp = executor.submit(self.plasticity.structural_plasticity,Wee[i])
+                    sp = executor.submit(self.plasticity.structural_plasticity, Wee[i])
 
                 Wee[i] = stdp.result() if "stdp" not in self.freeze else Wee[i]
                 Wei[i] = istdp.result() if "istdp" not in self.freeze else Wei[i]
