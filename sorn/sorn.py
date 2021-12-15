@@ -747,7 +747,6 @@ class Simulator_(Sorn):
         time_steps: int = None,
         noise: bool = True,
         freeze: list = None,
-        max_workers: int = 4,
         **kwargs
     ):
         """Simulation/Plasticity phase
@@ -764,8 +763,6 @@ class Simulator_(Sorn):
             noise(bool, optional): If True, noise will be added. Defaults to True.
 
             freeze(list, optional): List of synaptic plasticity mechanisms which will be turned off during simulation. Defaults to None.
-
-            max_workers(int, optional): Maximum workers for multhreading the plasticity steps
 
         Returns:
             plastic_matrices(dict): Network states, connections and threshold matrices
@@ -787,7 +784,6 @@ class Simulator_(Sorn):
         self.phase = phase
         self.matrices = matrices
         self.freeze = [] if freeze == None else freeze
-        self.max_workers = max_workers
         kwargs_ = [
             "ne",
             "nu",
@@ -885,28 +881,32 @@ class Simulator_(Sorn):
                     stdp = executor.submit(
                         self.plasticity.stdp,
                         Wee[i],
-                        X,
+                        x_buffer,
                         cutoff_weights=(0.0, 1.0),
                     )
 
                 if "ip" not in self.freeze:
-                    ip = executor.submit(self.plasticity.ip, Te[i], X)
+                    ip = executor.submit(self.plasticity.ip, Te[i], x_buffer)
                 if "istdp" not in self.freeze:
                     istdp = executor.submit(
                         self.plasticity.istdp,
                         Wei[i],
-                        X,
-                        Y,
+                        x_buffer,
+                        y_buffer,
                         cutoff_weights=(0.0, 1.0),
                     )
 
                 if "sp" not in self.freeze:
                     sp = executor.submit(self.plasticity.structural_plasticity, Wee[i])
 
-                Wee[i] = stdp.result() if "stdp" not in self.freeze else Wee[i]
-                Wei[i] = istdp.result() if "istdp" not in self.freeze else Wei[i]
-                Te[i] = ip.result() if "ip" not in self.freeze else Te[i]
-                Wee[i] = sp.result() if "sp" not in self.freeze else Wee[i]
+                if "stdp" not in self.freeze:
+                    Wee[i] = stdp.result()
+                if "istdp" not in self.freeze:
+                    Wei[i] = istdp.result()
+                if "ip" not in self.freeze:
+                    Te[i] = ip.result()
+                if "sp" not in self.freeze:
+                    Wee[i] = sp.result()
 
             if "ss" not in self.freeze:
                 Wee[i] = self.plasticity.ss(Wee[i])
