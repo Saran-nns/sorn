@@ -379,98 +379,6 @@ class Plasticity(Sorn):
         return wee, wei, wie, te, ti, x, y
 
 
-class Async:
-    """Execute STDP, iSTDP, IP and SP asynchrously followed by SS
-
-    Args:
-        X(array): Excitatory network activity
-        Y(array): Inhibitory network activity
-        Wee(array): Synaptic strengths from excitatory to excitatory
-        Wei(array): Synaptic strengths from inhibitory to excitatory
-        Te(array): Excitatory threshold
-        freeze(array): List of synaptic plasticity mechanisms which will
-                        be turned off during simulation. Defaults to None.
-        max_workers (int, optional): Defaults to min(32, os.cpu_count() + 4).
-        This default value preserves at least 5 workers for I/O bound tasks.
-        It utilizes at most 32 CPU cores for CPU bound tasks which release the GIL.
-        And it avoids using very large resources implicitly on many-core machines
-
-    Returns:
-        params(dict): Dictionary networks parameters Wee, Wei, Te
-    """
-
-    def __init__(self, X, Y, Wee, Wei, Te, freeze, max_workers):
-
-        super().__init__()
-        self.X = X
-        self.Y = Y
-        self.freeze = freeze
-        self.params = {"Wee": Wee, "Wei": Wei, "Te": Te}
-        if max_workers == None:
-            self.max_workers = min(32, os.cpu_count() + 4)
-        else:
-            self.max_workers = max_workers
-        self.plasticity = Plasticity()
-        self.execute()
-
-    def execute(self):
-
-        with concurrent.futures.ProcessPoolExecutor(
-            max_workers=self.max_workers
-        ) as executor:
-
-            if "stdp" not in self.freeze:
-                self.stdp = executor.submit(
-                    self.plasticity.stdp,
-                    self.params["Wee"],
-                    self.X,
-                    cutoff_weights=(0.0, 1.0),
-                )
-
-            if "ip" not in self.freeze:
-                self.ip = executor.submit(self.plasticity.ip, self.params["Te"], self.X)
-
-            if "sp" not in self.freeze:
-                self.sp = executor.submit(
-                    self.plasticity.structural_plasticity, self.params["Wee"]
-                )
-
-            if "istdp" not in self.freeze:
-                self.istdp = executor.submit(
-                    self.plasticity.istdp,
-                    self.params["Wei"],
-                    self.X,
-                    self.Y,
-                    cutoff_weights=(0.0, 1.0),
-                )
-
-            self.params["Wee"] = (
-                self.stdp.result() if "stdp" not in self.freeze else self.params["Wee"]
-            )
-            self.params["Wei"] = (
-                self.istdp.result()
-                if "istdp" not in self.freeze
-                else self.params["Wei"]
-            )
-            self.params["Te"] = (
-                self.ip.result() if "ip" not in self.freeze else self.params["Te"]
-            )
-            self.params["Wee"] = (
-                self.sp.result() if "sp" not in self.freeze else self.params["Wee"]
-            )
-
-        if "ss" not in self.freeze:
-            self.params["Wee"] = self.plasticity.ss(self.params["Wee"])
-            self.params["Wei"] = self.plasticity.ss(self.params["Wei"])
-
-    def __new__(
-        cls, X, Y, Wee, Wei, Te, freeze, max_workers=min(32, os.cpu_count() + 4)
-    ):
-        async_instance = super(Async, cls).__new__(cls)
-        async_instance.__init__(X, Y, Wee, Wei, Te, freeze, max_workers)
-        return async_instance.params.values()
-
-
 class MatrixCollection(Sorn):
     """Collect all matrices initialized and updated during simulation(plasiticity and training phases)
 
@@ -905,6 +813,7 @@ class Simulator_(Sorn):
         # assert Sorn.nu == len(inputs[:,0]),"Size mismatch: Input != Nu "
         Sorn.ni = int(0.2 * Sorn.ne)
 
+        self.plasticity = Plasticity()
         # Initialize/Get the weight, threshold matrices and activity vectors
         matrix_collection = MatrixCollection(phase=self.phase, matrices=self.matrices)
 
@@ -968,15 +877,42 @@ class Simulator_(Sorn):
             y_buffer[:, 0] = Y[i][:, 1]
             y_buffer[:, 1] = inhibitory_state_yt_buffer.T
 
-            Wee[i], Wei[i], Te[i] = Async(
-                x_buffer,
-                y_buffer,
-                Wee[i],
-                Wei[i],
-                Te[i],
-                self.freeze,
-                max_workers=max_workers,
-            )
+
+            with concurrent.futures.ProcessPoolExecutor(
+                max_workers=min(32, os.cpu_count() + 4)
+            ) as executor:
+
+                if "stdp" not in self.freeze:
+                    stdp = executor.submit(
+                        self.plasticity.stdp,
+                        Wee[i],
+                        self.X,
+                        cutoff_weights=(0.0, 1.0),
+                    )
+
+                if "ip" not in self.freeze:
+                    ip = executor.submit(self.plasticity.ip, Te[i], self.X)
+
+                if "istdp" not in self.freeze:
+                    istdp = executor.submit(
+                        self.plasticity.istdp,
+                        Wei[i],
+                        self.X,
+                        self.Y,
+                        cutoff_weights=(0.0, 1.0),
+                    )
+                if "sp" not in self.freeze:
+                    sp = executor.submit(self.plasticity.structural_plasticity,Wee[i])
+
+                Wee[i] = stdp.result() if "stdp" not in self.freeze else Wee[i]
+                Wei[i] = istdp.result() if "istdp" not in self.freeze else Wei[i]
+                Te[i] = ip.result() if "ip" not in self.freeze else Wee[i]
+                Wee[i] = sp.result() if "sp" not in self.freeze else Wee[i]
+
+            if "ss" not in self.freeze:
+                Wee[i] = self.plasticity.ss(Wee[i])
+                Wei[i] = self.plasticity.ss(Wei[i])
+
             # Assign the matrices to the matrix collections
             matrix_collection.weight_matrix(Wee[i], Wei[i], Wie[i], i)
             matrix_collection.threshold_matrix(Te[i], Ti[i], i)

@@ -35,7 +35,13 @@ setup(
         "Programming Language :: Python :: 3.9",
     ],
     include_package_data=True,
-    install_requires=["numpy", "configparser",
-                      "scipy", "seaborn", "pandas", "networkx"],
+    install_requires=[
+        "numpy",
+        "configparser",
+        "scipy",
+        "seaborn",
+        "pandas",
+        "networkx",
+    ],
     zip_safe=False,
 )
