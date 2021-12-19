@@ -956,7 +956,7 @@ class Simulator_(Sorn):
 
             for proc in jobs:
                 proc.join()
-
+            print(result_dict)
             Wee[i], Te[i], Wei[i] = (
                 result_dict["wee"],
                 result_dict["te"],
