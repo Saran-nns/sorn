@@ -912,10 +912,6 @@ class Simulator_(Sorn):
             # Plasticity phase
             plasticity = Plasticity()
 
-            Wee[i] = plasticity.structural_plasticity(
-                Wee[i], freeze="sp" in self.freeze
-            )
-
             manager = Manager()
             result_dict = manager.dict()
             jobs = []
@@ -956,12 +952,16 @@ class Simulator_(Sorn):
 
             for proc in jobs:
                 proc.join()
-            print(result_dict)
             Wee[i], Te[i], Wei[i] = (
                 result_dict["wee"],
                 result_dict["te"],
                 result_dict["wei"],
             )
+
+            Wee[i] = plasticity.structural_plasticity(
+                Wee[i], freeze="sp" in self.freeze
+            )
+
             if "ss" not in self.freeze:
 
                 Wee[i] = plasticity.ss(Wee[i], freeze="ss" in self.freeze)
