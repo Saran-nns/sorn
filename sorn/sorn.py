@@ -153,7 +153,7 @@ class Plasticity(Sorn):
         x: np.array,
         cutoff_weights: list,
         freeze: bool = False,
-        **kwargs
+        result: dict = None,
     ):
         """Apply STDP rule : Regulates synaptic strength between the pre(Xj) and post(Xi) synaptic neurons
 
@@ -170,8 +170,8 @@ class Plasticity(Sorn):
             wee (array):  Weight matrix
         """
         if freeze:
-            kwargs["wee"] = wee
-            return kwargs
+            result["wee"] = wee
+
         else:
 
             x = np.asarray(x)
@@ -202,10 +202,9 @@ class Plasticity(Sorn):
             wee_t = Initializer.prune_small_weights(wee_t, cutoff_weights[0])
 
             # Check and set all weights < upper cutoff weight
-            kwargs["wee"] = Initializer.set_max_cutoff_weight(wee_t, cutoff_weights[1])
-            return kwargs
+            result["wee"] = Initializer.set_max_cutoff_weight(wee_t, cutoff_weights[1])
 
-    def ip(self, te: np.array, x: np.array, freeze: bool = False, **kwargs):
+    def ip(self, te: np.array, x: np.array, freeze: bool = False, result: dict = None):
         """Intrinsic Plasiticity mechanism
 
         Args:
@@ -219,13 +218,12 @@ class Plasticity(Sorn):
             te (array): Threshold vector of excitatory units
         """
         if freeze:
-            kwargs["te"] = te
-            return kwargs
+            result["te"] = te
         else:
             # IP rule: Active unit increases its threshold and inactive decreases its threshold.
             xt = x[:, 1]
 
-            kwargs["te"] = te + self.eta_ip * (xt.reshape(self.ne, 1) - self.h_ip)
+            result["te"] = te + self.eta_ip * (xt.reshape(self.ne, 1) - self.h_ip)
 
             # Check whether all te are in range [0.0,1.0] and update acordingly
 
@@ -234,8 +232,6 @@ class Plasticity(Sorn):
 
             # Set all te > 1.0 --> 1.0
             # te = set_max_cutoff_weight(te_update,self.te_max)
-
-            return kwargs
 
     @staticmethod
     def ss(wee: np.array, freeze: bool = False):
@@ -262,7 +258,7 @@ class Plasticity(Sorn):
         y: np.array,
         cutoff_weights: list,
         freeze: bool = False,
-        **kwargs
+        result: dict = None,
     ):
         """Apply iSTDP rule, which regulates synaptic strength between the pre inhibitory(Xj) and post Excitatory(Xi) synaptic neurons
 
@@ -281,8 +277,7 @@ class Plasticity(Sorn):
             wei (array): Synaptic strengths from inhibitory to excitatory"""
 
         if freeze:
-            kwargs["wei"] = wei
-            return kwargs
+            result["wei"] = wei
         else:
             # Excitatory network activity
             xt = np.asarray(x)[:, 1]
@@ -318,9 +313,7 @@ class Plasticity(Sorn):
             wei_t = Initializer.prune_small_weights(wei_t, cutoff_weights[0])
 
             # Check and set all weights < upper cutoff weight
-            kwargs["wei"] = Initializer.set_max_cutoff_weight(wei_t, cutoff_weights[1])
-
-            return kwargs
+            result["wei"] = Initializer.set_max_cutoff_weight(wei_t, cutoff_weights[1])
 
     @staticmethod
     def structural_plasticity(wee: np.array, freeze: bool = False):
