@@ -883,7 +883,7 @@ class Simulator_(Sorn):
             )
             Te, Ti = matrix_collection.Te, matrix_collection.Ti
             X, Y = matrix_collection.X, matrix_collection.Y
-            print("$$$", Wee)
+            print("$$$", Wee[i])
             # Fraction of active connections between E-E network
             frac_pos_active_conn.append((Wee[i] > 0.0).sum())
 
