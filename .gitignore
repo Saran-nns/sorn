@@ -16,7 +16,8 @@ dist/
 sorn.egg-info/
 
 # Logs
-sorn/*.log 
+sorn/*.log
+*.log 
 
 ### VisualStudioCode ###
 .vscode/*
