@@ -5,7 +5,7 @@ import numpy as np
 import os
 import random
 import logging
-from multiprocessing import Process, Manager
+from multiprocessing import Pool
 
 try:
     from sorn.utils import Initializer
@@ -149,11 +149,7 @@ class Plasticity(Sorn):
 
     def stdp(
         self,
-        wee: np.array,
-        x: np.array,
-        cutoff_weights: list,
-        freeze: bool = False,
-        result: dict = None,
+        params,
     ):
         """Apply STDP rule : Regulates synaptic strength between the pre(Xj) and post(Xi) synaptic neurons
 
@@ -164,16 +160,15 @@ class Plasticity(Sorn):
 
             cutoff_weights (list): Maximum and minimum weight ranges
 
-            freeze (bool): If True, skip the structural plasticity step. Default False
-
         Returns:
             wee (array):  Weight matrix
         """
+        wee, x, cutoff_weights, freeze = params[0], params[1], params[2], params[3]
+
         if freeze:
-            result["wee"] = wee
+            return wee
 
         else:
-
             x = np.asarray(x)
             xt_1 = x[:, 0]
             xt = x[:, 1]
@@ -199,12 +194,13 @@ class Plasticity(Sorn):
                         wee_t[j][i] = wee[j][i] + delta_wee_t
 
             # Prune the smallest weights induced by plasticity mechanisms; Apply lower cutoff weight
-            wee_t = Initializer.prune_small_weights(wee_t, cutoff_weights[0])
+            wee = Initializer.prune_small_weights(wee_t, cutoff_weights[0])
 
             # Check and set all weights < upper cutoff weight
-            result["wee"] = Initializer.set_max_cutoff_weight(wee_t, cutoff_weights[1])
+            wee = Initializer.set_max_cutoff_weight(wee, cutoff_weights[1])
+            return wee
 
-    def ip(self, te: np.array, x: np.array, freeze: bool = False, result: dict = None):
+    def ip(self, params):
         """Intrinsic Plasiticity mechanism
 
         Args:
@@ -212,54 +208,33 @@ class Plasticity(Sorn):
 
             x (array): Excitatory network activity
 
-            freeze (bool): If True, skip the structural plasticity step. Default False
-
         Returns:
             te (array): Threshold vector of excitatory units
         """
+
+        te, x, freeze = (params[0], params[1], params[2])
         if freeze:
-            result["te"] = te
+            return te
         else:
             # IP rule: Active unit increases its threshold and inactive decreases its threshold.
             xt = x[:, 1]
-
-            result["te"] = te + self.eta_ip * (xt.reshape(self.ne, 1) - self.h_ip)
-
-            # Check whether all te are in range [0.0,1.0] and update acordingly
-
-            # Update te < 0.0 ---> 0.0
-            # te = prune_small_weights(te_update,self.te_min)
-
-            # Set all te > 1.0 --> 1.0
-            # te = set_max_cutoff_weight(te_update,self.te_max)
+            te = te + self.eta_ip * (xt.reshape(self.ne, 1) - self.h_ip)
+            return te
 
     @staticmethod
-    def ss(wee: np.array, freeze: bool = False):
+    def ss(param):
         """Synaptic Scaling or Synaptic Normalization
 
         Args:
-            wee (array):  Weight matrix
-
-            freeze (bool): If True, skip the structural plasticity step. Default False
+            param (array):  Weight matrix
 
         Returns:
-            wee (array):  Scaled Weight matrix
+            param (array):  Scaled Weight matrix
         """
-        if freeze:
-            return wee
-        else:
-            wee = wee / np.sum(wee, axis=0)
-            return wee
+        param = param / np.sum(param, axis=0)
+        return param
 
-    def istdp(
-        self,
-        wei: np.array,
-        x: np.array,
-        y: np.array,
-        cutoff_weights: list,
-        freeze: bool = False,
-        result: dict = None,
-    ):
+    def istdp(self, params):
         """Apply iSTDP rule, which regulates synaptic strength between the pre inhibitory(Xj) and post Excitatory(Xi) synaptic neurons
 
         Args:
@@ -276,8 +251,16 @@ class Plasticity(Sorn):
         Returns:
             wei (array): Synaptic strengths from inhibitory to excitatory"""
 
+        wei, x, y, cutoff_weights, freeze = (
+            params[0],
+            params[1],
+            params[2],
+            params[3],
+            params[4],
+        )
+
         if freeze:
-            result["wei"] = wei
+            return wei
         else:
             # Excitatory network activity
             xt = np.asarray(x)[:, 1]
@@ -310,42 +293,39 @@ class Plasticity(Sorn):
                         wei_t[j][i] = wei[j][i] + delta_wei_t
 
             # Prune the smallest weights induced by plasticity mechanisms; Apply lower cutoff weight
-            wei_t = Initializer.prune_small_weights(wei_t, cutoff_weights[0])
+            wei = Initializer.prune_small_weights(wei_t, cutoff_weights[0])
 
             # Check and set all weights < upper cutoff weight
-            result["wei"] = Initializer.set_max_cutoff_weight(wei_t, cutoff_weights[1])
+            wei = Initializer.set_max_cutoff_weight(wei, cutoff_weights[1])
+            return wei
 
     @staticmethod
-    def structural_plasticity(wee: np.array, freeze: bool = False):
+    def structural_plasticity(param):
         """Add new connection value to the smallest weight between excitatory units randomly
 
         Args:
-            wee (array): Weight matrix
-            freeze (bool): If True, skip the structural plasticity step. Default False
+            param (array): Weight matrix
 
         Returns:
-            wee (array):  Weight matrix"""
+            param (array):  Weight matrix"""
 
-        if freeze:
-            return wee
-        else:
-            p_c = np.random.randint(0, 10, 1)
+        p_c = np.random.randint(0, 10, 1)
 
-            if p_c == 0:  # p_c= 0.1
+        if p_c == 0:  # p_c= 0.1
 
-                # Do structural plasticity
-                # Choose the smallest weights randomly from the weight matrix wee
-                indexes = Initializer.get_unconnected_indexes(wee)
+            # Do structural plasticity
+            # Choose the smallest weights randomly from the weight matrix wee
+            indexes = Initializer.get_unconnected_indexes(param)
 
-                # Choose any idx randomly such that i!=j
-                while True:
-                    idx_rand = random.choice(indexes)
-                    if idx_rand[0] != idx_rand[1]:
-                        break
+            # Choose any idx randomly such that i!=j
+            while True:
+                idx_rand = random.choice(indexes)
+                if idx_rand[0] != idx_rand[1]:
+                    break
 
-                wee[idx_rand[0]][idx_rand[1]] = 0.001
+            param[idx_rand[0]][idx_rand[1]] = 0.001
 
-            return wee
+        return param
 
     @staticmethod
     def initialize_plasticity():
@@ -855,7 +835,8 @@ class Simulator_(Sorn):
         X_all = [0] * self.time_steps
         Y_all = [0] * self.time_steps
         R_all = [0] * self.time_steps
-
+        Te_all = [0] * self.time_steps
+        Wee_all = [0] * self.time_steps
         frac_pos_active_conn = []
 
         # To get the last activation status of Exc and Inh neurons
@@ -883,7 +864,7 @@ class Simulator_(Sorn):
             )
             Te, Ti = matrix_collection.Te, matrix_collection.Ti
             X, Y = matrix_collection.X, matrix_collection.Y
-            print("$$$", Wee[i])
+
             # Fraction of active connections between E-E network
             frac_pos_active_conn.append((Wee[i] > 0.0).sum())
 
@@ -909,63 +890,32 @@ class Simulator_(Sorn):
 
             y_buffer[:, 0] = Y[i][:, 1]
             y_buffer[:, 1] = inhibitory_state_yt_buffer.T
+
             # Plasticity phase
             plasticity = Plasticity()
+            pool = Pool(processes=4)
 
-            manager = Manager()
-            result_dict = manager.dict()
-            jobs = []
-            for i in range(3):
-                stdp = Process(
-                    target=plasticity.stdp,
-                    args=(
-                        Wee[i],
-                        x_buffer,
-                        [0.0, 1.0],
-                        "stdp" in self.freeze,
-                        result_dict,
-                    ),
-                )
-                stdp.start()
-                jobs.append(stdp)
-
-                ip = Process(
-                    target=plasticity.ip,
-                    args=(Te[i], x_buffer, "ip" in self.freeze, result_dict),
-                )
-                jobs.append(ip)
-                ip.start()
-
-                istdp = Process(
-                    target=plasticity.istdp,
-                    args=(
-                        Wei[i],
-                        x_buffer,
-                        y_buffer,
-                        [0.0, 1.0],
-                        "istdp" in self.freeze,
-                        result_dict,
-                    ),
-                )
-                istdp.start()
-                jobs.append(istdp)
-
-            for proc in jobs:
-                proc.join()
-            Wee[i], Te[i], Wei[i] = (
-                result_dict["wee"],
-                result_dict["te"],
-                result_dict["wei"],
+            stdp = pool.apply_async(
+                plasticity.stdp, [(Wee[i], x_buffer, (0.0, 1.0), "stdp" in self.freeze)]
             )
 
-            Wee[i] = plasticity.structural_plasticity(
-                Wee[i], freeze="sp" in self.freeze
+            ip = pool.apply_async(
+                plasticity.ip, [(Te[i], x_buffer, "ip" in self.freeze)]
             )
+
+            istdp = pool.apply_async(
+                plasticity.istdp,
+                [(Wei[i], x_buffer, y_buffer, (0.0, 1.0), "istdp" in self.freeze)],
+            )
+            Wee[i], Te[i], Wei[i] = stdp.get(), ip.get(), istdp.get()
+
+            if "sp" not in self.freeze:
+                Wee[i] = plasticity.structural_plasticity(Wee[i])
 
             if "ss" not in self.freeze:
 
-                Wee[i] = plasticity.ss(Wee[i], freeze="ss" in self.freeze)
-                Wei[i] = plasticity.ss(Wei[i], freeze="ss" in self.freeze)
+                Wee[i] = plasticity.ss(Wee[i])
+                Wei[i] = plasticity.ss(Wei[i])
 
             # Assign the matrices to the matrix collections
             matrix_collection.weight_matrix(Wee[i], Wei[i], Wie[i], i)
@@ -975,6 +925,8 @@ class Simulator_(Sorn):
             X_all[i] = x_buffer[:, 1]
             Y_all[i] = y_buffer[:, 1]
             R_all[i] = r
+            Te_all[i] = Te[i]
+            Wee_all[i] = Wee[i]
 
         plastic_matrices = {
             "Wee": matrix_collection.Wee[-1],
@@ -986,7 +938,15 @@ class Simulator_(Sorn):
             "Y": Y[-1],
         }
 
-        return plastic_matrices, X_all, Y_all, R_all, frac_pos_active_conn
+        return (
+            plastic_matrices,
+            X_all,
+            Y_all,
+            R_all,
+            Te_all,
+            Wee_all,
+            frac_pos_active_conn,
+        )
 
 
 class Trainer_(Sorn):
@@ -1073,6 +1033,8 @@ class Trainer_(Sorn):
         X_all = [0] * self.time_steps
         Y_all = [0] * self.time_steps
         R_all = [0] * self.time_steps
+        Te_all = [0] * self.time_steps
+        Wee_all = [0] * self.time_steps
 
         frac_pos_active_conn = []
 
@@ -1128,15 +1090,32 @@ class Trainer_(Sorn):
             y_buffer[:, 1] = inhibitory_state_yt_buffer.T
 
             if self.phase == "plasticity":
-                Wee[i], Wei[i], Te[i] = Async(
-                    x_buffer,
-                    y_buffer,
-                    Wee[i],
-                    Wei[i],
-                    Te[i],
-                    self.freeze,
-                    max_workers=max_workers,
+                # Plasticity phase
+                plasticity = Plasticity()
+                pool = Pool(processes=4)
+
+                stdp = pool.apply_async(
+                    plasticity.stdp,
+                    [(Wee[i], x_buffer, (0.0, 1.0), "stdp" in self.freeze)],
                 )
+
+                ip = pool.apply_async(
+                    plasticity.ip, [(Te[i], x_buffer, "ip" in self.freeze)]
+                )
+
+                istdp = pool.apply_async(
+                    plasticity.istdp,
+                    [(Wei[i], x_buffer, y_buffer, (0.0, 1.0), "istdp" in self.freeze)],
+                )
+                Wee[i], Te[i], Wei[i] = stdp.get(), ip.get(), istdp.get()
+
+                if "sp" not in self.freeze:
+                    Wee[i] = plasticity.structural_plasticity(Wee[i])
+
+                if "ss" not in self.freeze:
+
+                    Wee[i] = plasticity.ss(Wee[i])
+                    Wei[i] = plasticity.ss(Wei[i])
 
             else:
                 # Wee[i], Wei[i], Te[i] remain same
@@ -1150,7 +1129,8 @@ class Trainer_(Sorn):
             X_all[i] = x_buffer[:, 1]
             Y_all[i] = y_buffer[:, 1]
             R_all[i] = r
-
+            Te_all[i] = Te[i]
+            Wee_all[i] = Wee[i]
         plastic_matrices = {
             "Wee": matrix_collection.Wee[-1],
             "Wei": matrix_collection.Wei[-1],
@@ -1161,7 +1141,15 @@ class Trainer_(Sorn):
             "Y": Y[-1],
         }
 
-        return plastic_matrices, X_all, Y_all, R_all, frac_pos_active_conn
+        return (
+            plastic_matrices,
+            X_all,
+            Y_all,
+            R_all,
+            Te_all,
+            Wee_all,
+            frac_pos_active_conn,
+        )
 
 
 Trainer = Trainer_()
