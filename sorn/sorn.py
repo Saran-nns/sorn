@@ -833,10 +833,7 @@ class Simulator_(Sorn):
         # Collect the network activity at all time steps
 
         X_all = [0] * self.time_steps
-        Y_all = [0] * self.time_steps
         R_all = [0] * self.time_steps
-        Te_all = [0] * self.time_steps
-        Wee_all = [0] * self.time_steps
         frac_pos_active_conn = []
 
         # To get the last activation status of Exc and Inh neurons
@@ -923,10 +920,7 @@ class Simulator_(Sorn):
             matrix_collection.network_activity_t(x_buffer, y_buffer, i)
 
             X_all[i] = x_buffer[:, 1]
-            Y_all[i] = y_buffer[:, 1]
             R_all[i] = r
-            Te_all[i] = Te[i]
-            Wee_all[i] = Wee[i]
 
         plastic_matrices = {
             "Wee": matrix_collection.Wee[-1],
@@ -941,10 +935,7 @@ class Simulator_(Sorn):
         return (
             plastic_matrices,
             X_all,
-            Y_all,
             R_all,
-            Te_all,
-            Wee_all,
             frac_pos_active_conn,
         )
 
@@ -1031,10 +1022,7 @@ class Trainer_(Sorn):
         self.freeze = [] if freeze == None else freeze
         self.max_workers = max_workers
         X_all = [0] * self.time_steps
-        Y_all = [0] * self.time_steps
         R_all = [0] * self.time_steps
-        Te_all = [0] * self.time_steps
-        Wee_all = [0] * self.time_steps
 
         frac_pos_active_conn = []
 
@@ -1127,10 +1115,8 @@ class Trainer_(Sorn):
             matrix_collection.network_activity_t(x_buffer, y_buffer, i)
 
             X_all[i] = x_buffer[:, 1]
-            Y_all[i] = y_buffer[:, 1]
             R_all[i] = r
-            Te_all[i] = Te[i]
-            Wee_all[i] = Wee[i]
+
         plastic_matrices = {
             "Wee": matrix_collection.Wee[-1],
             "Wei": matrix_collection.Wei[-1],
@@ -1144,10 +1130,7 @@ class Trainer_(Sorn):
         return (
             plastic_matrices,
             X_all,
-            Y_all,
             R_all,
-            Te_all,
-            Wee_all,
             frac_pos_active_conn,
         )
 
