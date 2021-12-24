@@ -906,6 +906,9 @@ class Simulator_(Sorn):
             )
             Wee[i], Te[i], Wei[i] = stdp.get(), ip.get(), istdp.get()
 
+            pool.close()
+            pool.join()
+
             if "sp" not in self.freeze:
                 Wee[i] = plasticity.structural_plasticity(Wee[i])
 
@@ -1096,6 +1099,9 @@ class Trainer_(Sorn):
                     [(Wei[i], x_buffer, y_buffer, (0.0, 1.0), "istdp" in self.freeze)],
                 )
                 Wee[i], Te[i], Wei[i] = stdp.get(), ip.get(), istdp.get()
+
+                pool.close()
+                pool.join()
 
                 if "sp" not in self.freeze:
                     Wee[i] = plasticity.structural_plasticity(Wee[i])
