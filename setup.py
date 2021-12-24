@@ -42,6 +42,7 @@ setup(
         "seaborn",
         "pandas",
         "networkx",
+        "ray",
     ],
     zip_safe=False,
 )
