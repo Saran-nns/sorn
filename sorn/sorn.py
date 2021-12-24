@@ -890,7 +890,7 @@ class Simulator_(Sorn):
 
             # Plasticity phase
             plasticity = Plasticity()
-            pool = Pool(processes=4)
+            pool = Pool(processes=3, maxtasksperchild=1000)
 
             stdp = pool.apply_async(
                 plasticity.stdp, [(Wee[i], x_buffer, (0.0, 1.0), "stdp" in self.freeze)]
@@ -906,9 +906,6 @@ class Simulator_(Sorn):
             )
             Wee[i], Te[i], Wei[i] = stdp.get(), ip.get(), istdp.get()
 
-            pool.close()
-            pool.join()
-
             if "sp" not in self.freeze:
                 Wee[i] = plasticity.structural_plasticity(Wee[i])
 
@@ -916,7 +913,7 @@ class Simulator_(Sorn):
 
                 Wee[i] = plasticity.ss(Wee[i])
                 Wei[i] = plasticity.ss(Wei[i])
-
+            pool.close()
             # Assign the matrices to the matrix collections
             matrix_collection.weight_matrix(Wee[i], Wei[i], Wie[i], i)
             matrix_collection.threshold_matrix(Te[i], Ti[i], i)
@@ -1083,7 +1080,7 @@ class Trainer_(Sorn):
             if self.phase == "plasticity":
                 # Plasticity phase
                 plasticity = Plasticity()
-                pool = Pool(processes=4)
+                pool = Pool(processes=3, maxtasksperchild=10000)
 
                 stdp = pool.apply_async(
                     plasticity.stdp,
@@ -1100,8 +1097,7 @@ class Trainer_(Sorn):
                 )
                 Wee[i], Te[i], Wei[i] = stdp.get(), ip.get(), istdp.get()
 
-                pool.close()
-                pool.join()
+                # pool.join()
 
                 if "sp" not in self.freeze:
                     Wee[i] = plasticity.structural_plasticity(Wee[i])
@@ -1110,6 +1106,7 @@ class Trainer_(Sorn):
 
                     Wee[i] = plasticity.ss(Wee[i])
                     Wei[i] = plasticity.ss(Wei[i])
+                pool.close()
 
             else:
                 # Wee[i], Wei[i], Te[i] remain same
