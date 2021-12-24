@@ -11,6 +11,8 @@ try:
 except:
     from utils import Initializer
 
+ray.init()
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s:%(levelname)s:%(message)s",
@@ -893,10 +895,8 @@ class Simulator_(Sorn):
             )
 
             # Update X and Y
-            x_buffer[:, 0] = X[i][:, 1]  # xt -->(becomes) xt_1
-            x_buffer[
-                :, 1
-            ] = excitatory_state_xt_buffer.T  # New_activation; x_buffer --> xt
+            x_buffer[:, 0] = X[i][:, 1]  # xt --> xt_1
+            x_buffer[:, 1] = excitatory_state_xt_buffer.T  #  x_buffer --> xt
 
             y_buffer[:, 0] = Y[i][:, 1]
             y_buffer[:, 1] = inhibitory_state_yt_buffer.T
@@ -929,7 +929,7 @@ class Simulator_(Sorn):
             X_all[i] = x_buffer[:, 1]
             R_all[i] = r
 
-        plastic_matrices = {
+        state_dict = {
             "Wee": matrix_collection.Wee[-1],
             "Wei": matrix_collection.Wei[-1],
             "Wie": matrix_collection.Wie[-1],
@@ -940,7 +940,7 @@ class Simulator_(Sorn):
         }
 
         return (
-            plastic_matrices,
+            state_dict,
             X_all,
             R_all,
             frac_pos_active_conn,
@@ -1115,7 +1115,7 @@ class Trainer_(Sorn):
             X_all[i] = x_buffer[:, 1]
             R_all[i] = r
 
-        plastic_matrices = {
+        state_dict = {
             "Wee": matrix_collection.Wee[-1],
             "Wei": matrix_collection.Wei[-1],
             "Wie": matrix_collection.Wie[-1],
@@ -1126,7 +1126,7 @@ class Trainer_(Sorn):
         }
 
         return (
-            plastic_matrices,
+            state_dict,
             X_all,
             R_all,
             frac_pos_active_conn,
