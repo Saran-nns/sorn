@@ -53,9 +53,12 @@ time_steps = 200
 inputs = np.random.rand(num_features,time_steps)
 
 # Simulate the network with default hyperparameters under gaussian white noise
-state_dict, E, I, R, C = Simulator.simulate_sorn(inputs = inputs, phase='plasticity',
+state_dict, sim_dict = Simulator.simulate_sorn(inputs = inputs, phase='plasticity',
                                                 matrices=None, noise = True,
-                                                time_steps=time_steps)
+                                                time_steps=time_steps,
+                                                callbacks = ["ExcitatoryActivation", 
+                                                             "WEE", 
+                                                             "EEConnectionCounts"])
 
 ```
 ```
@@ -71,22 +74,40 @@ from sorn import Trainer
 inputs = np.random.rand(num_features,1)
 
 # SORN network is frozen during training phase
-state_dict, E, I, R, C = Trainer.train_sorn(inputs = inputs, phase='training',
+state_dict, sim_dict = Trainer.train_sorn(inputs = inputs, phase='training',
                                             matrices=state_dict, noise= False,
                                             time_steps=1,
                                             ne = 100, nu=num_features,
-                                            lambda_ee = 10, eta_stdp=0.001 )
+                                            lambda_ee = 10, eta_stdp=0.001, 
+                                            callbacks = ["InhibitoryActivation", 
+                                                          "WEI", 
+                                                          "EIConnectionCounts"] )
 ```
 ### Network Output Descriptions
-  `state_dict`  - Dictionary of connection weights (`Wee`,`Wei`,`Wie`) , Excitatory network activity (`X`), Inhibitory network activities(`Y`), Threshold values (`Te`,`Ti`)
+  `state_dict`  - Dictionary of connection weights (`Wee`, `Wei`, `Wie`) , Excitatory network activity (`X`), Inhibitory network activities(`Y`), Threshold values (`Te`, `Ti`)
 
-  `E` - Excitatory network activity of entire simulation period
+  `sim_dict` - Dictionary of network states and parameters collected during the simulation/training: Provided, all available options of the argument `callbacks`, then the `sim_dict` should contain the following;
 
-  `I` - Inhibitory network activity of entire simulation period
+      "ExcitatoryActivation" - Excitatory network activity of entire simulation period
 
-  `R` - Recurrent network activity of entire simulation period
+      "InhibitoryActivation" - Inhibitory network activity of entire simulation period
 
-  `C` - Number of active connections in the Excitatory pool at each time step
+      "RecurrentActivation" - Recurrent network activity of entire simulation period
+
+      "EEConnectionCounts" - Number of active connections in the Excitatory pool at each time step
+
+      "EIConnectionCounts" - Number of active connections from Inhibitory to Excitatory pool at each time step
+
+      "TE" - Threshold values of excitatory neurons at each time step
+
+      "TI" - Threshold values of inhibitory neurons at each time step
+
+      "WEE" - Synaptic efficacies between excitatory neurons
+
+      "WEI" - Connection weights from inhibitory to excitatory neurons
+
+      "WIE" - Connection weights from excitatory to inhibitory neurons
+
 
 ### Documentation
 For detailed documentation about development, analysis, plotting methods and a sample experiment with OpenAI Gym, please visit [SORN Documentation](https://self-organizing-recurrent-neural-networks.readthedocs.io/en/latest/)

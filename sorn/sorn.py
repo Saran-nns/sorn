@@ -7,6 +7,8 @@ import random
 import logging
 from multiprocessing import Pool
 
+from sorn.callbacks import *
+
 try:
     from sorn.utils import Initializer
 except:
@@ -143,171 +145,138 @@ class Plasticity(Sorn):
         self.mu_ip = Sorn.mu_ip  # Mean target firing rate
         # Number of inhibitory units in the network
         self.ni = int(0.2 * Sorn.ne)
-        self.time_steps = Sorn.time_steps  # Total time steps of simulation
+        self.timesteps = Sorn.timesteps  # Total time steps of simulation
         self.te_min = Sorn.te_min  # Excitatory minimum Threshold
         self.te_max = Sorn.te_max  # Excitatory maximum Threshold
 
-    def stdp(
-        self,
-        params,
-    ):
+    def stdp(self, wee: np.array, x: np.array, cutoff_weights: list):
         """Apply STDP rule : Regulates synaptic strength between the pre(Xj) and post(Xi) synaptic neurons
-
         Args:
             wee (array):  Weight matrix
-
             x (array): Excitatory network activity
-
             cutoff_weights (list): Maximum and minimum weight ranges
-
         Returns:
             wee (array):  Weight matrix
         """
-        wee, x, cutoff_weights, freeze = params[0], params[1], params[2], params[3]
 
-        if freeze:
-            return wee
+        x = np.asarray(x)
+        xt_1 = x[:, 0]
+        xt = x[:, 1]
+        wee_t = wee.copy()
 
-        else:
-            x = np.asarray(x)
-            xt_1 = x[:, 0]
-            xt = x[:, 1]
-            wee_t = wee.copy()
+        # STDP applies only on the neurons which are connected.
 
-            # STDP applies only on the neurons which are connected.
+        for i in range(len(wee_t[0])):  # Each neuron i, Post-synaptic neuron
 
-            for i in range(len(wee_t[0])):  # Each neuron i, Post-synaptic neuron
+            for j in range(
+                len(wee_t[0:])
+            ):  # Incoming connection from jth pre-synaptic neuron to ith neuron
 
-                for j in range(
-                    len(wee_t[0:])
-                ):  # Incoming connection from jth pre-synaptic neuron to ith neuron
+                if wee_t[j][i] != 0.0:  # Check connectivity
 
-                    if wee_t[j][i] != 0.0:  # Check connectivity
+                    # Get the change in weight
+                    delta_wee_t = self.eta_stdp * (xt[i] * xt_1[j] - xt_1[i] * xt[j])
 
-                        # Get the change in weight
-                        delta_wee_t = self.eta_stdp * (
-                            xt[i] * xt_1[j] - xt_1[i] * xt[j]
-                        )
+                    # Update the weight between jth neuron to i ""Different from notation in article
 
-                        # Update the weight between jth neuron to i ""Different from notation in article
+                    wee_t[j][i] = wee[j][i] + delta_wee_t
 
-                        wee_t[j][i] = wee[j][i] + delta_wee_t
+        # Prune the smallest weights induced by plasticity mechanisms; Apply lower cutoff weight
+        wee_t = Initializer.prune_small_weights(wee_t, cutoff_weights[0])
 
-            # Prune the smallest weights induced by plasticity mechanisms; Apply lower cutoff weight
-            wee = Initializer.prune_small_weights(wee_t, cutoff_weights[0])
+        # Check and set all weights < upper cutoff weight
+        wee_t = Initializer.set_max_cutoff_weight(wee_t, cutoff_weights[1])
 
-            # Check and set all weights < upper cutoff weight
-            wee = Initializer.set_max_cutoff_weight(wee, cutoff_weights[1])
-            return wee
+        return wee_t
 
-    def ip(self, params):
+    def ip(self, te: np.array, x: np.array):
         """Intrinsic Plasiticity mechanism
-
         Args:
             te (array): Threshold vector of excitatory units
-
             x (array): Excitatory network activity
-
         Returns:
             te (array): Threshold vector of excitatory units
         """
 
-        te, x, freeze = (params[0], params[1], params[2])
-        if freeze:
-            return te
-        else:
-            # IP rule: Active unit increases its threshold and inactive decreases its threshold.
-            xt = x[:, 1]
-            te = te + self.eta_ip * (xt.reshape(self.ne, 1) - self.h_ip)
-            return te
+        # IP rule: Active unit increases its threshold and inactive decreases its threshold.
+        xt = x[:, 1]
+
+        te_update = te + self.eta_ip * (xt.reshape(self.ne, 1) - self.h_ip)
+
+        # Check whether all te are in range [0.0,1.0] and update acordingly
+
+        # Update te < 0.0 ---> 0.0
+        # te_update = prune_small_weights(te_update,self.te_min)
+
+        # Set all te > 1.0 --> 1.0
+        # te_update = set_max_cutoff_weight(te_update,self.te_max)
+
+        return te_update
 
     @staticmethod
-    def ss(param):
+    def ss(wee: np.array):
         """Synaptic Scaling or Synaptic Normalization
-
         Args:
-            param (array):  Weight matrix
-
+            wee (array):  Weight matrix
         Returns:
-            param (array):  Scaled Weight matrix
+            wee (array):  Scaled Weight matrix
         """
-        param = param / np.sum(param, axis=0)
-        return param
+        wee = wee / np.sum(wee, axis=0)
+        return wee
 
-    def istdp(self, params):
+    def istdp(self, wei: np.array, x: np.array, y: np.array, cutoff_weights: list):
         """Apply iSTDP rule, which regulates synaptic strength between the pre inhibitory(Xj) and post Excitatory(Xi) synaptic neurons
-
         Args:
             wei (array): Synaptic strengths from inhibitory to excitatory
-
             x (array): Excitatory network activity
-
             y (array): Inhibitory network activity
-
             cutoff_weights (list): Maximum and minimum weight ranges
-
-            freeze (bool): If True, skip the structural plasticity step. Default False
-
         Returns:
             wei (array): Synaptic strengths from inhibitory to excitatory"""
 
-        wei, x, y, cutoff_weights, freeze = (
-            params[0],
-            params[1],
-            params[2],
-            params[3],
-            params[4],
-        )
+        # Excitatory network activity
+        xt = np.asarray(x)[:, 1]
 
-        if freeze:
-            return wei
-        else:
-            # Excitatory network activity
-            xt = np.asarray(x)[:, 1]
+        # Inhibitory network activity
+        yt_1 = np.asarray(y)[:, 0]
 
-            # Inhibitory network activity
-            yt_1 = np.asarray(y)[:, 0]
+        # iSTDP applies only on the neurons which are connected.
+        wei_t = wei.copy()
 
-            # iSTDP applies only on the neurons which are connected.
-            wei_t = wei.copy()
+        for i in range(
+            len(wei_t[0])
+        ):  # Each neuron i, Post-synaptic neuron: means for each column;
 
-            for i in range(
-                len(wei_t[0])
-            ):  # Each neuron i, Post-synaptic neuron: means for each column;
+            for j in range(
+                len(wei_t[0:])
+            ):  # Incoming connection from j, pre-synaptic neuron to ith neuron
 
-                for j in range(
-                    len(wei_t[0:])
-                ):  # Incoming connection from j, pre-synaptic neuron to ith neuron
+                if wei_t[j][i] != 0.0:  # Check connectivity
 
-                    if wei_t[j][i] != 0.0:  # Check connectivity
+                    # Get the change in weight
+                    delta_wei_t = (
+                        -self.eta_inhib * yt_1[j] * (1 - xt[i] * (1 + 1 / self.mu_ip))
+                    )
 
-                        # Get the change in weight
-                        delta_wei_t = (
-                            -self.eta_inhib
-                            * yt_1[j]
-                            * (1 - xt[i] * (1 + 1 / self.mu_ip))
-                        )
+                    # Update the weight between jth neuron to i ""Different from notation in article
 
-                        # Update the weight between jth neuron to i ""Different from notation in article
+                    wei_t[j][i] = wei[j][i] + delta_wei_t
 
-                        wei_t[j][i] = wei[j][i] + delta_wei_t
+        # Prune the smallest weights induced by plasticity mechanisms; Apply lower cutoff weight
+        wei_t = Initializer.prune_small_weights(wei_t, cutoff_weights[0])
 
-            # Prune the smallest weights induced by plasticity mechanisms; Apply lower cutoff weight
-            wei = Initializer.prune_small_weights(wei_t, cutoff_weights[0])
+        # Check and set all weights < upper cutoff weight
+        wei_t = Initializer.set_max_cutoff_weight(wei_t, cutoff_weights[1])
 
-            # Check and set all weights < upper cutoff weight
-            wei = Initializer.set_max_cutoff_weight(wei, cutoff_weights[1])
-            return wei
+        return wei_t
 
     @staticmethod
-    def structural_plasticity(param):
+    def structural_plasticity(wee: np.array):
         """Add new connection value to the smallest weight between excitatory units randomly
-
         Args:
-            param (array): Weight matrix
-
+            wee (array): Weight matrix
         Returns:
-            param (array):  Weight matrix"""
+            wee (array):  Weight matrix"""
 
         p_c = np.random.randint(0, 10, 1)
 
@@ -315,7 +284,7 @@ class Plasticity(Sorn):
 
             # Do structural plasticity
             # Choose the smallest weights randomly from the weight matrix wee
-            indexes = Initializer.get_unconnected_indexes(param)
+            indexes = Initializer.get_unconnected_indexes(wee)
 
             # Choose any idx randomly such that i!=j
             while True:
@@ -323,9 +292,9 @@ class Plasticity(Sorn):
                 if idx_rand[0] != idx_rand[1]:
                     break
 
-            param[idx_rand[0]][idx_rand[1]] = 0.001
+            wee[idx_rand[0]][idx_rand[1]] = 0.001
 
-        return param
+        return wee
 
     @staticmethod
     def initialize_plasticity():
@@ -414,15 +383,15 @@ class MatrixCollection(Sorn):
         self.matrices = matrices
         if self.phase == "plasticity" and self.matrices == None:
 
-            self.time_steps = Sorn.time_steps + 1  # Total training steps
+            self.timesteps = Sorn.timesteps + 1  # Total training steps
             self.Wee, self.Wei, self.Wie, self.Te, self.Ti, self.X, self.Y = (
-                [0] * self.time_steps,
-                [0] * self.time_steps,
-                [0] * self.time_steps,
-                [0] * self.time_steps,
-                [0] * self.time_steps,
-                [0] * self.time_steps,
-                [0] * self.time_steps,
+                [0] * self.timesteps,
+                [0] * self.timesteps,
+                [0] * self.timesteps,
+                [0] * self.timesteps,
+                [0] * self.timesteps,
+                [0] * self.timesteps,
+                [0] * self.timesteps,
             )
             wee, wei, wie, te, ti, x, y = Plasticity.initialize_plasticity()
 
@@ -437,15 +406,15 @@ class MatrixCollection(Sorn):
 
         elif self.phase == "plasticity" and self.matrices != None:
 
-            self.time_steps = Sorn.time_steps + 1  # Total training steps
+            self.timesteps = Sorn.timesteps + 1  # Total training steps
             self.Wee, self.Wei, self.Wie, self.Te, self.Ti, self.X, self.Y = (
-                [0] * self.time_steps,
-                [0] * self.time_steps,
-                [0] * self.time_steps,
-                [0] * self.time_steps,
-                [0] * self.time_steps,
-                [0] * self.time_steps,
-                [0] * self.time_steps,
+                [0] * self.timesteps,
+                [0] * self.timesteps,
+                [0] * self.timesteps,
+                [0] * self.timesteps,
+                [0] * self.timesteps,
+                [0] * self.timesteps,
+                [0] * self.timesteps,
             )
             # Assign matrices from plasticity phase to the new master matrices for training phase
             self.Wee[0] = matrices["Wee"]
@@ -458,16 +427,16 @@ class MatrixCollection(Sorn):
 
         elif self.phase == "training":
 
-            # NOTE:time_steps here is diferent for plasticity and training phase
-            self.time_steps = Sorn.time_steps + 1  # Total training steps
+            # NOTE:timesteps here is diferent for plasticity and training phase
+            self.timesteps = Sorn.timesteps + 1  # Total training steps
             self.Wee, self.Wei, self.Wie, self.Te, self.Ti, self.X, self.Y = (
-                [0] * self.time_steps,
-                [0] * self.time_steps,
-                [0] * self.time_steps,
-                [0] * self.time_steps,
-                [0] * self.time_steps,
-                [0] * self.time_steps,
-                [0] * self.time_steps,
+                [0] * self.timesteps,
+                [0] * self.timesteps,
+                [0] * self.timesteps,
+                [0] * self.timesteps,
+                [0] * self.timesteps,
+                [0] * self.timesteps,
+                [0] * self.timesteps,
             )
             # Assign matrices from plasticity phase to new respective matrices for training phase
             self.Wee[0] = matrices["Wee"]
@@ -549,7 +518,7 @@ class MatrixCollection(Sorn):
         Returns:
             tuple(array): Previous Excitatory and Inhibitory states
         """
-        x_1, y_1 = [0] * self.time_steps, [0] * self.time_steps
+        x_1, y_1 = [0] * self.timesteps, [0] * self.timesteps
         x_1[i] = x
         y_1[i] = y
 
@@ -737,7 +706,7 @@ class Simulator_(Sorn):
 
         matrices(dict, optional): Network states, connections and threshold matrices. Defaults to None.
 
-        time_steps(int, optional): Total number of time steps to simulate the network. Defaults to 1.
+        timesteps(int, optional): Total number of time steps to simulate the network. Defaults to 1.
 
         noise(bool, optional): If True, noise will be added. Defaults to True.
 
@@ -754,17 +723,38 @@ class Simulator_(Sorn):
 
     def __init__(self):
         super().__init__()
-        pass
+
+        self.avail_callbacks = {
+            "ExcitatoryActivation": ExcitatoryActivation,
+            "InhibitoryActivation": InhibitoryActivation,
+            "RecurrentActivation": RecurrentActivation,
+            "WEE": WEE,
+            "WEI": WEI,
+            "TE": TE,
+            "TI": TI,
+            "EIConnectionCounts": EIConnectionCounts,
+            "EEConnectionCounts": EEConnectionCounts,
+        }
+
+    def update_callback_state(self, *args) -> None:
+        if self.callbacks:
+            (indices,) = np.array(self.callback_mask).nonzero()
+            keys = [list(self.avail_callbacks.keys())[i] for i in indices]
+
+            values = [args[idx] for idx in indices]
+            for key, val in zip(keys, values):
+                self.callback_state[key] = val
 
     def simulate_sorn(
         self,
         inputs: np.array = None,
         phase: str = "plasticity",
         matrices: dict = None,
-        time_steps: int = None,
+        timesteps: int = None,
         noise: bool = True,
         freeze: list = None,
-        **kwargs
+        callbacks: list = [],
+        **kwargs,
     ):
         """Simulation/Plasticity phase
 
@@ -775,32 +765,31 @@ class Simulator_(Sorn):
 
             matrices(dict, optional): Network states, connections and threshold matrices. Defaults to None.
 
-            time_steps(int, optional): Total number of time steps to simulate the network. Defaults to 1.
+            timesteps(int, optional): Total number of time steps to simulate the network. Defaults to 1.
 
             noise(bool, optional): If True, noise will be added. Defaults to True.
 
             freeze(list, optional): List of synaptic plasticity mechanisms which will be turned off during simulation. Defaults to None.
 
+            callbacks(list, optional): Requested values from ["ExcitatoryActivation", "InhibitoryActivation",
+                                                            "RecurrentActivation", "WEE", "WEI", "TE", "EEConnectionCounts"] collected and returned from the simulate sorn object.
+
         Returns:
             plastic_matrices(dict): Network states, connections and threshold matrices
 
-            X_all(array): Excitatory network activity collected during entire simulation steps
-
-            Y_all(array): Inhibitory network activity collected during entire simulation steps
-
-            R_all(array): Recurrent network activity collected during entire simulation steps
-
-            frac_pos_active_conn(list): Number of positive connection strengths in the network at each time step during simulation"""
+            callback_values(dict): Requexted network parameters and activations"""
 
         assert (
             phase == "plasticity" or "training"
         ), "Phase can be either 'plasticity' or 'training'"
 
-        self.time_steps = time_steps
-        Sorn.time_steps = time_steps
+        self.timesteps = timesteps
+        Sorn.timesteps = timesteps
         self.phase = phase
         self.matrices = matrices
         self.freeze = [] if freeze == None else freeze
+        self.callbacks = callbacks
+
         kwargs_ = [
             "ne",
             "nu",
@@ -823,21 +812,27 @@ class Simulator_(Sorn):
         for key, value in kwargs.items():
             if key in kwargs_:
                 setattr(Sorn, key, value)
-        # assert Sorn.nu == len(inputs[:,0]),"Size mismatch: Input != Nu "
         Sorn.ni = int(0.2 * Sorn.ne)
 
-        self.plasticity = Plasticity()
+        plasticity = Plasticity()
         # Initialize/Get the weight, threshold matrices and activity vectors
         matrix_collection = MatrixCollection(phase=self.phase, matrices=self.matrices)
 
-        # Collect the network activity at all time steps
+        if self.callbacks:
+            assert isinstance(self.callbacks, list), "Callbacks must be a list"
+            assert all(isinstance(callback, str) for callback in self.callbacks)
+            self.callback_mask = np.isin(
+                list(self.avail_callbacks.keys()), self.callbacks
+            ).astype(int)
+            self.callback_state = dict.fromkeys(self.callbacks, None)
 
-        X_all = [0] * self.time_steps
-        R_all = [0] * self.time_steps
-        frac_pos_active_conn = []
+            # Requested values to be collected and returned
+            self.dispatcher = Callbacks(
+                self.timesteps, self.avail_callbacks, self.callbacks
+            )
 
         # To get the last activation status of Exc and Inh neurons
-        for i in range(self.time_steps):
+        for i in range(self.timesteps):
 
             if noise:
                 white_noise_e = Initializer.white_gaussian_noise(
@@ -862,8 +857,9 @@ class Simulator_(Sorn):
             Te, Ti = matrix_collection.Te, matrix_collection.Ti
             X, Y = matrix_collection.X, matrix_collection.Y
 
-            # Fraction of active connections between E-E network
-            frac_pos_active_conn.append((Wee[i] > 0.0).sum())
+            # Fraction of active connections between E-E and E-I networks
+            ei_conn = (Wei[i] > 0.0).sum()
+            ee_conn = (Wee[i] > 0.0).sum()
 
             # Recurrent drive
             r = network_state.recurrent_drive(
@@ -890,37 +886,48 @@ class Simulator_(Sorn):
 
             # Plasticity phase
             plasticity = Plasticity()
-            pool = Pool()
 
-            stdp = pool.apply_async(
-                plasticity.stdp, [(Wee[i], x_buffer, (0.0, 1.0), "stdp" in self.freeze)]
-            )
+            # STDP
+            if "stdp" not in self.freeze:
+                Wee[i] = plasticity.stdp(Wee[i], x_buffer, cutoff_weights=(0.0, 1.0))
 
-            ip = pool.apply_async(
-                plasticity.ip, [(Te[i], x_buffer, "ip" in self.freeze)]
-            )
+            # Intrinsic plasticity
+            if "ip" not in self.freeze:
+                Te[i] = plasticity.ip(Te[i], x_buffer)
 
-            istdp = pool.apply_async(
-                plasticity.istdp,
-                [(Wei[i], x_buffer, y_buffer, (0.0, 1.0), "istdp" in self.freeze)],
-            )
-            Wee[i], Te[i], Wei[i] = stdp.get(), ip.get(), istdp.get()
-
+            # Structural plasticity
             if "sp" not in self.freeze:
                 Wee[i] = plasticity.structural_plasticity(Wee[i])
 
-            if "ss" not in self.freeze:
+            # iSTDP
+            if "istdp" not in self.freeze:
+                Wei[i] = plasticity.istdp(
+                    Wei[i], x_buffer, y_buffer, cutoff_weights=(0.0, 1.0)
+                )
 
+            # Synaptic scaling Wee
+            if "ss" not in self.freeze:
                 Wee[i] = plasticity.ss(Wee[i])
                 Wei[i] = plasticity.ss(Wei[i])
-            pool.close()
+
             # Assign the matrices to the matrix collections
             matrix_collection.weight_matrix(Wee[i], Wei[i], Wie[i], i)
             matrix_collection.threshold_matrix(Te[i], Ti[i], i)
             matrix_collection.network_activity_t(x_buffer, y_buffer, i)
+            if self.callbacks:
+                self.update_callback_state(
+                    x_buffer[:, 1],
+                    y_buffer[:, 1],
+                    r,
+                    Wee[i],
+                    Wei[i],
+                    Te[i],
+                    Ti[i],
+                    ei_conn,
+                    ee_conn,
+                )
 
-            X_all[i] = x_buffer[:, 1]
-            R_all[i] = r
+                self.dispatcher.step(self.callback_state, time_step=i)
 
         plastic_matrices = {
             "Wee": matrix_collection.Wee[-1],
@@ -931,13 +938,10 @@ class Simulator_(Sorn):
             "X": X[-1],
             "Y": Y[-1],
         }
-
-        return (
-            plastic_matrices,
-            X_all,
-            R_all,
-            frac_pos_active_conn,
-        )
+        if self.callbacks:
+            return plastic_matrices, self.dispatcher.get()
+        else:
+            return plastic_matrices, {}
 
 
 class Trainer_(Sorn):
@@ -945,18 +949,37 @@ class Trainer_(Sorn):
 
     def __init__(self):
         super().__init__()
-        pass
+        self.avail_callbacks = {
+            "ExcitatoryActivation": ExcitatoryActivation,
+            "InhibitoryActivation": InhibitoryActivation,
+            "RecurrentActivation": RecurrentActivation,
+            "WEE": WEE,
+            "WEI": WEI,
+            "TE": TE,
+            "TI": TI,
+            "EIConnectionCounts": EIConnectionCounts,
+            "EEConnectionCounts": EEConnectionCounts,
+        }
+
+    def update_callback_state(self, *args) -> None:
+        if self.callbacks:
+            (indices,) = np.array(self.callback_mask).nonzero()
+            keys = [list(self.avail_callbacks.keys())[i] for i in indices]
+
+            values = [args[idx] for idx in indices]
+            for key, val in zip(keys, values):
+                self.callback_state[key] = val
 
     def train_sorn(
         self,
         inputs: np.array = None,
         phase: str = "training",
         matrices: dict = None,
-        time_steps: int = None,
+        timesteps: int = None,
         noise: bool = True,
         freeze: list = None,
-        max_workers: int = 4,
-        **kwargs
+        callbacks: list = [],
+        **kwargs,
     ):
         """Train the network with the fresh or pretrained network matrices and external stimuli
 
@@ -967,7 +990,7 @@ class Trainer_(Sorn):
 
             matrices(dict, optional): Network states, connections and threshold matrices. Defaults to None.
 
-            time_steps(int, optional): Total number of time steps to simulate the network. Defaults to 1.
+            timesteps(int, optional): Total number of time steps to simulate the network. Defaults to 1.
 
             noise(bool, optional): If True, noise will be added. Defaults to True.
 
@@ -1016,19 +1039,27 @@ class Trainer_(Sorn):
 
         self.phase = phase
         self.matrices = matrices
-        self.time_steps = time_steps
-        Sorn.time_steps = time_steps
+        self.timesteps = timesteps
+        Sorn.timesteps = timesteps
         self.inputs = np.asarray(inputs)
         self.freeze = [] if freeze == None else freeze
-        self.max_workers = max_workers
-        X_all = [0] * self.time_steps
-        R_all = [0] * self.time_steps
-
-        frac_pos_active_conn = []
-
+        self.callbacks = callbacks
         matrix_collection = MatrixCollection(phase=self.phase, matrices=self.matrices)
 
-        for i in range(self.time_steps):
+        if self.callbacks:
+            assert isinstance(self.callbacks, list), "Callbacks must be a list"
+            assert all(isinstance(callback, str) for callback in self.callbacks)
+            self.callback_mask = np.isin(
+                list(self.avail_callbacks.keys()), self.callbacks
+            ).astype(int)
+            self.callback_state = dict.fromkeys(self.callbacks, None)
+
+            # Requested values to be collected and returned
+            self.dispatcher = Callbacks(
+                self.timesteps, self.avail_callbacks, self.callbacks
+            )
+
+        for i in range(self.timesteps):
 
             if noise:
                 white_noise_e = Initializer.white_gaussian_noise(
@@ -1054,8 +1085,9 @@ class Trainer_(Sorn):
             Te, Ti = matrix_collection.Te, matrix_collection.Ti
             X, Y = matrix_collection.X, matrix_collection.Y
 
-            # Fraction of active connections between E-E network
-            frac_pos_active_conn.append((Wee[i] > 0.0).sum())
+            # Fraction of active connections between E-E and E-I networks
+            ei_conn = (Wei[i] > 0.0).sum()
+            ee_conn = (Wee[i] > 0.0).sum()
 
             # Recurrent drive at t+1 used to predict the next external stimuli
             r = network_state.recurrent_drive(
@@ -1080,33 +1112,30 @@ class Trainer_(Sorn):
             if self.phase == "plasticity":
                 # Plasticity phase
                 plasticity = Plasticity()
-                pool = Pool()
+                # STDP
+                if "stdp" not in self.freeze:
+                    Wee[i] = plasticity.stdp(
+                        Wee[i], x_buffer, cutoff_weights=(0.0, 1.0)
+                    )
 
-                stdp = pool.apply_async(
-                    plasticity.stdp,
-                    [(Wee[i], x_buffer, (0.0, 1.0), "stdp" in self.freeze)],
-                )
+                # Intrinsic plasticity
+                if "ip" not in self.freeze:
+                    Te[i] = plasticity.ip(Te[i], x_buffer)
 
-                ip = pool.apply_async(
-                    plasticity.ip, [(Te[i], x_buffer, "ip" in self.freeze)]
-                )
-
-                istdp = pool.apply_async(
-                    plasticity.istdp,
-                    [(Wei[i], x_buffer, y_buffer, (0.0, 1.0), "istdp" in self.freeze)],
-                )
-                Wee[i], Te[i], Wei[i] = stdp.get(), ip.get(), istdp.get()
-
-                # pool.join()
-
+                # Structural plasticity
                 if "sp" not in self.freeze:
                     Wee[i] = plasticity.structural_plasticity(Wee[i])
 
-                if "ss" not in self.freeze:
+                # iSTDP
+                if "istdp" not in self.freeze:
+                    Wei[i] = plasticity.istdp(
+                        Wei[i], x_buffer, y_buffer, cutoff_weights=(0.0, 1.0)
+                    )
 
+                # Synaptic scaling Wee
+                if "ss" not in self.freeze:
                     Wee[i] = plasticity.ss(Wee[i])
                     Wei[i] = plasticity.ss(Wei[i])
-                pool.close()
 
             else:
                 # Wee[i], Wei[i], Te[i] remain same
@@ -1116,9 +1145,20 @@ class Trainer_(Sorn):
             matrix_collection.weight_matrix(Wee[i], Wei[i], Wie[i], i)
             matrix_collection.threshold_matrix(Te[i], Ti[i], i)
             matrix_collection.network_activity_t(x_buffer, y_buffer, i)
+            if self.callbacks:
+                self.update_callback_state(
+                    x_buffer[:, 1],
+                    y_buffer[:, 1],
+                    r,
+                    Wee[i],
+                    Wei[i],
+                    Te[i],
+                    Ti[i],
+                    ei_conn,
+                    ee_conn,
+                )
 
-            X_all[i] = x_buffer[:, 1]
-            R_all[i] = r
+                self.dispatcher.step(self.callback_state, time_step=i)
 
         plastic_matrices = {
             "Wee": matrix_collection.Wee[-1],
@@ -1130,12 +1170,10 @@ class Trainer_(Sorn):
             "Y": Y[-1],
         }
 
-        return (
-            plastic_matrices,
-            X_all,
-            R_all,
-            frac_pos_active_conn,
-        )
+        if self.callbacks:
+            return plastic_matrices, self.dispatcher.get()
+        else:
+            return plastic_matrices, {}
 
 
 Trainer = Trainer_()
