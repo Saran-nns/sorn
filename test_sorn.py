@@ -2,7 +2,7 @@ import unittest
 import pickle
 import numpy as np
 from sorn.sorn import Trainer, Simulator
-from sorn.utils import Plotter, Statistics, Initializer
+from sorn.utils import Plotter, Statistics
 
 # Getting back the pickled matrices:
 with open("sample_matrices.pkl", "rb") as f:
@@ -21,8 +21,8 @@ sequence_input = np.random.rand(10, 1)
 
 # Overriding defaults: Sample input
 num_features = 10
-time_steps = 1000
-inputs = np.random.rand(num_features, time_steps)
+timesteps = 1000
+inputs = np.random.rand(num_features, timesteps)
 
 
 class TestSorn(unittest.TestCase):
@@ -38,7 +38,7 @@ class TestSorn(unittest.TestCase):
                 inputs=simulation_inputs,
                 phase="plasticity",
                 matrices=None,
-                time_steps=2,
+                timesteps=2,
                 noise=True,
                 nu=num_features,
             ),
@@ -50,7 +50,7 @@ class TestSorn(unittest.TestCase):
                 inputs=simulation_inputs,
                 phase="plasticity",
                 matrices=state_dict,
-                time_steps=2,
+                timesteps=2,
                 noise=False,
             ),
         )
@@ -61,7 +61,7 @@ class TestSorn(unittest.TestCase):
                 inputs=simulation_inputs,
                 phase="plasticity",
                 matrices=state_dict,
-                time_steps=2,
+                timesteps=2,
                 noise=False,
                 freeze=["ip"],
             ),
@@ -74,7 +74,7 @@ class TestSorn(unittest.TestCase):
                 inputs=simulation_inputs,
                 phase="plasticity",
                 matrices=state_dict,
-                time_steps=2,
+                timesteps=2,
                 noise=False,
                 freeze=["stdp", "istdp", "ss", "sp"],
             ),
@@ -87,7 +87,7 @@ class TestSorn(unittest.TestCase):
                 inputs=gym_input,
                 phase="plasticity",
                 matrices=state_dict,
-                time_steps=1,
+                timesteps=1,
                 noise=True,
             ),
         )
@@ -98,7 +98,7 @@ class TestSorn(unittest.TestCase):
                 inputs=sequence_input,
                 phase="training",
                 matrices=state_dict,
-                time_steps=1,
+                timesteps=1,
                 noise=True,
                 freeze=["stdp", "istdp", "ss", "sp"],
             ),
@@ -112,7 +112,7 @@ class TestSorn(unittest.TestCase):
                 phase="plasticity",
                 matrices=None,
                 noise=True,
-                time_steps=time_steps,
+                timesteps=timesteps,
                 ne=26,
                 lambda_ee=4,
                 lambda_ei=4,
@@ -128,11 +128,59 @@ class TestSorn(unittest.TestCase):
                 phase="plasticity",
                 matrices=None,
                 noise=True,
-                time_steps=time_steps,
+                timesteps=timesteps,
                 ne=40,
                 lambda_ee=5,
                 lambda_ei=5,
                 nu=num_features,
+            ),
+        )
+        # Test Callbacks
+        self.assertRaises(
+            Exception,
+            Simulator.simulate_sorn(
+                inputs=inputs,
+                phase="plasticity",
+                matrices=None,
+                noise=True,
+                timesteps=timesteps,
+                ne=50,
+                nu=10,
+                callbacks=[
+                    "ExcitatoryActivation",
+                    "InhibitoryActivation",
+                    "RecurrentActivation",
+                    "WEE",
+                    "EIConnectionCounts",
+                    "TI",
+                    "EEConnectionCounts",
+                    "TE",
+                    "WEI",
+                ],
+            ),
+        ),
+
+        self.assertRaises(
+            Exception,
+            Trainer.train_sorn(
+                inputs=inputs,
+                phase="plasticity",
+                matrices=None,
+                noise=True,
+                timesteps=timesteps,
+                ne=50,
+                nu=10,
+                callbacks=[
+                    "ExcitatoryActivation",
+                    "InhibitoryActivation",
+                    "RecurrentActivation",
+                    "WEE",
+                    "EIConnectionCounts",
+                    "TI",
+                    "EEConnectionCounts",
+                    "TE",
+                    "WEI",
+                ],
             ),
         )
 
