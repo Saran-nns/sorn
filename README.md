@@ -55,7 +55,7 @@ inputs = np.random.rand(num_features,time_steps)
 # Simulate the network with default hyperparameters under gaussian white noise
 state_dict, sim_dict = Simulator.simulate_sorn(inputs = inputs, phase='plasticity',
                                                 matrices=None, noise = True,
-                                                time_steps=time_steps,
+                                                timesteps=time_steps,
                                                 callbacks = ["ExcitatoryActivation", 
                                                              "WEE", 
                                                              "EEConnectionCounts"])
@@ -76,7 +76,7 @@ inputs = np.random.rand(num_features,1)
 # SORN network is frozen during training phase
 state_dict, sim_dict = Trainer.train_sorn(inputs = inputs, phase='training',
                                             matrices=state_dict, noise= False,
-                                            time_steps=1,
+                                            timesteps=1,
                                             ne = 100, nu=num_features,
                                             lambda_ee = 10, eta_stdp=0.001, 
                                             callbacks = ["InhibitoryActivation", 
