@@ -30,7 +30,7 @@ class Initializer(object):
             inp (array): Input vector of length equals the number of neurons in the reservoir
                   with randomly chosen neuron set active
 
-            idx (list): List of chosen input neurons """
+            idx (list): List of chosen input neurons"""
 
         inp = [0] * reservoir_size
         x = [0] * length
@@ -113,7 +113,7 @@ class Initializer(object):
 
         # Applied only while initializing the weight. During simulation, Synaptic scaling applied on weight matrices
 
-        """ Normalize the weights in the matrix such that incoming connections to a neuron sum up to 1
+        """Normalize the weights in the matrix such that incoming connections to a neuron sum up to 1
 
         Args:
             weight_matrix (array): Incoming Weights from W_ee or W_ei or W_ie
@@ -274,7 +274,7 @@ class Initializer(object):
 
     @staticmethod
     def get_incoming_connection_dict(weights: np.array):
-        """ Get the non-zero entries in columns is the incoming connections for the neurons
+        """Get the non-zero entries in columns is the incoming connections for the neurons
 
         Args:
             weights (np.array): Connection/Synaptic weights
@@ -329,7 +329,7 @@ class Initializer(object):
 
     @staticmethod
     def set_max_cutoff_weight(weights: np.array, cutoff_weight: float):
-        """ Set cutoff limit for the values in given array
+        """Set cutoff limit for the values in given array
 
         Args:
             weights (np.array): Synaptic strengths
@@ -346,7 +346,7 @@ class Initializer(object):
 
     @staticmethod
     def get_unconnected_indexes(wee: np.array):
-        """ Helper function for Structural plasticity to randomly select the unconnected units
+        """Helper function for Structural plasticity to randomly select the unconnected units
 
         Args:
             wee (array):  Weight matrix
@@ -402,9 +402,7 @@ class Initializer(object):
         else:
             for zero_sum_incoming in zero_sum_incomings[-1]:
 
-                rand_indices = np.random.randint(
-                    int(weights.shape[0] * 0.2), size=2
-                )
+                rand_indices = np.random.randint(int(weights.shape[0] * 0.2), size=2)
                 rand_values = np.random.uniform(0.0, 0.1, 2)
 
                 for i, idx in enumerate(rand_indices):
@@ -414,8 +412,7 @@ class Initializer(object):
 
 
 class Plotter(object):
-    """Wrapper class to call plotting methods
-    """
+    """Wrapper class to call plotting methods"""
 
     def __init__(self):
         pass
@@ -446,21 +443,25 @@ class Plotter(object):
 
         # Fit a normal distribution to the data
         mu, std = norm.fit(num_incoming_weights)
-        plt.hist(num_incoming_weights, bins=bin_size, density=True, alpha=0.6, color='b')
+        plt.hist(
+            num_incoming_weights, bins=bin_size, density=True, alpha=0.6, color="b"
+        )
 
         # PDF
         xmin, xmax = plt.xlim()
         x = np.linspace(xmin, xmax, max(num_incoming_weights))
         p = norm.pdf(x, mu, std)
-        plt.plot(x, p, 'k', linewidth=2)
-        title = "Distribution of presynaptic connections: mu = %.2f,  std = %.2f" % (mu, std)
+        plt.plot(x, p, "k", linewidth=2)
+        title = "Distribution of presynaptic connections: mu = %.2f,  std = %.2f" % (
+            mu,
+            std,
+        )
         plt.title(title)
 
         if savefig:
             plt.savefig("hist_incoming_conn")
 
         return plt.show()
-
 
     @staticmethod
     def hist_outgoing_conn(
@@ -478,7 +479,7 @@ class Plotter(object):
             savefig (bool): If True plot will be saved as png file in the cwd
 
         Returns:
-            plot object """
+            plot object"""
 
         # Plot the histogram of distribution of number of incoming connections in the network
 
@@ -490,14 +491,19 @@ class Plotter(object):
 
         # Fit a normal distribution to the data
         mu, std = norm.fit(num_outgoing_weights)
-        plt.hist(num_outgoing_weights, bins=bin_size, density=True, alpha=0.6, color='b')
+        plt.hist(
+            num_outgoing_weights, bins=bin_size, density=True, alpha=0.6, color="b"
+        )
 
         # PDF
         xmin, xmax = plt.xlim()
         x = np.linspace(xmin, xmax, max(num_outgoing_weights))
         p = norm.pdf(x, mu, std)
-        plt.plot(x, p, 'k', linewidth=2)
-        title = "Distribution of post synaptic connections: mu = %.2f,  std = %.2f" % (mu, std)
+        plt.plot(x, p, "k", linewidth=2)
+        title = "Distribution of post synaptic connections: mu = %.2f,  std = %.2f" % (
+            mu,
+            std,
+        )
         plt.title(title)
 
         if savefig:
@@ -506,9 +512,7 @@ class Plotter(object):
         return plt.show()
 
     @staticmethod
-    def network_connection_dynamics(
-        connection_counts: np.array, savefig: bool
-    ):
+    def network_connection_dynamics(connection_counts: np.array, savefig: bool):
         """Plot number of positive connection in the excitatory pool
 
         Args:
@@ -540,7 +544,7 @@ class Plotter(object):
     @staticmethod
     def hist_firing_rate_network(spike_train: np.array, bin_size: int, savefig: bool):
 
-        """ Plot the histogram of firing rate (total number of neurons spike at each time step)
+        """Plot the histogram of firing rate (total number of neurons spike at each time step)
 
         Args:
             spike_train (array): Array of spike trains
@@ -550,7 +554,7 @@ class Plotter(object):
             savefig (bool): If True, plot will be saved in the cwd
 
         Returns:
-            plot object """
+            plot object"""
 
         fr = np.count_nonzero(spike_train.tolist(), 1)
 
@@ -594,7 +598,7 @@ class Plotter(object):
         plt.legend(loc="upper left")
 
         plt.scatter(y, x, s=0.1, color="black")
-        plt.title('Spike Trains')
+        plt.title("Spike Trains")
         plt.xlabel("Time step")
         plt.ylabel("Neuron")
         plt.legend(loc="upper left")
@@ -626,7 +630,7 @@ class Plotter(object):
         firing_rates = Statistics.firing_rate_network(spike_train).tolist()
         plt.plot(firing_rates, label="Firing rate")
         plt.legend(loc="upper left")
-        plt.title('Spike Trains')
+        plt.title("Spike Trains")
         # Get the indices where spike_train is 1
         x, y = np.argwhere(spike_train.T == 1).T
 
@@ -697,8 +701,7 @@ class Plotter(object):
         Returns:
             plot object"""
 
-
-        isi = Statistics.spike_time_intervals(spike_train[:,neuron])
+        isi = Statistics.spike_time_intervals(spike_train[:, neuron])
 
         y, x = np.histogram(sorted(isi), bins=bin_size)
 
@@ -716,7 +719,7 @@ class Plotter(object):
             exponential_func(x[1:bin_size], *popt),
             label="Exponential fit",
         )
-        plt.title('Distribution of Inter Spike Intervals and Exponential Curve Fit')
+        plt.title("Distribution of Inter Spike Intervals and Exponential Curve Fit")
         plt.scatter(x[1:bin_size], y[1:bin_size], s=2.0, color="black", label="ISI")
         plt.xlabel("ISI")
         plt.ylabel("Frequency")
@@ -745,7 +748,7 @@ class Plotter(object):
             weights >= 0.01
         ]  # Remove the weight values less than 0.01 # As reported in article SORN 2013
         y, x = np.histogram(weights, bins=bin_size)  # Create histogram with bin_size
-        plt.title('Synaptic weight distribution')
+        plt.title("Synaptic weight distribution")
         plt.scatter(x[:-1], y, s=2.0, c="black")
         plt.xlabel("Connection strength")
         plt.ylabel("Frequency")
@@ -786,16 +789,12 @@ class Plotter(object):
 
         mode = np.exp(mu - sigma ** 2)  # Note that mode depends on both M and s
         mean = np.exp(mu + (sigma ** 2 / 2))  # Note that mean depends on both M and s
-        x = np.linspace(
-            np.min(weights), np.max(weights), num=num_points
-        )
+        x = np.linspace(np.min(weights), np.max(weights), num=num_points)
 
-        pdf = stats.lognorm.pdf(
-            x, shape, loc=0, scale=scale
-        )
+        pdf = stats.lognorm.pdf(x, shape, loc=0, scale=scale)
 
         plt.figure(figsize=(12, 4.5))
-        plt.title('Curve fit on connection weight distribution')
+        plt.title("Curve fit on connection weight distribution")
         # Figure on linear scale
         plt.subplot(121)
         plt.plot(x, pdf)
@@ -917,7 +916,7 @@ class Plotter(object):
 
 
 class Statistics(object):
-    """ Wrapper class for statistical analysis methods """
+    """Wrapper class for statistical analysis methods"""
 
     def __init__(self):
         pass
@@ -935,7 +934,7 @@ class Statistics(object):
             bin_size (int): Divide the spike trains into bins of size bin_size
 
         Returns:
-            int: firing_rate """
+            int: firing_rate"""
 
         time_period = len(spike_train[:, 0])
 
@@ -965,7 +964,7 @@ class Statistics(object):
             spike_train (array): Array of spike trains
 
         Returns:
-            int: firing_rate """
+            int: firing_rate"""
 
         firing_rate = np.count_nonzero(spike_train.tolist(), 1)
 
@@ -997,7 +996,7 @@ class Statistics(object):
             firing_rates (list): List of number of active neurons per time step
 
         Returns:
-            coeff_var (list):Float value signifies the smoothness of the semantic changes in firing rates """
+            coeff_var (list):Float value signifies the smoothness of the semantic changes in firing rates"""
 
         diff = np.diff(firing_rates)
         mean_diff = np.mean(diff)
@@ -1135,7 +1134,6 @@ class Statistics(object):
         fano_factor = variance_firing_rate / mean_firing_rate
 
         return mean_firing_rate, variance_firing_rate, fano_factor
-
 
     @staticmethod
     def spike_source_entropy(spike_train: np.array, num_neurons: int):
