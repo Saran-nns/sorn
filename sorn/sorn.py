@@ -226,10 +226,10 @@ class Plasticity(Sorn):
         # Check whether all te are in range [0.0,1.0] and update acordingly
 
         # Update te < 0.0 ---> 0.0
-        # te_update = prune_small_weights(te_update,self.te_min)
+        te_update = Initializer.reset_min(te_update, self.te_min)
 
         # Set all te > 1.0 --> 1.0
-        # te_update = set_max_cutoff_weight(te_update,self.te_max)
+        te_update = Initializer.reset_max(te_update, self.te_max)
 
         return te_update
 
@@ -283,10 +283,10 @@ class Plasticity(Sorn):
                     wei_t[j][i] = wei[j][i] + delta_wei_t
 
         # Prune the smallest weights induced by plasticity mechanisms; Apply lower cutoff weight
-        wei_t = Initializer.prune_small_weights(wei_t, cutoff_weights[0])
+        wei_t = Initializer.reset_min(wei_t, cutoff_weights[0])
 
         # Check and set all weights < upper cutoff weight
-        wei_t = Initializer.set_max_cutoff_weight(wei_t, cutoff_weights[1])
+        wei_t = Initializer.reset_max(wei_t, cutoff_weights[1])
 
         return wei_t
 
@@ -478,6 +478,7 @@ class MatrixCollection(Sorn):
             wie(array): Excitatory-Inhibitory weight matrix
 
             i(int): Time step
+
         Returns:
             tuple(array): Weight Matrices Wee, Wei, Wie"""
 
