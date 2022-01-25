@@ -202,10 +202,10 @@ class Plasticity(Sorn):
                     wee_t[j][i] = wee[j][i] + delta_wee_t
 
         # Prune the smallest weights induced by plasticity mechanisms; Apply lower cutoff weight
-        wee_t = Initializer.prune_small_weights(wee_t, cutoff_weights[0])
+        wee_t = Initializer.reset_min(wee_t, cutoff_weights[0])
 
         # Check and set all weights < upper cutoff weight
-        wee_t = Initializer.set_max_cutoff_weight(wee_t, cutoff_weights[1])
+        wee_t = Initializer.reset_max(wee_t, cutoff_weights[1])
 
         return wee_t
 
