@@ -17,7 +17,7 @@ SORN is a class of neuro-inspired artificial network build based on plasticity m
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/164AKTA-iCVLq-iR-treLA_Y9keRYrQkH#scrollTo=Rt2YZptMtC14)
 [![status](https://joss.theoj.org/papers/7dc447f7a0d17d774b59c8ee15c223c2/status.svg)](https://joss.theoj.org/papers/7dc447f7a0d17d774b59c8ee15c223c2)
 
-<h4 align="Left">SORN Reservoir and the evolution of synaptic efficacies</h4>
+<h4 align="Left">SORN Reservoir</h4>
 <a href="url"><img src="https://raw.githubusercontent.com/Saran-nns/PySORN_0.1/master/v0.1.0/doc/images/SORN1.png" height="320" width="430"></a>
 
 ## Installation
