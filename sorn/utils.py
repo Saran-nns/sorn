@@ -332,38 +332,38 @@ class Initializer(object):
         return connection_dict
 
     @staticmethod
-    def prune_small_weights(weights: np.array, cutoff_weight: float):
-        """Prune the connections with negative connection strength. The weights less than cutoff_weight set to 0
+    def reset_min(z: np.array, cutoff_val: float):
+        """Prune the connections/thresholds with negative connection strength. The weights less than cutoff_weight set to 0
 
         Args:
-            weights (np.array): Synaptic strengths
+            z (np.array): Synaptic strengths or neuron threshold values
 
-            cutoff_weight (float): Lower weight threshold
+            cutoff_val (float): Lower threshold
 
         Returns:
-            array: Connections weights with values less than cutoff_weight set to 0
+            array: Connections weights or unit thresholds with values less than cutoff_val set to 0
         """
 
-        weights[weights <= cutoff_weight] = cutoff_weight
+        z[z <= cutoff_val] = cutoff_val
 
-        return weights
+        return z
 
     @staticmethod
-    def set_max_cutoff_weight(weights: np.array, cutoff_weight: float):
+    def reset_max(z: np.array, cutoff_val: float):
         """Set cutoff limit for the values in given array
 
         Args:
-            weights (np.array): Synaptic strengths
+            z (np.array): Synaptic strengths or neuron threshold values
 
-            cutoff_weight (float): Higher weight threshold
+            cutoff_val (float): Higher threshold
 
         Returns:
-            array: Connections weights with values greater than cutoff_weight set to 1
+            array: Connections weights or unit thresolds with values greater than cutoff_val set to 1
         """
 
-        weights[weights > cutoff_weight] = cutoff_weight
+        z[z > cutoff_val] = cutoff_val
 
-        return weights
+        return z
 
     @staticmethod
     def get_unconnected_indexes(wee: np.array):
