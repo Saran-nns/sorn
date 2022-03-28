@@ -34,7 +34,7 @@ class TestSorn(unittest.TestCase):
         # Initialize and simulate SORN with the default hyperparameters
         self.assertRaises(
             Exception,
-            Simulator.simulate_sorn(
+            Simulator.run(
                 inputs=simulation_inputs,
                 phase="plasticity",
                 matrices=None,
@@ -46,10 +46,10 @@ class TestSorn(unittest.TestCase):
         # Initilize and resume the simulation of SORN using the state dictionary, state_dict
         self.assertRaises(
             Exception,
-            Simulator.simulate_sorn(
+            Simulator.run(
                 inputs=simulation_inputs,
                 phase="plasticity",
-                matrices=state_dict,
+                state=state_dict,
                 timesteps=2,
                 noise=False,
             ),
@@ -57,10 +57,10 @@ class TestSorn(unittest.TestCase):
         # Freeze a particular plasticity during simulation
         self.assertRaises(
             Exception,
-            Simulator.simulate_sorn(
+            Simulator.run(
                 inputs=simulation_inputs,
                 phase="plasticity",
-                matrices=state_dict,
+                state=state_dict,
                 timesteps=2,
                 noise=False,
                 freeze=["ip"],
@@ -70,10 +70,10 @@ class TestSorn(unittest.TestCase):
         # Freeze multiple plasticity mechanisms during simulation
         self.assertRaises(
             Exception,
-            Simulator.simulate_sorn(
+            Simulator.run(
                 inputs=simulation_inputs,
                 phase="plasticity",
-                matrices=state_dict,
+                state=state_dict,
                 timesteps=2,
                 noise=False,
                 freeze=["stdp", "istdp", "ss", "sp"],
@@ -83,10 +83,10 @@ class TestSorn(unittest.TestCase):
         # Train SORN with all plasticity mechanisms active
         self.assertRaises(
             Exception,
-            Trainer.train_sorn(
+            Trainer.run(
                 inputs=gym_input,
                 phase="plasticity",
-                matrices=state_dict,
+                state=state_dict,
                 timesteps=1,
                 noise=True,
             ),
@@ -94,10 +94,10 @@ class TestSorn(unittest.TestCase):
         # Freeze multiple plasticity mechanisms during training
         self.assertRaises(
             Exception,
-            Trainer.train_sorn(
+            Trainer.run(
                 inputs=sequence_input,
                 phase="training",
-                matrices=state_dict,
+                state=state_dict,
                 timesteps=1,
                 noise=True,
                 freeze=["stdp", "istdp", "ss", "sp"],
@@ -107,7 +107,7 @@ class TestSorn(unittest.TestCase):
         # Override the default hyperparameters, initialize SORN and simulate under all plasticity mechanisms
         self.assertRaises(
             Exception,
-            Simulator.simulate_sorn(
+            Simulator.run(
                 inputs=inputs,
                 phase="plasticity",
                 matrices=None,
@@ -123,7 +123,7 @@ class TestSorn(unittest.TestCase):
         # Override the default hyperparameters, initialize SORN and train under all plasticity mechanisms
         self.assertRaises(
             Exception,
-            Trainer.train_sorn(
+            Trainer.run(
                 inputs=inputs,
                 phase="plasticity",
                 matrices=None,
@@ -138,7 +138,7 @@ class TestSorn(unittest.TestCase):
         # Test Callbacks
         self.assertRaises(
             Exception,
-            Simulator.simulate_sorn(
+            Simulator.run(
                 inputs=inputs,
                 phase="plasticity",
                 matrices=None,
@@ -162,7 +162,7 @@ class TestSorn(unittest.TestCase):
 
         self.assertRaises(
             Exception,
-            Trainer.train_sorn(
+            Trainer.run(
                 inputs=inputs,
                 phase="plasticity",
                 matrices=None,
