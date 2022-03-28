@@ -391,7 +391,7 @@ class MatrixCollection(Sorn):
     Args:
         phase(str): Training or Plasticity phase
 
-        matrices(dict): Network activity, threshold and connection matrices
+        state(dict): Network activity, threshold and connection matrices
 
     Returns:
         MatrixCollection instance"""
@@ -837,7 +837,7 @@ class Simulator_(Sorn):
 
         plasticity = Plasticity()
         # Initialize/Get the weight, threshold matrices and activity vectors
-        matrix_collection = MatrixCollection(phase=self.phase, matrices=self.state)
+        matrix_collection = MatrixCollection(phase=self.phase, state=self.state)
 
         if self.callbacks:
             assert isinstance(self.callbacks, list), "Callbacks must be a list"
@@ -1065,7 +1065,7 @@ class Trainer_(Sorn):
         self.inputs = np.asarray(inputs)
         self.freeze = [] if freeze == None else freeze
         self.callbacks = callbacks
-        matrix_collection = MatrixCollection(phase=self.phase, matrices=self.state)
+        matrix_collection = MatrixCollection(phase=self.phase, state=self.state)
 
         if self.callbacks:
             assert isinstance(self.callbacks, list), "Callbacks must be a list"
