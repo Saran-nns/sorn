@@ -26,7 +26,7 @@ SORN is a class of neuro-inspired artificial network build based on plasticity m
 pip install sorn
 ```
 
-The library is still in alpha stage, so you may also want to install the latest version from the development branch
+or to install the latest version from the development branch
 
 ```python
 pip install git+https://github.com/Saran-nns/sorn
