@@ -13,4 +13,4 @@ scipy
 seaborn
 six
 wincertstore
-
+tqdm

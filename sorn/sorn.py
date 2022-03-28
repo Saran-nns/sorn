@@ -26,7 +26,7 @@ import os
 import random
 import logging
 from multiprocessing import Pool
-
+from tqdm import tqdm
 from sorn.callbacks import *
 
 try:
@@ -853,7 +853,7 @@ class Simulator_(Sorn):
             )
 
         # To get the last activation status of Exc and Inh neurons
-        for i in range(self.timesteps):
+        for i in tqdm(range(self.timesteps)):
 
             if noise:
                 white_noise_e = Initializer.white_gaussian_noise(
