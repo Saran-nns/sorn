@@ -1,4 +1,3 @@
-
 # Self-Organizing Recurrent Neural Networks
 
 SORN is a class of neuro-inspired artificial network build based on plasticity mechanisms in biological brain and mimic neocortical circuits ability of learning and adaptation. SORN consists of pool of excitatory neurons and small population of inhibitory neurons which are controlled by 5 plasticity mechanisms found in neocortex, namely Spike Timing Dependent Plasticity (STDP), Intrinsic Plasticity (IP), Synaptic Scaling (SS),Synaptic Normalization(SN) and inhibitory Spike Timing Dependent Plasticity (iSTDP). Using mathematical tools, SORN network simplifies the underlying structural and functional connectivity mechanisms responsible for learning and memory in the brain
@@ -53,8 +52,8 @@ time_steps = 200
 inputs = np.random.rand(num_features,time_steps)
 
 # Simulate the network with default hyperparameters under gaussian white noise
-state_dict, sim_dict = Simulator.simulate_sorn(inputs = inputs, phase='plasticity',
-                                                matrices=None, noise = True,
+state_dict, sim_dict = Simulator.run(inputs = inputs, phase='plasticity',
+                                                state=None, noise = True,
                                                 timesteps=time_steps,
                                                 callbacks = ["ExcitatoryActivation", 
                                                              "WEE", 
@@ -74,8 +73,8 @@ from sorn import Trainer
 inputs = np.random.rand(num_features,1)
 
 # SORN network is frozen during training phase
-state_dict, sim_dict = Trainer.train_sorn(inputs = inputs, phase='training',
-                                            matrices=state_dict, noise= False,
+state_dict, sim_dict = Trainer.run(inputs = inputs, phase='training',
+                                            state=state_dict, noise= False,
                                             timesteps=1,
                                             ne = 100, nu=num_features,
                                             lambda_ee = 10, eta_stdp=0.001, 
