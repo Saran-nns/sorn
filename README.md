@@ -52,12 +52,12 @@ time_steps = 200
 inputs = np.random.rand(num_features,time_steps)
 
 # Simulate the network with default hyperparameters under gaussian white noise
-state_dict, sim_dict = Simulator.run(inputs = inputs, phase='plasticity',
-                                                state=None, noise = True,
-                                                timesteps=time_steps,
-                                                callbacks = ["ExcitatoryActivation", 
-                                                             "WEE", 
-                                                             "EEConnectionCounts"])
+state_dict, sim_dict = Simulator.run(inputs=inputs, phase='plasticity',
+                                     state=None, noise=True,
+                                     timesteps=time_steps,
+                                     callbacks=["ExcitatoryActivation", 
+                                                "WEE", 
+                                                "EEConnectionCounts"])
 
 ```
 ```
@@ -73,14 +73,14 @@ from sorn import Trainer
 inputs = np.random.rand(num_features,1)
 
 # SORN network is frozen during training phase
-state_dict, sim_dict = Trainer.run(inputs = inputs, phase='training',
-                                            state=state_dict, noise= False,
-                                            timesteps=1,
-                                            ne = 100, nu=num_features,
-                                            lambda_ee = 10, eta_stdp=0.001, 
-                                            callbacks = ["InhibitoryActivation", 
-                                                          "WEI", 
-                                                          "EIConnectionCounts"] )
+state_dict, sim_dict = Trainer.run(inputs= inputs, phase='training',
+                                   state=state_dict, noise=False,
+                                   timesteps=1,
+                                   ne=100, nu=num_features,
+                                   lambda_ee=10, eta_stdp=0.001, 
+                                   callbacks=["InhibitoryActivation", 
+                                              "WEI", 
+                                              "EIConnectionCounts"] )
 ```
 ### Network Output Descriptions
   `state_dict`  - Dictionary of connection weights (`Wee`, `Wei`, `Wie`) , Excitatory network activity (`X`), Inhibitory network activities(`Y`), Threshold values (`Te`, `Ti`)
