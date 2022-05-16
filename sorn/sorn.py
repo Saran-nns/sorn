@@ -304,11 +304,11 @@ class Plasticity(Sorn):
 
             # Do structural plasticity
             # Choose the smallest weights randomly from the weight matrix wee
-            indexes = Initializer.get_unconnected_indexes(wee)
+            indices = Initializer.inactive_synapses(wee)
 
             # Choose any idx randomly such that i!=j
             while True:
-                idx_rand = random.choice(indexes)
+                idx_rand = random.choice(indices)
                 if idx_rand[0] != idx_rand[1]:
                     break
 

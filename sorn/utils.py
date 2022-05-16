@@ -366,7 +366,7 @@ class Initializer(object):
         return z
 
     @staticmethod
-    def get_unconnected_indexes(wee: np.array):
+    def inactive_synapses(wee: np.array):
         """Helper function for Structural plasticity to randomly select the unconnected units
 
         Args:
