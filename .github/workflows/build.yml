@@ -5,6 +5,7 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 10 
     strategy:
       matrix:
         python-version: [3.7, 3.8, 3.9]
@@ -30,6 +31,8 @@ jobs:
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage.xml
-          directory: ./coverage/reports/
+          name: codecov-umbrella
           fail_ci_if_error: true
+          flags: unittests
+          env_vars: OS,PYTHON
+          verbose: false
