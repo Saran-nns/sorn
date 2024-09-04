@@ -19,7 +19,7 @@ version = sorn.__version__
 # sys.path.insert(0, os.path.abspath("../.."))
 # SORN root folder to sphinx path
 # sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
-sys.path.insert(0, os.path.abspath("N:/sorn/sorn/"))
+# sys.path.insert(0, os.path.abspath("N:/sorn/sorn/"))
 
 # -- Project information -----------------------------------------------------
 
