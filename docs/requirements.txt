@@ -15,6 +15,7 @@ wincertstore
 networkx
 ipykernel
 sphinxcontrib-bibtex
+sphinx_rtd_theme
 sphinxcontrib-svg2pdfconverter
 ipywidgets
 sphinx-copybutton
